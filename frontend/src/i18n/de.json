@@ -1,29 +1,50 @@
 {
   "app": {
-    "name": "FantaMeister",
-    "competitionLabel": "Wettbewerb"
-  },
-  "leagueModes": {
-    "classic": "Gesamtpunkteliste",
-    "formula_one": "Punkte nach Spieltag",
-    "head_to_head": "Kopf-an-Kopf"
-  },
-  "auth": {
-    "login": "Anmelden",
-    "register": "Registrieren",
-    "logout": "Abmelden",
-    "forgotPassword": "Passwort vergessen",
-    "resetPassword": "Passwort zurücksetzen",
-    "email": "E-Mail",
-    "password": "Passwort",
-    "confirmPassword": "Passwort bestätigen",
-    "name": "Name",
-    "sendResetLink": "Reset-Link senden",
-    "passwordsMustMatch": "Passwörter müssen übereinstimmen",
-    "forgotPasswordLink": "Passwort vergessen?",
-    "invalidCredentials": "Ungültige Anmeldedaten."
+    "name": "FantaMeister"
   },
   "common": {
-    "loading": "Wird geladen..."
+    "loading": "Wird geladen...",
+    "checkingSession": "Sitzung wird geprüft...",
+    "logout": "Abmelden",
+    "language": "Sprache"
+  },
+  "auth": {
+      "login": {
+      "title": "Anmelden",
+      "description": "Melde dich mit deinen FantaMeister-Zugangsdaten an.",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "submitting": "Anmeldung läuft...",
+      "noAccount": "Noch kein Konto?",
+      "registerLink": "Registrieren",
+      "error": "Anmeldung nicht möglich."
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "description": "Starte mit der Verwaltung deiner Fantasy-Football-Saison.",
+      "name": "Name",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "submit": "Registrieren",
+      "submitting": "Konto wird erstellt...",
+      "alreadyRegistered": "Bereits registriert?",
+      "loginLink": "Anmelden",
+      "passwordsMustMatch": "Passwörter müssen übereinstimmen.",
+      "error": "Registrierung nicht möglich."
+    }
+  },
+  "dashboard": {
+    "eyebrow": "Dashboard",
+    "title": "Willkommen zurück, {{name}}.",
+    "description": "Dein authentifizierter FantaMeister-Arbeitsbereich ist bereit. Ligen, Einladungen und Fantasy-Teams können hier ergänzt werden, ohne die Auth-Grundlage zu ändern.",
+    "accountTitle": "Konto",
+    "nameLabel": "Name",
+    "emailLabel": "E-Mail"
+  },
+  "nav": {
+    "login": "Anmelden",
+    "register": "Registrieren"
   }
 }

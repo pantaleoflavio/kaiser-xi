@@ -1,29 +1,50 @@
 {
   "app": {
-    "name": "FantaMeister",
-    "competitionLabel": "Competizione"
+    "name": "FantaMeister"
   },
-  "leagueModes": {
-    "classic": "Classifica punti totali",
-    "formula_one": "Punti per piazzamento giornata",
-    "head_to_head": "Scontri diretti"
+    "common": {
+    "loading": "Caricamento...",
+    "checkingSession": "Controllo della sessione...",
+    "logout": "Esci",
+    "language": "Lingua"
   },
   "auth": {
-    "login": "Accedi",
-    "register": "Registrati",
-    "logout": "Esci",
-    "forgotPassword": "Password dimenticata",
-    "resetPassword": "Reimposta password",
-    "email": "Email",
-    "password": "Password",
-    "confirmPassword": "Conferma password",
-    "name": "Nome",
-    "sendResetLink": "Invia link di reset",
-    "passwordsMustMatch": "Le password devono coincidere",
-    "forgotPasswordLink": "Password dimenticata?",
-    "invalidCredentials": "Credenziali non valide."
+    "login": {
+      "title": "Accedi",
+      "description": "Usa le credenziali del tuo account FantaMeister.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Accedi",
+      "submitting": "Accesso in corso...",
+      "noAccount": "Non hai un account?",
+      "registerLink": "Registrati",
+      "error": "Impossibile accedere."
+    },
+    "register": {
+      "title": "Crea account",
+      "description": "Inizia a gestire la tua stagione di fantasy football.",
+      "name": "Nome",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Conferma password",
+      "submit": "Registrati",
+      "submitting": "Creazione account...",
+      "alreadyRegistered": "Già registrato?",
+      "loginLink": "Accedi",
+      "passwordsMustMatch": "Le password devono coincidere.",
+      "error": "Impossibile registrarsi."
+    }
   },
-  "common": {
-    "loading": "Caricamento..."
+  "dashboard": {
+    "eyebrow": "Dashboard",
+    "title": "Bentornato, {{name}}.",
+    "description": "Il tuo spazio autenticato FantaMeister è pronto. I moduli per leghe, inviti e fantasy team possono essere aggiunti qui senza modificare la base di autenticazione.",
+    "accountTitle": "Account",
+    "nameLabel": "Nome",
+    "emailLabel": "Email"
+  },
+  "nav": {
+    "login": "Accedi",
+    "register": "Registrati"
   }
 }
