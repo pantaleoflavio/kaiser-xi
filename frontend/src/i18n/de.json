@@ -9,7 +9,7 @@
     "language": "Sprache"
   },
   "auth": {
-      "login": {
+    "login": {
       "title": "Anmelden",
       "description": "Melde dich mit deinen FantaMeister-Zugangsdaten an.",
       "email": "E-Mail",
@@ -41,10 +41,125 @@
     "description": "Dein authentifizierter FantaMeister-Arbeitsbereich ist bereit. Ligen, Einladungen und Fantasy-Teams können hier ergänzt werden, ohne die Auth-Grundlage zu ändern.",
     "accountTitle": "Konto",
     "nameLabel": "Name",
-    "emailLabel": "E-Mail"
+    "emailLabel": "E-Mail",
+    "leaguesTitle": "Ligen",
+    "leaguesDescription": "Sieh dir die privaten Ligen an, die mit deinem Konto verbunden sind. Ligaerstellung und Einladungen folgen in einem späteren Schritt.",
+    "leaguesLink": "Ligen ansehen"
   },
   "nav": {
     "login": "Anmelden",
-    "register": "Registrieren"
+        "register": "Registrieren",
+    "home": "Startseite",
+    "dashboard": "Dashboard",
+    "rules": "Regeln",
+    "leagues": "Ligen"
+  },
+  "home": {
+    "eyebrow": "Fantasy Football nach deinen Regeln",
+    "title": "Erstelle private Fantasy-Football-Welten über mehrere Wettbewerbe hinweg.",
+    "description": "FantaMeister ist eine Multi-Wettbewerbs-Plattform für Fantasy Football, auf der du private Ligen erstellen oder ihnen beitreten und Fantasy-Teams mit Freunden verwalten kannst.",
+    "cta": {
+      "login": "Anmelden",
+      "register": "Registrieren",
+      "dashboard": "Zum Dashboard"
+    },
+    "panel": {
+      "label": "Grundlage für kommende Funktionen",
+      "title": "Bereit für tiefere Fantasy-Saisons",
+      "description": "Die App wird für Kader, Auktionen, Formationen und Spieltage vorbereitet, während die aktuelle Nutzung einfach und fokussiert bleibt."
+    },
+    "features": {
+      "competitions": {
+        "title": "Multi-Wettbewerbs-Plattform",
+        "description": "Organisiere Fantasy-Football-Erlebnisse, die über einen einzelnen realen Wettbewerb hinauswachsen können."
+      },
+      "leagues": {
+        "title": "Private Ligen",
+        "description": "Erstelle private Ligen für deine Gruppe oder tritt ihnen bei und halte jede Saison in einem FantaMeister-Arbeitsbereich zusammen."
+      },
+      "teams": {
+        "title": "Fantasy-Teams verwalten",
+        "description": "Verwalte die Grundlage deines Fantasy-Teams, bevor erweiterte Liga- und Kaderwerkzeuge dazukommen."
+      },
+      "roadmap": {
+        "title": "Gebaut für die nächsten Schritte",
+        "description": "Künftige Unterstützung für Kader, Auktionen, taktische Formationen und Spieltagsabläufe ist geplant."
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Regeln und Guide",
+    "title": "So funktioniert FantaMeister",
+    "description": "Ein kurzer Guide zu den Grundideen hinter FantaMeister-Ligen, Teams und künftigen Spielbereichen.",
+    "sections": {
+      "overview": {
+        "title": "Was FantaMeister ist",
+        "description": "FantaMeister ist eine Multi-Wettbewerbs-Plattform für Fantasy Football für private Gruppen, die eigene Fantasy-Saisons verwalten möchten."
+      },
+      "leagues": {
+        "title": "Wie Ligen funktionieren",
+        "description": "Ligen sind private Bereiche, in denen Mitglieder einen Wettbewerb verfolgen, Teams vergleichen und eine gemeinsame Saison erleben."
+      },
+      "roles": {
+        "title": "Liga-Rollen",
+        "description": "Jedes Liga-Mitglied hat eine Rolle mit bestimmten Verantwortlichkeiten. Commissioners leiten die Liga, Co-Commissioners unterstützen und Participants spielen mit."
+      },
+      "teams": {
+        "title": "Fantasy-Team-Grundlagen",
+        "description": "Fantasy-Teams repräsentieren Teilnehmende innerhalb einer Liga. Die Teamverwaltung wird die Grundlage für Kader, Aufstellungen und Spieltagswertung."
+      },
+      "future": {
+        "title": "Künftige Spielbereiche",
+        "description": "Die Produktbasis wird für tiefere Fantasy-Football-Abläufe rund um Kader, Budget, Auktionen, Formationen und Spieltage vorbereitet."
+      }
+    },
+    "roles": {
+      "title": "Rollendetails",
+      "commissioner": {
+        "title": "Commissioner",
+        "description": "Verantwortet die Ligaeinrichtung und leitet das Ligaerlebnis."
+      },
+      "coCommissioner": {
+        "title": "Co-commissioner",
+        "description": "Unterstützt den Commissioner bei Aufgaben der Ligaverwaltung."
+      },
+      "participant": {
+        "title": "Participant",
+        "description": "Nimmt an der Liga teil und verwaltet ein Fantasy-Team."
+      }
+    },
+    "future": {
+      "title": "Geplante Spielbereiche",
+      "items": {
+        "squads": "Kader zum Aufbau und zur Pflege von Teamrosters.",
+        "budget": "Budgetregeln für ausgewogene Entscheidungen beim Teambau.",
+        "auctions": "Auktionen zur Spielerzuteilung in privaten Ligen.",
+        "formations": "Formationen für taktische Aufstellungsentscheidungen.",
+        "matchdays": "Spieltage für Begegnungen, Wertung und Fortschritt."
+      }
+    }
+  },
+  "leagues": {
+    "eyebrow": "Liga-Grundlage",
+    "title": "Deine Ligen",
+    "description": "Diese geschützte Seite listet die Ligen auf, die deinem Konto zur Verfügung stehen. Erstellung, Einladungen und Fantasy-Team-Abläufe werden bewusst noch nicht umgesetzt.",
+    "loading": "Ligen werden geladen...",
+    "error": "Ligen konnten nicht geladen werden.",
+    "errorTitle": "Ligen konnten nicht geladen werden",
+    "emptyTitle": "Noch keine Ligen",
+    "emptyDescription": "Du bist noch in keiner Liga. Ligaerstellung und Einladungen werden in einem späteren Schritt ergänzt.",
+    "noDescription": "Keine Beschreibung vorhanden.",
+    "roles": {
+      "commissioner": "Commissioner",
+      "co_commissioner": "Co-commissioner",
+      "participant": "Participant",
+      "unknown": "Mitglied"
+    },
+    "fields": {
+      "competition": "Wettbewerb",
+      "season": "Saison",
+      "type": "Typ",
+      "status": "Status"
+    }
   }
 }

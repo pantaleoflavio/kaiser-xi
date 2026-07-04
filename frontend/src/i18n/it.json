@@ -2,7 +2,7 @@
   "app": {
     "name": "FantaMeister"
   },
-    "common": {
+  "common": {
     "loading": "Caricamento...",
     "checkingSession": "Controllo della sessione...",
     "logout": "Esci",
@@ -45,6 +45,41 @@
   },
   "nav": {
     "login": "Accedi",
-    "register": "Registrati"
+    "register": "Registrati",
+    "home": "Home",
+    "dashboard": "Dashboard"
+  },
+    "home": {
+    "eyebrow": "Fantasy football a modo tuo",
+    "title": "Crea mondi di fantasy football privati su più competizioni.",
+    "description": "FantaMeister è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
+    "cta": {
+      "login": "Accedi",
+      "register": "Registrati",
+      "dashboard": "Vai alla dashboard"
+    },
+    "panel": {
+      "label": "Base per il futuro",
+      "title": "Pronta per stagioni fantasy più profonde",
+      "description": "L’app viene preparata per rose, aste, formazioni e giornate, mantenendo l’esperienza attuale semplice e focalizzata."
+    },
+    "features": {
+      "competitions": {
+        "title": "Piattaforma multi-competizione",
+        "description": "Organizza esperienze di fantasy football che possono crescere oltre una sola competizione reale."
+      },
+      "leagues": {
+        "title": "Leghe private",
+        "description": "Crea o unisciti a leghe private per il tuo gruppo e tieni ogni stagione in un unico spazio FantaMeister."
+      },
+      "teams": {
+        "title": "Gestione fantasy team",
+        "description": "Gestisci le basi del tuo fantasy team prima dell’arrivo di strumenti avanzati per leghe e rose."
+      },
+      "roadmap": {
+        "title": "Costruita per i prossimi passi",
+        "description": "È previsto il supporto futuro per rose, aste, formazioni tattiche e flussi delle giornate."
+      }
+    }
   }
 }
