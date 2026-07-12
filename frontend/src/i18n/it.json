@@ -6,7 +6,17 @@
     "loading": "Caricamento...",
     "checkingSession": "Controllo della sessione...",
     "logout": "Esci",
-    "language": "Lingua"
+    "language": "Lingua",
+    "confirmations": {
+      "releasePlayer": "Svincolare questo giocatore? Il rimborso previsto è il {{percent}}% del prezzo di acquisto."
+    },
+    "errors": {
+      "forbidden": "Non hai il permesso per eseguire questa azione.",
+      "notFound": "La lega, il team o il giocatore del roster richiesto non è stato trovato.",
+      "conflict": "La richiesta è in conflitto con lo stato attuale del roster o del budget.",
+      "validation": "Correggi gli errori di validazione.",
+      "unexpected": "Si è verificato un errore imprevisto."
+    }
   },
   "auth": {
     "login": {
@@ -200,6 +210,58 @@
       "detailTitle": "Impossibile caricare il fantasy team",
       "update": "Impossibile aggiornare il fantasy team.",
       "updateTitle": "Impossibile aggiornare il fantasy team"
+    }
+  },
+  "leagueSettings": {
+    "title": "Impostazioni lega",
+    "description": "Impostazioni di budget per ogni fantasy team di questa lega.",
+    "save": "Salva impostazioni",
+    "saving": "Salvataggio...",
+    "success": "Impostazioni lega aggiornate.",
+    "readOnly": "Solo commissioner e co-commissioner possono modificare le impostazioni della lega.",
+    "errors": {
+      "load": "Impossibile caricare le impostazioni della lega.",
+      "update": "Impossibile aggiornare le impostazioni della lega.",
+      "title": "Impossibile aggiornare le impostazioni della lega"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "initialBudget": "Budget iniziale",
+    "totalBudget": "Budget totale",
+    "remainingBudget": "Budget rimanente",
+    "releaseRefundPercentage": "Percentuale di rimborso svincolo"
+  },
+  "roster": {
+    "title": "Roster",
+    "description": "Giocatori attualmente assegnati a questo fantasy team.",
+    "loading": "Caricamento roster...",
+    "emptyTitle": "Nessun giocatore nel roster",
+    "emptyDescription": "Questo fantasy team non ha ancora giocatori attivi o storici nel roster.",
+    "unknownPlayer": "Giocatore sconosciuto",
+    "playerId": "ID giocatore: {{id}}",
+    "purchasePrice": "Prezzo di acquisto",
+    "assignedAt": "Assegnato",
+    "releasedAt": "Svincolato",
+    "managementReadOnly": "Solo l’owner del fantasy team può gestire il roster.",
+    "assign": {
+      "title": "Assegna giocatore",
+      "player": "Giocatore",
+      "playerPlaceholder": "Inserisci ID giocatore",
+      "purchasePrice": "Prezzo di acquisto",
+      "submit": "Assegna giocatore",
+      "submitting": "Assegnazione...",
+      "endpointBlocked": "La ricerca/lista dei giocatori eleggibili non è ancora disponibile dal backend, quindi inserisci manualmente un ID giocatore noto."
+    },
+    "release": {
+      "submit": "Svincola giocatore",
+      "releasing": "Svincolo..."
+    },
+    "errors": {
+      "title": "Impossibile caricare il roster",
+      "assign": "Impossibile assegnare il giocatore.",
+      "assignTitle": "Impossibile assegnare il giocatore",
+      "release": "Impossibile svincolare il giocatore."
     }
   }
 }

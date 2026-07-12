@@ -6,7 +6,17 @@
     "loading": "Wird geladen...",
     "checkingSession": "Sitzung wird geprüft...",
     "logout": "Abmelden",
-    "language": "Sprache"
+    "language": "Sprache",
+    "confirmations": {
+      "releasePlayer": "Diesen Spieler entlassen? Die erwartete Erstattung beträgt {{percent}} % des Kaufpreises."
+    },
+    "errors": {
+      "forbidden": "Du hast keine Berechtigung für diese Aktion.",
+      "notFound": "Die angefragte Liga, das Team oder der Roster-Spieler wurde nicht gefunden.",
+      "conflict": "Die Anfrage steht im Konflikt mit dem aktuellen Roster- oder Budgetstatus.",
+      "validation": "Bitte korrigiere die Validierungsfehler.",
+      "unexpected": "Ein unerwarteter Fehler ist aufgetreten."
+    }
   },
   "auth": {
     "login": {
@@ -202,56 +212,108 @@
       "remaining": "Verbleibend",
       "expires": "Läuft ab",
       "createdBy": "Erstellt von"
+    }
+  },
+  "fantasyTeams": {
+    "list": {
+      "title": "Fantasy-Teams",
+      "description": "Teams, die aktuell in dieser Liga registriert sind.",
+      "emptyTitle": "Noch keine Fantasy-Teams",
+      "emptyDescription": "Noch kein Liga-Mitglied hat ein Fantasy-Team erstellt.",
+      "owner": "Owner: {{name}}",
+      "ownedByYou": "Dein Team",
+      "youOwnTeam": "Du besitzt bereits ein Team"
     },
-    "fantasyTeams": {
-      "list": {
-        "title": "Fantasy-Teams",
-        "description": "Teams, die aktuell in dieser Liga registriert sind.",
-        "emptyTitle": "Noch keine Fantasy-Teams",
-        "emptyDescription": "Noch kein Liga-Mitglied hat ein Fantasy-Team erstellt.",
-        "owner": "Owner: {{name}}",
-        "ownedByYou": "Dein Team",
-        "youOwnTeam": "Du besitzt bereits ein Team"
-      },
-      "create": {
-        "title": "Fantasy-Team erstellen",
-        "description": "Wähle einen Teamnamen, um in dieser Liga als Fantasy-Team-Owner teilzunehmen.",
-        "name": "Teamname",
-        "namePlaceholder": "z. B. Meister XI",
-        "submit": "Team erstellen",
-        "submitting": "Team wird erstellt..."
-      },
-      "detail": {
-        "eyebrow": "Fantasy-Team",
-        "loading": "Fantasy-Team wird geladen...",
-        "backToLeague": "← Zurück zur Liga",
-        "owner": "Owner: {{name}}",
-        "ownedByYou": "Gehört dir",
-        "fields": {
-          "slug": "Slug",
-          "leagueId": "Liga-ID",
-          "createdAt": "Erstellt",
-          "updatedAt": "Aktualisiert"
-        }
-      },
-      "update": {
-        "title": "Fantasy-Team umbenennen",
-        "description": "Nur der Team-Owner kann den Namen des Fantasy-Teams ändern.",
-        "name": "Teamname",
-        "submit": "Änderungen speichern",
-        "submitting": "Speichern...",
-        "success": "Fantasy-Team aktualisiert."
-      },
-      "errors": {
-        "list": "Fantasy-Teams konnten nicht geladen werden.",
-        "listTitle": "Fantasy-Teams konnten nicht geladen werden",
-        "create": "Fantasy-Team konnte nicht erstellt werden.",
-        "createTitle": "Fantasy-Team konnte nicht erstellt werden",
-        "detail": "Fantasy-Team konnte nicht geladen werden.",
-        "detailTitle": "Fantasy-Team konnte nicht geladen werden",
-        "update": "Fantasy-Team konnte nicht aktualisiert werden.",
-        "updateTitle": "Fantasy-Team konnte nicht aktualisiert werden"
+    "create": {
+      "title": "Fantasy-Team erstellen",
+      "description": "Wähle einen Teamnamen, um in dieser Liga als Fantasy-Team-Owner teilzunehmen.",
+      "name": "Teamname",
+      "namePlaceholder": "z. B. Meister XI",
+      "submit": "Team erstellen",
+      "submitting": "Team wird erstellt..."
+    },
+    "detail": {
+      "eyebrow": "Fantasy-Team",
+      "loading": "Fantasy-Team wird geladen...",
+      "backToLeague": "← Zurück zur Liga",
+      "owner": "Owner: {{name}}",
+      "ownedByYou": "Gehört dir",
+      "fields": {
+        "slug": "Slug",
+        "leagueId": "Liga-ID",
+        "createdAt": "Erstellt",
+        "updatedAt": "Aktualisiert"
       }
+    },
+    "update": {
+      "title": "Fantasy-Team umbenennen",
+      "description": "Nur der Team-Owner kann den Namen des Fantasy-Teams ändern.",
+      "name": "Teamname",
+      "submit": "Änderungen speichern",
+      "submitting": "Speichern...",
+      "success": "Fantasy-Team aktualisiert."
+    },
+    "errors": {
+      "list": "Fantasy-Teams konnten nicht geladen werden.",
+      "listTitle": "Fantasy-Teams konnten nicht geladen werden",
+      "create": "Fantasy-Team konnte nicht erstellt werden.",
+      "createTitle": "Fantasy-Team konnte nicht erstellt werden",
+      "detail": "Fantasy-Team konnte nicht geladen werden.",
+      "detailTitle": "Fantasy-Team konnte nicht geladen werden",
+      "update": "Fantasy-Team konnte nicht aktualisiert werden.",
+      "updateTitle": "Fantasy-Team konnte nicht aktualisiert werden"
+    }
+  },
+  "leagueSettings": {
+    "title": "Liga-Einstellungen",
+    "description": "Budgeteinstellungen für alle Fantasy-Teams dieser Liga.",
+    "save": "Einstellungen speichern",
+    "saving": "Speichern...",
+    "success": "Liga-Einstellungen aktualisiert.",
+    "readOnly": "Nur Commissioner und Co-Commissioner können Liga-Einstellungen bearbeiten.",
+    "errors": {
+      "load": "Liga-Einstellungen konnten nicht geladen werden.",
+      "update": "Liga-Einstellungen konnten nicht aktualisiert werden.",
+      "title": "Liga-Einstellungen konnten nicht aktualisiert werden"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "initialBudget": "Startbudget",
+    "totalBudget": "Gesamtbudget",
+    "remainingBudget": "Verbleibendes Budget",
+    "releaseRefundPercentage": "Erstattungsprozentsatz bei Entlassung"
+  },
+  "roster": {
+    "title": "Roster",
+    "description": "Spieler, die diesem Fantasy-Team aktuell zugeordnet sind.",
+    "loading": "Roster wird geladen...",
+    "emptyTitle": "Noch keine Roster-Spieler",
+    "emptyDescription": "Dieses Fantasy-Team hat noch keine aktiven oder historischen Roster-Spieler.",
+    "unknownPlayer": "Unbekannter Spieler",
+    "playerId": "Spieler-ID: {{id}}",
+    "purchasePrice": "Kaufpreis",
+    "assignedAt": "Zugeordnet",
+    "releasedAt": "Entlassen",
+    "managementReadOnly": "Nur der Fantasy-Team-Owner kann Roster-Spieler verwalten.",
+    "assign": {
+      "title": "Spieler zuordnen",
+      "player": "Spieler",
+      "playerPlaceholder": "Spieler-ID eingeben",
+      "purchasePrice": "Kaufpreis",
+      "submit": "Spieler zuordnen",
+      "submitting": "Zuordnung läuft...",
+      "endpointBlocked": "Eine Suche/Liste berechtigter Spieler ist vom Backend noch nicht verfügbar. Gib daher manuell eine bekannte Spieler-ID ein."
+    },
+    "release": {
+      "submit": "Spieler entlassen",
+      "releasing": "Entlassung läuft..."
+    },
+    "errors": {
+      "title": "Roster konnte nicht geladen werden",
+      "assign": "Spieler konnte nicht zugeordnet werden.",
+      "assignTitle": "Spieler konnte nicht zugeordnet werden",
+      "release": "Spieler konnte nicht entlassen werden."
     }
   }
 }

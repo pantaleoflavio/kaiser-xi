@@ -4,7 +4,13 @@ import { ApiError } from '../api/client';
 import { leaguesApi } from '../api/leagues';
 import { LoadingState } from '../components/LoadingState';
 import { useTranslation } from '../i18n';
-import type { FantasyTeam, League, LeagueInvitation, LeagueMember } from '../types/league';
+import type {
+  FantasyTeam,
+  League,
+  LeagueInvitation,
+  LeagueMember,
+  LeagueSettings,
+} from '../types/league';
 
 type LoadableError = string | null;
 
@@ -51,6 +57,21 @@ function validationDetails(error: unknown) {
   return Object.values(error.errors).flat();
 }
 
+function formatNumber(value: string | number | null | undefined, fallback: string, locale: string) {
+  if (value === null || value === undefined) return fallback;
+  return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(Number(value));
+}
+
+function errorMessage(error: unknown, fallback: string, t: (key: string) => string) {
+  if (error instanceof ApiError) {
+    if (error.status === 403) return t('common.errors.forbidden');
+    if (error.status === 404) return t('common.errors.notFound');
+    if (error.status === 422) return t('common.errors.validation');
+    return error.message;
+  }
+  return error instanceof Error ? error.message : fallback;
+}
+
 export function LeagueDetailPage() {
   const { leagueId } = useParams();
   const { language, t } = useTranslation();
@@ -58,6 +79,13 @@ export function LeagueDetailPage() {
   const [members, setMembers] = useState<LeagueMember[]>([]);
   const [invitations, setInvitations] = useState<LeagueInvitation[]>([]);
   const [fantasyTeams, setFantasyTeams] = useState<FantasyTeam[]>([]);
+  const [settings, setSettings] = useState<LeagueSettings | null>(null);
+  const [settingsError, setSettingsError] = useState<LoadableError>(null);
+  const [settingsErrorDetails, setSettingsErrorDetails] = useState<string[]>([]);
+  const [settingsSuccess, setSettingsSuccess] = useState<string | null>(null);
+  const [isUpdatingSettings, setIsUpdatingSettings] = useState(false);
+  const [initialBudget, setInitialBudget] = useState('');
+  const [releaseRefundPercentage, setReleaseRefundPercentage] = useState('');
   const [detailError, setDetailError] = useState<LoadableError>(null);
   const [membersError, setMembersError] = useState<LoadableError>(null);
   const [invitationsError, setInvitationsError] = useState<LoadableError>(null);
@@ -73,6 +101,8 @@ export function LeagueDetailPage() {
   const [teamName, setTeamName] = useState('');
 
   const ownedFantasyTeam = fantasyTeams.find((team) => team.is_owned_by_current_user) ?? null;
+  const canEditSettings =
+    league?.my_role === 'commissioner' || league?.my_role === 'co_commissioner';
 
   async function loadInvitations(currentLeagueId: string) {
     try {
@@ -108,13 +138,19 @@ export function LeagueDetailPage() {
         setFantasyTeamsError(null);
         setCreateTeamError(null);
         setCreateTeamErrorDetails([]);
-        const [leagueResponse, membersResponse, invitationsResponse, fantasyTeamsResponse] =
-          await Promise.allSettled([
-            leaguesApi.show(currentLeagueId),
-            leaguesApi.members(currentLeagueId),
-            leaguesApi.invitations(currentLeagueId),
-            leaguesApi.fantasyTeams(currentLeagueId),
-          ]);
+        const [
+          leagueResponse,
+          settingsResponse,
+          membersResponse,
+          invitationsResponse,
+          fantasyTeamsResponse,
+        ] = await Promise.allSettled([
+          leaguesApi.show(currentLeagueId),
+          leaguesApi.settings(currentLeagueId),
+          leaguesApi.members(currentLeagueId),
+          leaguesApi.invitations(currentLeagueId),
+          leaguesApi.fantasyTeams(currentLeagueId),
+        ]);
         if (!isMounted) return;
 
         if (leagueResponse.status === 'fulfilled') setLeague(leagueResponse.value.data);
@@ -123,6 +159,18 @@ export function LeagueDetailPage() {
             leagueResponse.reason instanceof Error
               ? leagueResponse.reason.message
               : t('leagueDetail.error'),
+          );
+        }
+
+        if (settingsResponse.status === 'fulfilled') {
+          setSettings(settingsResponse.value.data);
+          setInitialBudget(String(settingsResponse.value.data.initial_budget ?? ''));
+          setReleaseRefundPercentage(
+            String(settingsResponse.value.data.release_refund_percentage ?? ''),
+          );
+        } else {
+          setSettingsError(
+            errorMessage(settingsResponse.reason, t('leagueSettings.errors.load'), t),
           );
         }
 
@@ -164,6 +212,31 @@ export function LeagueDetailPage() {
       isMounted = false;
     };
   }, [language, leagueId]);
+
+  async function handleUpdateSettings(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!leagueId || !canEditSettings) return;
+
+    try {
+      setIsUpdatingSettings(true);
+      setSettingsError(null);
+      setSettingsErrorDetails([]);
+      setSettingsSuccess(null);
+      const response = await leaguesApi.updateSettings(leagueId, {
+        initial_budget: Number(initialBudget),
+        release_refund_percentage: Number(releaseRefundPercentage),
+      });
+      setSettings(response.data);
+      setInitialBudget(String(response.data.initial_budget ?? ''));
+      setReleaseRefundPercentage(String(response.data.release_refund_percentage ?? ''));
+      setSettingsSuccess(t('leagueSettings.success'));
+    } catch (err) {
+      setSettingsError(errorMessage(err, t('leagueSettings.errors.update'), t));
+      setSettingsErrorDetails(validationDetails(err));
+    } finally {
+      setIsUpdatingSettings(false);
+    }
+  }
 
   async function handleCreateInvitation(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -237,7 +310,9 @@ export function LeagueDetailPage() {
         {t('leagueDetail.backToLeagues')}
       </Link>
 
-      {detailError ? <ErrorPanel message={detailError} title={t('leagueDetail.errorTitle')} /> : null}
+      {detailError ? (
+        <ErrorPanel message={detailError} title={t('leagueDetail.errorTitle')} />
+      ) : null}
 
       {league ? (
         <div className="space-y-6">
@@ -274,9 +349,88 @@ export function LeagueDetailPage() {
           </header>
 
           <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
+            <h2 className="text-2xl font-semibold text-white">{t('leagueSettings.title')}</h2>
+            <p className="mt-1 text-sm text-slate-300">{t('leagueSettings.description')}</p>
+            {settingsError ? (
+              <div className="mt-4">
+                <ErrorPanel
+                  details={settingsErrorDetails}
+                  message={settingsError}
+                  title={t('leagueSettings.errors.title')}
+                />
+              </div>
+            ) : null}
+            {settingsSuccess ? (
+              <div className="mt-4 rounded-xl border border-emerald-400/30 bg-emerald-950/30 p-4 text-sm text-emerald-100">
+                {settingsSuccess}
+              </div>
+            ) : null}
+            <dl className="mt-4 grid gap-3 text-sm text-slate-300 md:grid-cols-2">
+              <div>
+                <dt className="text-slate-500">{t('budget.initialBudget')}</dt>
+                <dd>
+                  {formatNumber(settings?.initial_budget, t('leagueDetail.notAvailable'), language)}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-slate-500">{t('budget.releaseRefundPercentage')}</dt>
+                <dd>
+                  {formatNumber(
+                    settings?.release_refund_percentage,
+                    t('leagueDetail.notAvailable'),
+                    language,
+                  )}
+                  %
+                </dd>
+              </div>
+            </dl>
+            {canEditSettings ? (
+              <form
+                className="mt-5 grid gap-3 md:grid-cols-[1fr_1fr_auto]"
+                onSubmit={handleUpdateSettings}
+              >
+                <label className="text-sm text-slate-300">
+                  {t('budget.initialBudget')}
+                  <input
+                    className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+                    min="0"
+                    onChange={(event) => setInitialBudget(event.target.value)}
+                    step="0.01"
+                    type="number"
+                    value={initialBudget}
+                  />
+                </label>
+                <label className="text-sm text-slate-300">
+                  {t('budget.releaseRefundPercentage')}
+                  <input
+                    className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+                    max="100"
+                    min="0"
+                    onChange={(event) => setReleaseRefundPercentage(event.target.value)}
+                    step="0.01"
+                    type="number"
+                    value={releaseRefundPercentage}
+                  />
+                </label>
+                <button
+                  className="self-end rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
+                  disabled={isUpdatingSettings}
+                  type="submit"
+                >
+                  {isUpdatingSettings ? t('leagueSettings.saving') : t('leagueSettings.save')}
+                </button>
+              </form>
+            ) : (
+              <p className="mt-4 text-sm text-slate-400">{t('leagueSettings.readOnly')}</p>
+            )}
+          </section>
+
+          <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <h2 className="text-2xl font-semibold text-white">{t('fantasyTeams.list.title')}</h2>
+                <h2 className="text-2xl font-semibold text-white">
+                  {t('fantasyTeams.list.title')}
+                </h2>
                 <p className="mt-1 text-sm text-slate-300">{t('fantasyTeams.list.description')}</p>
               </div>
               {ownedFantasyTeam ? (
@@ -288,7 +442,10 @@ export function LeagueDetailPage() {
 
             {fantasyTeamsError ? (
               <div className="mt-4">
-                <ErrorPanel message={fantasyTeamsError} title={t('fantasyTeams.errors.listTitle')} />
+                <ErrorPanel
+                  message={fantasyTeamsError}
+                  title={t('fantasyTeams.errors.listTitle')}
+                />
               </div>
             ) : null}
 
@@ -328,9 +485,16 @@ export function LeagueDetailPage() {
             ) : null}
 
             {!ownedFantasyTeam ? (
-              <form className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4" onSubmit={handleCreateFantasyTeam}>
-                <h3 className="text-lg font-semibold text-white">{t('fantasyTeams.create.title')}</h3>
-                <p className="mt-1 text-sm text-slate-300">{t('fantasyTeams.create.description')}</p>
+              <form
+                className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                onSubmit={handleCreateFantasyTeam}
+              >
+                <h3 className="text-lg font-semibold text-white">
+                  {t('fantasyTeams.create.title')}
+                </h3>
+                <p className="mt-1 text-sm text-slate-300">
+                  {t('fantasyTeams.create.description')}
+                </p>
                 {createTeamError ? (
                   <div className="mt-4">
                     <ErrorPanel
@@ -357,7 +521,9 @@ export function LeagueDetailPage() {
                     disabled={isCreatingTeam}
                     type="submit"
                   >
-                    {isCreatingTeam ? t('fantasyTeams.create.submitting') : t('fantasyTeams.create.submit')}
+                    {isCreatingTeam
+                      ? t('fantasyTeams.create.submitting')
+                      : t('fantasyTeams.create.submit')}
                   </button>
                 </div>
               </form>
@@ -382,7 +548,10 @@ export function LeagueDetailPage() {
             {!membersError && members.length > 0 ? (
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 {members.map((member) => (
-                  <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4" key={member.id}>
+                  <div
+                    className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                    key={member.id}
+                  >
                     <p className="font-semibold text-white">{member.name}</p>
                     <p className="mt-1 text-sm text-slate-400">{member.role.label}</p>
                   </div>
@@ -392,8 +561,13 @@ export function LeagueDetailPage() {
           </section>
 
           <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-            <h2 className="text-2xl font-semibold text-white">{t('leagueDetail.invitations.title')}</h2>
-            <form className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_auto]" onSubmit={handleCreateInvitation}>
+            <h2 className="text-2xl font-semibold text-white">
+              {t('leagueDetail.invitations.title')}
+            </h2>
+            <form
+              className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_auto]"
+              onSubmit={handleCreateInvitation}
+            >
               <label className="text-sm text-slate-300">
                 {t('leagueDetail.invitations.maxUses')}
                 <input
@@ -427,7 +601,10 @@ export function LeagueDetailPage() {
             </form>
             {invitationsError ? (
               <div className="mt-4">
-                <ErrorPanel message={invitationsError} title={t('leagueDetail.invitations.errorTitle')} />
+                <ErrorPanel
+                  message={invitationsError}
+                  title={t('leagueDetail.invitations.errorTitle')}
+                />
               </div>
             ) : null}
             {!invitationsError && invitations.length === 0 ? (
@@ -441,10 +618,15 @@ export function LeagueDetailPage() {
             {!invitationsError && invitations.length > 0 ? (
               <div className="mt-4 grid gap-3">
                 {invitations.map((invitation) => (
-                  <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4" key={invitation.id}>
+                  <div
+                    className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+                    key={invitation.id}
+                  >
                     <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                       <div>
-                        <p className="font-mono text-lg font-semibold text-white">{invitation.code}</p>
+                        <p className="font-mono text-lg font-semibold text-white">
+                          {invitation.code}
+                        </p>
                         <p className="mt-1 text-sm text-slate-400">
                           {t('leagueDetail.invitations.status')}: {invitation.status}
                         </p>
@@ -464,19 +646,26 @@ export function LeagueDetailPage() {
                       <div>
                         <dt className="text-slate-500">{t('leagueDetail.invitations.used')}</dt>
                         <dd>
-                          {invitation.used_count} / {invitation.max_uses ?? t('leagueDetail.unlimited')}
+                          {invitation.used_count} /{' '}
+                          {invitation.max_uses ?? t('leagueDetail.unlimited')}
                         </dd>
                       </div>
                       <div>
-                        <dt className="text-slate-500">{t('leagueDetail.invitations.remaining')}</dt>
+                        <dt className="text-slate-500">
+                          {t('leagueDetail.invitations.remaining')}
+                        </dt>
                         <dd>{invitation.remaining_uses ?? t('leagueDetail.unlimited')}</dd>
                       </div>
                       <div>
                         <dt className="text-slate-500">{t('leagueDetail.invitations.expires')}</dt>
-                        <dd>{formatDate(invitation.expires_at, t('leagueDetail.never'), language)}</dd>
+                       <dd>
+                          {formatDate(invitation.expires_at, t('leagueDetail.never'), language)}
+                        </dd>
                       </div>
                       <div>
-                        <dt className="text-slate-500">{t('leagueDetail.invitations.createdBy')}</dt>
+                        <dt className="text-slate-500">
+                          {t('leagueDetail.invitations.createdBy')}
+                        </dt>
                         <dd>{invitation.creator?.name ?? t('leagueDetail.notAvailable')}</dd>
                       </div>
                     </dl>

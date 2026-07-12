@@ -6,7 +6,17 @@
     "loading": "Loading...",
     "checkingSession": "Checking your session...",
     "logout": "Logout",
-    "language": "Language"
+    "language": "Language",
+    "confirmations": {
+      "releasePlayer": "Release this player? The expected refund is {{percent}}% of the purchase price."
+    },
+    "errors": {
+      "forbidden": "You do not have permission to perform this action.",
+      "notFound": "The requested league, team, or roster player was not found.",
+      "conflict": "The request conflicts with the current roster or budget state.",
+      "validation": "Please correct the highlighted validation errors.",
+      "unexpected": "An unexpected error occurred."
+    }
   },
   "auth": {
     "login": {
@@ -252,6 +262,58 @@
       "detailTitle": "Unable to load fantasy team",
       "update": "Unable to update fantasy team.",
       "updateTitle": "Unable to update fantasy team"
+    }
+  },
+  "leagueSettings": {
+    "title": "League settings",
+    "description": "Budget settings for every fantasy team in this league.",
+    "save": "Save settings",
+    "saving": "Saving...",
+    "success": "League settings updated.",
+    "readOnly": "Only the commissioner and co-commissioners can edit league settings.",
+    "errors": {
+      "load": "Unable to load league settings.",
+      "update": "Unable to update league settings.",
+      "title": "Unable to update league settings"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "initialBudget": "Initial budget",
+    "totalBudget": "Total budget",
+    "remainingBudget": "Remaining budget",
+    "releaseRefundPercentage": "Release refund percentage"
+  },
+  "roster": {
+    "title": "Roster",
+    "description": "Players currently assigned to this fantasy team.",
+    "loading": "Loading roster...",
+    "emptyTitle": "No roster players yet",
+    "emptyDescription": "This fantasy team does not have active or historical roster players yet.",
+    "unknownPlayer": "Unknown player",
+    "playerId": "Player ID: {{id}}",
+    "purchasePrice": "Purchase price",
+    "assignedAt": "Assigned",
+    "releasedAt": "Released",
+    "managementReadOnly": "Only the fantasy team owner can manage roster players.",
+    "assign": {
+      "title": "Assign player",
+      "player": "Player",
+      "playerPlaceholder": "Enter player ID",
+      "purchasePrice": "Purchase price",
+      "submit": "Assign player",
+      "submitting": "Assigning...",
+      "endpointBlocked": "Eligible-player search/listing is not available from the backend yet, so enter a known player ID manually."
+    },
+    "release": {
+      "submit": "Release player",
+      "releasing": "Releasing..."
+    },
+    "errors": {
+      "title": "Unable to load roster",
+      "assign": "Unable to assign player.",
+      "assignTitle": "Unable to assign player",
+      "release": "Unable to release player."
     }
   }
 }

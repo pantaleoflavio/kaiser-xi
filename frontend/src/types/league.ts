@@ -60,12 +60,61 @@ export type FantasyTeam = {
   league_id: number;
   owner: FantasyTeamOwner;
   is_owned_by_current_user: boolean;
+  budget?: string | number | null;
+  remaining_budget?: string | number | null;
   created_at: string | null;
   updated_at: string | null;
 };
 
 export type FantasyTeamPayload = {
   name: string;
+};
+
+export type LeagueSettings = {
+  initial_budget: string | number | null;
+  release_refund_percentage: string | number | null;
+};
+
+export type LeagueSettingsPayload = {
+  initial_budget: number;
+  release_refund_percentage: number;
+};
+
+export type RosterPlayer = {
+  id: number;
+  player_id: number;
+  purchase_price: string | number;
+  assigned_at: string | null;
+  released_at: string | null;
+  player?: {
+    id: number;
+    first_name?: string | null;
+    last_name?: string | null;
+    display_name?: string | null;
+    slug?: string | null;
+  } | null;
+};
+
+export type AssignPlayerPayload = {
+  player_id: number;
+  purchase_price: number;
+};
+
+export type LeagueSettingsResponse = {
+  data: LeagueSettings;
+};
+
+export type RosterPlayerCollectionResponse = {
+  data: RosterPlayer[];
+  meta?: {
+    budget?: string | number | null;
+    total_budget?: string | number | null;
+    remaining_budget?: string | number | null;
+  };
+};
+
+export type RosterPlayerResponse = {
+  data: RosterPlayer;
 };
 
 export type LeagueResponse = {
