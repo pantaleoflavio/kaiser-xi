@@ -41,15 +41,20 @@
     "description": "Il tuo spazio autenticato FantaMeister è pronto. I moduli per leghe, inviti e fantasy team possono essere aggiunti qui senza modificare la base di autenticazione.",
     "accountTitle": "Account",
     "nameLabel": "Nome",
-    "emailLabel": "Email"
+    "emailLabel": "Email",
+    "leaguesTitle": "Leghe",
+    "leaguesDescription": "Visualizza le leghe private collegate al tuo account. La creazione delle leghe arriverà in un passaggio successivo.",
+    "leaguesLink": "Vedi leghe"
   },
   "nav": {
     "login": "Accedi",
     "register": "Registrati",
     "home": "Home",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "rules": "Regole",
+    "leagues": "Leghe"
   },
-    "home": {
+  "home": {
     "eyebrow": "Fantasy football a modo tuo",
     "title": "Crea mondi di fantasy football privati su più competizioni.",
     "description": "FantaMeister è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
@@ -80,6 +85,121 @@
         "title": "Costruita per i prossimi passi",
         "description": "È previsto il supporto futuro per rose, aste, formazioni tattiche e flussi delle giornate."
       }
+    }
+  },
+  "leagues": {
+    "eyebrow": "Base leghe",
+    "title": "Le tue leghe",
+    "description": "Questa pagina protetta elenca le leghe disponibili per il tuo account. I flussi dei fantasy team non sono ancora implementati di proposito.",
+    "loading": "Caricamento leghe...",
+    "error": "Impossibile caricare le leghe.",
+    "errorTitle": "Impossibile caricare le leghe",
+    "emptyTitle": "Nessuna lega ancora",
+    "emptyDescription": "Non fai ancora parte di una lega. La creazione delle leghe sarà aggiunta in un passaggio futuro.",
+    "noDescription": "Nessuna descrizione fornita.",
+    "viewDetails": "Vedi dettagli lega",
+    "roles": {
+      "commissioner": "Commissioner",
+      "co_commissioner": "Co-commissioner",
+      "participant": "Participant",
+      "unknown": "Membro"
+    },
+    "fields": {
+      "competition": "Competizione",
+      "season": "Stagione",
+      "type": "Tipo",
+      "status": "Stato"
+    }
+  },
+  "leagueDetail": {
+    "eyebrow": "Dettagli lega",
+    "loading": "Caricamento lega...",
+    "backToLeagues": "← Torna alle leghe",
+    "error": "Impossibile caricare la lega.",
+    "errorTitle": "Impossibile caricare la lega",
+    "notAvailable": "Non disponibile",
+    "unlimited": "Illimitato",
+    "never": "Mai",
+    "fields": {
+      "maxParticipants": "Partecipanti max"
+    },
+    "members": {
+      "title": "Membri",
+      "error": "Impossibile caricare i membri.",
+      "errorTitle": "Impossibile caricare i membri",
+      "emptyTitle": "Nessun membro trovato",
+      "emptyDescription": "Questa lega non ha ancora membri visibili."
+    },
+    "invitations": {
+      "title": "Inviti",
+      "error": "Impossibile caricare gli inviti.",
+      "errorTitle": "Impossibile caricare gli inviti",
+      "emptyTitle": "Nessun invito ancora",
+      "emptyDescription": "Crea un invito per permettere a un altro utente di unirsi alla lega.",
+      "maxUses": "Utilizzi max",
+      "unlimitedUses": "Utilizzi illimitati",
+      "expiresAt": "Scade il",
+      "create": "Crea invito",
+      "creating": "Creazione...",
+      "createError": "Impossibile creare l’invito.",
+      "delete": "Annulla invito",
+      "deleting": "Annullamento...",
+      "deleteError": "Impossibile annullare l’invito.",
+      "status": "Stato",
+      "used": "Usati",
+      "remaining": "Rimanenti",
+      "expires": "Scadenza",
+      "createdBy": "Creato da"
+    }
+  },
+  "fantasyTeams": {
+    "list": {
+      "title": "Fantasy team",
+      "description": "Team attualmente registrati in questa lega.",
+      "emptyTitle": "Nessun fantasy team ancora",
+      "emptyDescription": "Nessun membro della lega ha ancora creato un fantasy team.",
+      "owner": "Owner: {{name}}",
+      "ownedByYou": "Il tuo team",
+      "youOwnTeam": "Possiedi già un team"
+    },
+    "create": {
+      "title": "Crea il tuo fantasy team",
+      "description": "Scegli un nome per partecipare a questa lega come owner di un fantasy team.",
+      "name": "Nome team",
+      "namePlaceholder": "es. Meister XI",
+      "submit": "Crea team",
+      "submitting": "Creazione team..."
+    },
+    "detail": {
+      "eyebrow": "Fantasy team",
+      "loading": "Caricamento fantasy team...",
+      "backToLeague": "← Torna alla lega",
+      "owner": "Owner: {{name}}",
+      "ownedByYou": "Di tua proprietà",
+      "fields": {
+        "slug": "Slug",
+        "leagueId": "ID lega",
+        "createdAt": "Creato",
+        "updatedAt": "Aggiornato"
+      }
+    },
+    "update": {
+      "title": "Rinomina fantasy team",
+      "description": "Solo l’owner del team può aggiornare il nome del fantasy team.",
+      "name": "Nome team",
+      "submit": "Salva modifiche",
+      "submitting": "Salvataggio...",
+      "success": "Fantasy team aggiornato."
+    },
+    "errors": {
+      "list": "Impossibile caricare i fantasy team.",
+      "listTitle": "Impossibile caricare i fantasy team",
+      "create": "Impossibile creare il fantasy team.",
+      "createTitle": "Impossibile creare il fantasy team",
+      "detail": "Impossibile caricare il fantasy team.",
+      "detailTitle": "Impossibile caricare il fantasy team",
+      "update": "Impossibile aggiornare il fantasy team.",
+      "updateTitle": "Impossibile aggiornare il fantasy team"
     }
   }
 }

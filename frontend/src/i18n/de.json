@@ -48,7 +48,7 @@
   },
   "nav": {
     "login": "Anmelden",
-        "register": "Registrieren",
+    "register": "Registrieren",
     "home": "Startseite",
     "dashboard": "Dashboard",
     "rules": "Regeln",
@@ -160,6 +160,98 @@
       "season": "Saison",
       "type": "Typ",
       "status": "Status"
+    },
+    "viewDetails": "Ligadetails ansehen"
+  },
+  "leagueDetail": {
+    "eyebrow": "Ligadetails",
+    "loading": "Liga wird geladen...",
+    "backToLeagues": "← Zurück zu Ligen",
+    "error": "Liga konnte nicht geladen werden.",
+    "errorTitle": "Liga konnte nicht geladen werden",
+    "notAvailable": "Nicht verfügbar",
+    "unlimited": "Unbegrenzt",
+    "never": "Nie",
+    "fields": {
+      "maxParticipants": "Max. Teilnehmende"
+    },
+    "members": {
+      "title": "Mitglieder",
+      "error": "Mitglieder konnten nicht geladen werden.",
+      "errorTitle": "Mitglieder konnten nicht geladen werden",
+      "emptyTitle": "Keine Mitglieder gefunden",
+      "emptyDescription": "Diese Liga hat noch keine sichtbaren Mitglieder."
+    },
+    "invitations": {
+      "title": "Einladungen",
+      "error": "Einladungen konnten nicht geladen werden.",
+      "errorTitle": "Einladungen konnten nicht geladen werden",
+      "emptyTitle": "Noch keine Einladungen",
+      "emptyDescription": "Erstelle eine Einladung, damit ein weiterer Nutzer dieser Liga beitreten kann.",
+      "maxUses": "Max. Nutzungen",
+      "unlimitedUses": "Unbegrenzte Nutzungen",
+      "expiresAt": "Läuft ab am",
+      "create": "Einladung erstellen",
+      "creating": "Wird erstellt...",
+      "createError": "Einladung konnte nicht erstellt werden.",
+      "delete": "Einladung stornieren",
+      "deleting": "Wird storniert...",
+      "deleteError": "Einladung konnte nicht storniert werden.",
+      "status": "Status",
+      "used": "Genutzt",
+      "remaining": "Verbleibend",
+      "expires": "Läuft ab",
+      "createdBy": "Erstellt von"
+    },
+    "fantasyTeams": {
+      "list": {
+        "title": "Fantasy-Teams",
+        "description": "Teams, die aktuell in dieser Liga registriert sind.",
+        "emptyTitle": "Noch keine Fantasy-Teams",
+        "emptyDescription": "Noch kein Liga-Mitglied hat ein Fantasy-Team erstellt.",
+        "owner": "Owner: {{name}}",
+        "ownedByYou": "Dein Team",
+        "youOwnTeam": "Du besitzt bereits ein Team"
+      },
+      "create": {
+        "title": "Fantasy-Team erstellen",
+        "description": "Wähle einen Teamnamen, um in dieser Liga als Fantasy-Team-Owner teilzunehmen.",
+        "name": "Teamname",
+        "namePlaceholder": "z. B. Meister XI",
+        "submit": "Team erstellen",
+        "submitting": "Team wird erstellt..."
+      },
+      "detail": {
+        "eyebrow": "Fantasy-Team",
+        "loading": "Fantasy-Team wird geladen...",
+        "backToLeague": "← Zurück zur Liga",
+        "owner": "Owner: {{name}}",
+        "ownedByYou": "Gehört dir",
+        "fields": {
+          "slug": "Slug",
+          "leagueId": "Liga-ID",
+          "createdAt": "Erstellt",
+          "updatedAt": "Aktualisiert"
+        }
+      },
+      "update": {
+        "title": "Fantasy-Team umbenennen",
+        "description": "Nur der Team-Owner kann den Namen des Fantasy-Teams ändern.",
+        "name": "Teamname",
+        "submit": "Änderungen speichern",
+        "submitting": "Speichern...",
+        "success": "Fantasy-Team aktualisiert."
+      },
+      "errors": {
+        "list": "Fantasy-Teams konnten nicht geladen werden.",
+        "listTitle": "Fantasy-Teams konnten nicht geladen werden",
+        "create": "Fantasy-Team konnte nicht erstellt werden.",
+        "createTitle": "Fantasy-Team konnte nicht erstellt werden",
+        "detail": "Fantasy-Team konnte nicht geladen werden.",
+        "detailTitle": "Fantasy-Team konnte nicht geladen werden",
+        "update": "Fantasy-Team konnte nicht aktualisiert werden.",
+        "updateTitle": "Fantasy-Team konnte nicht aktualisiert werden"
+      }
     }
   }
 }

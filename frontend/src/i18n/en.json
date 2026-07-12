@@ -42,17 +42,17 @@
     "accountTitle": "Account",
     "nameLabel": "Name",
     "emailLabel": "Email",
-    "leaguesTitle": "Leghe",
-    "leaguesDescription": "Visualizza le leghe private collegate al tuo account. Creazione delle leghe e inviti arriveranno in un passaggio successivo.",
-    "leaguesLink": "Vedi leghe"
+    "leaguesTitle": "Leagues",
+    "leaguesDescription": "View the private leagues connected to your account. League creation will arrive in a later step.",
+    "leaguesLink": "View leagues"
   },
   "nav": {
     "login": "Login",
-    "register": "Registrati",
+    "register": "Register",
     "home": "Home",
     "dashboard": "Dashboard",
-    "rules": "Regole",
-    "leagues": "Leghe"
+    "rules": "Rules",
+    "leagues": "Leagues"
   },
   "home": {
     "eyebrow": "Fantasy football a modo tuo",
@@ -140,26 +140,118 @@
     }
   },
   "leagues": {
-    "eyebrow": "Base leghe",
-    "title": "Le tue leghe",
-    "description": "Questa pagina protetta elenca le leghe disponibili per il tuo account. Creazione, inviti e flussi dei fantasy team non sono ancora implementati di proposito.",
-    "loading": "Caricamento leghe...",
-    "error": "Impossibile caricare le leghe.",
-    "errorTitle": "Impossibile caricare le leghe",
-    "emptyTitle": "Nessuna lega ancora",
-    "emptyDescription": "Non fai ancora parte di una lega. Creazione delle leghe e inviti saranno aggiunti in un passaggio futuro.",
-    "noDescription": "Nessuna descrizione fornita.",
+    "eyebrow": "League basics",
+    "title": "Your leagues",
+    "description": "This protected page lists the leagues available to your account. Fantasy team flows are intentionally not implemented yet.",
+    "loading": "Loading leagues...",
+    "error": "Unable to load leagues.",
+    "errorTitle": "Unable to load leagues",
+    "emptyTitle": "No leagues yet",
+    "emptyDescription": "You are not part of a league yet. League creation will be added in a future step.",
+    "noDescription": "No description provided.",
     "roles": {
       "commissioner": "Commissioner",
       "co_commissioner": "Co-commissioner",
       "participant": "Participant",
-      "unknown": "Membro"
+      "unknown": "Member"
     },
     "fields": {
-      "competition": "Competizione",
-      "season": "Stagione",
-      "type": "Tipo",
-      "status": "Stato"
+      "competition": "Competition",
+      "season": "Season",
+      "type": "Type",
+      "status": "Status"
+    },
+    "viewDetails": "View league details"
+  },
+  "leagueDetail": {
+    "eyebrow": "League detail",
+    "loading": "Loading league...",
+    "backToLeagues": "← Back to leagues",
+    "error": "Unable to load league.",
+    "errorTitle": "Unable to load league",
+    "notAvailable": "Not available",
+    "unlimited": "Unlimited",
+    "never": "Never",
+    "fields": {
+      "maxParticipants": "Max participants"
+    },
+    "members": {
+      "title": "Members",
+      "error": "Unable to load members.",
+      "errorTitle": "Unable to load members",
+      "emptyTitle": "No members found",
+      "emptyDescription": "This league does not have visible members yet."
+    },
+    "invitations": {
+      "title": "Invitations",
+      "error": "Unable to load invitations.",
+      "errorTitle": "Unable to load invitations",
+      "emptyTitle": "No invitations yet",
+      "emptyDescription": "Create an invitation to let another user join this league.",
+      "maxUses": "Max uses",
+      "unlimitedUses": "Unlimited uses",
+      "expiresAt": "Expires at",
+      "create": "Create invitation",
+      "creating": "Creating...",
+      "createError": "Unable to create invitation.",
+      "delete": "Cancel invitation",
+      "deleting": "Cancelling...",
+      "deleteError": "Unable to cancel invitation.",
+      "status": "Status",
+      "used": "Used",
+      "remaining": "Remaining",
+      "expires": "Expires",
+      "createdBy": "Created by"
+    }
+  },
+  "fantasyTeams": {
+    "list": {
+      "title": "Fantasy teams",
+      "description": "Teams currently registered in this league.",
+      "emptyTitle": "No fantasy teams yet",
+      "emptyDescription": "No league member has created a fantasy team yet.",
+      "owner": "Owner: {{name}}",
+      "ownedByYou": "Your team",
+      "youOwnTeam": "You already own a team"
+    },
+    "create": {
+      "title": "Create your fantasy team",
+      "description": "Choose a team name to join this league as a fantasy-team owner.",
+      "name": "Team name",
+      "namePlaceholder": "e.g. Meister XI",
+      "submit": "Create team",
+      "submitting": "Creating team..."
+    },
+    "detail": {
+      "eyebrow": "Fantasy team",
+      "loading": "Loading fantasy team...",
+      "backToLeague": "← Back to league",
+      "owner": "Owner: {{name}}",
+      "ownedByYou": "Owned by you",
+      "fields": {
+        "slug": "Slug",
+        "leagueId": "League ID",
+        "createdAt": "Created",
+        "updatedAt": "Updated"
+      }
+    },
+    "update": {
+      "title": "Rename fantasy team",
+      "description": "Only the team owner can update the fantasy-team name.",
+      "name": "Team name",
+      "submit": "Save changes",
+      "submitting": "Saving...",
+      "success": "Fantasy team updated."
+    },
+    "errors": {
+      "list": "Unable to load fantasy teams.",
+      "listTitle": "Unable to load fantasy teams",
+      "create": "Unable to create fantasy team.",
+      "createTitle": "Unable to create fantasy team",
+      "detail": "Unable to load fantasy team.",
+      "detailTitle": "Unable to load fantasy team",
+      "update": "Unable to update fantasy team.",
+      "updateTitle": "Unable to update fantasy team"
     }
   }
 }

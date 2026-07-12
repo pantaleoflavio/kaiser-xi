@@ -6,8 +6,10 @@ import { RegisterPage } from '../pages/RegisterPage';
 import { GuestRoute } from './GuestRoute';
 import { ProtectedRoute } from './ProtectedRoute';
 import { HomePage } from '../pages/HomePage';
+import { LeagueDetailPage } from '../pages/LeagueDetailPage';
 import { LeaguesPage } from '../pages/LeaguesPage';
 import { RulesPage } from '../pages/RulesPage';
+import { FantasyTeamDetailPage } from '../pages/FantasyTeamDetailPage';
 
 export function AppRoutes() {
   return (
@@ -18,6 +20,11 @@ export function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="leagues" element={<LeaguesPage />} />
+          <Route path="leagues/:leagueId" element={<LeagueDetailPage />} />
+          <Route
+            path="leagues/:leagueId/fantasy-teams/:fantasyTeamId"
+            element={<FantasyTeamDetailPage />}
+          />
         </Route>
         <Route element={<GuestRoute />}>
           <Route path="login" element={<LoginPage />} />

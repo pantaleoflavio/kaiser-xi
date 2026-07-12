@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { leaguesApi } from '../api/leagues';
 import { LoadingState } from '../components/LoadingState';
 import { useTranslation } from '../i18n';
@@ -69,7 +70,11 @@ export function LeaguesPage() {
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <h2 className="text-xl font-semibold text-white">{league.name}</h2>
+                    <h2 className="text-xl font-semibold text-white">
+                      <Link className="transition hover:text-emerald-200" to={`/leagues/${league.id}`}>
+                        {league.name}
+                      </Link>
+                    </h2>
                     <p className="mt-2 text-sm leading-6 text-slate-300">
                       {league.description || t('leagues.noDescription')}
                     </p>
@@ -80,6 +85,12 @@ export function LeaguesPage() {
                       : t('leagues.roles.unknown')}
                   </span>
                 </div>
+                <Link
+                  className="mt-4 inline-flex text-sm font-semibold text-emerald-300 transition hover:text-emerald-200"
+                  to={`/leagues/${league.id}`}
+                >
+                  {t('leagues.viewDetails')}
+                </Link>
                 <dl className="mt-5 grid gap-3 text-sm text-slate-300 md:grid-cols-4">
                   <div>
                     <dt className="text-slate-500">{t('leagues.fields.competition')}</dt>
