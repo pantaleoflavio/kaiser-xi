@@ -70,4 +70,21 @@ class League extends Model
     {
         return $this->hasMany(LeagueInvitation::class);
     }
+
+    public function settingValue(string $key, int $default): int
+    {
+        $setting = $this->settings()->where('key', $key)->first();
+
+        return $setting instanceof LeagueSetting ? $setting->integerValue() : $default;
+    }
+
+    public function initialFantasyBudget(): int
+    {
+        return $this->settingValue(LeagueSetting::INITIAL_BUDGET, LeagueSetting::DEFAULT_INITIAL_BUDGET);
+    }
+
+    public function releaseRefundPercentage(): int
+    {
+        return $this->settingValue(LeagueSetting::RELEASE_REFUND_PERCENTAGE, LeagueSetting::DEFAULT_RELEASE_REFUND_PERCENTAGE);
+    }
 }

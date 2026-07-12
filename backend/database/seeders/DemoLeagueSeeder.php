@@ -10,11 +10,17 @@ use App\Models\LeagueType;
 use App\Models\RealCompetition;
 use App\Models\Season;
 use App\Models\User;
+use App\Services\League\LeagueSettingsService;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class DemoLeagueSeeder extends Seeder
 {
+    public function __construct(
+        private LeagueSettingsService $leagueSettingsService
+    ) {}
+
     /**
      * Run the database seeds.
      */
@@ -33,59 +39,114 @@ class DemoLeagueSeeder extends Seeder
             ]
         );
 
-        $commissioner = User::factory()->create([
-            'name' => 'Demo Commissioner',
-            'email' => 'demo.commissioner@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $commissioner = User::query()->firstOrCreate(
+            [
+                'email' => 'demo.commissioner@example.com',
+            ],
+            [
+                'name' => 'Demo Commissioner',
+                'email_verified_at' => now(),
+                'password' =>  Hash::make('password'),
+            ]
+        );
 
-        $league = League::create([
-            'season_id' => $season->id,
-            'league_type_id' => LeagueType::query()->where('key', 'classic')->firstOrFail()->id,
-            'league_status_id' => LeagueStatus::query()->where('key', 'draft')->firstOrFail()->id,
-            'commissioner_user_id' => $commissioner->id,
-            'name' => 'Demo League',
-            'slug' => 'demo-league',
-            'description' => 'Demo league for local development.',
-            'max_participants' => 10,
-        ]);
+        $league = League::query()->firstOrCreate(
+            [
+                'season_id' => $season->id,
+                'slug' => 'demo-league',
+            ],
+            [
+                'league_type_id' => LeagueType::query()
+                    ->where('key', 'classic')
+                    ->firstOrFail()
+                    ->id,
+                'league_status_id' => LeagueStatus::query()
+                    ->where('key', 'draft')
+                    ->firstOrFail()
+                    ->id,
+                'commissioner_user_id' => $commissioner->id,
+                'name' => 'Demo League',
+                'description' => 'Demo league for local development.',
+                'max_participants' => 10,
+            ]
+        );
 
-        $commissionerRole = LeagueRole::query()->where('key', 'commissioner')->firstOrFail();
-        $participantRole = LeagueRole::query()->where('key', 'participant')->firstOrFail();
+        $this->leagueSettingsService->initializeDefaults($league);
 
-        $this->attachMember($league, $commissioner, $commissionerRole->id);
+        $commissionerRoleId = LeagueRole::query()
+            ->where('key', 'commissioner')
+            ->firstOrFail()
+            ->id;
 
-        FantasyTeam::factory()
-            ->forLeagueAndUser($league, $commissioner)
-            ->create([
-                'name' => 'Commissioner FC',
-                'slug' => 'commissioner-fc',
-            ]);
+        $participantRoleId = LeagueRole::query()
+            ->where('key', 'participant')
+            ->firstOrFail()
+            ->id;
 
-        User::factory()
-            ->count(7)
-            ->create()
-            ->each(function (User $user) use ($league, $participantRole) {
-                $this->attachMember($league, $user, $participantRole->id);
+        $this->attachMember($league, $commissioner, $commissionerRoleId);
 
-                $name = "{$user->name} FC";
+        $this->createFantasyTeam(
+            $league,
+            $commissioner,
+            'Commissioner FC',
+            'commissioner-fc'
+        );
+        for ($index = 1; $index <= 7; $index++) {
+            $user = User::query()->firstOrCreate(
+                [
+                    'email' => "demo.participant{$index}@example.com",
+                ],
+                [
+                    'name' => "Demo Participant {$index}",
+                    'email_verified_at' => now(),
+                    'password' => Hash::make('password'),
+                ]
+            );
 
-                FantasyTeam::factory()
-                    ->forLeagueAndUser($league, $user)
-                    ->create([
-                        'name' => $name,
-                        'slug' => Str::slug($name),
-                    ]);
-            });
+            $this->attachMember($league, $user, $participantRoleId);
+
+            $name = "Participant {$index} FC";
+
+            $this->createFantasyTeam(
+                $league,
+                $user,
+                $name,
+                Str::slug($name)
+            );
+        }
     }
 
-    private function attachMember(League $league, User $user, int $leagueRoleId): void
-    {
+    private function attachMember(
+        League $league,
+        User $user,
+        int $leagueRoleId
+    ): void {
         $league->users()->syncWithoutDetaching([
             $user->id => [
                 'league_role_id' => $leagueRoleId,
                 'joined_at' => now(),
             ],
         ]);
+    }
+
+    private function createFantasyTeam(
+        League $league,
+        User $user,
+        string $name,
+        string $slug
+    ): void {
+        FantasyTeam::query()->firstOrCreate(
+            [
+                'league_id' => $league->id,
+                'user_id' => $user->id,
+            ],
+            [
+                'name' => $name,
+                'slug' => $slug,
+                'logo_path' => null,
+                'budget' => null,
+                'remaining_budget' => null,
+            ]
+        );
     }
 }

@@ -11,11 +11,20 @@ use Illuminate\Support\Str;
 
 class CreateLeague
 {
+    public function __construct(
+        private LeagueSettingsService $leagueSettingsService
+    ) {}
+
     public function handle(array $data, User $user): League
     {
         return DB::transaction(function () use ($data, $user): League {
-            $status = LeagueStatus::where('key', 'draft')->firstOrFail();
-            $role = LeagueRole::where('key', 'commissioner')->firstOrFail();
+            $status = LeagueStatus::query()
+                ->where('key', 'draft')
+                ->firstOrFail();
+
+            $role = LeagueRole::query()
+                ->where('key', 'commissioner')
+                ->firstOrFail();
 
             $league = League::create([
                 ...$data,
@@ -29,7 +38,9 @@ class CreateLeague
                 'joined_at' => now(),
             ]);
 
-            return $league;
+            $this->leagueSettingsService->initializeDefaults($league);
+
+            return $league->refresh();
         });
     }
 }

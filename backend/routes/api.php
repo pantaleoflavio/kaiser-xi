@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Api\V1\AcceptLeagueInvitationController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\FantasyTeamController;
+use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
 use App\Http\Controllers\Api\V1\LeagueController;
 use App\Http\Controllers\Api\V1\LeagueInvitationController;
 use App\Http\Controllers\Api\V1\LeagueMemberController;
-use App\Http\Controllers\Api\V1\FantasyTeamController;
+use App\Http\Controllers\Api\V1\LeagueSettingController;
 use App\Models\FantasyTeam;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +44,15 @@ Route::prefix('v1')->group(function (): void {
         Route::delete('/{league}', [LeagueController::class, 'destroy'])->middleware('can:delete,league');
         Route::get('/{league}/members', [LeagueMemberController::class, 'index'])->middleware('can:view,league');
 
+        // League settings routes
+        Route::get('/{league}/settings', [LeagueSettingController::class, 'show'])
+            ->name('api.v1.leagues.settings.show')
+            ->middleware('can:view,league');
+
+        Route::patch('/{league}/settings', [LeagueSettingController::class, 'update'])
+            ->name('api.v1.leagues.settings.update')
+            ->middleware('can:manageSettings,league');
+
         // League invitation routes
         Route::get('/{league}/invitations', [LeagueInvitationController::class, 'index'])
             ->name('api.v1.leagues.invitations.index')
@@ -71,5 +82,17 @@ Route::prefix('v1')->group(function (): void {
         Route::patch('/{league}/fantasy-teams/{fantasyTeam}', [FantasyTeamController::class, 'update'])
             ->name('api.v1.leagues.fantasy-teams.update')
             ->middleware('can:update,fantasyTeam');
+
+        Route::get('/{league}/fantasy-teams/{fantasyTeam}/players', [FantasyTeamPlayerController::class, 'index'])
+            ->name('api.v1.leagues.fantasy-teams.players.index')
+            ->middleware('can:viewRoster,fantasyTeam');
+
+        Route::post('/{league}/fantasy-teams/{fantasyTeam}/players', [FantasyTeamPlayerController::class, 'store'])
+            ->name('api.v1.leagues.fantasy-teams.players.store')
+            ->middleware('can:manageRoster,fantasyTeam');
+
+        Route::delete('/{league}/fantasy-teams/{fantasyTeam}/players/{player}', [FantasyTeamPlayerController::class, 'destroy'])
+            ->name('api.v1.leagues.fantasy-teams.players.destroy')
+            ->middleware('can:manageRoster,fantasyTeam');
     });
 });

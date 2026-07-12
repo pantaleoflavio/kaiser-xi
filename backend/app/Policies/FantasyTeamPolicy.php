@@ -28,4 +28,14 @@ class FantasyTeamPolicy
         return $fantasyTeam->user_id === $user->id
             && $fantasyTeam->league->users()->whereKey($user->id)->exists();
     }
+
+    public function viewRoster(User $user, FantasyTeam $fantasyTeam): bool
+    {
+        return $this->view($user, $fantasyTeam);
+    }
+
+    public function manageRoster(User $user, FantasyTeam $fantasyTeam): bool
+    {
+        return $this->update($user, $fantasyTeam);
+    }
 }

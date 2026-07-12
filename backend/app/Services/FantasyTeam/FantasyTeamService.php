@@ -22,8 +22,8 @@ class FantasyTeamService
             'name' => $name,
             'slug' => $this->generateUniqueSlug($league, $name),
             'logo_path' => null,
-            'budget' => null,
-            'remaining_budget' => null,
+            'budget' => $league->initialFantasyBudget(),
+            'remaining_budget' => $league->initialFantasyBudget(),
         ]);
     }
 

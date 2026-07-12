@@ -48,8 +48,8 @@ class FantasyTeamApiTest extends TestCase
                 'league_id' => $league->id,
                 'user_id' => $user->id,
                 'name' => ucfirst($role).' Lions',
-                'budget' => null,
-                'remaining_budget' => null,
+                'budget' => 500,
+                'remaining_budget' => 500,
                 'logo_path' => null,
             ]);
         }
@@ -230,7 +230,7 @@ class FantasyTeamApiTest extends TestCase
     public function test_update_rejects_client_controlled_fields(): void
     {
         [$league, $owner] = $this->leagueWithMember();
-        $team = $this->teamForMember($league, $owner, ['budget' => null, 'remaining_budget' => null, 'logo_path' => null]);
+        $team = $this->teamForMember($league, $owner, ['budget' => 500, 'remaining_budget' => 500, 'logo_path' => null]);
 
         Sanctum::actingAs($owner);
 
@@ -249,8 +249,8 @@ class FantasyTeamApiTest extends TestCase
             'id' => $team->id,
             'league_id' => $league->id,
             'user_id' => $owner->id,
-            'budget' => null,
-            'remaining_budget' => null,
+            'budget' => '500.00',
+            'remaining_budget' => '500.00',
             'logo_path' => null,
         ]);
     }

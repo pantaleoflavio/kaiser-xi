@@ -57,6 +57,11 @@ class FantasyTeam extends Model
         return $this->hasMany(FantasyTeamPlayer::class);
     }
 
+    public function activePlayerAssignments(): HasMany
+    {
+        return $this->playerAssignments()->whereNull('released_at');
+    }
+
     public function formations(): HasMany
     {
         return $this->hasMany(Formation::class);
