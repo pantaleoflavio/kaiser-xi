@@ -8,7 +8,7 @@
     "logout": "Abmelden",
     "language": "Sprache",
     "confirmations": {
-      "releasePlayer": "Diesen Spieler entlassen? Die erwartete Erstattung beträgt {{percent}} % des Kaufpreises."
+      "releasePlayer": "{{name}} entlassen? Die erwartete Erstattung beträgt {{percent}} % des Kaufpreises."
     },
     "errors": {
       "forbidden": "Du hast keine Berechtigung für diese Aktion.",
@@ -299,21 +299,53 @@
     "assign": {
       "title": "Spieler zuordnen",
       "player": "Spieler",
-      "playerPlaceholder": "Spieler-ID eingeben",
       "purchasePrice": "Kaufpreis",
       "submit": "Spieler zuordnen",
       "submitting": "Zuordnung läuft...",
-      "endpointBlocked": "Eine Suche/Liste berechtigter Spieler ist vom Backend noch nicht verfügbar. Gib daher manuell eine bekannte Spieler-ID ein."
+      "playerRequired": "Wähle einen verfügbaren Spieler aus.",
+      "priceRequired": "Gib einen gültigen Kaufpreis ein.",
+      "success": "Spieler wurde erfolgreich zugeordnet."
     },
     "release": {
       "submit": "Spieler entlassen",
-      "releasing": "Entlassung läuft..."
+      "releasing": "Entlassung läuft...",
+      "success": "Spieler wurde erfolgreich entlassen."
     },
     "errors": {
       "title": "Roster konnte nicht geladen werden",
       "assign": "Spieler konnte nicht zugeordnet werden.",
       "assignTitle": "Spieler konnte nicht zugeordnet werden",
-      "release": "Spieler konnte nicht entlassen werden."
+      "release": "Spieler konnte nicht entlassen werden.",
+      "insufficientBudget": "Das Fantasy-Team hat nicht genug verbleibendes Budget.",
+      "alreadyAssigned": "Dieser Spieler ist in der Liga bereits zugeordnet."
+    },
+    "eligible": {
+      "title": "Verfügbare Spieler",
+      "search": "Spielersuche",
+      "searchPlaceholder": "Nach Spielername suchen",
+      "role": "Rollenfilter",
+      "allRoles": "Alle Rollen",
+      "club": "Vereinsfilter",
+      "allClubs": "Alle verfügbaren Vereine",
+      "selected": "Ausgewählt: {{name}}",
+      "clear": "Auswahl löschen",
+      "loading": "Verfügbare Spieler werden geladen...",
+      "empty": "Keine verfügbaren Spieler entsprechen diesen Filtern.",
+      "error": "Verfügbare Spieler konnten nicht geladen werden.",
+      "results": "Ergebnisse der Spielersuche",
+      "quotation": "Marktwert: {{value}}",
+      "pagination": "Seitennavigation der verfügbaren Spieler",
+      "previous": "Vorherige Seite",
+      "next": "Nächste Seite",
+      "page": "Seite {{current}} von {{total}}",
+      "unknownRole": "Unbekannte Rolle",
+      "unknownClub": "Unbekannter Verein"
+    },
+    "roles": {
+      "goalkeeper": "Torwart",
+      "defender": "Verteidiger",
+      "midfielder": "Mittelfeldspieler",
+      "forward": "Stürmer"
     }
   }
 }

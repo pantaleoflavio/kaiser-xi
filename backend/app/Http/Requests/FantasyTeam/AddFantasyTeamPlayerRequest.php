@@ -44,9 +44,7 @@ class AddFantasyTeamPlayerRequest extends FormRequest
 
             $eligible = PlayerSeasonRegistration::query()
                 ->where('player_id', $playerId)
-                ->where('is_active', true)
-                ->whereNull('released_at')
-                ->whereHas('seasonClub', fn ($query) => $query->where('season_id', $league->season_id))
+                ->activeForSeason($league->season_id)
                 ->exists();
 
             if (! $eligible) {

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AcceptLeagueInvitationController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\EligiblePlayerController;
 use App\Http\Controllers\Api\V1\FantasyTeamController;
 use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
 use App\Http\Controllers\Api\V1\LeagueController;
@@ -43,6 +44,9 @@ Route::prefix('v1')->group(function (): void {
         Route::patch('/{league}', [LeagueController::class, 'update'])->middleware('can:update,league');
         Route::delete('/{league}', [LeagueController::class, 'destroy'])->middleware('can:delete,league');
         Route::get('/{league}/members', [LeagueMemberController::class, 'index'])->middleware('can:view,league');
+        Route::get('/{league}/eligible-players', [EligiblePlayerController::class, 'index'])
+            ->name('api.v1.leagues.eligible-players.index')
+            ->middleware('can:view,league');
 
         // League settings routes
         Route::get('/{league}/settings', [LeagueSettingController::class, 'show'])

@@ -8,7 +8,7 @@
     "logout": "Logout",
     "language": "Language",
     "confirmations": {
-      "releasePlayer": "Release this player? The expected refund is {{percent}}% of the purchase price."
+      "releasePlayer": "Release {{name}}? The expected refund is {{percent}}% of the purchase price."
     },
     "errors": {
       "forbidden": "You do not have permission to perform this action.",
@@ -299,21 +299,53 @@
     "assign": {
       "title": "Assign player",
       "player": "Player",
-      "playerPlaceholder": "Enter player ID",
       "purchasePrice": "Purchase price",
       "submit": "Assign player",
       "submitting": "Assigning...",
-      "endpointBlocked": "Eligible-player search/listing is not available from the backend yet, so enter a known player ID manually."
+      "playerRequired": "Select an eligible player.",
+      "priceRequired": "Enter a valid purchase price.",
+      "success": "Player assigned successfully."
     },
     "release": {
       "submit": "Release player",
-      "releasing": "Releasing..."
+      "releasing": "Releasing...",
+      "success": "Player released successfully."
     },
     "errors": {
       "title": "Unable to load roster",
       "assign": "Unable to assign player.",
       "assignTitle": "Unable to assign player",
-      "release": "Unable to release player."
+      "release": "Unable to release player.",
+      "insufficientBudget": "The fantasy team does not have enough remaining budget.",
+      "alreadyAssigned": "This player is already assigned in the league."
+    },
+    "eligible": {
+      "title": "Eligible players",
+      "search": "Player search",
+      "searchPlaceholder": "Search by player name",
+      "role": "Role filter",
+      "allRoles": "All roles",
+      "club": "Club filter",
+      "allClubs": "All available clubs",
+      "selected": "Selected: {{name}}",
+      "clear": "Clear selection",
+      "loading": "Loading eligible players...",
+      "empty": "No eligible players match these filters.",
+      "error": "Unable to load eligible players.",
+      "results": "Eligible player results",
+      "quotation": "Quotation: {{value}}",
+      "pagination": "Eligible player pagination",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {{current}} of {{total}}",
+      "unknownRole": "Unknown role",
+      "unknownClub": "Unknown club"
+    },
+    "roles": {
+      "goalkeeper": "Goalkeeper",
+      "defender": "Defender",
+      "midfielder": "Midfielder",
+      "forward": "Forward"
     }
   }
 }

@@ -4,7 +4,11 @@ import { ApiError } from '../api/client';
 import { leaguesApi } from '../api/leagues';
 import { LoadingState } from '../components/LoadingState';
 import { useTranslation } from '../i18n';
-import type { FantasyTeam, LeagueSettings, RosterPlayer } from '../types/league';
+import type { EligiblePlayer, FantasyTeam, LeagueSettings, RosterPlayer } from '../types/league';
+import { useQueryClient } from '@tanstack/react-query';
+import { EligiblePlayerSelector } from '../components/EligiblePlayerSelector';
+import { eligiblePlayerKeys } from '../hooks/useEligiblePlayers';
+
 
 type ErrorState = {
   message: string;
@@ -38,9 +42,18 @@ function errorMessage(error: unknown, fallback: string, t: (key: string) => stri
     if (error.status === 404) return t('common.errors.notFound');
     if (error.status === 409) return t('common.errors.conflict');
     if (error.status === 422) return t('common.errors.validation');
-    return error.message;
+    return t('common.errors.unexpected');
   }
-  return error instanceof Error ? error.message : fallback;
+  return error instanceof Error ? t('common.errors.unexpected') : fallback;
+}
+
+function assignmentErrorMessage(error: unknown, fallback: string, t: (key: string) => string) {
+  if (error instanceof ApiError && error.status === 409) {
+    const message = error.message.toLowerCase();
+    if (message.includes('budget')) return t('roster.errors.insufficientBudget');
+    if (message.includes('assign')) return t('roster.errors.alreadyAssigned');
+  }
+  return errorMessage(error, fallback, t);
 }
 
 function formatMoney(value: string | number | null | undefined, fallback: string, locale: string) {
@@ -49,12 +62,7 @@ function formatMoney(value: string | number | null | undefined, fallback: string
 }
 
 function rosterPlayerName(rosterPlayer: RosterPlayer, fallback: string) {
-  return (
-    rosterPlayer.player?.display_name ||
-    [rosterPlayer.player?.first_name, rosterPlayer.player?.last_name].filter(Boolean).join(' ') ||
-    rosterPlayer.player?.slug ||
-    fallback
-  );
+  return rosterPlayer.player.name || fallback;
 }
 
 function formatDate(value: string | null, fallback: string, locale: string) {
@@ -67,6 +75,7 @@ function formatDate(value: string | null, fallback: string, locale: string) {
 export function FantasyTeamDetailPage() {
   const { fantasyTeamId, leagueId } = useParams();
   const { language, t } = useTranslation();
+  const queryClient = useQueryClient();
   const [team, setTeam] = useState<FantasyTeam | null>(null);
   const [settings, setSettings] = useState<LeagueSettings | null>(null);
   const [rosterPlayers, setRosterPlayers] = useState<RosterPlayer[]>([]);
@@ -80,13 +89,18 @@ export function FantasyTeamDetailPage() {
   const [updateError, setUpdateError] = useState<ErrorState | null>(null);
   const [rosterError, setRosterError] = useState<ErrorState | null>(null);
   const [assignError, setAssignError] = useState<ErrorState | null>(null);
+    const [assignFieldErrors, setAssignFieldErrors] = useState<{
+    player_id?: string;
+    purchase_price?: string;
+  }>({});
+  const [rosterSuccess, setRosterSuccess] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isRosterLoading, setIsRosterLoading] = useState(true);
   const [isAssigning, setIsAssigning] = useState(false);
   const [releasingPlayerId, setReleasingPlayerId] = useState<number | null>(null);
-  const [playerId, setPlayerId] = useState('');
+  const [selectedPlayer, setSelectedPlayer] = useState<EligiblePlayer | null>(null);
   const [purchasePrice, setPurchasePrice] = useState('');
 
   useEffect(() => {
@@ -147,20 +161,46 @@ export function FantasyTeamDetailPage() {
     event.preventDefault();
     if (!leagueId || !fantasyTeamId || !team?.is_owned_by_current_user) return;
 
+    if (!selectedPlayer) {
+      setAssignFieldErrors({ player_id: t('roster.assign.playerRequired') });
+      return;
+    }
+    if (
+      purchasePrice === '' ||
+      Number(purchasePrice) < 0 ||
+      !Number.isInteger(Number(purchasePrice))
+    ) {
+      setAssignFieldErrors({ purchase_price: t('roster.assign.priceRequired') });
+      return;
+    }
+
     try {
       setIsAssigning(true);
       setAssignError(null);
+      setAssignFieldErrors({});
+      setRosterSuccess(null);
       await leaguesApi.assignPlayer(leagueId, fantasyTeamId, {
-        player_id: Number(playerId),
+        player_id: selectedPlayer.id,
         purchase_price: Number(purchasePrice),
       });
-      setPlayerId('');
+      setSelectedPlayer(null);
       setPurchasePrice('');
       await reloadRoster();
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['fantasy-team', leagueId, fantasyTeamId] }),
+        queryClient.invalidateQueries({ queryKey: ['fantasy-roster', leagueId, fantasyTeamId] }),
+        queryClient.invalidateQueries({ queryKey: eligiblePlayerKeys.league(leagueId) }),
+      ]);
+      setRosterSuccess(t('roster.assign.success'));
     } catch (err) {
+      const errors = err instanceof ApiError ? err.errors : undefined;
+      setAssignFieldErrors({
+        player_id: errors?.player_id?.[0],
+        purchase_price: errors?.purchase_price?.[0],
+      });
       setAssignError({
         details: validationDetails(err),
-        message: errorMessage(err, t('roster.errors.assign'), t),
+        message: assignmentErrorMessage(err, t('roster.errors.assign'), t),
       });
     } finally {
       setIsAssigning(false);
@@ -171,6 +211,7 @@ export function FantasyTeamDetailPage() {
     if (!leagueId || !fantasyTeamId || !team?.is_owned_by_current_user) return;
     const confirmed = window.confirm(
       t('common.confirmations.releasePlayer', {
+        name: rosterPlayerName(rosterPlayer, t('roster.unknownPlayer')),
         percent: formatMoney(
           settings?.release_refund_percentage,
           t('leagueDetail.notAvailable'),
@@ -181,10 +222,17 @@ export function FantasyTeamDetailPage() {
     if (!confirmed) return;
 
     try {
-      setReleasingPlayerId(rosterPlayer.id);
+      setReleasingPlayerId(rosterPlayer.player.id);
       setRosterError(null);
-      await leaguesApi.releasePlayer(leagueId, fantasyTeamId, rosterPlayer.player_id);
+      setRosterSuccess(null);
+      await leaguesApi.releasePlayer(leagueId, fantasyTeamId, rosterPlayer.player.id);
       await reloadRoster();
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['fantasy-team', leagueId, fantasyTeamId] }),
+        queryClient.invalidateQueries({ queryKey: ['fantasy-roster', leagueId, fantasyTeamId] }),
+        queryClient.invalidateQueries({ queryKey: eligiblePlayerKeys.league(leagueId) }),
+      ]);
+      setRosterSuccess(t('roster.release.success'));
     } catch (err) {
       setRosterError({
         details: validationDetails(err),
@@ -304,6 +352,14 @@ export function FantasyTeamDetailPage() {
           <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
             <h2 className="text-2xl font-semibold text-white">{t('roster.title')}</h2>
             <p className="mt-1 text-sm text-slate-300">{t('roster.description')}</p>
+            {rosterSuccess ? (
+              <p
+                className="mt-4 rounded-xl border border-emerald-400/30 bg-emerald-950/30 p-4 text-sm text-emerald-100"
+                role="status"
+              >
+                {rosterSuccess}
+              </p>
+            ) : null}
             {isRosterLoading ? (
               <p className="mt-4 text-sm text-slate-300">{t('roster.loading')}</p>
             ) : null}
@@ -323,7 +379,7 @@ export function FantasyTeamDetailPage() {
                 {rosterPlayers.map((rosterPlayer) => (
                   <div
                     className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
-                    key={rosterPlayer.id}
+                    key={rosterPlayer.player.id}
                   >
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div>
@@ -331,17 +387,17 @@ export function FantasyTeamDetailPage() {
                           {rosterPlayerName(rosterPlayer, t('roster.unknownPlayer'))}
                         </h3>
                         <p className="mt-1 text-sm text-slate-400">
-                          {t('roster.playerId', { id: rosterPlayer.player_id })}
+                          {t('roster.playerId', { id: rosterPlayer.player.id })}
                         </p>
                       </div>
                       {team.is_owned_by_current_user && !rosterPlayer.released_at ? (
                         <button
                           className="rounded-lg border border-red-400/40 px-3 py-2 text-sm font-semibold text-red-100 disabled:opacity-60"
-                          disabled={releasingPlayerId === rosterPlayer.id}
+                          disabled={releasingPlayerId === rosterPlayer.player.id}
                           onClick={() => void handleReleasePlayer(rosterPlayer)}
                           type="button"
                         >
-                          {releasingPlayerId === rosterPlayer.id
+                          {releasingPlayerId === rosterPlayer.player.id
                             ? t('roster.release.releasing')
                             : t('roster.release.submit')}
                         </button>
@@ -390,38 +446,59 @@ export function FantasyTeamDetailPage() {
                 onSubmit={handleAssignPlayer}
               >
                 <h3 className="text-lg font-semibold text-white">{t('roster.assign.title')}</h3>
-                <p className="mt-1 text-sm text-amber-200">{t('roster.assign.endpointBlocked')}</p>
                 {assignError ? (
                   <div className="mt-4">
                     <ErrorPanel error={assignError} title={t('roster.errors.assignTitle')} />
                   </div>
                 ) : null}
-                <div className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_auto]">
-                  <label className="text-sm text-slate-300">
-                    {t('roster.assign.player')}
-                    <input
-                      className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
-                      min="1"
-                      onChange={(event) => setPlayerId(event.target.value)}
-                      placeholder={t('roster.assign.playerPlaceholder')}
-                      type="number"
-                      value={playerId}
-                    />
-                  </label>
-                  <label className="text-sm text-slate-300">
+                <div className="mt-4">
+                  <EligiblePlayerSelector
+                    disabled={isAssigning}
+                    error={assignFieldErrors.player_id}
+                    leagueId={leagueId}
+                    onSelect={(player) => {
+                      setSelectedPlayer(player);
+                      setAssignFieldErrors((errors) => ({ ...errors, player_id: undefined }));
+                    }}
+                    selected={selectedPlayer}
+                  />
+                </div>
+                <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto]">
+                  <label className="text-sm text-slate-300" htmlFor="purchase-price">
                     {t('roster.assign.purchasePrice')}
                     <input
+                      aria-describedby={
+                        assignFieldErrors.purchase_price ? 'purchase-price-error' : undefined
+                      }
+                      aria-invalid={Boolean(assignFieldErrors.purchase_price)}
                       className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+                      disabled={isAssigning}
+                      id="purchase-price"
                       min="0"
-                      onChange={(event) => setPurchasePrice(event.target.value)}
-                      step="0.01"
+                      onChange={(event) => {
+                        setPurchasePrice(event.target.value);
+                        setAssignFieldErrors((errors) => ({
+                          ...errors,
+                          purchase_price: undefined,
+                        }));
+                      }}
+                      step="1"
                       type="number"
                       value={purchasePrice}
                     />
+                    {assignFieldErrors.purchase_price ? (
+                      <span
+                        className="mt-1 block text-red-200"
+                        id="purchase-price-error"
+                        role="alert"
+                      >
+                        {assignFieldErrors.purchase_price}
+                      </span>
+                    ) : null}
                   </label>
                   <button
                     className="self-end rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
-                    disabled={isAssigning}
+                    disabled={isAssigning || !selectedPlayer}
                     type="submit"
                   >
                     {isAssigning ? t('roster.assign.submitting') : t('roster.assign.submit')}

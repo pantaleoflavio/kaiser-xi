@@ -12,8 +12,23 @@ import type {
   AssignPlayerPayload,
   RosterPlayerCollectionResponse,
   RosterPlayerResponse,
+  EligiblePlayerCollectionResponse,
+  EligiblePlayerFilters,
 } from '../types/league';
 import { apiClient } from './client';
+
+function eligiblePlayerQuery(filters: EligiblePlayerFilters) {
+  const query = new URLSearchParams();
+
+  if (filters.search) query.set('search', filters.search);
+  if (filters.role) query.set('role', filters.role);
+  if (filters.club_id) query.set('club_id', String(filters.club_id));
+  if (filters.page) query.set('page', String(filters.page));
+  if (filters.per_page) query.set('per_page', String(filters.per_page));
+
+  const value = query.toString();
+  return value ? `?${value}` : '';
+}
 
 export type CreateLeagueInvitationPayload = {
   max_uses?: number | null;
@@ -60,7 +75,11 @@ export const leaguesApi = {
       body: JSON.stringify(payload),
     }),
 
-    rosterPlayers: (leagueId: string | number, fantasyTeamId: string | number) =>
+  eligiblePlayers: (leagueId: string | number, filters: EligiblePlayerFilters = {}) =>
+    apiClient<EligiblePlayerCollectionResponse>(
+      `/leagues/${leagueId}/eligible-players${eligiblePlayerQuery(filters)}`,
+    ),
+  rosterPlayers: (leagueId: string | number, fantasyTeamId: string | number) =>
     apiClient<RosterPlayerCollectionResponse>(
       `/leagues/${leagueId}/fantasy-teams/${fantasyTeamId}/players`,
     ),

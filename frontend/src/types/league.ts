@@ -81,24 +81,76 @@ export type LeagueSettingsPayload = {
 };
 
 export type RosterPlayer = {
-  id: number;
-  player_id: number;
   purchase_price: string | number;
   assigned_at: string | null;
   released_at: string | null;
-  player?: {
+  player: {
     id: number;
-    first_name?: string | null;
-    last_name?: string | null;
-    display_name?: string | null;
-    slug?: string | null;
-  } | null;
+    name: string | null;
+    role: string | null;
+  };
 };
 
 export type AssignPlayerPayload = {
   player_id: number;
   purchase_price: number;
 };
+
+export type EligiblePlayer = {
+  id: number;
+  name: string;
+  role: {
+    key: string | null;
+    label: string | null;
+  };
+  club: {
+    id: number | null;
+    name: string | null;
+    real_club_id: number | null;
+  };
+  quotation: number | null;
+  availability: string;
+};
+
+export type EligiblePlayerFilters = {
+  search?: string;
+  role?: string;
+  club_id?: number;
+  page?: number;
+  per_page?: number;
+};
+
+export type PaginationLink = {
+  url: string | null;
+  label: string;
+  active: boolean;
+};
+
+export type PaginationMeta = {
+  current_page: number;
+  from: number | null;
+  last_page: number;
+  links: PaginationLink[];
+  path: string;
+  per_page: number;
+  to: number | null;
+  total: number;
+};
+
+export type PaginationLinks = {
+  first: string | null;
+  last: string | null;
+  prev: string | null;
+  next: string | null;
+};
+
+export type PaginatedResponse<T> = {
+  data: T[];
+  links: PaginationLinks;
+  meta: PaginationMeta;
+};
+
+export type EligiblePlayerCollectionResponse = PaginatedResponse<EligiblePlayer>;
 
 export type LeagueSettingsResponse = {
   data: LeagueSettings;

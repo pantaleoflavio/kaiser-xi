@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
 
 class PlayerSeasonRegistration extends Model
 {
@@ -49,5 +50,16 @@ class PlayerSeasonRegistration extends Model
     public function playerScores(): HasMany
     {
         return $this->hasMany(PlayerScore::class);
+    }
+
+    public function scopeActiveForSeason(Builder $query, int $seasonId): Builder
+    {
+        return $query
+            ->where('player_season_registrations.is_active', true)
+            ->whereNull('player_season_registrations.released_at')
+            ->whereHas(
+                'seasonClub',
+                fn(Builder $query) => $query->where('season_clubs.season_id', $seasonId)
+            );
     }
 }

@@ -8,7 +8,7 @@
     "logout": "Esci",
     "language": "Lingua",
     "confirmations": {
-      "releasePlayer": "Svincolare questo giocatore? Il rimborso previsto è il {{percent}}% del prezzo di acquisto."
+      "releasePlayer": "Svincolare {{name}}? Il rimborso previsto è il {{percent}}% del prezzo di acquisto."
     },
     "errors": {
       "forbidden": "Non hai il permesso per eseguire questa azione.",
@@ -247,21 +247,53 @@
     "assign": {
       "title": "Assegna giocatore",
       "player": "Giocatore",
-      "playerPlaceholder": "Inserisci ID giocatore",
       "purchasePrice": "Prezzo di acquisto",
       "submit": "Assegna giocatore",
       "submitting": "Assegnazione...",
-      "endpointBlocked": "La ricerca/lista dei giocatori eleggibili non è ancora disponibile dal backend, quindi inserisci manualmente un ID giocatore noto."
+      "playerRequired": "Seleziona un giocatore eleggibile.",
+      "priceRequired": "Inserisci un prezzo di acquisto valido.",
+      "success": "Giocatore assegnato con successo."
     },
     "release": {
       "submit": "Svincola giocatore",
-      "releasing": "Svincolo..."
+      "releasing": "Svincolo...",
+      "success": "Giocatore svincolato con successo."
     },
     "errors": {
       "title": "Impossibile caricare il roster",
       "assign": "Impossibile assegnare il giocatore.",
       "assignTitle": "Impossibile assegnare il giocatore",
-      "release": "Impossibile svincolare il giocatore."
+      "release": "Impossibile svincolare il giocatore.",
+      "insufficientBudget": "Il fantasy team non dispone di budget rimanente sufficiente.",
+      "alreadyAssigned": "Questo giocatore è già assegnato nella lega."
+    },
+    "eligible": {
+      "title": "Giocatori eleggibili",
+      "search": "Ricerca giocatore",
+      "searchPlaceholder": "Cerca per nome del giocatore",
+      "role": "Filtro ruolo",
+      "allRoles": "Tutti i ruoli",
+      "club": "Filtro club",
+      "allClubs": "Tutti i club disponibili",
+      "selected": "Selezionato: {{name}}",
+      "clear": "Cancella selezione",
+      "loading": "Caricamento giocatori eleggibili...",
+      "empty": "Nessun giocatore eleggibile corrisponde ai filtri.",
+      "error": "Impossibile caricare i giocatori eleggibili.",
+      "results": "Risultati giocatori eleggibili",
+      "quotation": "Quotazione: {{value}}",
+      "pagination": "Paginazione giocatori eleggibili",
+      "previous": "Pagina precedente",
+      "next": "Pagina successiva",
+      "page": "Pagina {{current}} di {{total}}",
+      "unknownRole": "Ruolo sconosciuto",
+      "unknownClub": "Club sconosciuto"
+    },
+    "roles": {
+      "goalkeeper": "Portiere",
+      "defender": "Difensore",
+      "midfielder": "Centrocampista",
+      "forward": "Attaccante"
     }
   }
 }
