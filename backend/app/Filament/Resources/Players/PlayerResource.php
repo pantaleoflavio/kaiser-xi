@@ -50,7 +50,7 @@ class PlayerResource extends Resource
             TextInput::make('display_name')->label(__('admin.labels.display_name'))->required(),
             TextInput::make('slug')->label(__('admin.labels.slug'))->required()->unique(ignoreRecord: true),
             DatePicker::make('birth_date')->label(__('admin.labels.birth_date')),
-            Toggle::make('is_active')->label(__('admin.labels.active'))->default(true),
+            Toggle::make('is_active')->label(__('admin.labels.is_active'))->default(true),
         ]);
     }
 
@@ -63,7 +63,7 @@ class PlayerResource extends Resource
                 TextColumn::make('last_name')->label(__('admin.labels.last_name'))->searchable()->sortable(),
                 TextColumn::make('external_id')->label(__('admin.labels.external_id'))->searchable()->sortable(),
                 TextColumn::make('birth_date')->label(__('admin.labels.birth_date'))->dateTime()->sortable(),
-                IconColumn::make('is_active')->label(__('admin.labels.active'))->boolean(),
+            IconColumn::make('is_active')->label(__('admin.labels.is_active'))->boolean(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
