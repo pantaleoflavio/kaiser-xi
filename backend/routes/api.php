@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\V1\LeagueController;
 use App\Http\Controllers\Api\V1\LeagueInvitationController;
 use App\Http\Controllers\Api\V1\LeagueMemberController;
 use App\Http\Controllers\Api\V1\LeagueSettingController;
+use App\Http\Controllers\Api\V1\LeagueTypeController;
+use App\Http\Controllers\Api\V1\SeasonController;
 use App\Models\FantasyTeam;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +36,8 @@ Route::prefix('v1')->group(function (): void {
     Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/league-invitations/{code}', [AcceptLeagueInvitationController::class, 'show'])->name('api.v1.league-invitations.show');
         Route::post('/league-invitations/{code}/accept', [AcceptLeagueInvitationController::class, 'accept'])->name('api.v1.league-invitations.accept');
+        Route::get('/seasons', [SeasonController::class, 'index'])->name('api.v1.seasons.index');
+        Route::get('/league-types', [LeagueTypeController::class, 'index'])->name('api.v1.league-types.index');
     });
 
     Route::prefix('leagues')->middleware('auth:sanctum')->scopeBindings()->group(function (): void {
