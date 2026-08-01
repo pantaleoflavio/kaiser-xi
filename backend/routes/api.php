@@ -44,6 +44,12 @@ Route::prefix('v1')->group(function (): void {
         Route::patch('/{league}', [LeagueController::class, 'update'])->middleware('can:update,league');
         Route::delete('/{league}', [LeagueController::class, 'destroy'])->middleware('can:delete,league');
         Route::get('/{league}/members', [LeagueMemberController::class, 'index'])->middleware('can:view,league');
+        Route::delete('/{league}/members/{user}', [LeagueMemberController::class, 'destroy'])
+            ->name('api.v1.leagues.members.destroy')
+            ->middleware('can:removeMember,league,user');
+        Route::patch('/{league}/members/{user}/role', [LeagueMemberController::class, 'updateRole'])
+            ->name('api.v1.leagues.members.role.update')
+            ->middleware('can:manageMemberRole,league,user');
         Route::get('/{league}/eligible-players', [EligiblePlayerController::class, 'index'])
             ->name('api.v1.leagues.eligible-players.index')
             ->middleware('can:view,league');
