@@ -4,11 +4,18 @@ import { ApiError } from '../api/client';
 import { leaguesApi } from '../api/leagues';
 import { LoadingState } from '../components/LoadingState';
 import { useTranslation } from '../i18n';
-import type { EligiblePlayer, FantasyTeam, League, LeagueSettings, RosterPlayer } from '../types/league';
+import type {
+  EligiblePlayer,
+  FantasyTeam,
+  League,
+  LeagueSettings,
+  RosterPlayer,
+} from '../types/league';
 import { useQueryClient } from '@tanstack/react-query';
 import { EligiblePlayerSelector } from '../components/EligiblePlayerSelector';
+import { FantasyTeamNameForm } from '../components/fantasy-team/FantasyTeamNameForm';
+import { FantasyTeamSummary } from '../components/fantasy-team/FantasyTeamSummary';
 import { eligiblePlayerKeys } from '../hooks/useEligiblePlayers';
-
 
 type ErrorState = {
   message: string;
@@ -90,7 +97,7 @@ export function FantasyTeamDetailPage() {
   const [updateError, setUpdateError] = useState<ErrorState | null>(null);
   const [rosterError, setRosterError] = useState<ErrorState | null>(null);
   const [assignError, setAssignError] = useState<ErrorState | null>(null);
-    const [assignFieldErrors, setAssignFieldErrors] = useState<{
+  const [assignFieldErrors, setAssignFieldErrors] = useState<{
     player_id?: string;
     purchase_price?: string;
   }>({});
@@ -291,44 +298,7 @@ export function FantasyTeamDetailPage() {
 
       {team ? (
         <div className="space-y-6">
-          <header className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
-                  {t('fantasyTeams.detail.eyebrow')}
-                </p>
-                <h1 className="mt-2 text-4xl font-bold text-white">{team.name}</h1>
-                <p className="mt-3 text-slate-300">
-                  {t('fantasyTeams.detail.owner', { name: team.owner.name })}
-                </p>
-              </div>
-
-              {team.is_owned_by_current_user ? (
-                <span className="rounded-full border border-emerald-400/30 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
-                  {t('fantasyTeams.detail.ownedByYou')}
-                </span>
-              ) : null}
-            </div>
-            <dl className="mt-6 grid gap-3 text-sm text-slate-300 md:grid-cols-4">
-              <div>
-                <dt className="text-slate-500">{t('fantasyTeams.detail.fields.slug')}</dt>
-                <dd>{team.slug}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">{t('fantasyTeams.detail.fields.leagueId')}</dt>
-                <dd>{team.league_id}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">{t('fantasyTeams.detail.fields.createdAt')}</dt>
-                <dd>{formatDate(team.created_at, t('leagueDetail.notAvailable'), language)}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">{t('fantasyTeams.detail.fields.updatedAt')}</dt>
-                <dd>{formatDate(team.updated_at, t('leagueDetail.notAvailable'), language)}</dd>
-              </div>
-            </dl>
-          </header>
-
+        <FantasyTeamSummary team={team} />
           <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
             <h2 className="text-2xl font-semibold text-white">{t('budget.title')}</h2>
             <dl className="mt-4 grid gap-3 text-sm text-slate-300 md:grid-cols-2">
@@ -517,43 +487,20 @@ export function FantasyTeamDetailPage() {
           </section>
 
           {team.is_owned_by_current_user ? (
-            <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-              <h2 className="text-2xl font-semibold text-white">
-                {t('fantasyTeams.update.title')}
-              </h2>
-              <p className="mt-1 text-sm text-slate-300">{t('fantasyTeams.update.description')}</p>
-              {successMessage ? (
-                <div className="mt-4 rounded-xl border border-emerald-400/30 bg-emerald-950/30 p-4 text-sm text-emerald-100">
-                  {successMessage}
-                </div>
-              ) : null}
-              {updateError ? (
-                <div className="mt-4">
-                  <ErrorPanel error={updateError} title={t('fantasyTeams.errors.updateTitle')} />
-                </div>
-              ) : null}
-              <form className="mt-4 grid gap-3 md:grid-cols-[1fr_auto]" onSubmit={handleUpdateTeam}>
-                <label className="text-sm text-slate-300">
-                  {t('fantasyTeams.update.name')}
-                  <input
-                    className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
-                    maxLength={100}
-                    onChange={(event) => setTeamName(event.target.value)}
-                    type="text"
-                    value={teamName}
-                  />
-                </label>
-                <button
-                  className="self-end rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
-                  disabled={isUpdating}
-                  type="submit"
-                >
-                  {isUpdating
-                    ? t('fantasyTeams.update.submitting')
-                    : t('fantasyTeams.update.submit')}
-                </button>
-              </form>
-            </section>
+            <FantasyTeamNameForm
+              error={
+                updateError ? (
+                  <div className="mt-4">
+                    <ErrorPanel error={updateError} title={t('fantasyTeams.errors.updateTitle')} />
+                  </div>
+                ) : null
+              }
+              isUpdating={isUpdating}
+              name={teamName}
+              onNameChange={setTeamName}
+              onSubmit={handleUpdateTeam}
+              success={successMessage}
+            />
           ) : null}
         </div>
       ) : null}

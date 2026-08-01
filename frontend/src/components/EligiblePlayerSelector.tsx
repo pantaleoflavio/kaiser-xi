@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ApiError } from '../api/client';
+import { useEligiblePlayerFilters } from '../hooks/useEligiblePlayerFilters';
 import { useEligiblePlayers } from '../hooks/useEligiblePlayers';
 import { useTranslation } from '../i18n';
 import type { EligiblePlayer } from '../types/league';
 
-const PER_PAGE = 10;
 const ROLES = ['goalkeeper', 'defender', 'midfielder', 'forward'] as const;
 
 type Props = {
@@ -17,31 +17,10 @@ type Props = {
 
 export function EligiblePlayerSelector({ leagueId, selected, onSelect, disabled, error }: Props) {
   const { t } = useTranslation();
-  const [searchInput, setSearchInput] = useState('');
-  const [search, setSearch] = useState('');
-  const [role, setRole] = useState('');
-  const [clubId, setClubId] = useState('');
   const [clubs, setClubs] = useState<Array<{ id: number; name: string }>>([]);
-  const [page, setPage] = useState(1);
+  const { searchInput, setSearchInput, role, setRole, clubId, setClubId, page, setPage, filters } =
+    useEligiblePlayerFilters();
 
-  useEffect(() => {
-    const timeout = window.setTimeout(() => {
-      setSearch(searchInput.trim());
-      setPage(1);
-    }, 350);
-    return () => window.clearTimeout(timeout);
-  }, [searchInput]);
-
-  const filters = useMemo(
-    () => ({
-      search,
-      role,
-      club_id: clubId ? Number(clubId) : 0,
-      page,
-      per_page: PER_PAGE,
-    }),
-    [clubId, page, role, search],
-  );
   const query = useEligiblePlayers(leagueId, filters, !disabled);
   const players = query.data?.data ?? [];
   const meta = query.data?.meta;
@@ -92,7 +71,6 @@ export function EligiblePlayerSelector({ leagueId, selected, onSelect, disabled,
             id="eligible-player-role"
             onChange={(event) => {
               setRole(event.target.value);
-              setPage(1);
             }}
             value={role}
           >
@@ -111,7 +89,6 @@ export function EligiblePlayerSelector({ leagueId, selected, onSelect, disabled,
             id="eligible-player-club"
             onChange={(event) => {
               setClubId(event.target.value);
-              setPage(1);
             }}
             value={clubId}
           >

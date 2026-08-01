@@ -6,6 +6,7 @@ import { useAuth } from '../auth/useAuth';
 import { leagueMemberKeys, useLeagueMembers } from '../hooks/useLeagueMembers';
 import { useTranslation } from '../i18n';
 import type { League, LeagueMember, ManageableLeagueRole } from '../types/league';
+import { LeagueMemberCard } from './league-members/LeagueMemberCard';
 
 type PendingAction =
   | { kind: 'remove'; member: LeagueMember }
@@ -46,8 +47,12 @@ export function LeagueMemberList({ league }: { league: League }) {
   const removeMutation = useMutation({
     mutationFn: (member: LeagueMember) => leaguesApi.removeMember(league.id, member.id),
     onSuccess: async (_, member) => {
-      queryClient.setQueryData(leagueMemberKeys.league(league.id), (current: typeof membersQuery.data) =>
-        current ? { ...current, data: current.data.filter((item) => item.id !== member.id) } : current,
+    queryClient.setQueryData(
+        leagueMemberKeys.league(league.id),
+        (current: typeof membersQuery.data) =>
+          current
+            ? { ...current, data: current.data.filter((item) => item.id !== member.id) }
+            : current,
       );
       setPending(null);
       setFeedback({
@@ -66,15 +71,17 @@ export function LeagueMemberList({ league }: { league: League }) {
     mutationFn: ({ member, role }: { member: LeagueMember; role: ManageableLeagueRole }) =>
       leaguesApi.updateMemberRole(league.id, member.id, role),
     onSuccess: async (response, variables) => {
-      queryClient.setQueryData(leagueMemberKeys.league(league.id), (current: typeof membersQuery.data) =>
-        current
-          ? {
-              ...current,
-              data: current.data.map((item) =>
-                item.id === response.data.id ? response.data : item,
-              ),
-            }
-          : current,
+    queryClient.setQueryData(
+        leagueMemberKeys.league(league.id),
+        (current: typeof membersQuery.data) =>
+          current
+            ? {
+                ...current,
+                data: current.data.map((item) =>
+                  item.id === response.data.id ? response.data : item,
+                ),
+              }
+            : current,
       );
       setPending(null);
       setFeedback({
@@ -141,45 +148,24 @@ export function LeagueMemberList({ league }: { league: League }) {
       ) : (
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           {members.map((member) => (
-            <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4" key={member.id}>
-              <p className="font-semibold text-white">{member.name}</p>
-              <p className="mt-1 text-sm text-slate-400">{roleLabel(member, t)}</p>
-              {canRemove(member) || canChangeRole(member) ? (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {canChangeRole(member) ? (
-                    <button
-                      className="rounded-lg border border-cyan-500/50 px-3 py-2 text-sm font-semibold text-cyan-100 hover:bg-cyan-950/60"
-                      onClick={() => {
-                        setFeedback(null);
-                        setPending({
-                          kind: 'role',
-                          member,
-                          role:
-                            member.role.key === 'participant' ? 'co_commissioner' : 'participant',
-                        });
-                      }}
-                      type="button"
-                    >
-                      {member.role.key === 'participant'
-                        ? t('leagueDetail.members.management.promote')
-                        : t('leagueDetail.members.management.revoke')}
-                    </button>
-                  ) : null}
-                  {canRemove(member) ? (
-                    <button
-                      className="rounded-lg border border-red-500/50 px-3 py-2 text-sm font-semibold text-red-100 hover:bg-red-950/60"
-                      onClick={() => {
-                        setFeedback(null);
-                        setPending({ kind: 'remove', member });
-                      }}
-                      type="button"
-                    >
-                      {t('leagueDetail.members.management.remove.action')}
-                    </button>
-                  ) : null}
-                </div>
-              ) : null}
-            </div>
+        <LeagueMemberCard
+              canChangeRole={canChangeRole(member)}
+              canRemove={canRemove(member)}
+              key={member.id}
+              member={member}
+              onRemove={() => {
+                setFeedback(null);
+                setPending({ kind: 'remove', member });
+              }}
+              onRoleChange={(role) => {
+                setFeedback(null);
+                setPending({ kind: 'role', member, role });
+              }}
+              promoteLabel={t('leagueDetail.members.management.promote')}
+              removeLabel={t('leagueDetail.members.management.remove.action')}
+              revokeLabel={t('leagueDetail.members.management.revoke')}
+              role={roleLabel(member, t)}
+            />
           ))}
         </div>
       )}
