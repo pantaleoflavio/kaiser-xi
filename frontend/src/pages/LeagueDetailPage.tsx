@@ -3,12 +3,12 @@ import { Link, useParams } from 'react-router-dom';
 import { ApiError } from '../api/client';
 import { leaguesApi } from '../api/leagues';
 import { LoadingState } from '../components/LoadingState';
+import { LeagueMemberList } from '../components/LeagueMemberList';
 import { useTranslation } from '../i18n';
 import type {
   FantasyTeam,
   League,
   LeagueInvitation,
-  LeagueMember,
   LeagueSettings,
 } from '../types/league';
 
@@ -76,7 +76,6 @@ export function LeagueDetailPage() {
   const { leagueId } = useParams();
   const { language, t } = useTranslation();
   const [league, setLeague] = useState<League | null>(null);
-  const [members, setMembers] = useState<LeagueMember[]>([]);
   const [invitations, setInvitations] = useState<LeagueInvitation[]>([]);
   const [fantasyTeams, setFantasyTeams] = useState<FantasyTeam[]>([]);
   const [settings, setSettings] = useState<LeagueSettings | null>(null);
@@ -87,7 +86,6 @@ export function LeagueDetailPage() {
   const [initialBudget, setInitialBudget] = useState('');
   const [releaseRefundPercentage, setReleaseRefundPercentage] = useState('');
   const [detailError, setDetailError] = useState<LoadableError>(null);
-  const [membersError, setMembersError] = useState<LoadableError>(null);
   const [invitationsError, setInvitationsError] = useState<LoadableError>(null);
   const [fantasyTeamsError, setFantasyTeamsError] = useState<LoadableError>(null);
   const [createTeamError, setCreateTeamError] = useState<LoadableError>(null);
@@ -133,7 +131,6 @@ export function LeagueDetailPage() {
       try {
         setIsLoading(true);
         setDetailError(null);
-        setMembersError(null);
         setInvitationsError(null);
         setFantasyTeamsError(null);
         setCreateTeamError(null);
@@ -141,13 +138,11 @@ export function LeagueDetailPage() {
         const [
           leagueResponse,
           settingsResponse,
-          membersResponse,
           invitationsResponse,
           fantasyTeamsResponse,
         ] = await Promise.allSettled([
           leaguesApi.show(currentLeagueId),
           leaguesApi.settings(currentLeagueId),
-          leaguesApi.members(currentLeagueId),
           leaguesApi.invitations(currentLeagueId),
           leaguesApi.fantasyTeams(currentLeagueId),
         ]);
@@ -171,15 +166,6 @@ export function LeagueDetailPage() {
         } else {
           setSettingsError(
             errorMessage(settingsResponse.reason, t('leagueSettings.errors.load'), t),
-          );
-        }
-
-        if (membersResponse.status === 'fulfilled') setMembers(membersResponse.value.data);
-        else {
-          setMembersError(
-            membersResponse.reason instanceof Error
-              ? membersResponse.reason.message
-              : t('leagueDetail.members.error'),
           );
         }
 
@@ -532,32 +518,7 @@ export function LeagueDetailPage() {
 
           <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
             <h2 className="text-2xl font-semibold text-white">{t('leagueDetail.members.title')}</h2>
-            {membersError ? (
-              <div className="mt-4">
-                <ErrorPanel message={membersError} title={t('leagueDetail.members.errorTitle')} />
-              </div>
-            ) : null}
-            {!membersError && members.length === 0 ? (
-              <div className="mt-4">
-                <EmptyPanel
-                  message={t('leagueDetail.members.emptyDescription')}
-                  title={t('leagueDetail.members.emptyTitle')}
-                />
-              </div>
-            ) : null}
-            {!membersError && members.length > 0 ? (
-              <div className="mt-4 grid gap-3 md:grid-cols-2">
-                {members.map((member) => (
-                  <div
-                    className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
-                    key={member.id}
-                  >
-                    <p className="font-semibold text-white">{member.name}</p>
-                    <p className="mt-1 text-sm text-slate-400">{member.role.label}</p>
-                  </div>
-                ))}
-              </div>
-            ) : null}
+            <LeagueMemberList league={league} />
           </section>
 
           <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">

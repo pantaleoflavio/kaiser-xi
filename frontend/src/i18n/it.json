@@ -16,7 +16,8 @@
       "conflict": "La richiesta è in conflitto con lo stato attuale del roster o del budget.",
       "validation": "Correggi gli errori di validazione.",
       "unexpected": "Si è verificato un errore imprevisto."
-    }
+    },
+    "cancel": "Annulla"
   },
   "auth": {
     "login": {
@@ -138,7 +139,54 @@
       "error": "Impossibile caricare i membri.",
       "errorTitle": "Impossibile caricare i membri",
       "emptyTitle": "Nessun membro trovato",
-      "emptyDescription": "Questa lega non ha ancora membri visibili."
+      "emptyDescription": "Questa lega non ha ancora membri visibili.",
+      "loading": "Caricamento membri...",
+      "management": {
+        "promote": "Promuovi a co-commissario",
+        "revoke": "Revoca ruolo di co-commissario",
+        "saving": "Salvataggio...",
+        "roles": {
+          "commissioner": "Commissario",
+          "co_commissioner": "Co-commissario",
+          "participant": "Partecipante"
+        },
+        "remove": {
+          "action": "Rimuovi membro",
+          "title": "Rimuovi membro della lega",
+          "confirmation": "Rimuovere {{name}} ({{role}}) da {{league}}?",
+          "preservation": "I dati storici del fantasy team e della rosa rimarranno conservati.",
+          "confirm": "Rimuovi membro",
+          "success": "{{name}} è stato rimosso dalla lega."
+        },
+        "role": {
+          "co_commissioner": {
+            "title": "Promuovi membro della lega",
+            "confirmation": "Promuovere {{name}} da {{role}} a co-commissario in {{league}}?",
+            "confirm": "Promuovi membro",
+            "success": "{{name}} ora è co-commissario."
+          },
+          "participant": {
+            "title": "Revoca ruolo di co-commissario",
+            "confirmation": "Revocare a {{name}} il ruolo di {{role}} e renderlo partecipante in {{league}}?",
+            "confirm": "Revoca ruolo",
+            "success": "{{name}} ora è partecipante."
+          }
+        },
+        "errors": {
+          "remove": {
+            "forbidden": "Non puoi rimuovere questo membro. Il commissario è protetto.",
+            "notFound": "Questo membro non fa più parte della lega.",
+            "conflict": "Questo membro non può essere rimosso a causa di un conflitto con lo stato attuale della lega.",
+            "unexpected": "Impossibile rimuovere il membro. Riprova."
+          },
+          "role": {
+            "forbidden": "Non puoi modificare il ruolo di questo membro. Il ruolo di commissario è protetto.",
+            "notFound": "Questo membro non fa più parte della lega.",
+            "conflict": "Questo ruolo non può essere modificato a causa di un conflitto con lo stato attuale della lega.",
+            "unexpected": "Impossibile modificare il ruolo del membro. Riprova."
+          }
+        }
+      }
     },
     "invitations": {
       "title": "Inviti",

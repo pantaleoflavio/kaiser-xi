@@ -16,7 +16,8 @@
       "conflict": "Die Anfrage steht im Konflikt mit dem aktuellen Roster- oder Budgetstatus.",
       "validation": "Bitte korrigiere die Validierungsfehler.",
       "unexpected": "Ein unerwarteter Fehler ist aufgetreten."
-    }
+    },
+    "cancel": "Abbrechen"
   },
   "auth": {
     "login": {
@@ -190,7 +191,54 @@
       "error": "Mitglieder konnten nicht geladen werden.",
       "errorTitle": "Mitglieder konnten nicht geladen werden",
       "emptyTitle": "Keine Mitglieder gefunden",
-      "emptyDescription": "Diese Liga hat noch keine sichtbaren Mitglieder."
+      "emptyDescription": "Diese Liga hat noch keine sichtbaren Mitglieder.",
+      "loading": "Mitglieder werden geladen...",
+      "management": {
+        "promote": "Zum Co-Commissioner befördern",
+        "revoke": "Co-Commissioner-Rolle entziehen",
+        "saving": "Wird gespeichert...",
+        "roles": {
+          "commissioner": "Commissioner",
+          "co_commissioner": "Co-Commissioner",
+          "participant": "Teilnehmer"
+        },
+        "remove": {
+          "action": "Mitglied entfernen",
+          "title": "Ligamitglied entfernen",
+          "confirmation": "{{name}} ({{role}}) aus {{league}} entfernen?",
+          "preservation": "Historische Fantasy-Team- und Kaderdaten bleiben erhalten.",
+          "confirm": "Mitglied entfernen",
+          "success": "{{name}} wurde aus der Liga entfernt."
+        },
+        "role": {
+          "co_commissioner": {
+            "title": "Ligamitglied befördern",
+            "confirmation": "{{name}} in {{league}} von {{role}} zum Co-Commissioner befördern?",
+            "confirm": "Mitglied befördern",
+            "success": "{{name}} ist jetzt Co-Commissioner."
+          },
+          "participant": {
+            "title": "Co-Commissioner-Rolle entziehen",
+            "confirmation": "{{name}} die Rolle {{role}} entziehen und die Person in {{league}} zum Teilnehmer machen?",
+            "confirm": "Rolle entziehen",
+            "success": "{{name}} ist jetzt Teilnehmer."
+          }
+        },
+        "errors": {
+          "remove": {
+            "forbidden": "Du darfst dieses Mitglied nicht entfernen. Der Commissioner ist geschützt.",
+            "notFound": "Dieses Mitglied gehört nicht mehr zur Liga.",
+            "conflict": "Dieses Mitglied kann wegen eines Konflikts mit dem aktuellen Ligastatus nicht entfernt werden.",
+            "unexpected": "Das Mitglied konnte nicht entfernt werden. Bitte versuche es erneut."
+          },
+          "role": {
+            "forbidden": "Du darfst die Rolle dieses Mitglieds nicht ändern. Die Commissioner-Rolle ist geschützt.",
+            "notFound": "Dieses Mitglied gehört nicht mehr zur Liga.",
+            "conflict": "Diese Rolle kann wegen eines Konflikts mit dem aktuellen Ligastatus nicht geändert werden.",
+            "unexpected": "Die Mitgliedsrolle konnte nicht geändert werden. Bitte versuche es erneut."
+          }
+        }
+      }
     },
     "invitations": {
       "title": "Einladungen",

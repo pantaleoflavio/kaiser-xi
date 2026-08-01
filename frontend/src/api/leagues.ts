@@ -8,6 +8,8 @@ import type {
   LeagueInvitationCollectionResponse,
   LeagueInvitationResponse,
   LeagueMemberCollectionResponse,
+  LeagueMemberResponse,
+  ManageableLeagueRole,
   LeagueResponse,
   AssignPlayerPayload,
   RosterPlayerCollectionResponse,
@@ -47,6 +49,17 @@ export const leaguesApi = {
     }),
   members: (leagueId: string | number) =>
     apiClient<LeagueMemberCollectionResponse>(`/leagues/${leagueId}/members`),
+  removeMember: (leagueId: string | number, memberId: string | number) =>
+    apiClient<void>(`/leagues/${leagueId}/members/${memberId}`, { method: 'DELETE' }),
+  updateMemberRole: (
+    leagueId: string | number,
+    memberId: string | number,
+    role: ManageableLeagueRole,
+  ) =>
+    apiClient<LeagueMemberResponse>(`/leagues/${leagueId}/members/${memberId}/role`, {
+      method: 'PATCH',
+      body: JSON.stringify({ role }),
+    }),
   invitations: (leagueId: string | number) =>
     apiClient<LeagueInvitationCollectionResponse>(`/leagues/${leagueId}/invitations`),
   createInvitation: (leagueId: string | number, payload: CreateLeagueInvitationPayload) =>

@@ -16,7 +16,8 @@
       "conflict": "The request conflicts with the current roster or budget state.",
       "validation": "Please correct the highlighted validation errors.",
       "unexpected": "An unexpected error occurred."
-    }
+    },
+    "cancel": "Cancel"
   },
   "auth": {
     "login": {
@@ -190,7 +191,54 @@
       "error": "Unable to load members.",
       "errorTitle": "Unable to load members",
       "emptyTitle": "No members found",
-      "emptyDescription": "This league does not have visible members yet."
+      "emptyDescription": "This league does not have visible members yet.",
+      "loading": "Loading members...",
+      "management": {
+        "promote": "Promote to co-commissioner",
+        "revoke": "Revoke co-commissioner",
+        "saving": "Saving...",
+        "roles": {
+          "commissioner": "Commissioner",
+          "co_commissioner": "Co-commissioner",
+          "participant": "Participant"
+        },
+        "remove": {
+          "action": "Remove member",
+          "title": "Remove league member",
+          "confirmation": "Remove {{name}} ({{role}}) from {{league}}?",
+          "preservation": "Historical fantasy-team and roster data will remain preserved.",
+          "confirm": "Remove member",
+          "success": "{{name}} was removed from the league."
+        },
+        "role": {
+          "co_commissioner": {
+            "title": "Promote league member",
+            "confirmation": "Promote {{name}} from {{role}} to co-commissioner in {{league}}?",
+            "confirm": "Promote member",
+            "success": "{{name}} is now a co-commissioner."
+          },
+          "participant": {
+            "title": "Revoke co-commissioner role",
+            "confirmation": "Revoke {{name}}’s {{role}} role and make them a participant in {{league}}?",
+            "confirm": "Revoke role",
+            "success": "{{name}} is now a participant."
+          }
+        },
+        "errors": {
+          "remove": {
+            "forbidden": "You are not allowed to remove this member. The commissioner is protected.",
+            "notFound": "This member is no longer in the league.",
+            "conflict": "This member cannot be removed because their membership conflicts with the current league state.",
+            "unexpected": "The member could not be removed. Please try again."
+          },
+          "role": {
+            "forbidden": "You are not allowed to change this member’s role. The commissioner role is protected.",
+            "notFound": "This member is no longer in the league.",
+            "conflict": "This role cannot be changed because the membership conflicts with the current league state.",
+            "unexpected": "The member role could not be changed. Please try again."
+          }
+        }
+      }
     },
     "invitations": {
       "title": "Invitations",

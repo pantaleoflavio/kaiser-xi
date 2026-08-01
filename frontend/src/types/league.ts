@@ -29,6 +29,8 @@ export type LeagueMember = {
   role: LeagueReference;
 };
 
+export type ManageableLeagueRole = 'participant' | 'co_commissioner';
+
 export type LeagueInvitation = {
   id: number;
   code: string;
@@ -179,6 +181,10 @@ export type LeagueCollectionResponse = {
 
 export type LeagueMemberCollectionResponse = {
   data: LeagueMember[];
+};
+
+export type LeagueMemberResponse = {
+  data: LeagueMember;
 };
 
 export type LeagueInvitationResponse = {

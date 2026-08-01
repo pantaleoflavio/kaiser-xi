@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\League;
-use App\Models\LeagueMembership;
 use App\Models\LeagueRole;
 use App\Models\User;
 
