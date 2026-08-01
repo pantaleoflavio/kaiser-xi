@@ -5,6 +5,7 @@ namespace Tests\Feature\Api\V1;
 use App\Models\League;
 use App\Models\LeagueMembership;
 use App\Models\LeagueRole;
+use App\Models\LeagueSetting;
 use App\Models\LeagueStatus;
 use App\Models\LeagueType;
 use App\Models\RealCompetition;
@@ -70,6 +71,15 @@ class LeagueApiTest extends TestCase
             'user_id' => $this->user->id,
             'league_role_id' => $commissionerRole->id,
         ]);
+        foreach (
+            [
+                LeagueSetting::BUDGET_RULES_MUTABLE,
+                LeagueSetting::ROSTER_SIZE_MUTABLE,
+                LeagueSetting::ROSTER_ROLE_LIMITS_MUTABLE,
+            ] as $key
+        ) {
+            $this->assertDatabaseHas('league_settings', ['league_id' => $league->id, 'key' => $key]);
+        }
     }
 
     public function test_unauthenticated_user_cannot_create_league(): void

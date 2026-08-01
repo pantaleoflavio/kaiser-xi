@@ -78,6 +78,13 @@ class League extends Model
         return $setting instanceof LeagueSetting ? $setting->integerValue() : $default;
     }
 
+    public function booleanSettingValue(string $key, bool $default): bool
+    {
+        $setting = $this->settings()->where('key', $key)->first();
+
+        return $setting instanceof LeagueSetting ? $setting->booleanValue() : $default;
+    }
+
     public function initialFantasyBudget(): int
     {
         return $this->settingValue(LeagueSetting::INITIAL_BUDGET, LeagueSetting::DEFAULT_INITIAL_BUDGET);
@@ -91,6 +98,31 @@ class League extends Model
     public function maxRosterPlayers(): int
     {
         return $this->settingValue(LeagueSetting::MAX_ROSTER_PLAYERS, LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS);
+    }
+
+    public function budgetRulesMutable(): bool
+    {
+        return $this->booleanSettingValue(LeagueSetting::BUDGET_RULES_MUTABLE, LeagueSetting::DEFAULT_BUDGET_RULES_MUTABLE);
+    }
+
+    public function rosterSizeMutable(): bool
+    {
+        return $this->booleanSettingValue(LeagueSetting::ROSTER_SIZE_MUTABLE, LeagueSetting::DEFAULT_ROSTER_SIZE_MUTABLE);
+    }
+
+    public function rosterRoleLimitsMutable(): bool
+    {
+        return $this->booleanSettingValue(LeagueSetting::ROSTER_ROLE_LIMITS_MUTABLE, LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS_MUTABLE);
+    }
+
+    public function statusKey(): ?string
+    {
+        return $this->status()->value('key');
+    }
+
+    public function isPreActivation(): bool
+    {
+        return in_array($this->statusKey(), [LeagueStatus::DRAFT, LeagueStatus::SETUP], true);
     }
 
     /** @return array<string, int> */

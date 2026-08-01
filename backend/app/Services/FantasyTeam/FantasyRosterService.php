@@ -22,6 +22,7 @@ class FantasyRosterService
     public function assign(League $league, FantasyTeam $team, Player $player, User $assignedBy, int $purchasePrice): FantasyTeamPlayer
     {
         return DB::transaction(function () use ($league, $team, $player, $assignedBy, $purchasePrice): FantasyTeamPlayer {
+            $league = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
             $team = FantasyTeam::query()->whereKey($team->id)->lockForUpdate()->firstOrFail();
 
             $registration = $this->activeRegistration($league, $player);
@@ -93,6 +94,7 @@ class FantasyRosterService
     public function release(League $league, FantasyTeam $team, Player $player, User $releasedBy): FantasyTeamPlayer
     {
         return DB::transaction(function () use ($league, $team, $player, $releasedBy): FantasyTeamPlayer {
+            $league = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
             $team = FantasyTeam::query()->whereKey($team->id)->lockForUpdate()->firstOrFail();
             $assignment = FantasyTeamPlayer::query()
                 ->where('league_id', $league->id)
