@@ -262,7 +262,15 @@
   },
   "leagueSettings": {
     "title": "Impostazioni lega",
-    "description": "Impostazioni di budget per ogni fantasy team di questa lega.",
+    "description": "Regole di budget e rosa per ogni fantasy team di questa lega.",
+    "maxRosterPlayers": "Numero massimo di giocatori attivi",
+    "rosterRuleHelp": "I limiti per ruolo sono massimi indipendenti. La loro somma deve essere almeno pari al limite totale della rosa.",
+    "roles": {
+      "goalkeeper": "Limite portieri",
+      "defender": "Limite difensori",
+      "midfielder": "Limite centrocampisti",
+      "forward": "Limite attaccanti"
+    },
     "save": "Salva impostazioni",
     "saving": "Salvataggio...",
     "success": "Impostazioni lega aggiornate.",
@@ -270,7 +278,8 @@
     "errors": {
       "load": "Impossibile caricare le impostazioni della lega.",
       "update": "Impossibile aggiornare le impostazioni della lega.",
-      "title": "Impossibile aggiornare le impostazioni della lega"
+      "title": "Impossibile aggiornare le impostazioni della lega",
+      "rosterValidation": "Inserisci un limite totale intero positivo e limiti per ruolo interi non negativi la cui somma raggiunga il limite totale."
     }
   },
   "budget": {

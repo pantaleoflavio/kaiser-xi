@@ -314,7 +314,15 @@
   },
   "leagueSettings": {
     "title": "Liga-Einstellungen",
-    "description": "Budgeteinstellungen für alle Fantasy-Teams dieser Liga.",
+    "description": "Budget- und Kaderregeln für alle Fantasy-Teams dieser Liga.",
+    "maxRosterPlayers": "Maximale aktive Kadergröße",
+    "rosterRuleHelp": "Rollenlimits sind unabhängige Obergrenzen. Ihre Summe muss mindestens der maximalen Kadergröße entsprechen.",
+    "roles": {
+      "goalkeeper": "Torwartlimit",
+      "defender": "Verteidigerlimit",
+      "midfielder": "Mittelfeldspielerlimit",
+      "forward": "Stürmerlimit"
+    },
     "save": "Einstellungen speichern",
     "saving": "Speichern...",
     "success": "Liga-Einstellungen aktualisiert.",
@@ -322,7 +330,8 @@
     "errors": {
       "load": "Liga-Einstellungen konnten nicht geladen werden.",
       "update": "Liga-Einstellungen konnten nicht aktualisiert werden.",
-      "title": "Liga-Einstellungen konnten nicht aktualisiert werden"
+      "title": "Liga-Einstellungen konnten nicht aktualisiert werden",
+      "rosterValidation": "Gib eine positive ganzzahlige Kadergröße und nichtnegative ganzzahlige Rollenlimits ein, deren Summe diese Größe erreicht."
     }
   },
   "budget": {

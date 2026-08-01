@@ -4,7 +4,10 @@ namespace Tests\Feature\Api\V1;
 
 use App\Models\League;
 use App\Models\LeagueRole;
+use App\Models\LeagueSetting;
 use App\Models\User;
+use App\Services\League\LeagueSettingsService;
+use Database\Seeders\DemoLeagueSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -64,6 +67,93 @@ class LeagueSettingsApiTest extends TestCase
         $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['release_refund_percentage' => 101])->assertUnprocessable()->assertJsonValidationErrors('release_refund_percentage');
         $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['release_refund_percentage' => 12.5])->assertUnprocessable()->assertJsonValidationErrors('release_refund_percentage');
         $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['initial_budget' => -1])->assertUnprocessable()->assertJsonValidationErrors('initial_budget');
+    }
+
+    public function test_commissioner_and_co_commissioner_can_update_roster_rules(): void
+    {
+        foreach (['commissioner', 'co_commissioner'] as $role) {
+            [$league, $user] = $this->leagueWithMember($role);
+            Sanctum::actingAs($user);
+
+            $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+                'max_roster_players' => 20,
+                'roster_role_limits' => [
+                    'goalkeeper' => 2,
+                    'defender' => 7,
+                    'midfielder' => 7,
+                    'forward' => 5,
+                ],
+            ])->assertOk()
+                ->assertJsonPath('data.max_roster_players', 20)
+                ->assertJsonPath('data.roster_role_limits.goalkeeper', 2);
+        }
+    }
+
+    public function test_roster_rule_shape_and_ranges_are_validated(): void
+    {
+        [$league, $commissioner] = $this->leagueWithMember('commissioner');
+        Sanctum::actingAs($commissioner);
+
+        $valid = LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS;
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['max_roster_players' => 0])
+            ->assertUnprocessable()->assertJsonValidationErrors('max_roster_players');
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['roster_role_limits' => [...$valid, 'winger' => 1]])
+            ->assertUnprocessable()->assertJsonValidationErrors('roster_role_limits');
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['roster_role_limits' => [...$valid, 'goalkeeper' => -1]])
+            ->assertUnprocessable()->assertJsonValidationErrors('roster_role_limits.goalkeeper');
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['roster_role_limits' => [1 => 25] + $valid])
+            ->assertUnprocessable()->assertJsonValidationErrors('roster_role_limits');
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+            'roster_role_limits' => [...$valid, 'goalkeeper' => 0, 'forward' => 9],
+        ])->assertOk()->assertJsonPath('data.roster_role_limits.goalkeeper', 0);
+    }
+
+    public function test_role_limit_sum_cannot_be_lower_than_persisted_or_submitted_maximum(): void
+    {
+        [$league, $commissioner] = $this->leagueWithMember('commissioner');
+        app(LeagueSettingsService::class)->initializeDefaults($league);
+        Sanctum::actingAs($commissioner);
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+            'roster_role_limits' => ['goalkeeper' => 1, 'defender' => 1, 'midfielder' => 1, 'forward' => 1],
+        ])->assertUnprocessable()->assertJsonValidationErrors('roster_role_limits');
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['max_roster_players' => 26])
+            ->assertUnprocessable()->assertJsonValidationErrors('roster_role_limits');
+
+        $this->assertSame(25, $league->refresh()->maxRosterPlayers());
+    }
+
+    public function test_new_league_api_initializes_persisted_roster_defaults(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+        $season = \App\Models\Season::factory()->create();
+        $type = \App\Models\LeagueType::query()->where('key', 'classic')->firstOrFail();
+
+        $response = $this->postJson('/api/v1/leagues', [
+            'name' => 'Roster defaults league',
+            'season_id' => $season->id,
+            'league_type_id' => $type->id,
+            'max_participants' => 10,
+        ])->assertCreated();
+
+        $league = League::query()->findOrFail($response->json('data.id'));
+        $this->assertSame(25, $league->maxRosterPlayers());
+        $this->assertSame(LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS, $league->rosterRoleLimits());
+        $this->assertDatabaseHas('league_settings', ['league_id' => $league->id, 'key' => LeagueSetting::MAX_ROSTER_PLAYERS]);
+        $this->assertDatabaseHas('league_settings', ['league_id' => $league->id, 'key' => LeagueSetting::ROSTER_ROLE_LIMITS]);
+    }
+
+    public function test_demo_league_roster_settings_are_seeded_idempotently(): void
+    {
+        $this->seed(DemoLeagueSeeder::class);
+        $this->seed(DemoLeagueSeeder::class);
+        $league = League::query()->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)->firstOrFail();
+
+        $this->assertSame(1, $league->settings()->where('key', LeagueSetting::MAX_ROSTER_PLAYERS)->count());
+        $this->assertSame(1, $league->settings()->where('key', LeagueSetting::ROSTER_ROLE_LIMITS)->count());
     }
 
     private function leagueWithMember(string $role): array

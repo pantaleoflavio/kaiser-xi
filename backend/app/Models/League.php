@@ -87,4 +87,29 @@ class League extends Model
     {
         return $this->settingValue(LeagueSetting::RELEASE_REFUND_PERCENTAGE, LeagueSetting::DEFAULT_RELEASE_REFUND_PERCENTAGE);
     }
+
+    public function maxRosterPlayers(): int
+    {
+        return $this->settingValue(LeagueSetting::MAX_ROSTER_PLAYERS, LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS);
+    }
+
+    /** @return array<string, int> */
+    public function rosterRoleLimits(): array
+    {
+        $setting = $this->settings()
+            ->where('key', LeagueSetting::ROSTER_ROLE_LIMITS)
+            ->first();
+
+        $storedLimits = $setting instanceof LeagueSetting
+            ? $setting->roleLimitsValue()
+            : [];
+
+        $orderedLimits = [];
+
+        foreach (LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS as $role => $defaultLimit) {
+            $orderedLimits[$role] = (int) ($storedLimits[$role] ?? $defaultLimit);
+        }
+
+        return $orderedLimits;
+    }
 }

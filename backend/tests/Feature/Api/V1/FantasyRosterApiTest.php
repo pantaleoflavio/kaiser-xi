@@ -6,7 +6,9 @@ use App\Models\FantasyTeam;
 use App\Models\FantasyTeamPlayer;
 use App\Models\League;
 use App\Models\LeagueRole;
+use App\Models\LeagueSetting;
 use App\Models\Player;
+use App\Models\PlayerRole;
 use App\Models\PlayerSeasonRegistration;
 use App\Models\SeasonClub;
 use App\Models\User;
@@ -424,6 +426,49 @@ class FantasyRosterApiTest extends TestCase
         );
     }
 
+    public function test_assignment_fails_when_active_total_roster_cap_is_reached(): void
+    {
+        [$league, $commissioner, $team] = $this->leagueOwnerAndTeam();
+        $this->configureRosterRules($league, 1, ['goalkeeper' => 1, 'defender' => 1, 'midfielder' => 1, 'forward' => 1]);
+        Sanctum::actingAs($commissioner);
+
+        $this->assignPlayer($league, $team, $this->eligiblePlayer($league, 'goalkeeper'))->assertCreated();
+        $this->assignPlayer($league, $team, $this->eligiblePlayer($league, 'defender'))
+            ->assertConflict()
+            ->assertJsonPath('code', 'roster_full')
+            ->assertJsonPath('message', 'The fantasy team roster has reached its maximum active player count.');
+    }
+
+    public function test_assignment_enforces_registration_role_quota_but_allows_another_role(): void
+    {
+        [$league, $commissioner, $team] = $this->leagueOwnerAndTeam();
+        $this->configureRosterRules($league, 3, ['goalkeeper' => 1, 'defender' => 2, 'midfielder' => 0, 'forward' => 0]);
+        Sanctum::actingAs($commissioner);
+
+        $this->assignPlayer($league, $team, $this->eligiblePlayer($league, 'goalkeeper'))->assertCreated();
+        $this->assignPlayer($league, $team, $this->eligiblePlayer($league, 'goalkeeper'))
+            ->assertConflict()
+            ->assertJsonPath('code', 'roster_role_limit_reached')
+            ->assertJsonPath('message', 'The fantasy team roster has reached the active player limit for role [goalkeeper].');
+        $this->assignPlayer($league, $team, $this->eligiblePlayer($league, 'defender'))->assertCreated();
+    }
+
+    public function test_released_assignments_do_not_count_and_history_is_preserved(): void
+    {
+        [$league, $commissioner, $team] = $this->leagueOwnerAndTeam();
+        $this->configureRosterRules($league, 1, ['goalkeeper' => 1, 'defender' => 0, 'midfielder' => 0, 'forward' => 0]);
+        Sanctum::actingAs($commissioner);
+        $first = $this->eligiblePlayer($league, 'goalkeeper');
+
+        $this->assignPlayer($league, $team, $first)->assertCreated();
+        $this->deleteJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$first->id}")->assertOk();
+        $this->assignPlayer($league, $team, $this->eligiblePlayer($league, 'goalkeeper'))->assertCreated();
+
+        $this->assertSame(2, FantasyTeamPlayer::query()->where('fantasy_team_id', $team->id)->count());
+        $this->assertSame(1, FantasyTeamPlayer::query()->where('fantasy_team_id', $team->id)->whereNotNull('released_at')->count());
+    }
+
+
     private function leagueOwnerAndTeam(array $teamAttributes = []): array
     {
         [$league, $owner] = $this->leagueWithMember('commissioner');
@@ -444,10 +489,34 @@ class FantasyRosterApiTest extends TestCase
         $league->users()->attach($user->id, ['league_role_id' => LeagueRole::query()->where('key', $role)->firstOrFail()->id, 'joined_at' => now()]);
     }
 
-    private function eligiblePlayer(League $league): Player
+    private function eligiblePlayer(League $league, ?string $roleKey = null): Player
     {
         $player = Player::factory()->create();
-        PlayerSeasonRegistration::factory()->create(['player_id' => $player->id, 'season_club_id' => SeasonClub::factory()->create(['season_id' => $league->season_id])->id]);
+        PlayerSeasonRegistration::factory()->create([
+            'player_id' => $player->id,
+            'season_club_id' => SeasonClub::factory()->create(['season_id' => $league->season_id])->id,
+            ...($roleKey ? ['player_role_id' => PlayerRole::query()->where('key', $roleKey)->firstOrFail()->id] : []),
+        ]);
         return $player;
+    }
+
+    private function configureRosterRules(League $league, int $maximum, array $limits): void
+    {
+        $league->settings()->updateOrCreate(
+            ['key' => LeagueSetting::MAX_ROSTER_PLAYERS],
+            ['value' => LeagueSetting::integerPayload(LeagueSetting::MAX_ROSTER_PLAYERS, $maximum)],
+        );
+        $league->settings()->updateOrCreate(
+            ['key' => LeagueSetting::ROSTER_ROLE_LIMITS],
+            ['value' => LeagueSetting::roleLimitsPayload($limits)],
+        );
+    }
+
+    private function assignPlayer(League $league, FantasyTeam $team, Player $player)
+    {
+        return $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", [
+            'player_id' => $player->id,
+            'purchase_price' => 1,
+        ]);
     }
 }

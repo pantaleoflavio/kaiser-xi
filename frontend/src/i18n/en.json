@@ -314,7 +314,15 @@
   },
   "leagueSettings": {
     "title": "League settings",
-    "description": "Budget settings for every fantasy team in this league.",
+    "description": "Budget and roster rules for every fantasy team in this league.",
+    "maxRosterPlayers": "Maximum active roster players",
+    "rosterRuleHelp": "Role limits are independent upper bounds. Their sum must be at least the overall roster maximum.",
+    "roles": {
+      "goalkeeper": "Goalkeeper limit",
+      "defender": "Defender limit",
+      "midfielder": "Midfielder limit",
+      "forward": "Forward limit"
+    },
     "save": "Save settings",
     "saving": "Saving...",
     "success": "League settings updated.",
@@ -322,7 +330,8 @@
     "errors": {
       "load": "Unable to load league settings.",
       "update": "Unable to update league settings.",
-      "title": "Unable to update league settings"
+      "title": "Unable to update league settings",
+      "rosterValidation": "Enter a positive whole-number roster maximum and non-negative whole-number role limits whose sum reaches that maximum."
     }
   },
   "budget": {

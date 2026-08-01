@@ -75,12 +75,20 @@ export type FantasyTeamPayload = {
 export type LeagueSettings = {
   initial_budget: string | number | null;
   release_refund_percentage: string | number | null;
+  max_roster_players: number;
+  roster_role_limits: RosterRoleLimits;
 };
 
-export type LeagueSettingsPayload = {
+export type PlayerRoleKey = 'goalkeeper' | 'defender' | 'midfielder' | 'forward';
+
+export type RosterRoleLimits = Record<PlayerRoleKey, number>;
+
+export type LeagueSettingsPayload = Partial<{
   initial_budget: number;
   release_refund_percentage: number;
-};
+  max_roster_players: number;
+  roster_role_limits: RosterRoleLimits;
+}>;
 
 export type RosterPlayer = {
   purchase_price: string | number;

@@ -12,6 +12,8 @@ class LeagueSettingsResource extends JsonResource
         return [
             'initial_budget' => $this->initialFantasyBudget(),
             'release_refund_percentage' => $this->releaseRefundPercentage(),
+            'max_roster_players' => $this->maxRosterPlayers(),
+            'roster_role_limits' => $this->rosterRoleLimits(),
         ];
     }
 }
