@@ -12,6 +12,8 @@ import type {
   ManageableLeagueRole,
   LeagueResponse,
   AssignPlayerPayload,
+  CreateLeaguePayload,
+  CreatedLeagueResponse,
   RosterPlayerCollectionResponse,
   RosterPlayerResponse,
   EligiblePlayerCollectionResponse,
@@ -39,6 +41,11 @@ export type CreateLeagueInvitationPayload = {
 
 export const leaguesApi = {
   list: () => apiClient<LeagueCollectionResponse>('/leagues'),
+  create: (payload: CreateLeaguePayload) =>
+    apiClient<CreatedLeagueResponse>('/leagues', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
   show: (leagueId: string | number) => apiClient<LeagueResponse>(`/leagues/${leagueId}`),
   settings: (leagueId: string | number) =>
     apiClient<LeagueSettingsResponse>(`/leagues/${leagueId}/settings`),

@@ -1,47 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { leaguesApi } from '../api/leagues';
+import { leagueKeys } from '../api/queryKeys';
 import { LoadingState } from '../components/LoadingState';
+import { useAuth } from '../auth/useAuth';
 import { useTranslation } from '../i18n';
-import type { League } from '../types/league';
 
 export function LeaguesPage() {
   const { language, t } = useTranslation();
-  const [leagues, setLeagues] = useState<League[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function loadLeagues() {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const response = await leaguesApi.list();
-        if (isMounted) setLeagues(response.data);
-      } catch (err) {
-        if (isMounted) setError(err instanceof Error ? err.message : t('leagues.error'));
-      } finally {
-        if (isMounted) setIsLoading(false);
-      }
-    }
-
-    void loadLeagues();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [language]);
-
+  const { isAuthenticated } = useAuth();
+  const { data, error, isLoading } = useQuery({
+    queryKey: [...leagueKeys.lists(), language],
+    queryFn: leaguesApi.list,
+  });
+  const leagues = data?.data ?? [];
+  
   return (
     <section className="space-y-6">
-      <div>
-        <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
-          {t('leagues.eyebrow')}
-        </p>
-        <h1 className="mt-2 text-4xl font-bold text-white">{t('leagues.title')}</h1>
-        <p className="mt-3 max-w-2xl text-slate-300">{t('leagues.description')}</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
+            {t('leagues.eyebrow')}
+          </p>
+          <h1 className="mt-2 text-4xl font-bold text-white">{t('leagues.title')}</h1>
+          <p className="mt-3 max-w-2xl text-slate-300">{t('leagues.description')}</p>
+        </div>
+        {isAuthenticated ? <Link className="inline-flex justify-center rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 transition hover:bg-emerald-400" to="/leagues/create">{t('leagueCreate.actions.createLeague')}</Link> : null}
       </div>
 
       <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
@@ -50,7 +34,7 @@ export function LeaguesPage() {
         {!isLoading && error ? (
           <div className="rounded-xl border border-red-500/30 bg-red-950/40 p-4 text-sm text-red-100">
             <p className="font-semibold">{t('leagues.errorTitle')}</p>
-            <p className="mt-1 text-red-100/80">{error}</p>
+            <p className="mt-1 text-red-100/80">{error instanceof Error ? error.message : t('leagues.error')}</p>
           </div>
         ) : null}
 

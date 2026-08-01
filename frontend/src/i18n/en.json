@@ -404,5 +404,84 @@
       "midfielder": "Midfielder",
       "forward": "Forward"
     }
+  },
+  "leagueCreate": {
+    "eyebrow": "League setup",
+    "title": "Create league",
+    "description": "Create your league, then configure its initial rules.",
+    "steps": {
+      "basic": "Basic information",
+      "rules": "Initial rules"
+    },
+    "progress": {
+      "label": "League creation progress"
+    },
+    "fields": {
+      "name": "League name",
+      "description": "Description",
+      "season": "Season",
+      "selectSeason": "Select a season",
+      "type": "League type",
+      "selectType": "Select a league type",
+      "maxParticipants": "Maximum participants",
+      "initialBudget": "Initial budget",
+      "refund": "Release refund percentage",
+      "maxRoster": "Maximum roster size",
+      "roleLimits": "Per-role limits",
+      "roleLimitsHelp": "The combined role limits must be at least the maximum roster size."
+    },
+    "roles": {
+      "goalkeeper": "Goalkeeper",
+      "defender": "Defender",
+      "midfielder": "Midfielder",
+      "forward": "Forward"
+    },
+    "actions": {
+      "createLeague": "Create league",
+      "create": "Create",
+      "creating": "Creating…",
+      "next": "Next",
+      "back": "Back",
+      "saveRules": "Save rules",
+      "saving": "Saving…",
+      "retry": "Retry"
+    },
+    "options": {
+      "title": "Selection data unavailable",
+      "unavailable": "The backend does not currently provide season and league-type selection endpoints. League creation is disabled until those real options are available."
+    },
+    "loading": {
+      "defaults": "Loading persisted default rules…"
+    },
+    "success": {
+      "created": "League created successfully. The persisted default rules are shown below.",
+      "settings": "League rules saved successfully."
+    },
+    "partial": {
+      "title": "The league was created, but its rules were not saved",
+      "message": "The league still exists with its default settings. Correct the error and retry; this will not create another league.",
+      "viewLeague": "View created league"
+    },
+    "validation": {
+      "nameRequired": "League name is required.",
+      "seasonRequired": "Select a season.",
+      "typeRequired": "Select a league type.",
+      "participants": "Maximum participants must be an integer from 2 to 100.",
+      "budget": "Initial budget must be a non-negative integer.",
+      "refund": "Refund percentage must be an integer from 0 to 100.",
+      "rosterMaximum": "Maximum roster size must be a positive integer.",
+      "roleLimit": "Each role limit must be a non-negative integer.",
+      "roleTotal": "The sum of role limits must be at least the maximum roster size."
+    },
+    "errors": {
+      "authentication": "Authentication is required. Please sign in again.",
+      "createForbidden": "You are not allowed to create a league.",
+      "settingsForbidden": "The league exists, but you are not allowed to configure its rules.",
+      "notFound": "The created league or a related resource is no longer available.",
+      "conflict": "The request conflicts with the league’s current state.",
+      "validation": "Please correct the highlighted fields.",
+      "unexpected": "The request could not be completed. Please try again.",
+      "commissionerUnverified": "The league was created, but the backend did not identify you as its commissioner."
+    }
   }
 }

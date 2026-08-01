@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { ApiError } from '../api/client';
 import { leaguesApi } from '../api/leagues';
 import { LoadingState } from '../components/LoadingState';
@@ -46,6 +46,8 @@ const initialData: DetailData = {
 
 export function LeagueDetailPage() {
   const { leagueId } = useParams();
+  const location = useLocation();
+  const navigationState = location.state as { success?: string } | null;
   const { language, t } = useTranslation();
   const [data, setData] = useState<DetailData>(initialData);
   const [isLoading, setIsLoading] = useState(true);
@@ -106,6 +108,12 @@ export function LeagueDetailPage() {
       <Link className="text-sm font-semibold text-emerald-300 hover:text-emerald-200" to="/leagues">
         {t('leagueDetail.backToLeagues')}
       </Link>
+
+      {navigationState?.success ? (
+        <div className="rounded-xl border border-emerald-400/30 bg-emerald-950/30 p-4 text-sm text-emerald-100" role="status">
+          {navigationState.success}
+        </div>
+      ) : null}
 
       {data.detailError ? (
         <ContentErrorPanel message={data.detailError} title={t('leagueDetail.errorTitle')} />

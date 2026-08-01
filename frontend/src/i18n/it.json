@@ -352,5 +352,84 @@
       "midfielder": "Centrocampista",
       "forward": "Attaccante"
     }
+  },
+  "leagueCreate": {
+    "eyebrow": "Configurazione lega",
+    "title": "Crea lega",
+    "description": "Crea la tua lega e configura le regole iniziali.",
+    "steps": {
+      "basic": "Informazioni di base",
+      "rules": "Regole iniziali"
+    },
+    "progress": {
+      "label": "Avanzamento creazione lega"
+    },
+    "fields": {
+      "name": "Nome della lega",
+      "description": "Descrizione",
+      "season": "Stagione",
+      "selectSeason": "Seleziona una stagione",
+      "type": "Tipo di lega",
+      "selectType": "Seleziona un tipo di lega",
+      "maxParticipants": "Numero massimo di partecipanti",
+      "initialBudget": "Budget iniziale",
+      "refund": "Percentuale di rimborso per rilascio",
+      "maxRoster": "Dimensione massima rosa",
+      "roleLimits": "Limiti per ruolo",
+      "roleLimitsHelp": "La somma dei limiti per ruolo deve essere almeno pari alla dimensione massima della rosa."
+    },
+    "roles": {
+      "goalkeeper": "Portiere",
+      "defender": "Difensore",
+      "midfielder": "Centrocampista",
+      "forward": "Attaccante"
+    },
+    "actions": {
+      "createLeague": "Crea lega",
+      "create": "Crea",
+      "creating": "Creazione…",
+      "next": "Avanti",
+      "back": "Indietro",
+      "saveRules": "Salva regole",
+      "saving": "Salvataggio…",
+      "retry": "Riprova"
+    },
+    "options": {
+      "title": "Dati di selezione non disponibili",
+      "unavailable": "Il backend non fornisce ancora endpoint per selezionare stagioni e tipi di lega. La creazione è disabilitata finché non saranno disponibili opzioni reali."
+    },
+    "loading": {
+      "defaults": "Caricamento delle regole predefinite salvate…"
+    },
+    "success": {
+      "created": "Lega creata con successo. Le regole predefinite salvate sono mostrate qui sotto.",
+      "settings": "Regole della lega salvate con successo."
+    },
+    "partial": {
+      "title": "La lega è stata creata, ma le regole non sono state salvate",
+      "message": "La lega esiste con le impostazioni predefinite. Correggi l’errore e riprova; non verrà creata un’altra lega.",
+      "viewLeague": "Visualizza la lega creata"
+    },
+    "validation": {
+      "nameRequired": "Il nome della lega è obbligatorio.",
+      "seasonRequired": "Seleziona una stagione.",
+      "typeRequired": "Seleziona un tipo di lega.",
+      "participants": "Il numero massimo di partecipanti deve essere un intero da 2 a 100.",
+      "budget": "Il budget iniziale deve essere un intero non negativo.",
+      "refund": "La percentuale di rimborso deve essere un intero da 0 a 100.",
+      "rosterMaximum": "La dimensione massima della rosa deve essere un intero positivo.",
+      "roleLimit": "Ogni limite di ruolo deve essere un intero non negativo.",
+      "roleTotal": "La somma dei limiti di ruolo deve essere almeno pari alla dimensione massima della rosa."
+    },
+    "errors": {
+      "authentication": "È necessario autenticarsi. Accedi nuovamente.",
+      "createForbidden": "Non hai il permesso di creare una lega.",
+      "settingsForbidden": "La lega esiste, ma non puoi configurarne le regole.",
+      "notFound": "La lega creata o una risorsa correlata non è più disponibile.",
+      "conflict": "La richiesta è in conflitto con lo stato attuale della lega.",
+      "validation": "Correggi i campi evidenziati.",
+      "unexpected": "Impossibile completare la richiesta. Riprova.",
+      "commissionerUnverified": "La lega è stata creata, ma il backend non ti identifica come commissioner."
+    }
   }
 }

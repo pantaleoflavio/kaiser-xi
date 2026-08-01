@@ -404,5 +404,84 @@
       "midfielder": "Mittelfeldspieler",
       "forward": "Stürmer"
     }
+  },
+  "leagueCreate": {
+    "eyebrow": "Liga-Einrichtung",
+    "title": "Liga erstellen",
+    "description": "Erstelle deine Liga und konfiguriere anschließend die Anfangsregeln.",
+    "steps": {
+      "basic": "Grundinformationen",
+      "rules": "Anfangsregeln"
+    },
+    "progress": {
+      "label": "Fortschritt der Ligaerstellung"
+    },
+    "fields": {
+      "name": "Liganame",
+      "description": "Beschreibung",
+      "season": "Saison",
+      "selectSeason": "Saison auswählen",
+      "type": "Ligatyp",
+      "selectType": "Ligatyp auswählen",
+      "maxParticipants": "Maximale Teilnehmerzahl",
+      "initialBudget": "Anfangsbudget",
+      "refund": "Freigabe-Erstattung in Prozent",
+      "maxRoster": "Maximale Kadergröße",
+      "roleLimits": "Limits pro Position",
+      "roleLimitsHelp": "Die Summe der Positionslimits muss mindestens der maximalen Kadergröße entsprechen."
+    },
+    "roles": {
+      "goalkeeper": "Torwart",
+      "defender": "Verteidiger",
+      "midfielder": "Mittelfeldspieler",
+      "forward": "Stürmer"
+    },
+    "actions": {
+      "createLeague": "Liga erstellen",
+      "create": "Erstellen",
+      "creating": "Wird erstellt…",
+      "next": "Weiter",
+      "back": "Zurück",
+      "saveRules": "Regeln speichern",
+      "saving": "Wird gespeichert…",
+      "retry": "Erneut versuchen"
+    },
+    "options": {
+      "title": "Auswahldaten nicht verfügbar",
+      "unavailable": "Das Backend stellt derzeit keine Endpunkte zur Auswahl von Saisons und Ligatypen bereit. Die Ligaerstellung bleibt deaktiviert, bis echte Optionen verfügbar sind."
+    },
+    "loading": {
+      "defaults": "Gespeicherte Standardregeln werden geladen…"
+    },
+    "success": {
+      "created": "Liga erfolgreich erstellt. Die gespeicherten Standardregeln werden unten angezeigt.",
+      "settings": "Ligaregeln erfolgreich gespeichert."
+    },
+    "partial": {
+      "title": "Die Liga wurde erstellt, aber die Regeln wurden nicht gespeichert",
+      "message": "Die Liga besteht mit den Standardeinstellungen. Behebe den Fehler und versuche es erneut; es wird keine weitere Liga erstellt.",
+      "viewLeague": "Erstellte Liga anzeigen"
+    },
+    "validation": {
+      "nameRequired": "Der Liganame ist erforderlich.",
+      "seasonRequired": "Wähle eine Saison.",
+      "typeRequired": "Wähle einen Ligatyp.",
+      "participants": "Die maximale Teilnehmerzahl muss eine ganze Zahl zwischen 2 und 100 sein.",
+      "budget": "Das Anfangsbudget muss eine nicht negative ganze Zahl sein.",
+      "refund": "Der Erstattungssatz muss eine ganze Zahl zwischen 0 und 100 sein.",
+      "rosterMaximum": "Die maximale Kadergröße muss eine positive ganze Zahl sein.",
+      "roleLimit": "Jedes Positionslimit muss eine nicht negative ganze Zahl sein.",
+      "roleTotal": "Die Summe der Positionslimits muss mindestens der maximalen Kadergröße entsprechen."
+    },
+    "errors": {
+      "authentication": "Eine Anmeldung ist erforderlich. Bitte melde dich erneut an.",
+      "createForbidden": "Du darfst keine Liga erstellen.",
+      "settingsForbidden": "Die Liga besteht, aber du darfst ihre Regeln nicht konfigurieren.",
+      "notFound": "Die erstellte Liga oder eine zugehörige Ressource ist nicht mehr verfügbar.",
+      "conflict": "Die Anfrage steht im Konflikt mit dem aktuellen Ligastatus.",
+      "validation": "Bitte korrigiere die markierten Felder.",
+      "unexpected": "Die Anfrage konnte nicht abgeschlossen werden. Versuche es erneut.",
+      "commissionerUnverified": "Die Liga wurde erstellt, aber das Backend hat dich nicht als Commissioner erkannt."
+    }
   }
 }

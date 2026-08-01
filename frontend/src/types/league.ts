@@ -23,6 +23,26 @@ export type League = {
   my_role: LeagueRole | null;
 };
 
+export type CreateLeaguePayload = {
+  name: string;
+  season_id: number;
+  league_type_id: number;
+  description?: string | null;
+  max_participants?: number;
+};
+
+export type SeasonOption = {
+  id: number;
+  name: string;
+  competition: { id: number; name: string };
+};
+
+export type LeagueTypeOption = {
+  id: number;
+  key: string;
+  label: string;
+};
+
 export type LeagueMember = {
   id: number;
   name: string;
@@ -182,6 +202,8 @@ export type RosterPlayerResponse = {
 export type LeagueResponse = {
   data: League;
 };
+
+export type CreatedLeagueResponse = LeagueResponse;
 
 export type LeagueCollectionResponse = {
   data: League[];
