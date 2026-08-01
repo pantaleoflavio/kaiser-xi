@@ -437,6 +437,38 @@ localhost:5433
 
 The application stores multiple real football competitions in one database. Seasons belong to real competitions, and fantasy leagues belong to seasons. Real clubs and players are global identities: `season_clubs` records club participation in a season, while `player_season_registrations` records a player's club, eligibility, quotation, and active status for a season.
 
+## Deterministic demo environment
+
+> **Local development only:** the credentials below are intentionally public demo credentials and must never be used in production.
+
+From the `backend` directory, seed the complete demo environment with:
+
+```bash
+php artisan db:seed --class=DemoEnvironmentSeeder
+```
+
+For a clean database, run:
+
+```bash
+php artisan migrate:fresh
+php artisan db:seed --class=DemoEnvironmentSeeder
+```
+
+The default `DatabaseSeeder` includes this environment only when `APP_ENV` is `local` or `testing`; production seeding retains reference data without creating these demo users.
+
+All demo users use the password `password`:
+
+| Email | Purpose |
+| --- | --- |
+| `demo.commissioner@example.com` | Commissioner and owner of a populated roster |
+| `demo.cocommissioner@example.com` | Co-commissioner with a partial roster |
+| `demo.participant1@example.com` | Ordinary participant with a nearly empty roster |
+| `demo.participant2@example.com` | Ordinary participant with an empty roster |
+| `demo.participant3@example.com` through `demo.participant7@example.com` | Existing ordinary participant scenarios with empty rosters |
+| `demo.nonmember@example.com` | Non-member for authorization checks |
+
+The seed creates **Demo League** for Serie A 2025/2026 with four clubs, 24 deterministic registered players across all four roles, nine memberships and fantasy teams, a 500 initial budget, and a 50% release refund. Seven players are actively assigned at deterministic prices, one assignment is historical/released, and the remaining player pool supports search, filtering, eligibility, and pagination checks. The original commissioner and seven participant accounts and teams remain available; the co-commissioner and non-member scenarios are additive. The command is safe to repeat: stable emails, slugs, and composite natural keys are resolved with idempotent Eloquent operations, while roster services create only missing assignments.
+
 Real matches reference season clubs, and player scores reference player season registrations. This keeps competition- and season-specific data separate from global club and player identity.
 
 ## Migrations

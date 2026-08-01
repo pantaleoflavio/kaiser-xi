@@ -18,7 +18,10 @@ class DatabaseSeeder extends Seeder
             LeagueTypeSeeder::class,
             LeagueRoleSeeder::class,
             FormationModuleSeeder::class,
-            DemoLeagueSeeder::class,
         ]);
+
+        if (app()->environment(['local', 'testing'])) {
+            $this->call(DemoEnvironmentSeeder::class);
+        }
     }
 }
