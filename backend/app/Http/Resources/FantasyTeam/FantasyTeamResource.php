@@ -19,6 +19,8 @@ class FantasyTeamResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'league_id' => $this->league_id,
+            'budget' => $this->budget,
+            'remaining_budget' => $this->remaining_budget,
             'owner' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,

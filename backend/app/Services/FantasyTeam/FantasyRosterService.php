@@ -48,9 +48,9 @@ class FantasyRosterService
         });
     }
 
-    public function release(League $league, FantasyTeam $team, Player $player): FantasyTeamPlayer
+    public function release(League $league, FantasyTeam $team, Player $player, User $releasedBy): FantasyTeamPlayer
     {
-        return DB::transaction(function () use ($league, $team, $player): FantasyTeamPlayer {
+        return DB::transaction(function () use ($league, $team, $player, $releasedBy): FantasyTeamPlayer {
             $team = FantasyTeam::query()->whereKey($team->id)->lockForUpdate()->firstOrFail();
             $assignment = FantasyTeamPlayer::query()
                 ->where('league_id', $league->id)
@@ -61,7 +61,7 @@ class FantasyRosterService
                 ->firstOrFail();
 
             $refund = $this->refundAmount((int) $assignment->purchase_price, $league->releaseRefundPercentage());
-            $assignment->update(['released_at' => now()]);
+            $assignment->update(['released_at' => now(), 'released_by_user_id' => $releasedBy->id]);
             $team->increment('remaining_budget', $refund);
 
             return $assignment->refresh()->load('player.playerSeasonRegistrations.playerRole');

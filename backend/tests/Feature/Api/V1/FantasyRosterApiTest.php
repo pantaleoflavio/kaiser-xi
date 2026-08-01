@@ -24,7 +24,7 @@ class FantasyRosterApiTest extends TestCase
         $this->seed();
     }
 
-    public function test_owner_can_manage_roster_and_member_can_view_it(): void
+    public function test_commissioner_can_assign_to_own_team_and_member_can_view_it(): void
     {
         [$league, $owner, $team] = $this->leagueOwnerAndTeam(['remaining_budget' => 100, 'budget' => 100]);
         $viewer = User::factory()->create();
@@ -37,10 +37,72 @@ class FantasyRosterApiTest extends TestCase
             'purchase_price' => 37,
         ])->assertCreated()->assertJsonPath('data.player.id', $player->id);
         $this->assertSame('63.00', $team->refresh()->remaining_budget);
+        $this->assertDatabaseHas('fantasy_team_players', [
+            'fantasy_team_id' => $team->id,
+            'player_id' => $player->id,
+            'assigned_by_user_id' => $owner->id,
+        ]);
 
         Sanctum::actingAs($viewer);
         $this->getJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players")
             ->assertOk()->assertJsonCount(1, 'data');
+    }
+
+    public function test_commissioner_can_assign_to_another_participants_team_and_target_budget_is_deducted(): void
+    {
+        [$league, $commissioner] = $this->leagueWithMember('commissioner');
+        $participant = User::factory()->create();
+        $this->attachMember($league, $participant, 'participant');
+        $team = FantasyTeam::factory()->forLeagueAndUser($league, $participant)->create([
+            'budget' => 100,
+            'remaining_budget' => 100,
+        ]);
+        $player = $this->eligiblePlayer($league);
+
+        Sanctum::actingAs($commissioner);
+        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", [
+            'player_id' => $player->id,
+            'purchase_price' => 37,
+        ])->assertCreated();
+
+        $this->assertSame($participant->id, $team->refresh()->user_id);
+        $this->assertSame('63.00', $team->remaining_budget);
+        $this->assertDatabaseHas('fantasy_team_players', [
+            'fantasy_team_id' => $team->id,
+            'assigned_by_user_id' => $commissioner->id,
+        ]);
+    }
+
+    public function test_co_commissioner_can_assign_to_another_participants_team(): void
+    {
+        [$league, $coCommissioner] = $this->leagueWithMember('co_commissioner');
+        $participant = User::factory()->create();
+        $this->attachMember($league, $participant, 'participant');
+        $team = FantasyTeam::factory()
+            ->forLeagueAndUser($league, $participant)
+            ->create([
+                'budget' => 500,
+                'remaining_budget' => 500,
+            ]);
+
+        $player = $this->eligiblePlayer($league);
+
+        Sanctum::actingAs($coCommissioner);
+        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", [
+            'player_id' => $player->id,
+            'purchase_price' => 10,
+        ])->assertCreated();
+
+        $this->assertDatabaseHas('fantasy_team_players', [
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'player_id' => $player->id,
+            'assigned_by_user_id' => $coCommissioner->id,
+            'purchase_price' => 10,
+            'released_at' => null,
+        ]);
+
+        $this->assertSame('490.00', $team->refresh()->remaining_budget);
     }
 
     public function test_non_member_cannot_view_roster(): void
@@ -54,16 +116,14 @@ class FantasyRosterApiTest extends TestCase
         )->assertForbidden();
     }
 
-    public function test_non_owner_cannot_add_player_to_roster(): void
+    public function test_ordinary_owner_cannot_add_player_to_own_roster(): void
     {
-        [$league, $owner, $team] = $this->leagueOwnerAndTeam();
-
-        $member = User::factory()->create();
-        $this->attachMember($league, $member, 'participant');
+        [$league, $owner] = $this->leagueWithMember('participant');
+        $team = FantasyTeam::factory()->forLeagueAndUser($league, $owner)->create();
 
         $player = $this->eligiblePlayer($league);
 
-        Sanctum::actingAs($member);
+        Sanctum::actingAs($owner);
 
         $this->postJson(
             "/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players",
@@ -74,13 +134,10 @@ class FantasyRosterApiTest extends TestCase
         )->assertForbidden();
     }
 
-    public function test_non_owner_cannot_release_player_from_roster(): void
+    public function test_ordinary_owner_cannot_release_player_from_own_roster(): void
     {
-        [$league, $owner, $team] = $this->leagueOwnerAndTeam();
-
-        $member = User::factory()->create();
-        $this->attachMember($league, $member, 'participant');
-
+        [$league, $owner] = $this->leagueWithMember('participant');
+        $team = FantasyTeam::factory()->forLeagueAndUser($league, $owner)->create();
         $player = $this->eligiblePlayer($league);
 
         $assignment = FantasyTeamPlayer::factory()->create([
@@ -93,11 +150,63 @@ class FantasyRosterApiTest extends TestCase
             'released_at' => null,
         ]);
 
-        Sanctum::actingAs($member);
+        Sanctum::actingAs($owner);
 
         $this->deleteJson(
             "/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$player->id}"
         )->assertForbidden();
+    }
+
+    public function test_commissioner_can_release_from_another_participants_team_and_target_receives_refund(): void
+    {
+        [$league, $commissioner] = $this->leagueWithMember('commissioner');
+        $participant = User::factory()->create();
+        $this->attachMember($league, $participant, 'participant');
+        $team = FantasyTeam::factory()->forLeagueAndUser($league, $participant)->create([
+            'budget' => 100,
+            'remaining_budget' => 63,
+        ]);
+        $player = $this->eligiblePlayer($league);
+        FantasyTeamPlayer::factory()->create([
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'player_id' => $player->id,
+            'assigned_by_user_id' => $commissioner->id,
+            'purchase_price' => 37,
+        ]);
+
+        Sanctum::actingAs($commissioner);
+        $this->deleteJson(
+            "/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$player->id}"
+        )->assertOk();
+
+        $this->assertSame($participant->id, $team->refresh()->user_id);
+        $this->assertSame('82.00', $team->remaining_budget);
+        $this->assertDatabaseHas('fantasy_team_players', [
+            'fantasy_team_id' => $team->id,
+            'player_id' => $player->id,
+            'released_by_user_id' => $commissioner->id,
+        ]);
+    }
+
+    public function test_ordinary_participant_non_member_and_global_admin_cannot_manage_another_team(): void
+    {
+        [$league, $commissioner, $team] = $this->leagueOwnerAndTeam();
+        $player = $this->eligiblePlayer($league);
+        $participant = User::factory()->create();
+        $this->attachMember($league, $participant, 'participant');
+        $nonMember = User::factory()->create();
+        $globalAdmin = User::factory()->globalAdmin()->create();
+
+        foreach ([$participant, $nonMember, $globalAdmin] as $actor) {
+            Sanctum::actingAs($actor);
+            $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", [
+                'player_id' => $player->id,
+                'purchase_price' => 1,
+            ])->assertForbidden();
+        }
+
+        $this->assertDatabaseMissing('fantasy_team_players', ['player_id' => $player->id]);
     }
 
     public function test_cross_league_roster_access_is_not_found(): void
@@ -117,28 +226,83 @@ class FantasyRosterApiTest extends TestCase
         Sanctum::actingAs($owner);
 
         $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $player->id, 'purchase_price' => 11])->assertUnprocessable()->assertJsonValidationErrors('purchase_price');
-        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $player->id, 'purchase_price' => 5, 'league_id' => 999, 'fantasy_team_id' => 999, 'assigned_by_user_id' => 999, 'remaining_budget' => 999])->assertUnprocessable()->assertJsonValidationErrors(['league_id', 'fantasy_team_id', 'assigned_by_user_id', 'remaining_budget']);
+        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $player->id, 'purchase_price' => 5, 'league_id' => 999, 'fantasy_team_id' => 999, 'assigned_by_user_id' => 999, 'released_by_user_id' => 999, 'remaining_budget' => 999])->assertUnprocessable()->assertJsonValidationErrors(['league_id', 'fantasy_team_id', 'assigned_by_user_id', 'released_by_user_id', 'remaining_budget']);
         $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $player->id, 'purchase_price' => 5])->assertCreated();
         $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $player->id, 'purchase_price' => 1])->assertUnprocessable()->assertJsonValidationErrors('player_id');
     }
 
     public function test_same_player_can_be_assigned_in_different_leagues_but_once_per_league(): void
     {
-        [$league, $owner, $team] = $this->leagueOwnerAndTeam();
-        [$sameLeague, $otherOwner, $otherTeam] = [$league, User::factory()->create(), null];
-        $this->attachMember($sameLeague, $otherOwner, 'participant');
-        $otherTeam = FantasyTeam::factory()->forLeagueAndUser($sameLeague, $otherOwner)->create(['budget' => 500, 'remaining_budget' => 500]);
+        [$league, $commissioner] = $this->leagueWithMember('commissioner');
+
+        $firstOwner = User::factory()->create();
+        $secondOwner = User::factory()->create();
+
+        $this->attachMember($league, $firstOwner, 'participant');
+        $this->attachMember($league, $secondOwner, 'participant');
+
+        $firstTeam = FantasyTeam::factory()
+            ->forLeagueAndUser($league, $firstOwner)
+            ->create([
+                'budget' => 500,
+                'remaining_budget' => 500,
+            ]);
+
+        $secondTeam = FantasyTeam::factory()
+            ->forLeagueAndUser($league, $secondOwner)
+            ->create([
+                'budget' => 500,
+                'remaining_budget' => 500,
+            ]);
+
         $player = $this->eligiblePlayer($league);
 
-        Sanctum::actingAs($owner);
-        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $player->id, 'purchase_price' => 1])->assertCreated();
-        Sanctum::actingAs($otherOwner);
-        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$otherTeam->id}/players", ['player_id' => $player->id, 'purchase_price' => 1])->assertUnprocessable();
+        Sanctum::actingAs($commissioner);
 
-        [$otherLeague, $owner2, $team2] = $this->leagueOwnerAndTeam();
-        PlayerSeasonRegistration::factory()->create(['player_id' => $player->id, 'season_club_id' => SeasonClub::factory()->create(['season_id' => $otherLeague->season_id])->id]);
-        Sanctum::actingAs($owner2);
-        $this->postJson("/api/v1/leagues/{$otherLeague->id}/fantasy-teams/{$team2->id}/players", ['player_id' => $player->id, 'purchase_price' => 1])->assertCreated();
+        $this->postJson(
+            "/api/v1/leagues/{$league->id}/fantasy-teams/{$firstTeam->id}/players",
+            [
+                'player_id' => $player->id,
+                'purchase_price' => 1,
+            ]
+        )->assertCreated();
+
+        $this->postJson(
+            "/api/v1/leagues/{$league->id}/fantasy-teams/{$secondTeam->id}/players",
+            [
+                'player_id' => $player->id,
+                'purchase_price' => 1,
+            ]
+        )->assertUnprocessable();
+
+        [$otherLeague, $otherCommissioner] = $this->leagueWithMember('commissioner');
+
+        $otherParticipant = User::factory()->create();
+        $this->attachMember($otherLeague, $otherParticipant, 'participant');
+
+        $otherTeam = FantasyTeam::factory()
+            ->forLeagueAndUser($otherLeague, $otherParticipant)
+            ->create([
+                'budget' => 500,
+                'remaining_budget' => 500,
+            ]);
+
+        PlayerSeasonRegistration::factory()->create([
+            'player_id' => $player->id,
+            'season_club_id' => SeasonClub::factory()->create([
+                'season_id' => $otherLeague->season_id,
+            ])->id,
+        ]);
+
+        Sanctum::actingAs($otherCommissioner);
+
+        $this->postJson(
+            "/api/v1/leagues/{$otherLeague->id}/fantasy-teams/{$otherTeam->id}/players",
+            [
+                'player_id' => $player->id,
+                'purchase_price' => 1,
+            ]
+        )->assertCreated();
     }
 
     public function test_invalid_season_player_is_rejected(): void
@@ -153,26 +317,111 @@ class FantasyRosterApiTest extends TestCase
 
     public function test_release_refund_uses_configured_half_up_percentage_and_preserves_history(): void
     {
-        [$league, $owner, $team] = $this->leagueOwnerAndTeam(['budget' => 100, 'remaining_budget' => 100]);
+        [$league, $commissioner, $team] = $this->leagueOwnerAndTeam([
+            'budget' => 100,
+            'remaining_budget' => 100,
+        ]);
+
+        Sanctum::actingAs($commissioner);
+
         $player = $this->eligiblePlayer($league);
-        Sanctum::actingAs($owner);
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['release_refund_percentage' => 50]);
-        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $player->id, 'purchase_price' => 37])->assertCreated();
-        $this->deleteJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$player->id}")->assertOk();
+
+        $this->patchJson(
+            "/api/v1/leagues/{$league->id}/settings",
+            ['release_refund_percentage' => 50]
+        )->assertOk();
+
+        $this->postJson(
+            "/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players",
+            [
+                'player_id' => $player->id,
+                'purchase_price' => 37,
+            ]
+        )->assertCreated();
+
+        $this->deleteJson(
+            "/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$player->id}"
+        )->assertOk();
+
         $this->assertSame('82.00', $team->refresh()->remaining_budget);
-        $this->assertSame(1, FantasyTeamPlayer::query()->whereNotNull('released_at')->count());
 
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['release_refund_percentage' => 0]);
-        $second = $this->eligiblePlayer($league);
-        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $second->id, 'purchase_price' => 10])->assertCreated();
-        $this->deleteJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$second->id}")->assertOk();
+        $firstReleasedAssignment = FantasyTeamPlayer::query()
+            ->where('league_id', $league->id)
+            ->where('fantasy_team_id', $team->id)
+            ->where('player_id', $player->id)
+            ->sole();
+
+        $this->assertNotNull($firstReleasedAssignment->released_at);
+        $this->assertSame('37.00', $firstReleasedAssignment->purchase_price);
+
+        $this->patchJson(
+            "/api/v1/leagues/{$league->id}/settings",
+            ['release_refund_percentage' => 0]
+        )->assertOk();
+
+        $secondPlayer = $this->eligiblePlayer($league);
+
+        $this->postJson(
+            "/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players",
+            [
+                'player_id' => $secondPlayer->id,
+                'purchase_price' => 10,
+            ]
+        )->assertCreated();
+
+        $this->deleteJson(
+            "/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$secondPlayer->id}"
+        )->assertOk();
+
         $this->assertSame('72.00', $team->refresh()->remaining_budget);
 
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['release_refund_percentage' => 100]);
-        $third = $this->eligiblePlayer($league);
-        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $third->id, 'purchase_price' => 10])->assertCreated();
-        $this->deleteJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$third->id}")->assertOk();
+        $secondReleasedAssignment = FantasyTeamPlayer::query()
+            ->where('league_id', $league->id)
+            ->where('fantasy_team_id', $team->id)
+            ->where('player_id', $secondPlayer->id)
+            ->sole();
+
+        $this->assertNotNull($secondReleasedAssignment->released_at);
+        $this->assertSame('10.00', $secondReleasedAssignment->purchase_price);
+
+        $this->patchJson(
+            "/api/v1/leagues/{$league->id}/settings",
+            ['release_refund_percentage' => 100]
+        )->assertOk();
+
+        $thirdPlayer = $this->eligiblePlayer($league);
+
+        $this->postJson(
+            "/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players",
+            [
+                'player_id' => $thirdPlayer->id,
+                'purchase_price' => 10,
+            ]
+        )->assertCreated();
+
+        $this->deleteJson(
+            "/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$thirdPlayer->id}"
+        )->assertOk();
+
         $this->assertSame('72.00', $team->refresh()->remaining_budget);
+
+        $thirdReleasedAssignment = FantasyTeamPlayer::query()
+            ->where('league_id', $league->id)
+            ->where('fantasy_team_id', $team->id)
+            ->where('player_id', $thirdPlayer->id)
+            ->sole();
+
+        $this->assertNotNull($thirdReleasedAssignment->released_at);
+        $this->assertSame('10.00', $thirdReleasedAssignment->purchase_price);
+
+        $this->assertSame(
+            3,
+            FantasyTeamPlayer::query()
+                ->where('league_id', $league->id)
+                ->where('fantasy_team_id', $team->id)
+                ->whereNotNull('released_at')
+                ->count()
+        );
     }
 
     private function leagueOwnerAndTeam(array $teamAttributes = []): array

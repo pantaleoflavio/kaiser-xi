@@ -16,6 +16,7 @@ class FantasyTeamPlayer extends Model
         'fantasy_team_id',
         'player_id',
         'assigned_by_user_id',
+        'released_by_user_id',
         'purchase_price',
         'assigned_at',
         'released_at',
@@ -50,5 +51,10 @@ class FantasyTeamPlayer extends Model
     public function scopeActive(Builder $query): Builder
     {
         return $query->whereNull('released_at');
+    }
+
+    public function releasedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'released_by_user_id');
     }
 }

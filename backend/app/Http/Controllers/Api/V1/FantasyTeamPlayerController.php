@@ -9,6 +9,7 @@ use App\Models\FantasyTeam;
 use App\Models\League;
 use App\Models\Player;
 use App\Services\FantasyTeam\FantasyRosterService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FantasyTeamPlayerController extends Controller
@@ -38,8 +39,10 @@ class FantasyTeamPlayerController extends Controller
         return new FantasyTeamPlayerResource($assignment);
     }
 
-    public function destroy(League $league, FantasyTeam $fantasyTeam, Player $player): FantasyTeamPlayerResource
+    public function destroy(Request $request, League $league, FantasyTeam $fantasyTeam, Player $player): FantasyTeamPlayerResource
     {
-        return new FantasyTeamPlayerResource($this->rosterService->release($league, $fantasyTeam, $player));
+        return new FantasyTeamPlayerResource(
+            $this->rosterService->release($league, $fantasyTeam, $player, $request->user())
+        );
     }
 }

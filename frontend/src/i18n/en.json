@@ -295,7 +295,7 @@
     "purchasePrice": "Purchase price",
     "assignedAt": "Assigned",
     "releasedAt": "Released",
-    "managementReadOnly": "Only the fantasy team owner can manage roster players.",
+    "managementReadOnly": "Only league commissioners and co-commissioners can manage roster players.",
     "assign": {
       "title": "Assign player",
       "player": "Player",

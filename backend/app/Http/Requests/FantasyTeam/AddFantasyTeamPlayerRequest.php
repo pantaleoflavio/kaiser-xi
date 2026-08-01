@@ -23,6 +23,7 @@ class AddFantasyTeamPlayerRequest extends FormRequest
             'league_id' => ['prohibited'],
             'fantasy_team_id' => ['prohibited'],
             'assigned_by_user_id' => ['prohibited'],
+            'released_by_user_id' => ['prohibited'],
             'remaining_budget' => ['prohibited'],
             'refund_amount' => ['prohibited'],
             'released_at' => ['prohibited'],

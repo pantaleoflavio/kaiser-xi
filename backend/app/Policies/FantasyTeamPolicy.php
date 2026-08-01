@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\FantasyTeam;
 use App\Models\League;
+use App\Models\LeagueRole;
 use App\Models\User;
 
 class FantasyTeamPolicy
@@ -34,8 +35,18 @@ class FantasyTeamPolicy
         return $this->view($user, $fantasyTeam);
     }
 
-    public function manageRoster(User $user, FantasyTeam $fantasyTeam): bool
+    public function manageRoster(User $user, FantasyTeam $fantasyTeam, League $league): bool
     {
-        return $this->update($user, $fantasyTeam);
+        if ($fantasyTeam->league_id !== $league->id) {
+            return false;
+        }
+
+        return $league->users()
+            ->whereKey($user->id)
+            ->wherePivotIn(
+                'league_role_id',
+                LeagueRole::query()->whereIn('key', ['commissioner', 'co_commissioner'])->pluck('id')
+            )
+            ->exists();
     }
 }

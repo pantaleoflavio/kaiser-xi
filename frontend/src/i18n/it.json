@@ -243,7 +243,7 @@
     "purchasePrice": "Prezzo di acquisto",
     "assignedAt": "Assegnato",
     "releasedAt": "Svincolato",
-    "managementReadOnly": "Solo l’owner del fantasy team può gestire il roster.",
+    "managementReadOnly": "Solo  commissioner e co-commissioner della lega possono gestire le rose.",
     "assign": {
       "title": "Assegna giocatore",
       "player": "Giocatore",

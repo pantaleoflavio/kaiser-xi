@@ -26,35 +26,56 @@ class FantasyTeamApiTest extends TestCase
 
     public function test_commissioner_co_commissioner_and_participant_can_create_their_own_fantasy_team(): void
     {
+        $createdTeamIds = [];
+
         foreach (['commissioner', 'co_commissioner', 'participant'] as $role) {
             [$league, $user] = $this->leagueWithMember($role);
 
             Sanctum::actingAs($user);
 
-            $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams", [
+            $response = $this->postJson(
+                "/api/v1/leagues/{$league->id}/fantasy-teams",
+                [
                 'name' => '  '.ucfirst($role).' Lions  ',
-            ])->assertCreated()
-                ->assertJsonPath('data.name', ucfirst($role).' Lions')
-                ->assertJsonPath('data.slug', strtolower(str_replace('_', '-', $role)).'-lions')
+                ]
+            );
+
+            $response
+                ->assertCreated()
+                ->assertJsonPath('data.name', ucfirst($role) . ' Lions')
+                ->assertJsonPath(
+                    'data.slug',
+                    strtolower(str_replace('_', '-', $role)) . '-lions'
+                )
                 ->assertJsonPath('data.owner.id', $user->id)
                 ->assertJsonPath('data.league_id', $league->id)
                 ->assertJsonPath('data.is_owned_by_current_user', true)
+                ->assertJsonPath('data.budget', '500.00')
+                ->assertJsonPath('data.remaining_budget', '500.00')
                 ->assertJsonMissingPath('data.owner.email')
-                ->assertJsonMissingPath('data.budget')
-                ->assertJsonMissingPath('data.remaining_budget')
                 ->assertJsonMissingPath('data.players');
 
+            $teamId = $response->json('data.id');
+
+            $createdTeamIds[] = $teamId;
+
             $this->assertDatabaseHas('fantasy_teams', [
+                'id' => $teamId,
                 'league_id' => $league->id,
                 'user_id' => $user->id,
-                'name' => ucfirst($role).' Lions',
+                'name' => ucfirst($role) . ' Lions',
                 'budget' => 500,
                 'remaining_budget' => 500,
                 'logo_path' => null,
             ]);
         }
 
-        $this->assertSame(0, FantasyTeamPlayer::query()->count());
+        $this->assertSame(
+            0,
+            FantasyTeamPlayer::query()
+                ->whereIn('fantasy_team_id', $createdTeamIds)
+                ->count()
+        );
     }
 
     public function test_client_controlled_fields_are_rejected_when_creating(): void
@@ -152,8 +173,18 @@ class FantasyTeamApiTest extends TestCase
         $otherLeague = League::factory()->create();
         $this->attachMember($league, $owner, 'participant');
         $this->attachMember($otherLeague, $otherOwner, 'participant');
-        $team = $this->teamForMember($league, $owner, ['name' => 'A Team', 'slug' => 'a-team']);
-        $this->teamForMember($otherLeague, $otherOwner, ['name' => 'Z Team', 'slug' => 'z-team']);
+        $team = $this->teamForMember($league, $owner, [
+            'name' => 'A Team',
+            'slug' => 'a-team',
+            'budget' => 500,
+            'remaining_budget' => 500,
+        ]);
+        $this->teamForMember($otherLeague, $otherOwner, [
+            'name' => 'Z Team',
+            'slug' => 'z-team',
+            'budget' => 500,
+            'remaining_budget' => 500,
+        ]);
 
         Sanctum::actingAs($viewer);
 
@@ -161,9 +192,9 @@ class FantasyTeamApiTest extends TestCase
             ->assertOk()
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.id', $team->id)
+            ->assertJsonPath('data.0.budget', '500.00')
+            ->assertJsonPath('data.0.remaining_budget', '500.00')
             ->assertJsonMissingPath('data.0.owner.email')
-            ->assertJsonMissingPath('data.0.budget')
-            ->assertJsonMissingPath('data.0.remaining_budget')
             ->assertJsonMissingPath('data.0.players');
     }
 
@@ -172,16 +203,20 @@ class FantasyTeamApiTest extends TestCase
         [$league, $viewer] = $this->leagueWithMember('co_commissioner');
         $owner = User::factory()->create();
         $this->attachMember($league, $owner, 'participant');
-        $team = $this->teamForMember($league, $owner, ['name' => 'A Team', 'slug' => 'a-team']);
-
+        $team = $this->teamForMember($league, $owner, [
+            'name' => 'A Team',
+            'slug' => 'a-team',
+            'budget' => 500,
+            'remaining_budget' => 500,
+        ]);
         Sanctum::actingAs($viewer);
 
         $this->getJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}")
             ->assertOk()
             ->assertJsonPath('data.id', $team->id)
+            ->assertJsonPath('data.budget', '500.00')
+            ->assertJsonPath('data.remaining_budget', '500.00')
             ->assertJsonMissingPath('data.owner.email')
-            ->assertJsonMissingPath('data.budget')
-            ->assertJsonMissingPath('data.remaining_budget')
             ->assertJsonMissingPath('data.players');
     }
 

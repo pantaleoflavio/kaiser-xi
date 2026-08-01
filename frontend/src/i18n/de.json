@@ -295,7 +295,7 @@
     "purchasePrice": "Kaufpreis",
     "assignedAt": "Zugeordnet",
     "releasedAt": "Entlassen",
-    "managementReadOnly": "Nur der Fantasy-Team-Owner kann Roster-Spieler verwalten.",
+    "managementReadOnly": "Nur Liga-Commissioner und Co-Commissioner können Roster-Spieler verwalten.",
     "assign": {
       "title": "Spieler zuordnen",
       "player": "Spieler",

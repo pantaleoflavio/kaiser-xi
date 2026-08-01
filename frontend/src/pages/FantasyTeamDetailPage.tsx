@@ -4,7 +4,7 @@ import { ApiError } from '../api/client';
 import { leaguesApi } from '../api/leagues';
 import { LoadingState } from '../components/LoadingState';
 import { useTranslation } from '../i18n';
-import type { EligiblePlayer, FantasyTeam, LeagueSettings, RosterPlayer } from '../types/league';
+import type { EligiblePlayer, FantasyTeam, League, LeagueSettings, RosterPlayer } from '../types/league';
 import { useQueryClient } from '@tanstack/react-query';
 import { EligiblePlayerSelector } from '../components/EligiblePlayerSelector';
 import { eligiblePlayerKeys } from '../hooks/useEligiblePlayers';
@@ -76,6 +76,7 @@ export function FantasyTeamDetailPage() {
   const { fantasyTeamId, leagueId } = useParams();
   const { language, t } = useTranslation();
   const queryClient = useQueryClient();
+  const [league, setLeague] = useState<League | null>(null);
   const [team, setTeam] = useState<FantasyTeam | null>(null);
   const [settings, setSettings] = useState<LeagueSettings | null>(null);
   const [rosterPlayers, setRosterPlayers] = useState<RosterPlayer[]>([]);
@@ -115,12 +116,14 @@ export function FantasyTeamDetailPage() {
         setLoadError(null);
         setUpdateError(null);
         setSuccessMessage(null);
-        const [response, settingsResponse, rosterResponse] = await Promise.all([
+        const [leagueResponse, response, settingsResponse, rosterResponse] = await Promise.all([
+          leaguesApi.show(currentLeagueId),
           leaguesApi.fantasyTeam(currentLeagueId, currentFantasyTeamId),
           leaguesApi.settings(currentLeagueId),
           leaguesApi.rosterPlayers(currentLeagueId, currentFantasyTeamId),
         ]);
         if (!isMounted) return;
+        setLeague(leagueResponse.data);
         setTeam(response.data);
         setSettings(settingsResponse.data);
         setRosterPlayers(rosterResponse.data);
@@ -146,6 +149,9 @@ export function FantasyTeamDetailPage() {
     };
   }, [fantasyTeamId, leagueId]);
 
+  const canManageRoster =
+    league?.my_role === 'commissioner' || league?.my_role === 'co_commissioner';
+
   async function reloadRoster() {
     if (!leagueId || !fantasyTeamId) return;
     const [teamResponse, rosterResponse] = await Promise.all([
@@ -159,7 +165,7 @@ export function FantasyTeamDetailPage() {
 
   async function handleAssignPlayer(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!leagueId || !fantasyTeamId || !team?.is_owned_by_current_user) return;
+    if (!leagueId || !fantasyTeamId || !canManageRoster) return;
 
     if (!selectedPlayer) {
       setAssignFieldErrors({ player_id: t('roster.assign.playerRequired') });
@@ -208,7 +214,7 @@ export function FantasyTeamDetailPage() {
   }
 
   async function handleReleasePlayer(rosterPlayer: RosterPlayer) {
-    if (!leagueId || !fantasyTeamId || !team?.is_owned_by_current_user) return;
+    if (!leagueId || !fantasyTeamId || !canManageRoster) return;
     const confirmed = window.confirm(
       t('common.confirmations.releasePlayer', {
         name: rosterPlayerName(rosterPlayer, t('roster.unknownPlayer')),
@@ -390,7 +396,7 @@ export function FantasyTeamDetailPage() {
                           {t('roster.playerId', { id: rosterPlayer.player.id })}
                         </p>
                       </div>
-                      {team.is_owned_by_current_user && !rosterPlayer.released_at ? (
+                      {canManageRoster && !rosterPlayer.released_at ? (
                         <button
                           className="rounded-lg border border-red-400/40 px-3 py-2 text-sm font-semibold text-red-100 disabled:opacity-60"
                           disabled={releasingPlayerId === rosterPlayer.player.id}
@@ -440,7 +446,7 @@ export function FantasyTeamDetailPage() {
               </div>
             ) : null}
 
-            {team.is_owned_by_current_user ? (
+            {canManageRoster ? (
               <form
                 className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4"
                 onSubmit={handleAssignPlayer}

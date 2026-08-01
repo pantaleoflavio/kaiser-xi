@@ -93,10 +93,10 @@ Route::prefix('v1')->group(function (): void {
 
         Route::post('/{league}/fantasy-teams/{fantasyTeam}/players', [FantasyTeamPlayerController::class, 'store'])
             ->name('api.v1.leagues.fantasy-teams.players.store')
-            ->middleware('can:manageRoster,fantasyTeam');
+            ->middleware('can:manageRoster,fantasyTeam,league');
 
         Route::delete('/{league}/fantasy-teams/{fantasyTeam}/players/{player}', [FantasyTeamPlayerController::class, 'destroy'])
             ->name('api.v1.leagues.fantasy-teams.players.destroy')
-            ->middleware('can:manageRoster,fantasyTeam');
+            ->middleware('can:manageRoster,fantasyTeam,league');
     });
 });

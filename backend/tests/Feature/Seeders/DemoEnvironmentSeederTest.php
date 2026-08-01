@@ -68,20 +68,50 @@ class DemoEnvironmentSeederTest extends TestCase
     public function test_seeded_players_can_be_filtered_by_role_and_club_through_the_endpoint(): void
     {
         $this->seed(DemoEnvironmentSeeder::class);
-        $league = League::query()->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)->firstOrFail();
-        $member = User::query()->where('email', 'demo.participant1@example.com')->firstOrFail();
-        $club = RealClub::query()->where('slug', 'demo-dolomiti-athletic')->firstOrFail();
 
-        $response = $this->actingAs($member)->getJson(
-            "/api/v1/leagues/{$league->id}/eligible-players?role=midfielder&club_id={$club->id}&per_page=2"
-        )->assertOk()->assertJsonCount(2, 'data');
+        $league = League::query()
+            ->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)
+            ->firstOrFail();
 
-        foreach ($response->json('data') as $registration) {
-            $seeded = PlayerSeasonRegistration::query()->with(['playerRole', 'seasonClub'])
-                ->whereHas('player', fn ($query) => $query->where('display_name', $registration['name']))
+        $member = User::query()
+            ->where('email', 'demo.participant1@example.com')
+            ->firstOrFail();
+
+        $club = RealClub::query()
+            ->where('slug', 'demo-dolomiti-athletic')
+            ->firstOrFail();
+
+        $response = $this->actingAs($member)
+            ->getJson(
+                "/api/v1/leagues/{$league->id}/eligible-players"
+                    . "?role=midfielder"
+                    . "&club_id={$club->id}"
+                    . "&per_page=2"
+            )
+            ->assertOk()
+            ->assertJsonCount(2, 'data');
+
+        foreach ($response->json('data') as $eligiblePlayer) {
+            $seededRegistration = PlayerSeasonRegistration::query()
+                ->with(['playerRole', 'seasonClub'])
+                ->where('player_id', $eligiblePlayer['id'])
+                ->whereHas(
+                    'seasonClub',
+                    fn($query) => $query
+                        ->where('season_id', $league->season_id)
+                        ->where('real_club_id', $club->id)
+                )
                 ->firstOrFail();
-            $this->assertSame('midfielder', $seeded->playerRole->key);
-            $this->assertSame($club->id, $seeded->seasonClub->real_club_id);
+
+            $this->assertSame(
+                'midfielder',
+                $seededRegistration->playerRole->key
+            );
+
+            $this->assertSame(
+                $club->id,
+                $seededRegistration->seasonClub->real_club_id
+            );
         }
     }
 }

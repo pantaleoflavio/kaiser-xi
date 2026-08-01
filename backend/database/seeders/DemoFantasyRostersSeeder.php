@@ -58,7 +58,7 @@ class DemoFantasyRostersSeeder extends Seeder
             if (! FantasyTeamPlayer::query()->active()->where('league_id', $league->id)->where('player_id', $releasedPlayer->id)->exists()) {
                 $this->rosters->assign($league, $team, $releasedPlayer, $commissioner, 16);
             }
-            $this->rosters->release($league, $team, $releasedPlayer);
+            $this->rosters->release($league, $team, $releasedPlayer, $commissioner);
         }
     }
 }
