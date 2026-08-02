@@ -299,10 +299,15 @@
     "update": {
       "title": "Fantasy-Team umbenennen",
       "description": "Nur der Team-Owner kann den Namen des Fantasy-Teams ändern.",
+      "edit": "Namen bearbeiten",
       "name": "Teamname",
+      "cancel": "Abbrechen",
       "submit": "Änderungen speichern",
       "submitting": "Speichern...",
-      "success": "Fantasy-Team aktualisiert."
+      "success": "Name des Fantasy-Teams aktualisiert.",
+      "forbidden": "Du darfst den Namen dieses Fantasy-Teams nicht ändern.",
+      "nameRequired": "Der Teamname ist erforderlich.",
+      "nameLength": "Der Teamname darf höchstens 100 Zeichen lang sein."
     },
     "errors": {
       "list": "Fantasy-Teams konnten nicht geladen werden.",
@@ -351,7 +356,6 @@
     "emptyTitle": "Noch keine Roster-Spieler",
     "emptyDescription": "Dieses Fantasy-Team hat noch keine aktiven oder historischen Roster-Spieler.",
     "unknownPlayer": "Unbekannter Spieler",
-    "playerId": "Spieler-ID: {{id}}",
     "purchasePrice": "Kaufpreis",
     "assignedAt": "Zugeordnet",
     "releasedAt": "Entlassen",

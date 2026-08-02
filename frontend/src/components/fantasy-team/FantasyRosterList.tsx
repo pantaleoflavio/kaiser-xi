@@ -35,9 +35,6 @@ export function FantasyRosterList({
               <h3 className="font-semibold text-white">
                 {rosterPlayer.player.name || t('roster.unknownPlayer')}
               </h3>
-              <p className="mt-1 text-sm text-slate-400">
-                {t('roster.playerId', { id: rosterPlayer.player.id })}
-              </p>
             </div>
             {canManage && !rosterPlayer.released_at ? (
               <ReleasePlayerButton

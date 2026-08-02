@@ -299,10 +299,15 @@
     "update": {
       "title": "Rename fantasy team",
       "description": "Only the team owner can update the fantasy-team name.",
+      "edit": "Edit name",
       "name": "Team name",
+      "cancel": "Cancel",
       "submit": "Save changes",
       "submitting": "Saving...",
-      "success": "Fantasy team updated."
+      "success": "Fantasy team name updated.",
+      "forbidden": "You are not allowed to update this fantasy-team name.",
+      "nameRequired": "Team name is required.",
+      "nameLength": "Team name must be 100 characters or fewer."
     },
     "errors": {
       "list": "Unable to load fantasy teams.",
@@ -351,7 +356,6 @@
     "emptyTitle": "No roster players yet",
     "emptyDescription": "This fantasy team does not have active or historical roster players yet.",
     "unknownPlayer": "Unknown player",
-    "playerId": "Player ID: {{id}}",
     "purchasePrice": "Purchase price",
     "assignedAt": "Assigned",
     "releasedAt": "Released",

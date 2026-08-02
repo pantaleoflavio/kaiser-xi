@@ -83,7 +83,11 @@ export function FantasyTeamDetailPage() {
                 ) : null
               }
               isUpdating={nameForm.isUpdating}
+              isEditing={nameForm.isEditing}
+              fieldError={nameForm.fieldError}
               name={nameForm.name}
+              onCancel={nameForm.cancel}
+              onEdit={nameForm.edit}
               onNameChange={nameForm.setName}
               onSubmit={(event) => {
                 event.preventDefault();
