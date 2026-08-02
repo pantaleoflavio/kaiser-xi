@@ -14,7 +14,7 @@
       "forbidden": "Non hai il permesso per eseguire questa azione.",
       "notFound": "La lega, il team o il giocatore del roster richiesto non è stato trovato.",
       "conflict": "La richiesta è in conflitto con lo stato attuale del roster o del budget.",
-      "validation": "Correggi gli errori di validazione.",
+      "validation": "Correggi i seguenti errori.",
       "unexpected": "Si è verificato un errore imprevisto."
     },
     "cancel": "Annulla"
@@ -63,7 +63,8 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "rules": "Regole",
-    "leagues": "Leghe"
+    "leagues": "Leghe",
+    "invitations": "Inviti"
   },
   "home": {
     "eyebrow": "Fantasy football a modo tuo",
@@ -200,14 +201,16 @@
       "create": "Crea invito",
       "creating": "Creazione...",
       "createError": "Impossibile creare l’invito.",
-      "delete": "Annulla invito",
+      "delete": "Invito revocato.",
       "deleting": "Annullamento...",
-      "deleteError": "Impossibile annullare l’invito.",
+      "deleteError": "Riprova.",
       "status": "Stato",
       "used": "Usati",
       "remaining": "Rimanenti",
       "expires": "Scadenza",
-      "createdBy": "Creato da"
+      "createdBy": "Creato da",
+      "email": "Email",
+      "invitedRole": "Ruolo invitato"
     }
   },
   "fantasyTeams": {
@@ -460,5 +463,29 @@
       "locked": "Bloccato dopo l’attivazione",
       "editable": "Può restare modificabile dopo l’attivazione"
     }
+  },
+  "invitations": {
+    "eyebrow": "Inviti",
+    "title": "Inviti in sospeso",
+    "loading": "Caricamento inviti...",
+    "errorTitle": "Impossibile caricare gli inviti",
+    "error": "Riprova.",
+    "emptyTitle": "Nessun invito in sospeso",
+    "empty": "Non hai inviti alla lega in sospeso.",
+    "invitedRole": "Ruolo invitato",
+    "inviter": "Invitato da",
+    "expiration": "Scadenza",
+    "accept": "Accetta",
+    "reject": "Rifiuta",
+    "accepted": "Invito accettato.",
+    "rejected": "Invito rifiutato.",
+    "revoked": "Invito revocato.",
+    "expired": "Questo invito è scaduto.",
+    "processed": "Questo invito è già stato elaborato.",
+    "member": "Sei già membro.",
+    "permission": "Non hai il permesso di gestire questo invito.",
+    "rejectConfirmation": "Rifiutare questo invito?",
+    "revokeConfirmation": "Revocare questo invito?",
+    "viewLeague": "Vedi lega"
   }
 }

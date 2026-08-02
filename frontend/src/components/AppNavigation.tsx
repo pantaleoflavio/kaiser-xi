@@ -43,6 +43,9 @@ export function AppNavigation() {
                 <Link className={navLinkClass} to="/leagues">
                   {t('nav.leagues')}
                 </Link>
+                <Link className={navLinkClass} to="/invitations">
+                  {t('nav.invitations')}
+                </Link>
               </>
             )}
           </div>

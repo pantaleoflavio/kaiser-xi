@@ -4,6 +4,8 @@ namespace App\Enums;
 
 enum LeagueInvitationStatus: string
 {
-    case Active = 'active';
-    case Cancelled = 'cancelled';
+    case Pending = 'pending';
+    case Accepted = 'accepted';
+    case Rejected = 'rejected';
+    case Revoked = 'revoked';
 }

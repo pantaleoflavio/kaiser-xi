@@ -23,7 +23,8 @@ export function InvitationManagementPanel({
   const { language, t } = useTranslation();
   const [invitations, setInvitations] = useState(initialInvitations);
   const [error, setError] = useState(initialError);
-  const [maxUses, setMaxUses] = useState('');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState<'participant' | 'co_commissioner'>('participant');
   const [expiresAt, setExpiresAt] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -41,10 +42,11 @@ export function InvitationManagementPanel({
       setIsCreating(true);
       setError(null);
       await leaguesApi.createInvitation(leagueId, {
-        max_uses: maxUses ? Number(maxUses) : null,
+        email,
+        role,
         expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
       });
-      setMaxUses('');
+      setEmail('');
       setExpiresAt('');
       await reload();
     } catch (err) {
@@ -57,7 +59,7 @@ export function InvitationManagementPanel({
     try {
       setDeletingId(id);
       setError(null);
-      await leaguesApi.deleteInvitation(leagueId, id);
+      await leaguesApi.revokeInvitation(leagueId, id);
       setInvitations((current) => current.filter((item) => item.id !== id));
     } catch (err) {
       setError(err instanceof Error ? err.message : t('leagueDetail.invitations.deleteError'));
@@ -68,18 +70,30 @@ export function InvitationManagementPanel({
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
       <h2 className="text-2xl font-semibold text-white">{t('leagueDetail.invitations.title')}</h2>
-      <p className="mt-1 text-sm text-slate-300">{t('leagueDetail.invitations.emptyDescription')}</p>
-      <form className="mt-5 grid gap-3 md:grid-cols-[1fr_1fr_auto]" onSubmit={create}>
+      <p className="mt-1 text-sm text-slate-300">
+        {t('leagueDetail.invitations.emptyDescription')}
+      </p>
+      <form className="mt-5 grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]" onSubmit={create}>
         <label className="text-sm text-slate-300">
-          {t('leagueDetail.invitations.maxUses')}
+          {t('leagueDetail.invitations.email')}
           <input
             className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
-            min="1"
-            onChange={(e) => setMaxUses(e.target.value)}
-            placeholder={t('leagueDetail.invitations.unlimitedUses')}
-            type="number"
-            value={maxUses}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            type="email"
+            value={email}
           />
+        </label>
+        <label className="text-sm text-slate-300">
+          {t('leagueDetail.invitations.invitedRole')}
+          <select
+            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+            value={role}
+            onChange={(event) => setRole(event.target.value as 'participant' | 'co_commissioner')}
+          >
+            <option value="participant">{t('leagues.roles.participant')}</option>
+            <option value="co_commissioner">{t('leagues.roles.co_commissioner')}</option>
+          </select>
         </label>
         <label className="text-sm text-slate-300">
           {t('leagueDetail.invitations.expiresAt')}
@@ -122,7 +136,7 @@ export function InvitationManagementPanel({
             >
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                 <div>
-                  <p className="font-mono text-lg font-semibold text-white">{invitation.code}</p>
+                  <p className="text-lg font-semibold text-white">{invitation.recipient?.name}</p>
                   <p className="mt-1 text-sm text-slate-400">
                     {t('leagueDetail.invitations.status')}: {invitation.status}
                   </p>
@@ -138,16 +152,10 @@ export function InvitationManagementPanel({
                     : t('leagueDetail.invitations.delete')}
                 </button>
               </div>
-              <dl className="mt-4 grid gap-3 text-sm text-slate-300 md:grid-cols-4">
+              <dl className="mt-4 grid gap-3 text-sm text-slate-300 md:grid-cols-3">
                 <div>
-                  <dt className="text-slate-500">{t('leagueDetail.invitations.used')}</dt>
-                  <dd>
-                    {invitation.used_count} / {invitation.max_uses ?? t('leagueDetail.unlimited')}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-slate-500">{t('leagueDetail.invitations.remaining')}</dt>
-                  <dd>{invitation.remaining_uses ?? t('leagueDetail.unlimited')}</dd>
+                  <dt className="text-slate-500">{t('leagueDetail.invitations.invitedRole')}</dt>
+                  <dd>{t(`leagues.roles.${invitation.role.key}`)}</dd>
                 </div>
                 <div>
                   <dt className="text-slate-500">{t('leagueDetail.invitations.expires')}</dt>

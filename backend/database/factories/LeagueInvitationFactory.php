@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\League;
 use App\Models\LeagueInvitation;
+use App\Models\LeagueRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +21,9 @@ class LeagueInvitationFactory extends Factory
             'league_id' => League::factory(),
             'created_by_user_id' => User::factory(),
             'code' => strtoupper($this->faker->unique()->bothify('????##')),
-            'status' => 'active',
+            'invited_user_id' => User::factory(),
+            'league_role_id' => fn() => LeagueRole::query()->where('key', 'participant')->value('id'),
+            'status' => 'pending',
             'max_uses' => 1,
             'used_count' => 0,
             'expires_at' => now()->addWeek(),
@@ -29,12 +32,12 @@ class LeagueInvitationFactory extends Factory
 
     public function active(): static
     {
-        return $this->state(fn(): array => ['status' => 'active']);
+        return $this->state(fn(): array => ['status' => 'pending']);
     }
 
     public function cancelled(): static
     {
-        return $this->state(fn(): array => ['status' => 'cancelled']);
+        return $this->state(fn(): array => ['status' => 'revoked']);
     }
 
     public function expired(): static

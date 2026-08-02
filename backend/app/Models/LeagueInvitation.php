@@ -16,6 +16,8 @@ class LeagueInvitation extends Model
     protected $fillable = [
         'league_id',
         'created_by_user_id',
+        'invited_user_id',
+        'league_role_id',
         'code',
         'status',
         'max_uses',
@@ -40,9 +42,19 @@ class LeagueInvitation extends Model
         return $this->belongsTo(User::class, 'created_by_user_id');
     }
 
+    public function invitedUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'invited_user_id');
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(LeagueRole::class, 'league_role_id');
+    }
+
     public function isActive(): bool
     {
-        return $this->status === LeagueInvitationStatus::Active;
+        return $this->status === LeagueInvitationStatus::Pending;
     }
 
     public function isExpired(): bool

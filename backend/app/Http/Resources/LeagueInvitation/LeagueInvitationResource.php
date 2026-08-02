@@ -12,7 +12,7 @@ class LeagueInvitationResource extends JsonResource
         return [
             'id' => $this->id,
             'code' => $this->code,
-            'status' => $this->status->value,
+            'status' => $this->isExpired() && $this->isActive() ? 'expired' : $this->status->value,
             'max_uses' => $this->max_uses,
             'used_count' => $this->used_count,
             'remaining_uses' => $this->remainingUses(),
@@ -26,6 +26,19 @@ class LeagueInvitationResource extends JsonResource
                 'id' => $this->createdBy->id,
                 'name' => $this->createdBy->name,
             ]),
+            'recipient' => $this->whenLoaded('invitedUser', fn() => [
+                'id' => $this->invitedUser->id,
+                'name' => $this->invitedUser->name,
+            ]),
+            'role' => $this->whenLoaded('role', fn() => [
+                'key' => $this->role->key,
+                'label' => $this->role->label,
+            ]),
+            'league' => $this->whenLoaded('league', fn() => [
+                'id' => $this->league->id,
+                'name' => $this->league->name,
+            ]),
+            'available_actions' => $this->isAvailable() ? ['accept', 'reject'] : [],
         ];
     }
 }

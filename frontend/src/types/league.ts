@@ -1,4 +1,4 @@
-export type LeagueRole = 'commissioner' | 'co_commissioner' | 'participant' | string;
+export type LeagueRole = 'commissioner' | 'co_commissioner' | 'participant';
 
 export type LeagueReference = {
   key: string;
@@ -60,7 +60,7 @@ export type ManageableLeagueRole = 'participant' | 'co_commissioner';
 export type LeagueInvitation = {
   id: number;
   code: string;
-  status: string;
+  status: InvitationStatus;
   max_uses: number | null;
   used_count: number;
   remaining_uses: number | null;
@@ -74,6 +74,18 @@ export type LeagueInvitation = {
     id: number;
     name: string;
   };
+  recipient?: { id: number; name: string };
+  role: { key: InvitationRole; label: string };
+  league?: { id: number; name: string };
+  available_actions: Array<'accept' | 'reject'>;
+};
+
+export type InvitationStatus = 'pending' | 'accepted' | 'rejected' | 'revoked' | 'expired';
+export type InvitationRole = 'participant' | 'co_commissioner';
+export type CreateLeagueInvitationPayload = {
+  email: string;
+  role: InvitationRole;
+  expires_at?: string | null;
 };
 
 export type FantasyTeamOwner = {

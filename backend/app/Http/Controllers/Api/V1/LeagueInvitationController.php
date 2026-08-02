@@ -18,14 +18,14 @@ class LeagueInvitationController extends Controller
     public function index(League $league): AnonymousResourceCollection
     {
         return LeagueInvitationResource::collection(
-            $league->invitations()->with('createdBy')->latest()->paginate()
+            $league->invitations()->with(['createdBy', 'invitedUser', 'role'])->latest()->paginate()
         );
     }
 
     public function store(StoreLeagueInvitationRequest $request, League $league, CreateLeagueInvitationAction $action): JsonResponse
     {
         try {
-            $invitation = $action->handle($league, $request->user(), $request->validated())->load('createdBy');
+            $invitation = $action->handle($league, $request->user(), $request->validated())->load(['createdBy', 'invitedUser', 'role']);
         } catch (LeagueInvitationCapacityExceeded $exception) {
             return response()->json([
                 'message' => $exception->getMessage(),

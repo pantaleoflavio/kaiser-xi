@@ -11,6 +11,7 @@ import { LeaguesPage } from '../pages/LeaguesPage';
 import { RulesPage } from '../pages/RulesPage';
 import { FantasyTeamDetailPage } from '../pages/FantasyTeamDetailPage';
 import { CreateLeaguePage } from '../pages/CreateLeaguePage';
+import { InvitationsPage } from '../pages/InvitationsPage';
 
 export function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ export function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="leagues" element={<LeaguesPage />} />
+          <Route path="invitations" element={<InvitationsPage />} />
           <Route path="leagues/create" element={<CreateLeaguePage />} />
           <Route path="leagues/:leagueId" element={<LeagueDetailPage />} />
           <Route

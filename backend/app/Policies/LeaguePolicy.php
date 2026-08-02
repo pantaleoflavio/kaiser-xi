@@ -20,7 +20,7 @@ class LeaguePolicy
 
     public function manageInvitations(User $user, League $league): bool
     {
-        return $this->hasRole($user, $league, 'commissioner');
+        return $this->hasAnyRole($user, $league, ['commissioner', 'co_commissioner']);
     }
 
     public function manageSettings(User $user, League $league): bool

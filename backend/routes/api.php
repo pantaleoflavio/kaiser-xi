@@ -34,8 +34,11 @@ Route::prefix('v1')->group(function (): void {
     });
 
     Route::middleware('auth:sanctum')->group(function (): void {
+        Route::get('/invitations', [AcceptLeagueInvitationController::class, 'index'])->name('api.v1.invitations.index');
+        Route::post('/invitations/{invitation}/accept', [AcceptLeagueInvitationController::class, 'accept'])->name('api.v1.invitations.accept');
+        Route::post('/invitations/{invitation}/reject', [AcceptLeagueInvitationController::class, 'reject'])->name('api.v1.invitations.reject');
         Route::get('/league-invitations/{code}', [AcceptLeagueInvitationController::class, 'show'])->name('api.v1.league-invitations.show');
-        Route::post('/league-invitations/{code}/accept', [AcceptLeagueInvitationController::class, 'accept'])->name('api.v1.league-invitations.accept');
+        Route::post('/league-invitations/{code}/accept', [AcceptLeagueInvitationController::class, 'acceptCode'])->name('api.v1.league-invitations.accept');
         Route::get('/seasons', [SeasonController::class, 'index'])->name('api.v1.seasons.index');
         Route::get('/league-types', [LeagueTypeController::class, 'index'])->name('api.v1.league-types.index');
     });

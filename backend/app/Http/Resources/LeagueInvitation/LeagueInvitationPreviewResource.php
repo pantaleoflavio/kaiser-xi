@@ -13,6 +13,9 @@ class LeagueInvitationPreviewResource extends JsonResource
 
         return [
             'code' => $this->code,
+            'id' => $this->id,
+            'status' => $this->isExpired() && $this->isActive() ? 'expired' : $this->status->value,
+            'role' => ['key' => $this->role->key, 'label' => $this->role->label],
             'is_available' => $this->isAvailable(),
             'expires_at' => $this->expires_at?->toJSON(),
             'remaining_uses' => $this->remainingUses(),
@@ -33,6 +36,8 @@ class LeagueInvitationPreviewResource extends JsonResource
                 'max_participants' => $league->max_participants,
             ],
             'current_user_is_member' => $league->memberships->contains('user_id', $request->user()->id),
+            'creator' => ['id' => $this->createdBy->id, 'name' => $this->createdBy->name],
+            'available_actions' => $this->isAvailable() ? ['accept', 'reject'] : [],
         ];
     }
 }

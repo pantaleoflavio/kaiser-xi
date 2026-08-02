@@ -14,7 +14,7 @@
       "forbidden": "You do not have permission to perform this action.",
       "notFound": "The requested league, team, or roster player was not found.",
       "conflict": "The request conflicts with the current roster or budget state.",
-      "validation": "Please correct the highlighted validation errors.",
+      "validation": "Please correct the following errors.",
       "unexpected": "An unexpected error occurred."
     },
     "cancel": "Cancel"
@@ -63,7 +63,8 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "rules": "Rules",
-    "leagues": "Leagues"
+    "leagues": "Leagues",
+    "invitations": "Invitations"
   },
   "home": {
     "eyebrow": "Fantasy football a modo tuo",
@@ -252,14 +253,16 @@
       "create": "Create invitation",
       "creating": "Creating...",
       "createError": "Unable to create invitation.",
-      "delete": "Cancel invitation",
+      "delete": "Invitation revoked.",
       "deleting": "Cancelling...",
-      "deleteError": "Unable to cancel invitation.",
+      "deleteError": "Please try again.",
       "status": "Status",
       "used": "Used",
       "remaining": "Remaining",
       "expires": "Expires",
-      "createdBy": "Created by"
+      "createdBy": "Created by",
+      "email": "Email",
+      "invitedRole": "Invited role"
     }
   },
   "fantasyTeams": {
@@ -508,5 +511,29 @@
       "locked": "Locked after activation",
       "editable": "May remain editable after activation"
     }
+  },
+  "invitations": {
+    "eyebrow": "Invitations",
+    "title": "Pending invitations",
+    "loading": "Loading invitations...",
+    "errorTitle": "Invitations could not be loaded",
+    "error": "Please try again.",
+    "emptyTitle": "No pending invitations",
+    "empty": "You have no pending league invitations.",
+    "invitedRole": "Invited role",
+    "inviter": "Invited by",
+    "expiration": "Expiration",
+    "accept": "Accept",
+    "reject": "Reject",
+    "accepted": "Invitation accepted.",
+    "rejected": "Invitation rejected.",
+    "revoked": "Invitation revoked.",
+    "expired": "This invitation has expired.",
+    "processed": "This invitation was already processed.",
+    "member": "You are already a member.",
+    "permission": "You do not have permission to manage this invitation.",
+    "rejectConfirmation": "Reject this invitation?",
+    "revokeConfirmation": "Revoke this invitation?",
+    "viewLeague": "View league"
   }
 }

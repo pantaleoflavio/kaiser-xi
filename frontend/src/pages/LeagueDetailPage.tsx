@@ -110,7 +110,10 @@ export function LeagueDetailPage() {
       </Link>
 
       {navigationState?.success ? (
-        <div className="rounded-xl border border-emerald-400/30 bg-emerald-950/30 p-4 text-sm text-emerald-100" role="status">
+        <div
+          className="rounded-xl border border-emerald-400/30 bg-emerald-950/30 p-4 text-sm text-emerald-100"
+          role="status"
+        >
           {navigationState.success}
         </div>
       ) : null}
@@ -135,14 +138,16 @@ export function LeagueDetailPage() {
           
           <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
             <h2 className="text-2xl font-semibold text-white">{t('leagueDetail.members.title')}</h2>
-              <p className="mt-1 text-sm text-slate-300">{t('leagueDetail.members.description')}</p>
+            <p className="mt-1 text-sm text-slate-300">{t('leagueDetail.members.description')}</p>
             <LeagueMemberList league={data.league} />
           </section>
-          <InvitationManagementPanel
-            initialError={data.invitationsError}
-            initialInvitations={data.invitations}
-            leagueId={data.league.id}
-          />
+          {['commissioner', 'co_commissioner'].includes(data.league.my_role ?? '') ? (
+            <InvitationManagementPanel
+              initialError={data.invitationsError}
+              initialInvitations={data.invitations}
+              leagueId={data.league.id}
+            />
+          ) : null}
         </div>
       ) : null}
     </section>

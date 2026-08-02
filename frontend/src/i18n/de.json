@@ -14,7 +14,7 @@
       "forbidden": "Du hast keine Berechtigung für diese Aktion.",
       "notFound": "Die angefragte Liga, das Team oder der Roster-Spieler wurde nicht gefunden.",
       "conflict": "Die Anfrage steht im Konflikt mit dem aktuellen Roster- oder Budgetstatus.",
-      "validation": "Bitte korrigiere die Validierungsfehler.",
+      "validation": "Bitte korrigiere die folgende Fehler.",
       "unexpected": "Ein unerwarteter Fehler ist aufgetreten."
     },
     "cancel": "Abbrechen"
@@ -63,7 +63,8 @@
     "home": "Startseite",
     "dashboard": "Dashboard",
     "rules": "Regeln",
-    "leagues": "Ligen"
+    "leagues": "Ligen",
+    "invitations": "Einladungen"
   },
   "home": {
     "eyebrow": "Fantasy Football nach deinen Regeln",
@@ -252,14 +253,16 @@
       "create": "Einladung erstellen",
       "creating": "Wird erstellt...",
       "createError": "Einladung konnte nicht erstellt werden.",
-      "delete": "Einladung stornieren",
+      "delete": "Einladung widerrufen",
       "deleting": "Wird storniert...",
-      "deleteError": "Einladung konnte nicht storniert werden.",
+      "deleteError": "Bitte versuche es erneut.",
       "status": "Status",
       "used": "Genutzt",
       "remaining": "Verbleibend",
       "expires": "Läuft ab",
-      "createdBy": "Erstellt von"
+      "createdBy": "Erstellt von",
+      "email": "Email",
+      "invitedRole": "Eingeladene Rolle"
     }
   },
   "fantasyTeams": {
@@ -508,5 +511,29 @@
       "locked": "Nach Aktivierung gesperrt",
       "editable": "Kann nach Aktivierung bearbeitbar bleiben"
     }
+  },
+  "invitations": {
+    "eyebrow": "Einladungen",
+    "title": "Ausstehende Einladungen",
+    "loading": "Einladungen werden geladen...",
+    "errorTitle": "Einladungen konnten nicht geladen werden",
+    "error": "Bitte versuche es erneut.",
+    "emptyTitle": "Keine ausstehenden Einladungen",
+    "empty": "Du hast keine ausstehenden Liga-Einladungen.",
+    "invitedRole": "Eingeladene Rolle",
+    "inviter": "Eingeladen von",
+    "expiration": "Ablauf",
+    "accept": "Annehmen",
+    "reject": "Ablehnen",
+    "accepted": "Einladung angenommen.",
+    "rejected": "Einladung abgelehnt.",
+    "revoked": "Einladung widerrufen.",
+    "expired": "Diese Einladung ist abgelaufen.",
+    "processed": "Diese Einladung wurde bereits bearbeitet.",
+    "member": "Du bist bereits Mitglied.",
+    "permission": "Du darfst diese Einladung nicht verwalten.",
+    "rejectConfirmation": "Diese Einladung ablehnen?",
+    "revokeConfirmation": "Diese Einladung widerrufen?",
+    "viewLeague": "Liga anzeigen"
   }
 }

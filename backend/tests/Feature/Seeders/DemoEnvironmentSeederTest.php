@@ -8,6 +8,7 @@ use App\Models\League;
 use App\Models\LeagueSetting;
 use App\Models\Player;
 use App\Models\RealClub;
+use App\Models\SeasonClub;
 use App\Models\User;
 use Database\Seeders\DemoEnvironmentSeeder;
 use Database\Seeders\DemoLeagueSeeder;
@@ -171,15 +172,20 @@ class DemoEnvironmentSeederTest extends TestCase
             ->where('email', 'demo.participant1@example.com')
             ->firstOrFail();
 
-        $club = RealClub::query()
+        $realClub = RealClub::query()
             ->where('slug', 'demo-dolomiti-athletic')
+            ->firstOrFail();
+
+        $seasonClub = SeasonClub::query()
+            ->where('season_id', $league->season_id)
+            ->where('real_club_id', $realClub->id)
             ->firstOrFail();
 
         $response = $this->actingAs($member)
             ->getJson(
                 "/api/v1/leagues/{$league->id}/eligible-players"
                 . '?role=midfielder'
-                . "&club_id={$club->id}"
+                . "&club_id={$seasonClub->id}"
                 . '&per_page=2'
             )
             ->assertOk()
@@ -192,7 +198,12 @@ class DemoEnvironmentSeederTest extends TestCase
             );
 
             $this->assertSame(
-                $club->id,
+                $seasonClub->id,
+                $eligiblePlayer['club']['id']
+            );
+
+            $this->assertSame(
+                $realClub->id,
                 $eligiblePlayer['club']['real_club_id']
             );
 

@@ -18,6 +18,7 @@ import type {
   RosterPlayerResponse,
   EligiblePlayerCollectionResponse,
   EligiblePlayerFilters,
+  CreateLeagueInvitationPayload,
 } from '../types/league';
 import { apiClient } from './client';
 
@@ -33,11 +34,6 @@ function eligiblePlayerQuery(filters: EligiblePlayerFilters) {
   const value = query.toString();
   return value ? `?${value}` : '';
 }
-
-export type CreateLeagueInvitationPayload = {
-  max_uses?: number | null;
-  expires_at?: string | null;
-};
 
 export const leaguesApi = {
   list: () => apiClient<LeagueCollectionResponse>('/leagues'),
@@ -74,7 +70,7 @@ export const leaguesApi = {
       method: 'POST',
       body: JSON.stringify(payload),
     }),
-  deleteInvitation: (leagueId: string | number, invitationId: string | number) =>
+  revokeInvitation: (leagueId: string | number, invitationId: string | number) =>
     apiClient<void>(`/leagues/${leagueId}/invitations/${invitationId}`, { method: 'DELETE' }),
   fantasyTeams: (leagueId: string | number) =>
     apiClient<FantasyTeamCollectionResponse>(`/leagues/${leagueId}/fantasy-teams`),

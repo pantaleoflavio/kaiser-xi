@@ -306,8 +306,14 @@ class FantasyTeamApiTest extends TestCase
     public function test_accepting_invitation_does_not_create_fantasy_team_automatically(): void
     {
         [$league, $commissioner] = $this->leagueWithMember('commissioner');
-        $invitation = LeagueInvitation::factory()->for($league)->create(['created_by_user_id' => $commissioner->id]);
         $participant = User::factory()->create();
+
+        $invitation = LeagueInvitation::factory()
+            ->for($league)
+            ->create([
+                'created_by_user_id' => $commissioner->id,
+                'invited_user_id' => $participant->id,
+            ]);
 
         Sanctum::actingAs($participant);
 
@@ -322,9 +328,14 @@ class FantasyTeamApiTest extends TestCase
     public function test_member_can_create_fantasy_team_after_accepting_invitation(): void
     {
         [$league, $commissioner] = $this->leagueWithMember('commissioner');
-        $invitation = LeagueInvitation::factory()->for($league)->create(['created_by_user_id' => $commissioner->id]);
         $participant = User::factory()->create();
 
+        $invitation = LeagueInvitation::factory()
+            ->for($league)
+            ->create([
+                'created_by_user_id' => $commissioner->id,
+                'invited_user_id' => $participant->id,
+            ]);
         Sanctum::actingAs($participant);
 
         $this->postJson("/api/v1/league-invitations/{$invitation->code}/accept")->assertCreated();

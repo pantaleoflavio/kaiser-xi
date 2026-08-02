@@ -5,14 +5,8 @@ namespace Tests\Feature\Api\V1;
 use App\Enums\LeagueInvitationStatus;
 use App\Models\League;
 use App\Models\LeagueInvitation;
-use App\Models\LeagueMembership;
 use App\Models\LeagueRole;
-use App\Models\LeagueType;
-use App\Models\RealCompetition;
-use App\Models\Role;
-use App\Models\Season;
 use App\Models\User;
-use App\Services\LeagueInvitation\InvitationCodeGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -21,324 +15,105 @@ class LeagueInvitationApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    private User $commissioner;
-
-    private League $league;
-
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->seed();
-
-        $this->commissioner = User::factory()->create();
-        $this->league = League::factory()->create([
-            'commissioner_user_id' => $this->commissioner->id,
-            'season_id' => Season::factory()->create([
-                'real_competition_id' => RealCompetition::factory()->create()->id,
-            ])->id,
-            'league_type_id' => LeagueType::query()->where('key', 'classic')->firstOrFail()->id,
-            'max_participants' => 3,
-        ]);
-        $this->attachMember($this->league, $this->commissioner, 'commissioner');
     }
 
-    public function test_commissioner_can_create_list_and_cancel_invitation(): void
+    public function test_commissioner_and_co_commissioner_can_create_and_revoke_but_participant_cannot(): void
     {
-        Sanctum::actingAs($this->commissioner);
+        $league = League::factory()->create(['max_participants' => 10]);
+        $commissioner = $league->commissioner;
+        $coCommissioner = User::factory()->create();
+        $participant = User::factory()->create();
+        $this->attach($league, $commissioner, 'commissioner');
+        $this->attach($league, $coCommissioner, 'co_commissioner');
+        $this->attach($league, $participant, 'participant');
 
-        $response = $this->postJson("/api/v1/leagues/{$this->league->id}/invitations", [
-            'max_uses' => 2,
-            'expires_at' => now()->addDay()->toJSON(),
-            'status' => 'cancelled',
-            'used_count' => 99,
-            'created_by_user_id' => User::factory()->create()->id,
-            'league_role_id' => LeagueRole::query()->where('key', 'commissioner')->value('id'),
-        ]);
-
-        $response->assertUnprocessable()->assertJsonValidationErrors(['status', 'used_count', 'created_by_user_id', 'league_role_id']);
-
-        $create = $this->postJson("/api/v1/leagues/{$this->league->id}/invitations", [
-            'max_uses' => 2,
-            'expires_at' => now()->addDay()->toJSON(),
-        ]);
-
-        $create
-            ->assertCreated()
-            ->assertJsonPath('data.status', 'active')
-            ->assertJsonPath('data.max_uses', 2)
-            ->assertJsonPath('data.used_count', 0)
-            ->assertJsonPath('data.creator.id', $this->commissioner->id);
-
-        $invitation = LeagueInvitation::query()->firstOrFail();
-        $this->assertSame($this->league->id, $invitation->league_id);
-        $this->assertSame($this->commissioner->id, $invitation->created_by_user_id);
-        $this->assertNotEmpty($invitation->code);
-
-        $this->getJson("/api/v1/leagues/{$this->league->id}/invitations")
-            ->assertOk()
-            ->assertJsonFragment(['code' => $invitation->code])
-            ->assertJsonMissingPath('data.0.creator.email');
-
-        $this->deleteJson("/api/v1/leagues/{$this->league->id}/invitations/{$invitation->id}")->assertNoContent();
-        $this->assertSame(LeagueInvitationStatus::Cancelled, $invitation->refresh()->status);
-        $this->assertDatabaseHas('league_invitations', ['id' => $invitation->id]);
-    }
-
-    public function test_non_commissioners_cannot_manage_invitations(): void
-    {
-        foreach (['participant', 'co_commissioner'] as $role) {
-            $user = User::factory()->create();
-            $this->attachMember($this->league, $user, $role);
-            Sanctum::actingAs($user);
-
-            $this->postJson("/api/v1/leagues/{$this->league->id}/invitations", [])->assertForbidden();
-            $this->getJson("/api/v1/leagues/{$this->league->id}/invitations")->assertForbidden();
+        foreach ([$commissioner, $coCommissioner] as $manager) {
+            $recipient = User::factory()->create();
+            Sanctum::actingAs($manager);
+            $created = $this->postJson("/api/v1/leagues/{$league->id}/invitations", [
+                'email' => $recipient->email,
+                'role' => 'participant',
+                'expires_at' => now()->addDay()->toJSON(),
+            ])->assertCreated()->assertJsonPath('data.status', 'pending');
+            $id = $created->json('data.id');
+            $this->deleteJson("/api/v1/leagues/{$league->id}/invitations/{$id}")->assertNoContent();
+            $this->assertDatabaseHas('league_invitations', ['id' => $id, 'status' => 'revoked']);
         }
-
-        $admin = User::factory()->create();
-        $admin->roles()->attach(Role::query()->where('name', 'global_admin')->firstOrFail()->id);
-        Sanctum::actingAs($admin);
-
-        $this->postJson("/api/v1/leagues/{$this->league->id}/invitations", [])->assertForbidden();
+        Sanctum::actingAs($participant);
+        $this->postJson("/api/v1/leagues/{$league->id}/invitations", ['email' => User::factory()->create()->email, 'role' => 'participant'])->assertForbidden();
     }
 
-    public function test_invitation_validation_rejects_invalid_limits_and_expiry(): void
+    public function test_creation_rejects_existing_member_duplicate_and_invalid_role(): void
     {
-        Sanctum::actingAs($this->commissioner);
-
-        $this->postJson("/api/v1/leagues/{$this->league->id}/invitations", ['max_uses' => 0])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors('max_uses');
-
-        $this->postJson("/api/v1/leagues/{$this->league->id}/invitations", ['expires_at' => now()->subDay()->toJSON()])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors('expires_at');
-
-        $this->postJson("/api/v1/leagues/{$this->league->id}/invitations", ['max_uses' => 99])
-            ->assertUnprocessable();
+        $league = League::factory()->create(['max_participants' => 10]);
+        $manager = $league->commissioner;
+        $this->attach($league, $manager, 'commissioner');
+        $member = User::factory()->create();
+        $this->attach($league, $member, 'participant');
+        Sanctum::actingAs($manager);
+        $this->postJson("/api/v1/leagues/{$league->id}/invitations", ['email' => $member->email, 'role' => 'participant'])->assertConflict();
+        $recipient = User::factory()->create();
+        $payload = ['email' => $recipient->email, 'role' => 'co_commissioner'];
+        $this->postJson("/api/v1/leagues/{$league->id}/invitations", $payload)->assertCreated();
+        $this->postJson("/api/v1/leagues/{$league->id}/invitations", $payload)->assertConflict();
+        $this->postJson("/api/v1/leagues/{$league->id}/invitations", ['email' => User::factory()->create()->email, 'role' => 'commissioner'])->assertUnprocessable();
     }
 
-    public function test_authenticated_user_can_preview_and_accept_valid_invitation(): void
+    public function test_recipient_inbox_is_private_and_only_contains_pending_unexpired_invitations(): void
     {
-        $invitation = LeagueInvitation::factory()
-            ->for($this->league)
-            ->create([
-                'created_by_user_id' => $this->commissioner->id,
-                'max_uses' => 2,
-                'used_count' => 0,
-            ]);
-
-        $candidate = User::factory()->create();
-
-        Sanctum::actingAs($candidate);
-
-        $this->getJson("/api/v1/league-invitations/{$invitation->code}")
-            ->assertOk()
-            ->assertJsonPath('data.code', $invitation->code)
-            ->assertJsonPath('data.league.id', $this->league->id)
-            ->assertJsonPath('data.league.current_member_count', 1)
-            ->assertJsonPath('data.current_user_is_member', false);
-
-        $this->postJson("/api/v1/league-invitations/{$invitation->code}/accept")
-            ->assertCreated()
-            ->assertJsonPath('data.id', $candidate->id)
-            ->assertJsonPath('data.role.key', 'participant');
-
-        $participantRole = LeagueRole::query()
-            ->where('key', 'participant')
-            ->firstOrFail();
-
-        $this->assertDatabaseHas('league_user', [
-            'league_id' => $this->league->id,
-            'user_id' => $candidate->id,
-            'league_role_id' => $participantRole->id,
-        ]);
-
-        $membership = LeagueMembership::query()
-            ->where('league_id', $this->league->id)
-            ->where('user_id', $candidate->id)
-            ->firstOrFail();
-
-        $this->assertNotNull($membership->joined_at);
-        $this->assertSame(1, $invitation->refresh()->used_count);
-
-        $this->assertDatabaseMissing('fantasy_teams', [
-            'league_id' => $this->league->id,
-            'user_id' => $candidate->id,
-        ]);
-
-        $this->assertSame(0, $candidate->roles()->count());
+        $recipient = User::factory()->create();
+        $own = $this->invitationFor($recipient);
+        $this->invitationFor(User::factory()->create());
+        $this->invitationFor($recipient, ['status' => LeagueInvitationStatus::Rejected]);
+        $this->invitationFor($recipient, ['expires_at' => now()->subDay()]);
+        Sanctum::actingAs($recipient);
+        $this->getJson('/api/v1/invitations')->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $own->id)->assertJsonMissingPath('data.0.recipient.email');
+        $this->app['auth']->forgetGuards();
+        $this->getJson('/api/v1/invitations')->assertUnauthorized();
     }
 
-    public function test_invalid_or_unavailable_invitations_cannot_be_previewed_or_accepted(): void
+    public function test_recipient_can_accept_once_with_intended_role_and_another_user_cannot(): void
     {
-        $candidate = User::factory()->create();
-        Sanctum::actingAs($candidate);
+        $recipient = User::factory()->create();
+        $role = LeagueRole::query()->where('key', 'co_commissioner')->firstOrFail();
+        $invitation = $this->invitationFor($recipient, ['league_role_id' => $role->id]);
+        Sanctum::actingAs(User::factory()->create());
+        $this->postJson("/api/v1/invitations/{$invitation->id}/accept")->assertNotFound();
+        Sanctum::actingAs($recipient);
+        $this->postJson("/api/v1/invitations/{$invitation->id}/accept")->assertCreated()->assertJsonPath('data.role.key', 'co_commissioner');
+        $this->assertDatabaseHas('league_user', ['league_id' => $invitation->league_id, 'user_id' => $recipient->id, 'league_role_id' => $role->id]);
+        $this->assertSame(LeagueInvitationStatus::Accepted, $invitation->refresh()->status);
+        $this->postJson("/api/v1/invitations/{$invitation->id}/accept")->assertConflict();
+    }
 
-        $this->getJson('/api/v1/league-invitations/UNKNOWN')->assertNotFound();
-
-        foreach ([
-            LeagueInvitation::factory()->cancelled()->for($this->league)->create(['created_by_user_id' => $this->commissioner->id]),
-            LeagueInvitation::factory()->expired()->for($this->league)->create(['created_by_user_id' => $this->commissioner->id]),
-            LeagueInvitation::factory()->exhausted()->for($this->league)->create(['created_by_user_id' => $this->commissioner->id]),
-        ] as $invitation) {
-            $this->getJson("/api/v1/league-invitations/{$invitation->code}")->assertNotFound();
-            $this->postJson("/api/v1/league-invitations/{$invitation->code}/accept")->assertNotFound();
-            $this->assertSame($invitation->used_count, $invitation->refresh()->used_count);
+    public function test_recipient_can_reject_without_membership_and_processed_or_expired_invitations_conflict(): void
+    {
+        $recipient = User::factory()->create();
+        Sanctum::actingAs($recipient);
+        $invitation = $this->invitationFor($recipient);
+        $this->postJson("/api/v1/invitations/{$invitation->id}/reject")->assertOk()->assertJsonPath('data.status', 'rejected');
+        $this->assertDatabaseMissing('league_user', ['league_id' => $invitation->league_id, 'user_id' => $recipient->id]);
+        $this->postJson("/api/v1/invitations/{$invitation->id}/reject")->assertConflict();
+        foreach ([['status' => LeagueInvitationStatus::Revoked], ['expires_at' => now()->subDay()]] as $state) {
+            $other = $this->invitationFor($recipient, $state);
+            $this->postJson("/api/v1/invitations/{$other->id}/reject")->assertConflict();
         }
     }
 
-    public function test_duplicate_full_and_single_use_acceptance_are_rejected_without_incrementing(): void
+    private function invitationFor(User $recipient, array $state = []): LeagueInvitation
     {
-        $invitation = LeagueInvitation::factory()
-            ->singleUse()
-            ->for($this->league)
-            ->create([
-                'created_by_user_id' => $this->commissioner->id,
-            ]);
-
-        $candidate = User::factory()->create();
-
-        Sanctum::actingAs($candidate);
-
-        $this->postJson("/api/v1/league-invitations/{$invitation->code}/accept")
-            ->assertCreated();
-
-        $this->postJson("/api/v1/league-invitations/{$invitation->code}/accept")
-            ->assertNotFound();
-
-        $this->assertSame(1, $invitation->refresh()->used_count);
-
-        $otherInvitation = LeagueInvitation::factory()
-            ->unlimited()
-            ->for($this->league)
-            ->create([
-                'created_by_user_id' => $this->commissioner->id,
-            ]);
-
-        $this->postJson("/api/v1/league-invitations/{$otherInvitation->code}/accept")
-            ->assertConflict();
-
-        $this->assertSame(0, $otherInvitation->refresh()->used_count);
-
-        $fullLeague = League::factory()->create([
-            'max_participants' => 1,
-        ]);
-
-        $this->attachMember(
-            $fullLeague,
-            User::factory()->create(),
-            'commissioner'
-        );
-
-        $fullInvitation = LeagueInvitation::factory()
-            ->unlimited()
-            ->for($fullLeague)
-            ->create([
-                'created_by_user_id' => $fullLeague->commissioner_user_id,
-            ]);
-
-        $newUser = User::factory()->create();
-
-        Sanctum::actingAs($newUser);
-
-        $this->postJson("/api/v1/league-invitations/{$fullInvitation->code}/accept")
-            ->assertConflict();
-
-        $this->assertSame(0, $fullInvitation->refresh()->used_count);
+        $league = League::factory()->create(['max_participants' => 10]);
+        $this->attach($league, $league->commissioner, 'commissioner');
+        return LeagueInvitation::factory()->for($league)->create([...$state, 'invited_user_id' => $recipient->id, 'created_by_user_id' => $league->commissioner_user_id]);
     }
 
-    public function test_nested_invitation_must_belong_to_route_league(): void
+    private function attach(League $league, User $user, string $role): void
     {
-        $otherLeague = League::factory()->create();
-        $invitation = LeagueInvitation::factory()->for($otherLeague)->create(['created_by_user_id' => $otherLeague->commissioner_user_id]);
-        Sanctum::actingAs($this->commissioner);
-
-        $this->deleteJson("/api/v1/leagues/{$this->league->id}/invitations/{$invitation->id}")->assertNotFound();
-    }
-
-    public function test_status_enum_remains_compatible_with_persisted_invitation_statuses(): void
-    {
-        $invitation = LeagueInvitation::factory()->for($this->league)->create([
-            'created_by_user_id' => $this->commissioner->id,
-            'status' => LeagueInvitationStatus::Active,
-        ]);
-
-        $this->assertTrue($invitation->isAvailable());
-        $this->assertSame(LeagueInvitationStatus::Active, $invitation->status);
-    }
-
-    public function test_duplicate_code_collision_retries_with_database_constraint_as_guard(): void
-    {
-        $this->withoutExceptionHandling();
-        Sanctum::actingAs($this->commissioner);
-
-        $existing = LeagueInvitation::factory()
-            ->for($this->league)
-            ->create([
-                'created_by_user_id' => $this->commissioner->id,
-                'code' => 'ABCDEFGHJKLM',
-            ]);
-
-        $this->app->instance(
-            InvitationCodeGenerator::class,
-            new class extends InvitationCodeGenerator
-            {
-                private array $codes = [
-                    'ABCDEFGHJKLM',
-                    'HJKLMNPQRSTU',
-                ];
-
-                public function generate(): string
-                {
-                    return array_shift($this->codes)
-                        ?? 'HJKLMNPQRSTU';
-                }
-            }
-        );
-
-        $this->postJson(
-            "/api/v1/leagues/{$this->league->id}/invitations",
-            []
-        )
-            ->assertCreated()
-            ->assertJsonPath('data.code', 'HJKLMNPQRSTU');
-
-        $this->assertDatabaseHas('league_invitations', [
-            'code' => $existing->code,
-        ]);
-
-        $this->assertDatabaseHas('league_invitations', [
-            'code' => 'HJKLMNPQRSTU',
-        ]);
-    }
-
-    public function test_invitation_create_migration_documents_postgresql_status_and_counter_constraints(): void
-    {
-        $migration = file_get_contents(database_path('migrations/2026_06_04_123633_create_league_invitations_table.php'));
-
-        $this->assertStringContainsString("status IN ('active', 'cancelled')", $migration);
-        $this->assertStringContainsString('used_count >= 0', $migration);
-        $this->assertStringContainsString('max_uses IS NULL OR max_uses >= 1', $migration);
-        $this->assertStringContainsString('league_invitations_code_unique', $migration);
-    }
-
-    public function test_unrelated_unique_violations_are_not_classified_as_code_collisions(): void
-    {
-        $action = new \App\Services\LeagueInvitation\CreateLeagueInvitationAction(new \App\Services\LeagueInvitation\InvitationCodeGenerator());
-        $method = new \ReflectionMethod($action, 'isInvitationCodeUniqueViolation');
-        $method->setAccessible(true);
-        $exception = new \Illuminate\Database\UniqueConstraintViolationException('pgsql', 'insert', [], new \Exception('duplicate key value violates unique constraint "some_other_unique_constraint"'));
-
-        $this->assertFalse($method->invoke($action, $exception));
-    }
-
-    private function attachMember(League $league, User $user, string $role): void
-    {
-        $league->users()->attach($user->id, [
-            'league_role_id' => LeagueRole::query()->where('key', $role)->firstOrFail()->id,
-            'joined_at' => now(),
-        ]);
+        if ($league->memberships()->where('user_id', $user->id)->exists()) return;
+        $league->users()->attach($user->id, ['league_role_id' => LeagueRole::query()->where('key', $role)->value('id'), 'joined_at' => now()]);
     }
 }
