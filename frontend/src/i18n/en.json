@@ -189,6 +189,7 @@
     },
     "members": {
       "title": "Members",
+      "description": "View league members and manage their roles and participation.",
       "error": "Unable to load members.",
       "errorTitle": "Unable to load members",
       "emptyTitle": "No members found",

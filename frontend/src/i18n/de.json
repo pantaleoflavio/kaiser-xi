@@ -189,6 +189,7 @@
     },
     "members": {
       "title": "Mitglieder",
+      "description": "Sieh dir die Ligamitglieder an und verwalte ihre Rollen und Teilnahme.",
       "error": "Mitglieder konnten nicht geladen werden.",
       "errorTitle": "Mitglieder konnten nicht geladen werden",
       "emptyTitle": "Keine Mitglieder gefunden",

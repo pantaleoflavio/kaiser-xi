@@ -137,6 +137,7 @@
     },
     "members": {
       "title": "Membri",
+      "description": "Visualizza i partecipanti alla lega e gestisci i loro ruoli e la loro partecipazione.",
       "error": "Impossibile caricare i membri.",
       "errorTitle": "Impossibile caricare i membri",
       "emptyTitle": "Nessun membro trovato",

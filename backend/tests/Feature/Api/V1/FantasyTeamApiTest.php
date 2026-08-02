@@ -240,22 +240,30 @@ class FantasyTeamApiTest extends TestCase
 
         Sanctum::actingAs($owner);
 
-        $this->patchJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}", ['name' => 'New Name'])
+        $this->patchJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}", ['name' => ' New Name '])
             ->assertOk()
             ->assertJsonPath('data.name', 'New Name')
             ->assertJsonPath('data.slug', 'new-name');
+
+        $this->assertDatabaseHas('fantasy_teams', [
+            'id' => $team->id,
+            'name' => 'New Name',
+            'slug' => 'new-name',
+        ]);
     }
 
-    public function test_other_members_commissioner_and_global_admin_cannot_rename_fantasy_team(): void
+    public function test_other_members_league_managers_and_global_admin_cannot_rename_fantasy_team(): void
     {
         [$league, $owner] = $this->leagueWithMember('participant');
         $other = User::factory()->create();
         $commissioner = User::factory()->create();
+        $coCommissioner = User::factory()->create();
         $this->attachMember($league, $other, 'participant');
         $this->attachMember($league, $commissioner, 'commissioner');
+        $this->attachMember($league, $coCommissioner, 'co_commissioner');
         $team = $this->teamForMember($league, $owner);
 
-        foreach ([$other, $commissioner, $this->globalAdmin()] as $user) {
+        foreach ([$other, $commissioner, $coCommissioner, $this->globalAdmin()] as $user) {
             Sanctum::actingAs($user);
 
             $this->patchJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}", ['name' => 'Hacked'])->assertForbidden();
@@ -284,9 +292,34 @@ class FantasyTeamApiTest extends TestCase
             'id' => $team->id,
             'league_id' => $league->id,
             'user_id' => $owner->id,
+            'name' => $team->name,
+            'slug' => $team->slug,
             'budget' => '500.00',
             'remaining_budget' => '500.00',
             'logo_path' => null,
+        ]);
+    }
+
+    public function test_rename_slug_collisions_use_the_existing_incrementing_suffix_rule(): void
+    {
+        [$league, $owner] = $this->leagueWithMember();
+        $otherOwner = User::factory()->create();
+        $this->attachMember($league, $otherOwner, 'participant');
+        $team = $this->teamForMember($league, $owner, ['name' => 'Old Name', 'slug' => 'old-name']);
+        $this->teamForMember($league, $otherOwner, ['name' => 'Shared Name', 'slug' => 'shared-name']);
+
+        Sanctum::actingAs($owner);
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}", [
+            'name' => 'Shared Name',
+        ])->assertOk()
+            ->assertJsonPath('data.name', 'Shared Name')
+            ->assertJsonPath('data.slug', 'shared-name-2');
+
+        $this->assertDatabaseHas('fantasy_teams', [
+            'id' => $team->id,
+            'name' => 'Shared Name',
+            'slug' => 'shared-name-2',
         ]);
     }
 
