@@ -68,7 +68,7 @@ export function InvitationManagementPanel({
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
       <h2 className="text-2xl font-semibold text-white">{t('leagueDetail.invitations.title')}</h2>
-      <p className="mt-1 text-sm text-slate-300">{t('leagueDetail.invitations.description')}</p>
+      <p className="mt-1 text-sm text-slate-300">{t('leagueDetail.invitations.emptyDescription')}</p>
       <form className="mt-5 grid gap-3 md:grid-cols-[1fr_1fr_auto]" onSubmit={create}>
         <label className="text-sm text-slate-300">
           {t('leagueDetail.invitations.maxUses')}
@@ -76,7 +76,7 @@ export function InvitationManagementPanel({
             className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
             min="1"
             onChange={(e) => setMaxUses(e.target.value)}
-            placeholder={t('leagueDetail.invitations.unlimitedPlaceholder')}
+            placeholder={t('leagueDetail.invitations.unlimitedUses')}
             type="number"
             value={maxUses}
           />

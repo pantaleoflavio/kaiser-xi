@@ -4,6 +4,12 @@ export const leagueKeys = {
   detail: (leagueId: string | number) => [...leagueKeys.all, 'detail', String(leagueId)] as const,
   settings: (leagueId: string | number) =>
     [...leagueKeys.all, 'settings', String(leagueId)] as const,
-  seasons: ['league-create', 'seasons'] as const,
-  types: ['league-create', 'types'] as const,
+  seasons: (active: boolean) => ['league-create', 'seasons', { active }] as const,
+  types: () => ['league-create', 'league-types'] as const,
+};
+
+export const leagueMutationKeys = {
+  create: ['leagues', 'create'] as const,
+  settings: (leagueId: string | number) =>
+    ['leagues', 'settings', String(leagueId), 'update'] as const,
 };

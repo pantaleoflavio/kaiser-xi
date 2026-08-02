@@ -444,14 +444,13 @@
       "back": "Zurück",
       "saveRules": "Regeln speichern",
       "saving": "Wird gespeichert…",
-      "retry": "Erneut versuchen"
-    },
-    "options": {
-      "title": "Auswahldaten nicht verfügbar",
-      "unavailable": "Das Backend stellt derzeit keine Endpunkte zur Auswahl von Saisons und Ligatypen bereit. Die Ligaerstellung bleibt deaktiviert, bis echte Optionen verfügbar sind."
+      "retry": "Erneut versuchen",
+      "retryLoading": "Erneut laden"
     },
     "loading": {
-      "defaults": "Gespeicherte Standardregeln werden geladen…"
+      "defaults": "Gespeicherte Standardregeln werden geladen…",
+      "seasons": "Aktive Saisons werden geladen…",
+      "leagueTypes": "Ligatypen werden geladen…"
     },
     "success": {
       "created": "Liga erfolgreich erstellt. Die gespeicherten Standardregeln werden unten angezeigt.",
@@ -460,7 +459,8 @@
     "partial": {
       "title": "Die Liga wurde erstellt, aber die Regeln wurden nicht gespeichert",
       "message": "Die Liga besteht mit den Standardeinstellungen. Behebe den Fehler und versuche es erneut; es wird keine weitere Liga erstellt.",
-      "viewLeague": "Erstellte Liga anzeigen"
+      "viewLeague": "Erstellte Liga anzeigen",
+      "loadTitle": "Die Liga wurde erstellt, aber ihre gespeicherten Regeln konnten nicht geladen werden. Lade erneut, ohne eine weitere Liga zu erstellen."
     },
     "validation": {
       "nameRequired": "Der Liganame ist erforderlich.",
@@ -471,7 +471,10 @@
       "refund": "Der Erstattungssatz muss eine ganze Zahl zwischen 0 und 100 sein.",
       "rosterMaximum": "Die maximale Kadergröße muss eine positive ganze Zahl sein.",
       "roleLimit": "Jedes Positionslimit muss eine nicht negative ganze Zahl sein.",
-      "roleTotal": "Die Summe der Positionslimits muss mindestens der maximalen Kadergröße entsprechen."
+      "roleTotal": "Die Summe der Positionslimits muss mindestens der maximalen Kadergröße entsprechen.",
+      "nameLength": "Der Liganame darf höchstens 255 Zeichen lang sein.",
+      "descriptionLength": "Die Beschreibung darf höchstens 5.000 Zeichen lang sein.",
+      "mutability": "Lege fest, ob jede Regelgruppe bearbeitbar bleibt."
     },
     "errors": {
       "authentication": "Eine Anmeldung ist erforderlich. Bitte melde dich erneut an.",
@@ -481,7 +484,29 @@
       "conflict": "Die Anfrage steht im Konflikt mit dem aktuellen Ligastatus.",
       "validation": "Bitte korrigiere die markierten Felder.",
       "unexpected": "Die Anfrage konnte nicht abgeschlossen werden. Versuche es erneut.",
-      "commissionerUnverified": "Die Liga wurde erstellt, aber das Backend hat dich nicht als Commissioner erkannt."
+      "commissionerUnverified": "Die Liga wurde erstellt, aber das Backend hat dich nicht als Commissioner erkannt.",
+      "server": "Der Server konnte die Anfrage nicht abschließen. Versuche es erneut.",
+      "network": "Die Anfrage konnte nicht abgeschlossen werden. Prüfe deine Verbindung und versuche es erneut."
+    },
+    "lookups": {
+      "seasonsUnavailable": "Saisons sind derzeit nicht verfügbar.",
+      "typesUnavailable": "Ligatypen sind derzeit nicht verfügbar.",
+      "noActiveSeasons": "Es sind keine aktiven Saisons verfügbar. Für die Ligaerstellung ist eine aktive Saison erforderlich.",
+      "noLeagueTypes": "Es sind keine Ligatypen verfügbar."
+    },
+    "leagueTypes": {
+      "classic": "Klassisch",
+      "formula_one": "Formel 1",
+      "head_to_head": "Direktes Duell"
+    },
+    "flexibility": {
+      "title": "Regelflexibilität",
+      "help": "Während der Einrichtung können Regeln bearbeitet werden. Nach der Aktivierung sind gesperrte Gruppen unveränderlich; flexible Gruppen können gemäß den Kompatibilitätsregeln des Backends bearbeitbar bleiben.",
+      "budget": "Budgetregeln",
+      "rosterSize": "Kadergröße",
+      "roleLimits": "Limits pro Position",
+      "locked": "Nach Aktivierung gesperrt",
+      "editable": "Kann nach Aktivierung bearbeitbar bleiben"
     }
   }
 }

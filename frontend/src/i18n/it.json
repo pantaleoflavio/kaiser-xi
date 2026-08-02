@@ -392,14 +392,17 @@
       "back": "Indietro",
       "saveRules": "Salva regole",
       "saving": "Salvataggio…",
-      "retry": "Riprova"
+      "retry": "Riprova",
+      "retryLoading": "Riprova il caricamento"
     },
     "options": {
       "title": "Dati di selezione non disponibili",
       "unavailable": "Il backend non fornisce ancora endpoint per selezionare stagioni e tipi di lega. La creazione è disabilitata finché non saranno disponibili opzioni reali."
     },
     "loading": {
-      "defaults": "Caricamento delle regole predefinite salvate…"
+      "defaults": "Caricamento delle regole predefinite salvate…",
+      "seasons": "Caricamento delle stagioni attive…",
+      "leagueTypes": "Caricamento dei tipi di lega…"
     },
     "success": {
       "created": "Lega creata con successo. Le regole predefinite salvate sono mostrate qui sotto.",
@@ -408,7 +411,8 @@
     "partial": {
       "title": "La lega è stata creata, ma le regole non sono state salvate",
       "message": "La lega esiste con le impostazioni predefinite. Correggi l’errore e riprova; non verrà creata un’altra lega.",
-      "viewLeague": "Visualizza la lega creata"
+      "viewLeague": "Visualizza la lega creata",
+      "loadTitle": "La lega è stata creata, ma non è stato possibile caricarne le regole salvate. Riprova senza creare un’altra lega."
     },
     "validation": {
       "nameRequired": "Il nome della lega è obbligatorio.",
@@ -419,7 +423,10 @@
       "refund": "La percentuale di rimborso deve essere un intero da 0 a 100.",
       "rosterMaximum": "La dimensione massima della rosa deve essere un intero positivo.",
       "roleLimit": "Ogni limite di ruolo deve essere un intero non negativo.",
-      "roleTotal": "La somma dei limiti di ruolo deve essere almeno pari alla dimensione massima della rosa."
+      "roleTotal": "La somma dei limiti di ruolo deve essere almeno pari alla dimensione massima della rosa.",
+      "nameLength": "Il nome della lega non può superare 255 caratteri.",
+      "descriptionLength": "La descrizione non può superare 5.000 caratteri.",
+      "mutability": "Scegli se ogni gruppo di regole resta modificabile."
     },
     "errors": {
       "authentication": "È necessario autenticarsi. Accedi nuovamente.",
@@ -429,7 +436,29 @@
       "conflict": "La richiesta è in conflitto con lo stato attuale della lega.",
       "validation": "Correggi i campi evidenziati.",
       "unexpected": "Impossibile completare la richiesta. Riprova.",
-      "commissionerUnverified": "La lega è stata creata, ma il backend non ti identifica come commissioner."
+      "commissionerUnverified": "La lega è stata creata, ma il backend non ti identifica come commissioner.",
+      "server": "Il server non ha potuto completare la richiesta. Riprova.",
+      "network": "Impossibile completare la richiesta. Controlla la connessione e riprova."
+    },
+    "lookups": {
+      "seasonsUnavailable": "Le stagioni non sono al momento disponibili.",
+      "typesUnavailable": "I tipi di lega non sono al momento disponibili.",
+      "noActiveSeasons": "Non sono disponibili stagioni attive. Per creare una lega è necessaria una stagione attiva.",
+      "noLeagueTypes": "Non sono disponibili tipi di lega."
+    },
+    "leagueTypes": {
+      "classic": "Classica",
+      "formula_one": "Formula 1",
+      "head_to_head": "Testa a testa"
+    },
+    "flexibility": {
+      "title": "Flessibilità delle regole",
+      "help": "Le regole sono modificabili durante la configurazione. Dopo l’attivazione, i gruppi bloccati non possono cambiare; quelli flessibili possono restare modificabili secondo le regole di compatibilità del backend.",
+      "budget": "Regole del budget",
+      "rosterSize": "Dimensione della rosa",
+      "roleLimits": "Limiti per ruolo",
+      "locked": "Bloccato dopo l’attivazione",
+      "editable": "Può restare modificabile dopo l’attivazione"
     }
   }
 }

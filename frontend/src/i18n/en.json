@@ -444,14 +444,13 @@
       "back": "Back",
       "saveRules": "Save rules",
       "saving": "Saving…",
-      "retry": "Retry"
-    },
-    "options": {
-      "title": "Selection data unavailable",
-      "unavailable": "The backend does not currently provide season and league-type selection endpoints. League creation is disabled until those real options are available."
+      "retry": "Retry",
+      "retryLoading": "Retry loading"
     },
     "loading": {
-      "defaults": "Loading persisted default rules…"
+      "defaults": "Loading persisted default rules…",
+      "seasons": "Loading active seasons…",
+      "leagueTypes": "Loading league types…"
     },
     "success": {
       "created": "League created successfully. The persisted default rules are shown below.",
@@ -460,7 +459,8 @@
     "partial": {
       "title": "The league was created, but its rules were not saved",
       "message": "The league still exists with its default settings. Correct the error and retry; this will not create another league.",
-      "viewLeague": "View created league"
+      "viewLeague": "View created league",
+      "loadTitle": "The league was created, but its saved rules could not be loaded. Retry loading without creating another league."
     },
     "validation": {
       "nameRequired": "League name is required.",
@@ -471,7 +471,10 @@
       "refund": "Refund percentage must be an integer from 0 to 100.",
       "rosterMaximum": "Maximum roster size must be a positive integer.",
       "roleLimit": "Each role limit must be a non-negative integer.",
-      "roleTotal": "The sum of role limits must be at least the maximum roster size."
+      "roleTotal": "The sum of role limits must be at least the maximum roster size.",
+      "nameLength": "League name must be 255 characters or fewer.",
+      "descriptionLength": "Description must be 5,000 characters or fewer.",
+      "mutability": "Choose whether each rule group remains editable."
     },
     "errors": {
       "authentication": "Authentication is required. Please sign in again.",
@@ -481,7 +484,29 @@
       "conflict": "The request conflicts with the league’s current state.",
       "validation": "Please correct the highlighted fields.",
       "unexpected": "The request could not be completed. Please try again.",
-      "commissionerUnverified": "The league was created, but the backend did not identify you as its commissioner."
+      "commissionerUnverified": "The league was created, but the backend did not identify you as its commissioner.",
+      "server": "The server could not complete the request. Please try again.",
+      "network": "The request could not be completed. Check your connection and try again."
+    },
+    "lookups": {
+      "seasonsUnavailable": "Seasons are currently unavailable.",
+      "typesUnavailable": "League types are currently unavailable.",
+      "noActiveSeasons": "No active seasons are available. League creation requires an active season.",
+      "noLeagueTypes": "No league types are available."
+    },
+    "leagueTypes": {
+      "classic": "Classic",
+      "formula_one": "Formula One",
+      "head_to_head": "Head to head"
+    },
+    "flexibility": {
+      "title": "Rule flexibility",
+      "help": "Rules are editable during setup. After activation, locked groups cannot change; flexible groups may remain editable when backend compatibility rules allow it.",
+      "budget": "Budget rules",
+      "rosterSize": "Roster size",
+      "roleLimits": "Per-role limits",
+      "locked": "Locked after activation",
+      "editable": "May remain editable after activation"
     }
   }
 }

@@ -31,17 +31,23 @@ export type CreateLeaguePayload = {
   max_participants?: number;
 };
 
-export type SeasonOption = {
+export type Season = {
   id: number;
   name: string;
-  competition: { id: number; name: string };
+  starts_at: string;
+  ends_at: string;
+  is_active: boolean;
+  competition: { id: number; name: string; code: string };
 };
 
-export type LeagueTypeOption = {
+export type LeagueType = {
   id: number;
   key: string;
   label: string;
 };
+
+export type SeasonCollectionResponse = { data: Season[] };
+export type LeagueTypeCollectionResponse = { data: LeagueType[] };
 
 export type LeagueMember = {
   id: number;
@@ -97,6 +103,13 @@ export type LeagueSettings = {
   release_refund_percentage: string | number | null;
   max_roster_players: number;
   roster_role_limits: RosterRoleLimits;
+  budget_rules_mutable: boolean;
+  roster_size_mutable: boolean;
+  roster_role_limits_mutable: boolean;
+  status: string;
+  can_update_settings: boolean;
+  can_activate: boolean;
+  locked_rule_groups: string[];
 };
 
 export type PlayerRoleKey = 'goalkeeper' | 'defender' | 'midfielder' | 'forward';
@@ -108,6 +121,9 @@ export type LeagueSettingsPayload = Partial<{
   release_refund_percentage: number;
   max_roster_players: number;
   roster_role_limits: RosterRoleLimits;
+  budget_rules_mutable: boolean;
+  roster_size_mutable: boolean;
+  roster_role_limits_mutable: boolean;
 }>;
 
 export type RosterPlayer = {
