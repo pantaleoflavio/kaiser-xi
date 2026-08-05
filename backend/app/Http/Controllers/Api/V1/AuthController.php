@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Http\Requests\Auth\UpdateProfileRequest;
+use App\Http\Requests\Auth\UpdatePasswordRequest;
 
 class AuthController extends Controller
 {
@@ -67,6 +69,30 @@ class AuthController extends Controller
     {
         return new UserResource($request->user()->load('roles'));
     }
+
+    public function updateProfile(UpdateProfileRequest $request): UserResource
+    {
+        $user = $request->user();
+        $validated = $request->safe()->only(['name', 'email']);
+
+        if (array_key_exists('email', $validated) && $validated['email'] !== $user->email) {
+            $validated['email_verified_at'] = null;
+        }
+
+        $user->forceFill($validated)->save();
+
+        return new UserResource($user->refresh()->load('roles'));
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request): JsonResponse
+    {
+        $request->user()->forceFill([
+            'password' => $request->string('password')->toString(),
+        ])->save();
+
+        return response()->json(null, 204);
+    }
+
 
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {

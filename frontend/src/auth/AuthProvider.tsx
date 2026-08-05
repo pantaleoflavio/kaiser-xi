@@ -111,6 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       register,
       logout,
       refreshUser,
+      setAuthenticatedUser: setUser,
       clearError: () => setError(null),
     }),
     [error, isLoading, login, logout, refreshUser, register, token, user],

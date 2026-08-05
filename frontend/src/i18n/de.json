@@ -64,7 +64,8 @@
     "dashboard": "Dashboard",
     "rules": "Regeln",
     "leagues": "Ligen",
-    "invitations": "Einladungen"
+    "invitations": "Einladungen",
+    "account": "Konto"
   },
   "home": {
     "eyebrow": "Fantasy Football nach deinen Regeln",
@@ -488,7 +489,7 @@
       "roleLimit": "Jedes Positionslimit muss eine nicht negative ganze Zahl sein.",
       "roleTotal": "Die Summe der Positionslimits muss mindestens der maximalen Kadergröße entsprechen.",
       "nameLength": "Der Liganame darf höchstens 255 Zeichen lang sein.",
-"descriptionLength": "Die Beschreibung darf höchstens 5.000 Zeichen lang sein."
+      "descriptionLength": "Die Beschreibung darf höchstens 5.000 Zeichen lang sein."
     },
     "errors": {
       "authentication": "Eine Anmeldung ist erforderlich. Bitte melde dich erneut an.",
@@ -537,5 +538,42 @@
     "rejectConfirmation": "Diese Einladung ablehnen?",
     "revokeConfirmation": "Diese Einladung widerrufen?",
     "viewLeague": "Liga anzeigen"
+  },
+  "account": {
+    "eyebrow": "Konto",
+    "title": "Dein Konto",
+    "description": "Sieh dir deine FantaMeister-Kontodaten an und aktualisiere sie.",
+    "fields": {
+      "name": "Name",
+      "email": "E-Mail",
+      "emailVerification": "E-Mail-Verifizierung",
+      "currentPassword": "Aktuelles Passwort",
+      "newPassword": "Neues Passwort",
+      "confirmNewPassword": "Neues Passwort bestätigen"
+    },
+    "email": {
+      "verified": "Verifiziert",
+      "unverified": "Nicht verifiziert"
+    },
+    "profile": {
+      "title": "Profil",
+      "submit": "Profil speichern",
+      "saving": "Speichern...",
+      "success": "Profil aktualisiert.",
+      "currentPasswordHint": "Bestätige dein aktuelles Passwort, um deine E-Mail sicher zu ändern."
+    },
+    "password": {
+      "title": "Passwort ändern",
+      "submit": "Passwort ändern",
+      "saving": "Ändern...",
+      "success": "Passwort aktualisiert."
+    },
+    "errors": {
+      "authentication": "Eine Anmeldung ist erforderlich. Bitte melde dich erneut an.",
+      "forbidden": "Dein Konto darf diese Aktion nicht ausführen.",
+      "conflict": "Die Kontoänderung steht in Konflikt mit aktuellen Kontodaten.",
+      "validation": "Bitte korrigiere die markierten Kontofelder.",
+      "generic": "Dein Konto konnte nicht aktualisiert werden."
+    }
   }
 }

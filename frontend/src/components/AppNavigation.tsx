@@ -40,6 +40,10 @@ export function AppNavigation() {
                   {t('nav.dashboard')}
                 </Link>
 
+                <Link className={navLinkClass} to="/account">
+                  {t('nav.account')}
+                </Link>
+
                 <Link className={navLinkClass} to="/leagues">
                   {t('nav.leagues')}
                 </Link>

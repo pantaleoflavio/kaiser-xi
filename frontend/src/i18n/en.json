@@ -64,7 +64,8 @@
     "dashboard": "Dashboard",
     "rules": "Rules",
     "leagues": "Leagues",
-    "invitations": "Invitations"
+    "invitations": "Invitations",
+    "account": "Account"
   },
   "home": {
     "eyebrow": "Fantasy football a modo tuo",
@@ -537,5 +538,42 @@
     "rejectConfirmation": "Reject this invitation?",
     "revokeConfirmation": "Revoke this invitation?",
     "viewLeague": "View league"
+  },
+  "account": {
+    "eyebrow": "Account",
+    "title": "Your account",
+    "description": "View and update your FantaMeister account details.",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "emailVerification": "Email verification",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirm new password"
+    },
+    "email": {
+      "verified": "Verified",
+      "unverified": "Not verified"
+    },
+    "profile": {
+      "title": "Profile",
+      "submit": "Save profile",
+      "saving": "Saving...",
+      "success": "Profile updated.",
+      "currentPasswordHint": "Confirm your current password to change your email safely."
+    },
+    "password": {
+      "title": "Change password",
+      "submit": "Change password",
+      "saving": "Changing...",
+      "success": "Password updated."
+    },
+    "errors": {
+      "authentication": "Authentication is required. Please sign in again.",
+      "forbidden": "Your account cannot perform this action.",
+      "conflict": "The account update conflicts with current account data.",
+      "validation": "Please correct the highlighted account fields.",
+      "generic": "Unable to update your account."
+    }
   }
 }

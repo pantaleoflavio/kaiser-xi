@@ -12,6 +12,7 @@ import { RulesPage } from '../pages/RulesPage';
 import { FantasyTeamDetailPage } from '../pages/FantasyTeamDetailPage';
 import { CreateLeaguePage } from '../pages/CreateLeaguePage';
 import { InvitationsPage } from '../pages/InvitationsPage';
+import { AccountPage } from '../pages/AccountPage';
 
 export function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ export function AppRoutes() {
         <Route path="rules" element={<RulesPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="account" element={<AccountPage />} />
           <Route path="leagues" element={<LeaguesPage />} />
           <Route path="invitations" element={<InvitationsPage />} />
           <Route path="leagues/create" element={<CreateLeaguePage />} />
