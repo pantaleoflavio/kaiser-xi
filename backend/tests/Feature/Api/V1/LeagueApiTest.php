@@ -57,13 +57,13 @@ class LeagueApiTest extends TestCase
             ->assertJsonPath('data.season.id', $this->season->id)
             ->assertJsonPath('data.season.competition.id', $this->season->real_competition_id)
             ->assertJsonPath('data.type.key', 'classic')
-            ->assertJsonPath('data.status.key', 'draft');
+            ->assertJsonPath('data.status.key',  LeagueStatus::ACTIVE);
 
         $league = League::query()->where('name', 'Weekend League')->firstOrFail();
         $commissionerRole = LeagueRole::query()->where('key', 'commissioner')->firstOrFail();
-        $draftStatus = LeagueStatus::query()->where('key', 'draft')->firstOrFail();
+        $activeStatus = LeagueStatus::query()->where('key', LeagueStatus::ACTIVE)->firstOrFail();
 
-        $this->assertSame($draftStatus->id, $league->league_status_id);
+        $this->assertSame($activeStatus->id, $league->league_status_id);
         $this->assertSame($this->user->id, $league->commissioner_user_id);
         $this->assertSame(1, LeagueMembership::query()->where('league_id', $league->id)->where('user_id', $this->user->id)->count());
         $this->assertDatabaseHas('league_user', [
@@ -73,13 +73,15 @@ class LeagueApiTest extends TestCase
         ]);
         foreach (
             [
-                LeagueSetting::BUDGET_RULES_MUTABLE,
-                LeagueSetting::ROSTER_SIZE_MUTABLE,
-                LeagueSetting::ROSTER_ROLE_LIMITS_MUTABLE,
+                LeagueSetting::INITIAL_BUDGET,
+                LeagueSetting::RELEASE_REFUND_PERCENTAGE,
+                LeagueSetting::MAX_ROSTER_PLAYERS,
+                LeagueSetting::ROSTER_ROLE_LIMITS,
             ] as $key
         ) {
             $this->assertDatabaseHas('league_settings', ['league_id' => $league->id, 'key' => $key]);
         }
+        $this->postJson("/api/v1/leagues/{$league->id}/activate")->assertStatus(405);
     }
 
     public function test_unauthenticated_user_cannot_create_league(): void

@@ -27,9 +27,6 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'required_array_keys:' . implode(',', LeagueSetting::PLAYER_ROLE_KEYS),
             ],
             'roster_role_limits.*' => ['required', 'integer', 'min:0'],
-            'budget_rules_mutable' => ['sometimes', 'required', 'boolean'],
-            'roster_size_mutable' => ['sometimes', 'required', 'boolean'],
-            'roster_role_limits_mutable' => ['sometimes', 'required', 'boolean'],
             'remaining_budget' => ['prohibited'],
             'league_id' => ['prohibited'],
         ];

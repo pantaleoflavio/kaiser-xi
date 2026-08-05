@@ -264,25 +264,13 @@
       "createdBy": "Created by",
       "email": "Email",
       "invitedRole": "Invited role"
-      },
+    },
     "status": {
       "draft": "Draft",
       "setup": "Setup",
       "active": "Active",
       "completed": "Completed",
       "archived": "Archived"
-    },
-    "activation": {
-      "action": "Activate league",
-      "confirmTitle": "Activate this league?",
-      "confirmDescription": "The league will become active. Configured mutability rules will begin to apply, locked rule groups may no longer be editable, and activation cannot simply be repeated.",
-      "pending": "Activating league…",
-      "success": "League activated successfully.",
-      "forbidden": "You are not allowed to activate this league.",
-      "incomplete": "The league configuration is incomplete or invalid. Review the league settings before trying again.",
-      "alreadyActive": "This league is already active.",
-      "invalidState": "The league cannot be activated from its current state.",
-      "openSettings": "Open league settings"
     }
   },
   "fantasyTeams": {
@@ -500,8 +488,7 @@
       "roleLimit": "Each role limit must be a non-negative integer.",
       "roleTotal": "The sum of role limits must be at least the maximum roster size.",
       "nameLength": "League name must be 255 characters or fewer.",
-      "descriptionLength": "Description must be 5,000 characters or fewer.",
-      "mutability": "Choose whether each rule group remains editable."
+      "descriptionLength": "Description must be 5,000 characters or fewer."
     },
     "errors": {
       "authentication": "Authentication is required. Please sign in again.",
@@ -525,15 +512,6 @@
       "classic": "Classic",
       "formula_one": "Formula One",
       "head_to_head": "Head to head"
-    },
-    "flexibility": {
-      "title": "Rule flexibility",
-      "help": "Rules are editable during setup. After activation, locked groups cannot change; flexible groups may remain editable when backend compatibility rules allow it.",
-      "budget": "Budget rules",
-      "rosterSize": "Roster size",
-      "roleLimits": "Per-role limits",
-      "locked": "Locked after activation",
-      "editable": "May remain editable after activation"
     }
   },
   "invitations": {

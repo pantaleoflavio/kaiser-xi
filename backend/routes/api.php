@@ -48,9 +48,6 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/', [LeagueController::class, 'index']);
         Route::post('/', [LeagueController::class, 'store']);
         Route::get('/{league}', [LeagueController::class, 'show'])->middleware('can:view,league');
-        Route::post('/{league}/activate', [LeagueController::class, 'activate'])
-            ->name('api.v1.leagues.activate')
-            ->middleware('can:activate,league');
         Route::patch('/{league}', [LeagueController::class, 'update'])->middleware('can:update,league');
         Route::delete('/{league}', [LeagueController::class, 'destroy'])->middleware('can:delete,league');
         Route::get('/{league}/members', [LeagueMemberController::class, 'index'])->middleware('can:view,league');

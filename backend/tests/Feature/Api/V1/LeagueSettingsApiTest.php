@@ -42,7 +42,7 @@ class LeagueSettingsApiTest extends TestCase
         }
     }
 
-    public function test_new_league_persists_and_returns_mutability_defaults(): void
+    public function test_new_league_persists_and_returns_default_settings(): void
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
@@ -58,32 +58,24 @@ class LeagueSettingsApiTest extends TestCase
 
         $this->getJson("/api/v1/leagues/{$leagueId}/settings")
             ->assertOk()
-            ->assertJsonPath('data.budget_rules_mutable', false)
-            ->assertJsonPath('data.roster_size_mutable', false)
-            ->assertJsonPath('data.roster_role_limits_mutable', false)
-            ->assertJsonPath('data.status', 'draft')
-            ->assertJsonPath('data.can_activate', true);
+            ->assertJsonPath('data.initial_budget', LeagueSetting::DEFAULT_INITIAL_BUDGET)
+            ->assertJsonPath('data.release_refund_percentage', LeagueSetting::DEFAULT_RELEASE_REFUND_PERCENTAGE)
+            ->assertJsonPath('data.max_roster_players', LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS)
+            ->assertJsonPath('data.status', 'active')
+            ->assertJsonMissingPath('data.can_activate')
+            ->assertJsonMissingPath('data.budget_rules_mutable')
+            ->assertJsonMissingPath('data.roster_size_mutable')
+            ->assertJsonMissingPath('data.roster_role_limits_mutable');
 
-        foreach ([LeagueSetting::BUDGET_RULES_MUTABLE, LeagueSetting::ROSTER_SIZE_MUTABLE, LeagueSetting::ROSTER_ROLE_LIMITS_MUTABLE] as $key) {
+        foreach (
+            [
+                LeagueSetting::INITIAL_BUDGET,
+                LeagueSetting::RELEASE_REFUND_PERCENTAGE,
+                LeagueSetting::MAX_ROSTER_PLAYERS,
+                LeagueSetting::ROSTER_ROLE_LIMITS,
+            ] as $key
+        ) {
             $this->assertDatabaseHas('league_settings', ['league_id' => $leagueId, 'key' => $key]);
-        }
-    }
-
-    public function test_commissioners_can_configure_mutability_during_draft(): void
-    {
-        foreach (['commissioner', 'co_commissioner'] as $role) {
-            [$league, $user] = $this->leagueWithMember($role);
-            app(LeagueSettingsService::class)->initializeDefaults($league);
-            Sanctum::actingAs($user);
-
-            $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
-                'budget_rules_mutable' => true,
-                'roster_size_mutable' => true,
-                'roster_role_limits_mutable' => true,
-            ])->assertOk()
-                ->assertJsonPath('data.budget_rules_mutable', true)
-                ->assertJsonPath('data.roster_size_mutable', true)
-                ->assertJsonPath('data.roster_role_limits_mutable', true);
         }
     }
 

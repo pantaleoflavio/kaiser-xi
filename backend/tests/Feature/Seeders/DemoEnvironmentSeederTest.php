@@ -49,9 +49,6 @@ class DemoEnvironmentSeederTest extends TestCase
             LeagueSetting::RELEASE_REFUND_PERCENTAGE,
             LeagueSetting::MAX_ROSTER_PLAYERS,
             LeagueSetting::ROSTER_ROLE_LIMITS,
-            LeagueSetting::BUDGET_RULES_MUTABLE,
-            LeagueSetting::ROSTER_SIZE_MUTABLE,
-            LeagueSetting::ROSTER_ROLE_LIMITS_MUTABLE,
         ];
 
         $this->assertSame(
@@ -83,10 +80,6 @@ class DemoEnvironmentSeederTest extends TestCase
             LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS,
             $league->rosterRoleLimits()
         );
-
-        $this->assertFalse($league->budgetRulesMutable());
-        $this->assertFalse($league->rosterSizeMutable());
-        $this->assertFalse($league->rosterRoleLimitsMutable());
 
         foreach (DemoLeagueSeeder::MEMBERS as $email => [$role]) {
             $user = User::query()

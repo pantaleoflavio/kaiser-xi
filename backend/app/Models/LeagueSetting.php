@@ -14,15 +14,9 @@ class LeagueSetting extends Model
     public const RELEASE_REFUND_PERCENTAGE = 'release_refund_percentage';
     public const MAX_ROSTER_PLAYERS = 'max_roster_players';
     public const ROSTER_ROLE_LIMITS = 'roster_role_limits';
-    public const BUDGET_RULES_MUTABLE = 'budget_rules_mutable';
-    public const ROSTER_SIZE_MUTABLE = 'roster_size_mutable';
-    public const ROSTER_ROLE_LIMITS_MUTABLE = 'roster_role_limits_mutable';
     public const DEFAULT_INITIAL_BUDGET = 500;
     public const DEFAULT_RELEASE_REFUND_PERCENTAGE = 50;
     public const DEFAULT_MAX_ROSTER_PLAYERS = 25;
-    public const DEFAULT_BUDGET_RULES_MUTABLE = false;
-    public const DEFAULT_ROSTER_SIZE_MUTABLE = false;
-    public const DEFAULT_ROSTER_ROLE_LIMITS_MUTABLE = false;
     public const PLAYER_ROLE_KEYS = ['goalkeeper', 'defender', 'midfielder', 'forward'];
     public const DEFAULT_ROSTER_ROLE_LIMITS = [
         'goalkeeper' => 3,

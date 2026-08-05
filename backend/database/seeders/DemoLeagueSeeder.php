@@ -88,7 +88,7 @@ class DemoLeagueSeeder extends Seeder
             ['season_id' => $season->id, 'slug' => self::LEAGUE_SLUG],
             [
                 'league_type_id' => LeagueType::query()->where('key', 'classic')->firstOrFail()->id,
-                'league_status_id' => LeagueStatus::query()->where('key', LeagueStatus::DRAFT)->firstOrFail()->id,
+                'league_status_id' => LeagueStatus::query()->where('key', LeagueStatus::ACTIVE)->firstOrFail()->id,
                 'commissioner_user_id' => $commissioner->id,
                 'name' => 'Demo League',
                 'description' => 'Deterministic league for local development.',
@@ -102,9 +102,6 @@ class DemoLeagueSeeder extends Seeder
             'release_refund_percentage' => 50,
             'max_roster_players' => LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS,
             'roster_role_limits' => LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS,
-            'budget_rules_mutable' => false,
-            'roster_size_mutable' => false,
-            'roster_role_limits_mutable' => false,
         ]);
         $roles = LeagueRole::query()->pluck('id', 'key');
         foreach (self::MEMBERS as $email => [$role, $teamName, $teamSlug]) {

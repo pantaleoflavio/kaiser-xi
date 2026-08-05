@@ -8,7 +8,7 @@ use App\Http\Requests\League\UpdateLeagueRequest;
 use App\Http\Resources\League\LeagueResource;
 use App\Models\League;
 use App\Services\League\CreateLeague;
-use App\Services\League\LeagueActivationService;
+
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -42,11 +42,6 @@ class LeagueController extends Controller
     public function show(League $league): LeagueResource
     {
         return new LeagueResource($league->load(self::WITH));
-    }
-
-    public function activate(League $league, LeagueActivationService $activationService): LeagueResource
-    {
-        return new LeagueResource($activationService->activate($league)->load(self::WITH));
     }
 
     public function update(UpdateLeagueRequest $request, League $league): LeagueResource

@@ -212,25 +212,13 @@
       "createdBy": "Creato da",
       "email": "Email",
       "invitedRole": "Ruolo invitato"
-      },
+    },
     "status": {
       "draft": "Bozza",
       "setup": "Configurazione",
       "active": "Attiva",
       "completed": "Completata",
       "archived": "Archiviata"
-    },
-    "activation": {
-      "action": "Attiva lega",
-      "confirmTitle": "Attivare questa lega?",
-      "confirmDescription": "La lega diventerà attiva. Le regole di modificabilità configurate inizieranno ad applicarsi, i gruppi di regole bloccati potrebbero non essere più modificabili e l’attivazione non può essere semplicemente ripetuta.",
-      "pending": "Attivazione lega…",
-      "success": "Lega attivata correttamente.",
-      "forbidden": "Non sei autorizzato ad attivare questa lega.",
-      "incomplete": "La configurazione della lega è incompleta o non valida. Controlla le impostazioni della lega prima di riprovare.",
-      "alreadyActive": "Questa lega è già attiva.",
-      "invalidState": "La lega non può essere attivata dal suo stato attuale.",
-      "openSettings": "Apri impostazioni lega"
     }
   },
   "fantasyTeams": {
@@ -452,8 +440,7 @@
       "roleLimit": "Ogni limite di ruolo deve essere un intero non negativo.",
       "roleTotal": "La somma dei limiti di ruolo deve essere almeno pari alla dimensione massima della rosa.",
       "nameLength": "Il nome della lega non può superare 255 caratteri.",
-      "descriptionLength": "La descrizione non può superare 5.000 caratteri.",
-      "mutability": "Scegli se ogni gruppo di regole resta modificabile."
+      "descriptionLength": "La descrizione non può superare 5.000 caratteri."
     },
     "errors": {
       "authentication": "È necessario autenticarsi. Accedi nuovamente.",
@@ -477,15 +464,6 @@
       "classic": "Classica",
       "formula_one": "Formula 1",
       "head_to_head": "Testa a testa"
-    },
-    "flexibility": {
-      "title": "Flessibilità delle regole",
-      "help": "Le regole sono modificabili durante la configurazione. Dopo l’attivazione, i gruppi bloccati non possono cambiare; quelli flessibili possono restare modificabili secondo le regole di compatibilità del backend.",
-      "budget": "Regole del budget",
-      "rosterSize": "Dimensione della rosa",
-      "roleLimits": "Limiti per ruolo",
-      "locked": "Bloccato dopo l’attivazione",
-      "editable": "Può restare modificabile dopo l’attivazione"
     }
   },
   "invitations": {

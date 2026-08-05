@@ -19,7 +19,7 @@ class CreateLeague
     {
         return DB::transaction(function () use ($data, $user): League {
             $status = LeagueStatus::query()
-                ->where('key', LeagueStatus::DRAFT)
+                ->where('key', LeagueStatus::ACTIVE)
                 ->firstOrFail();
 
             $role = LeagueRole::query()

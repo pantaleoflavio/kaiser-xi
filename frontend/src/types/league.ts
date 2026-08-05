@@ -115,12 +115,8 @@ export type LeagueSettings = {
   release_refund_percentage: string | number | null;
   max_roster_players: number;
   roster_role_limits: RosterRoleLimits;
-  budget_rules_mutable: boolean;
-  roster_size_mutable: boolean;
-  roster_role_limits_mutable: boolean;
   status: string;
   can_update_settings: boolean;
-  can_activate: boolean;
   locked_rule_groups: string[];
 };
 
@@ -133,9 +129,6 @@ export type LeagueSettingsPayload = Partial<{
   release_refund_percentage: number;
   max_roster_players: number;
   roster_role_limits: RosterRoleLimits;
-  budget_rules_mutable: boolean;
-  roster_size_mutable: boolean;
-  roster_role_limits_mutable: boolean;
 }>;
 
 export type RosterPlayer = {

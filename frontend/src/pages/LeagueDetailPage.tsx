@@ -6,7 +6,6 @@ import { LoadingState } from '../components/LoadingState';
 import { LeagueMemberList } from '../components/LeagueMemberList';
 import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { FantasyTeamsPanel } from '../components/league/FantasyTeamsPanel';
-import { LeagueActivationPanel } from '../components/league/LeagueActivationPanel';
 import { InvitationManagementPanel } from '../components/league/InvitationManagementPanel';
 import { LeagueSettingsPanel } from '../components/league/LeagueSettingsPanel';
 import { LeagueSummary } from '../components/league/LeagueSummary';
@@ -126,18 +125,6 @@ export function LeagueDetailPage() {
       {data.league ? (
         <div className="space-y-6">
           <LeagueSummary league={data.league} />
-          <LeagueActivationPanel
-            league={data.league}
-                        onActivated={async (league) => {
-              setData((current) => ({ ...current, league }));
-              try {
-                const settings = await leaguesApi.settings(league.id);
-                setData((current) => ({ ...current, settings: settings.data }));
-              } catch {
-                // The mutation already succeeded; query invalidation will retry settings separately.
-              }
-            }}
-          />
           <div id="league-settings">
             <LeagueSettingsPanel
               key={`${data.league.id}-${data.league.status.key}-${data.settings?.status ?? 'none'}`}

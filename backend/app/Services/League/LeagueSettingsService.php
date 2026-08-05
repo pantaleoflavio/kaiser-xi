@@ -5,7 +5,6 @@ namespace App\Services\League;
 use App\Exceptions\IncompatibleRosterRoleLimitException;
 use App\Exceptions\IncompatibleRosterSizeException;
 use App\Exceptions\InvalidLeagueConfigurationException;
-use App\Exceptions\LeagueMutabilityFlagsLockedException;
 use App\Exceptions\LeagueRulesLockedException;
 use App\Exceptions\UnsupportedInitialBudgetChangeException;
 use App\Models\FantasyTeam;
@@ -17,12 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 class LeagueSettingsService
 {
-    private const MUTABILITY_FIELDS = [
-        LeagueSetting::BUDGET_RULES_MUTABLE,
-        LeagueSetting::ROSTER_SIZE_MUTABLE,
-        LeagueSetting::ROSTER_ROLE_LIMITS_MUTABLE,
-    ];
-
     public function initializeDefaults(League $league): void
     {
         foreach ([
@@ -41,20 +34,8 @@ class LeagueSettingsService
             ['key' => LeagueSetting::ROSTER_ROLE_LIMITS],
             ['value' => LeagueSetting::roleLimitsPayload(LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS)],
         );
-
-        foreach (
-            [
-                LeagueSetting::BUDGET_RULES_MUTABLE => LeagueSetting::DEFAULT_BUDGET_RULES_MUTABLE,
-                LeagueSetting::ROSTER_SIZE_MUTABLE => LeagueSetting::DEFAULT_ROSTER_SIZE_MUTABLE,
-                LeagueSetting::ROSTER_ROLE_LIMITS_MUTABLE => LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS_MUTABLE,
-            ] as $key => $value
-        ) {
-            $league->settings()->updateOrCreate(
-                ['key' => $key],
-                ['value' => LeagueSetting::booleanPayload($value)],
-            );
-        }
     }
+
     /** @param array<string, mixed> $settings */
     public function update(League $league, array $settings): League
     {
@@ -79,20 +60,12 @@ class LeagueSettingsService
                     ['value' => LeagueSetting::integerPayload($key, (int) $settings[$key])],
                 );
             }
+
             if (array_key_exists(LeagueSetting::ROSTER_ROLE_LIMITS, $settings)) {
                 LeagueSetting::query()->updateOrCreate(
                     ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::ROSTER_ROLE_LIMITS],
                     ['value' => LeagueSetting::roleLimitsPayload($settings[LeagueSetting::ROSTER_ROLE_LIMITS])],
                 );
-            }
-
-            foreach (self::MUTABILITY_FIELDS as $key) {
-                if (array_key_exists($key, $settings)) {
-                    LeagueSetting::query()->updateOrCreate(
-                        ['league_id' => $lockedLeague->id, 'key' => $key],
-                        ['value' => LeagueSetting::booleanPayload((bool) $settings[$key])],
-                    );
-                }
             }
         });
 
@@ -101,27 +74,8 @@ class LeagueSettingsService
     /** @param array<string, mixed> $settings */
     private function ensureLifecycleAllows(League $league, array $settings): void
     {
-        if ($league->isPreActivation()) {
-            return;
-        }
-
-        if (array_intersect(self::MUTABILITY_FIELDS, array_keys($settings)) !== []) {
-            throw new LeagueMutabilityFlagsLockedException;
-        }
-
         if (in_array($league->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true)) {
             throw new LeagueRulesLockedException('all');
-        }
-
-        if ($league->statusKey() !== LeagueStatus::ACTIVE) {
-            throw new LeagueRulesLockedException('all');
-        }
-
-        if ((array_key_exists(LeagueSetting::INITIAL_BUDGET, $settings)
-                || array_key_exists(LeagueSetting::RELEASE_REFUND_PERCENTAGE, $settings))
-            && ! $league->budgetRulesMutable()
-        ) {
-            throw new LeagueRulesLockedException('budget');
         }
 
         if (
@@ -129,14 +83,6 @@ class LeagueSettingsService
             && FantasyTeam::query()->where('league_id', $league->id)->exists()
         ) {
             throw new UnsupportedInitialBudgetChangeException;
-        }
-
-        if (array_key_exists(LeagueSetting::MAX_ROSTER_PLAYERS, $settings) && ! $league->rosterSizeMutable()) {
-            throw new LeagueRulesLockedException('roster_size');
-        }
-
-        if (array_key_exists(LeagueSetting::ROSTER_ROLE_LIMITS, $settings) && ! $league->rosterRoleLimitsMutable()) {
-            throw new LeagueRulesLockedException('roster_role_limits');
         }
     }
 
@@ -177,7 +123,7 @@ class LeagueSettingsService
                 ->where('fantasy_team_players.league_id', $league->id)
                 ->whereHas('player.playerSeasonRegistrations', function ($query) use ($league, $role): void {
                     $query->activeForSeason($league->season_id)
-                        ->whereHas('playerRole', fn($query) => $query->where('key', $role));
+                    ->whereHas('playerRole', fn($query) => $query->where('key', $role));
                 })
                 ->selectRaw('fantasy_team_id, count(*) as aggregate')
                 ->groupBy('fantasy_team_id')

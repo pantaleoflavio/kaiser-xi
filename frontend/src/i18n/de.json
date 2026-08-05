@@ -271,18 +271,6 @@
       "active": "Aktiv",
       "completed": "Abgeschlossen",
       "archived": "Archiviert"
-    },
-    "activation": {
-      "action": "Liga aktivieren",
-      "confirmTitle": "Diese Liga aktivieren?",
-      "confirmDescription": "Die Liga wird aktiv. Die konfigurierten Änderbarkeitsregeln gelten ab diesem Zeitpunkt, gesperrte Regelgruppen können möglicherweise nicht mehr bearbeitet werden und die Aktivierung kann nicht einfach wiederholt werden.",
-      "pending": "Liga wird aktiviert…",
-      "success": "Liga wurde erfolgreich aktiviert.",
-      "forbidden": "Du darfst diese Liga nicht aktivieren.",
-      "incomplete": "Die Ligakonfiguration ist unvollständig oder ungültig. Prüfe die Liga-Einstellungen, bevor du es erneut versuchst.",
-      "alreadyActive": "Diese Liga ist bereits aktiv.",
-      "invalidState": "Die Liga kann aus ihrem aktuellen Status nicht aktiviert werden.",
-      "openSettings": "Liga-Einstellungen öffnen"
     }
   },
   "fantasyTeams": {
@@ -500,8 +488,7 @@
       "roleLimit": "Jedes Positionslimit muss eine nicht negative ganze Zahl sein.",
       "roleTotal": "Die Summe der Positionslimits muss mindestens der maximalen Kadergröße entsprechen.",
       "nameLength": "Der Liganame darf höchstens 255 Zeichen lang sein.",
-      "descriptionLength": "Die Beschreibung darf höchstens 5.000 Zeichen lang sein.",
-      "mutability": "Lege fest, ob jede Regelgruppe bearbeitbar bleibt."
+"descriptionLength": "Die Beschreibung darf höchstens 5.000 Zeichen lang sein."
     },
     "errors": {
       "authentication": "Eine Anmeldung ist erforderlich. Bitte melde dich erneut an.",
@@ -525,15 +512,6 @@
       "classic": "Klassisch",
       "formula_one": "Formel 1",
       "head_to_head": "Direktes Duell"
-    },
-    "flexibility": {
-      "title": "Regelflexibilität",
-      "help": "Während der Einrichtung können Regeln bearbeitet werden. Nach der Aktivierung sind gesperrte Gruppen unveränderlich; flexible Gruppen können gemäß den Kompatibilitätsregeln des Backends bearbeitbar bleiben.",
-      "budget": "Budgetregeln",
-      "rosterSize": "Kadergröße",
-      "roleLimits": "Limits pro Position",
-      "locked": "Nach Aktivierung gesperrt",
-      "editable": "Kann nach Aktivierung bearbeitbar bleiben"
     }
   },
   "invitations": {

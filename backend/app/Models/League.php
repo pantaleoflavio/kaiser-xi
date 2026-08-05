@@ -100,21 +100,6 @@ class League extends Model
         return $this->settingValue(LeagueSetting::MAX_ROSTER_PLAYERS, LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS);
     }
 
-    public function budgetRulesMutable(): bool
-    {
-        return $this->booleanSettingValue(LeagueSetting::BUDGET_RULES_MUTABLE, LeagueSetting::DEFAULT_BUDGET_RULES_MUTABLE);
-    }
-
-    public function rosterSizeMutable(): bool
-    {
-        return $this->booleanSettingValue(LeagueSetting::ROSTER_SIZE_MUTABLE, LeagueSetting::DEFAULT_ROSTER_SIZE_MUTABLE);
-    }
-
-    public function rosterRoleLimitsMutable(): bool
-    {
-        return $this->booleanSettingValue(LeagueSetting::ROSTER_ROLE_LIMITS_MUTABLE, LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS_MUTABLE);
-    }
-
     public function statusKey(): ?string
     {
         return $this->status()->value('key');
