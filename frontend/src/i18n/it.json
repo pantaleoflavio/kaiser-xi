@@ -212,6 +212,25 @@
       "createdBy": "Creato da",
       "email": "Email",
       "invitedRole": "Ruolo invitato"
+      },
+    "status": {
+      "draft": "Bozza",
+      "setup": "Configurazione",
+      "active": "Attiva",
+      "completed": "Completata",
+      "archived": "Archiviata"
+    },
+    "activation": {
+      "action": "Attiva lega",
+      "confirmTitle": "Attivare questa lega?",
+      "confirmDescription": "La lega diventerà attiva. Le regole di modificabilità configurate inizieranno ad applicarsi, i gruppi di regole bloccati potrebbero non essere più modificabili e l’attivazione non può essere semplicemente ripetuta.",
+      "pending": "Attivazione lega…",
+      "success": "Lega attivata correttamente.",
+      "forbidden": "Non sei autorizzato ad attivare questa lega.",
+      "incomplete": "La configurazione della lega è incompleta o non valida. Controlla le impostazioni della lega prima di riprovare.",
+      "alreadyActive": "Questa lega è già attiva.",
+      "invalidState": "La lega non può essere attivata dal suo stato attuale.",
+      "openSettings": "Apri impostazioni lega"
     }
   },
   "fantasyTeams": {

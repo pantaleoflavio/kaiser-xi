@@ -264,6 +264,25 @@
       "createdBy": "Created by",
       "email": "Email",
       "invitedRole": "Invited role"
+      },
+    "status": {
+      "draft": "Draft",
+      "setup": "Setup",
+      "active": "Active",
+      "completed": "Completed",
+      "archived": "Archived"
+    },
+    "activation": {
+      "action": "Activate league",
+      "confirmTitle": "Activate this league?",
+      "confirmDescription": "The league will become active. Configured mutability rules will begin to apply, locked rule groups may no longer be editable, and activation cannot simply be repeated.",
+      "pending": "Activating league…",
+      "success": "League activated successfully.",
+      "forbidden": "You are not allowed to activate this league.",
+      "incomplete": "The league configuration is incomplete or invalid. Review the league settings before trying again.",
+      "alreadyActive": "This league is already active.",
+      "invalidState": "The league cannot be activated from its current state.",
+      "openSettings": "Open league settings"
     }
   },
   "fantasyTeams": {

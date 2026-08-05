@@ -17,6 +17,8 @@ export const invitationKeys = {
 
 export const leagueMutationKeys = {
   create: ['leagues', 'create'] as const,
+  activate: (leagueId: string | number) =>
+    ['leagues', 'detail', String(leagueId), 'activate'] as const,
   settings: (leagueId: string | number) =>
     ['leagues', 'settings', String(leagueId), 'update'] as const,
 };

@@ -264,6 +264,25 @@
       "createdBy": "Erstellt von",
       "email": "Email",
       "invitedRole": "Eingeladene Rolle"
+    },
+    "status": {
+      "draft": "Entwurf",
+      "setup": "Einrichtung",
+      "active": "Aktiv",
+      "completed": "Abgeschlossen",
+      "archived": "Archiviert"
+    },
+    "activation": {
+      "action": "Liga aktivieren",
+      "confirmTitle": "Diese Liga aktivieren?",
+      "confirmDescription": "Die Liga wird aktiv. Die konfigurierten Änderbarkeitsregeln gelten ab diesem Zeitpunkt, gesperrte Regelgruppen können möglicherweise nicht mehr bearbeitet werden und die Aktivierung kann nicht einfach wiederholt werden.",
+      "pending": "Liga wird aktiviert…",
+      "success": "Liga wurde erfolgreich aktiviert.",
+      "forbidden": "Du darfst diese Liga nicht aktivieren.",
+      "incomplete": "Die Ligakonfiguration ist unvollständig oder ungültig. Prüfe die Liga-Einstellungen, bevor du es erneut versuchst.",
+      "alreadyActive": "Diese Liga ist bereits aktiv.",
+      "invalidState": "Die Liga kann aus ihrem aktuellen Status nicht aktiviert werden.",
+      "openSettings": "Liga-Einstellungen öffnen"
     }
   },
   "fantasyTeams": {

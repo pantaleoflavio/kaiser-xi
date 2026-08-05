@@ -3,6 +3,10 @@ import type { League } from '../../types/league';
 
 export function LeagueSummary({ league }: { league: League }) {
   const { t } = useTranslation();
+  const knownStatuses = ['draft', 'setup', 'active', 'completed', 'archived'];
+  const statusLabel = knownStatuses.includes(league.status?.key)
+    ? t(`leagueDetail.status.${league.status.key}`)
+    : league.status?.label;
   return (
     <header className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
       <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
@@ -27,7 +31,7 @@ export function LeagueSummary({ league }: { league: League }) {
         </div>
         <div>
           <dt className="text-slate-500">{t('leagues.fields.status')}</dt>
-          <dd>{league.status?.label ?? t('leagueDetail.notAvailable')}</dd>
+          <dd>{statusLabel ?? t('leagueDetail.notAvailable')}</dd>
         </div>
         <div>
           <dt className="text-slate-500">{t('leagueDetail.fields.maxParticipants')}</dt>

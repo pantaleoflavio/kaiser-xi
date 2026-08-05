@@ -43,6 +43,8 @@ export const leaguesApi = {
       body: JSON.stringify(payload),
     }),
   show: (leagueId: string | number) => apiClient<LeagueResponse>(`/leagues/${leagueId}`),
+  activateLeague: (leagueId: string | number) =>
+    apiClient<LeagueResponse>(`/leagues/${leagueId}/activate`, { method: 'POST' }),
   settings: (leagueId: string | number) =>
     apiClient<LeagueSettingsResponse>(`/leagues/${leagueId}/settings`),
   updateSettings: (leagueId: string | number, payload: LeagueSettingsPayload) =>
