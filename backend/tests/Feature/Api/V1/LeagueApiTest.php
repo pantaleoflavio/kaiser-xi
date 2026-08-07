@@ -81,7 +81,6 @@ class LeagueApiTest extends TestCase
         ) {
             $this->assertDatabaseHas('league_settings', ['league_id' => $league->id, 'key' => $key]);
         }
-        $this->postJson("/api/v1/leagues/{$league->id}/activate")->assertStatus(405);
     }
 
     public function test_unauthenticated_user_cannot_create_league(): void

@@ -31,5 +31,6 @@ class FormationModuleSeederTest extends TestCase
             'forward' => 3,
         ], $requirements);
         $this->assertSame(7, FormationModule::query()->count());
+        $this->assertSame(11, $module->requiredPlayersCount());
     }
 }

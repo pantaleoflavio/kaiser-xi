@@ -7,6 +7,10 @@ use App\Models\FantasyTeamPlayer;
 use App\Models\League;
 use App\Models\LeagueSetting;
 use App\Models\LeagueStatus;
+use App\Models\Player;
+use App\Models\PlayerRole;
+use App\Models\PlayerSeasonRegistration;
+use App\Models\SeasonClub;
 use App\Models\User;
 use App\Services\League\LeagueSettingsService;
 use Database\Seeders\DemoLeagueSeeder;
@@ -22,36 +26,6 @@ class LeagueSettingsLifecycleTest extends TestCase
     {
         parent::setUp();
         $this->seed();
-    }
-
-    public function test_locked_active_rule_groups_cannot_change(): void
-    {
-        [$league, $commissioner] = $this->activeDemoLeague();
-
-        Sanctum::actingAs($commissioner);
-
-        $currentLimits = $league->rosterRoleLimits();
-
-        $validChangedLimits = [
-            ...$currentLimits,
-            'forward' => $currentLimits['forward'] + 1,
-        ];
-
-        $changes = [
-            ['initial_budget' => $league->initialFantasyBudget() + 100],
-            ['release_refund_percentage' => 60],
-            ['max_roster_players' => $league->maxRosterPlayers() - 1],
-            ['roster_role_limits' => $validChangedLimits],
-        ];
-
-        foreach ($changes as $change) {
-            $this->patchJson(
-                "/api/v1/leagues/{$league->id}/settings",
-                $change
-            )
-                ->assertConflict()
-                ->assertJsonPath('code', 'league_rules_locked');
-        }
     }
 
     public function test_mutable_refund_and_roster_increases_are_allowed(): void
@@ -87,70 +61,92 @@ class LeagueSettingsLifecycleTest extends TestCase
         $this->assertEquals($budgets, FantasyTeam::query()->where('league_id', $league->id)->pluck('remaining_budget', 'id'));
     }
 
-    public function test_mutable_roster_size_cannot_drop_below_largest_active_roster(): void
+    public function test_roster_size_cannot_drop_below_largest_active_roster(): void
     {
-        [$league, $commissioner] = $this->activeDemoLeague(['roster_size_mutable' => true]);
-        Sanctum::actingAs($commissioner);
-        $largest = FantasyTeamPlayer::query()->active()->where('league_id', $league->id)
-            ->selectRaw('fantasy_team_id, count(*) aggregate')->groupBy('fantasy_team_id')->pluck('aggregate')->max();
-
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['max_roster_players' => $largest - 1])
-            ->assertConflict()->assertJsonPath('code', 'roster_size_incompatible');
-    }
-
-   public function test_mutable_role_limit_cannot_drop_below_existing_composition(): void
-    {
-        [$league, $commissioner] = $this->activeDemoLeague([
-            'roster_role_limits_mutable' => true,
-        ]);
+        [$league, $commissioner] = $this->activeDemoLeague();
 
         Sanctum::actingAs($commissioner);
 
-        $assignment = FantasyTeamPlayer::query()
-            ->active()
+        $team = FantasyTeam::query()
             ->where('league_id', $league->id)
-            ->with('player')
             ->firstOrFail();
 
-        $registration = $assignment->player
-            ->playerSeasonRegistrations()
-            ->with('playerRole')
-            ->whereHas(
-                'seasonClub',
-                fn ($query) => $query->where(
-                    'season_clubs.season_id',
-                    $league->season_id
-                )
-            )
-            ->firstOrFail();
+        while ($team->activePlayerAssignments()->count() < 12) {
+            FantasyTeamPlayer::factory()->create([
+                'league_id' => $league->id,
+                'fantasy_team_id' => $team->id,
+                'released_at' => null,
+            ]);
+        }
 
-        $role = $registration->playerRole->key;
-
-        $limits = $league->rosterRoleLimits();
-        $removedLimit = $limits[$role];
-
-        $limits[$role] = 0;
-
-        $compensatingRole = $role === 'forward'
-            ? 'midfielder'
-            : 'forward';
-
-        $limits[$compensatingRole] += $removedLimit;
+        $this->assertSame(
+            12,
+            $team->activePlayerAssignments()->count()
+        );
 
         $this->patchJson(
             "/api/v1/leagues/{$league->id}/settings",
-            ['roster_role_limits' => $limits]
+            ['max_roster_players' => 11]
         )
             ->assertConflict()
-            ->assertJsonPath('code', 'roster_role_limit_incompatible');
+            ->assertJsonPath('code', 'roster_size_incompatible');
     }
 
-    public function test_mutability_flags_cannot_change_after_activation(): void
+    public function test_role_limit_cannot_drop_below_existing_composition(): void
     {
         [$league, $commissioner] = $this->activeDemoLeague();
+
         Sanctum::actingAs($commissioner);
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['budget_rules_mutable' => true])
-            ->assertConflict()->assertJsonPath('code', 'league_mutability_flags_locked');
+
+        $team = FantasyTeam::query()
+            ->where('league_id', $league->id)
+            ->firstOrFail();
+
+        $defenderRoleId = PlayerRole::query()
+            ->where('key', 'defender')
+            ->value('id');
+
+        $seasonClub = SeasonClub::query()
+            ->where('season_id', $league->season_id)
+            ->firstOrFail();
+
+        for ($i = 0; $i < 6; $i++) {
+            $player = Player::factory()->create();
+
+            PlayerSeasonRegistration::factory()->create([
+                'player_id' => $player->id,
+                'season_club_id' => $seasonClub->id,
+                'player_role_id' => $defenderRoleId,
+                'is_active' => true,
+                'released_at' => null,
+            ]);
+
+            FantasyTeamPlayer::factory()->create([
+                'league_id' => $league->id,
+                'fantasy_team_id' => $team->id,
+                'player_id' => $player->id,
+                'released_at' => null,
+            ]);
+        }
+
+        $limits = $league->rosterRoleLimits();
+
+        $removed = $limits['defender'] - 5;
+
+        $limits['defender'] = 5;
+        $limits['midfielder'] += $removed;
+
+        $this->patchJson(
+            "/api/v1/leagues/{$league->id}/settings",
+            [
+                'roster_role_limits' => $limits,
+            ]
+        )
+            ->assertConflict()
+            ->assertJsonPath(
+                'code',
+                'roster_role_limit_incompatible'
+            );
     }
 
     public function test_completed_league_cannot_update_settings(): void

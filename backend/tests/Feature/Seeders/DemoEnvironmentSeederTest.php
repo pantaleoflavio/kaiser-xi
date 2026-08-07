@@ -49,6 +49,14 @@ class DemoEnvironmentSeederTest extends TestCase
             LeagueSetting::RELEASE_REFUND_PERCENTAGE,
             LeagueSetting::MAX_ROSTER_PLAYERS,
             LeagueSetting::ROSTER_ROLE_LIMITS,
+            LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES,
+            LeagueSetting::BENCH_SIZE,
+            LeagueSetting::BENCH_ROLE_LIMITS,
+            LeagueSetting::MAX_SUBSTITUTIONS,
+            LeagueSetting::SUBSTITUTION_ORDER_MODE,
+            LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
+            LeagueSetting::CAPTAIN_ENABLED,
+            LeagueSetting::VICE_CAPTAIN_ENABLED,
         ];
 
         $this->assertSame(

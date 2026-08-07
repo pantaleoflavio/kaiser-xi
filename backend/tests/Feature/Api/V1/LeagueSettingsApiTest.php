@@ -73,6 +73,14 @@ class LeagueSettingsApiTest extends TestCase
                 LeagueSetting::RELEASE_REFUND_PERCENTAGE,
                 LeagueSetting::MAX_ROSTER_PLAYERS,
                 LeagueSetting::ROSTER_ROLE_LIMITS,
+                LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES,
+                LeagueSetting::BENCH_SIZE,
+                LeagueSetting::BENCH_ROLE_LIMITS,
+                LeagueSetting::MAX_SUBSTITUTIONS,
+                LeagueSetting::SUBSTITUTION_ORDER_MODE,
+                LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
+                LeagueSetting::CAPTAIN_ENABLED,
+                LeagueSetting::VICE_CAPTAIN_ENABLED,
             ] as $key
         ) {
             $this->assertDatabaseHas('league_settings', ['league_id' => $leagueId, 'key' => $key]);
@@ -143,7 +151,7 @@ class LeagueSettingsApiTest extends TestCase
 
         $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
             'roster_role_limits' => [...$valid, 'goalkeeper' => 0, 'forward' => 9],
-        ])->assertOk()->assertJsonPath('data.roster_role_limits.goalkeeper', 0);
+        ])->assertUnprocessable()->assertJsonValidationErrors('allowed_formation_module_names');
     }
 
     public function test_role_limit_sum_cannot_be_lower_than_persisted_or_submitted_maximum(): void

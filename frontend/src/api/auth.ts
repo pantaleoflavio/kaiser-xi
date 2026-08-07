@@ -1,5 +1,11 @@
 import { apiClient } from './client';
-import type { AuthResponse, LoginPayload, RegisterPayload, User } from '../types/auth';
+import type {
+  ApiResource,
+  AuthResponse,
+  LoginPayload,
+  RegisterPayload,
+  User,
+} from '../types/auth';
 
 export const authApi = {
   register: (payload: RegisterPayload) =>
@@ -8,15 +14,22 @@ export const authApi = {
       body: JSON.stringify(payload),
       skipAuth: true,
     }),
+
   login: (payload: LoginPayload) =>
     apiClient<AuthResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(payload),
       skipAuth: true,
     }),
+
   logout: () =>
     apiClient<{ message: string }>('/auth/logout', {
       method: 'POST',
     }),
-  me: () => apiClient<User>('/auth/me'),
+
+  me: async (): Promise<User> => {
+    const response = await apiClient<ApiResource<User>>('/auth/me');
+
+    return response.data;
+  },
 };

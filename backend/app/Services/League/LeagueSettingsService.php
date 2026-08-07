@@ -22,18 +22,45 @@ class LeagueSettingsService
             LeagueSetting::INITIAL_BUDGET => LeagueSetting::DEFAULT_INITIAL_BUDGET,
             LeagueSetting::RELEASE_REFUND_PERCENTAGE => LeagueSetting::DEFAULT_RELEASE_REFUND_PERCENTAGE,
                 LeagueSetting::MAX_ROSTER_PLAYERS => LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS,
+                LeagueSetting::BENCH_SIZE => LeagueSetting::DEFAULT_BENCH_SIZE,
+                LeagueSetting::MAX_SUBSTITUTIONS => LeagueSetting::DEFAULT_MAX_SUBSTITUTIONS,
             ] as $key => $value
         ) {
-            $league->settings()->updateOrCreate(
+            $league->settings()->firstOrCreate(
                 ['key' => $key],
                 ['value' => LeagueSetting::integerPayload($key, $value)],
             );
         }
 
-        $league->settings()->updateOrCreate(
+        $league->settings()->firstOrCreate(
             ['key' => LeagueSetting::ROSTER_ROLE_LIMITS],
             ['value' => LeagueSetting::roleLimitsPayload(LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS)],
         );
+
+        $league->settings()->firstOrCreate(
+            ['key' => LeagueSetting::BENCH_ROLE_LIMITS],
+            ['value' => LeagueSetting::roleLimitsPayload(LeagueSetting::DEFAULT_BENCH_ROLE_LIMITS)],
+        );
+        $league->settings()->firstOrCreate(
+            ['key' => LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES],
+            ['value' => LeagueSetting::stringListPayload(LeagueSetting::DEFAULT_ALLOWED_FORMATION_MODULE_NAMES)],
+        );
+        $league->settings()->firstOrCreate(
+            ['key' => LeagueSetting::SUBSTITUTION_ORDER_MODE],
+            ['value' => LeagueSetting::stringPayload(LeagueSetting::DEFAULT_SUBSTITUTION_ORDER_MODE)],
+        );
+        foreach (
+            [
+                LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => LeagueSetting::DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
+                LeagueSetting::CAPTAIN_ENABLED => LeagueSetting::DEFAULT_CAPTAIN_ENABLED,
+                LeagueSetting::VICE_CAPTAIN_ENABLED => LeagueSetting::DEFAULT_VICE_CAPTAIN_ENABLED,
+            ] as $key => $enabled
+        ) {
+            $league->settings()->firstOrCreate(
+                ['key' => $key],
+                ['value' => LeagueSetting::booleanPayload($enabled)],
+            );
+        }
     }
 
     /** @param array<string, mixed> $settings */
@@ -49,6 +76,8 @@ class LeagueSettingsService
                     LeagueSetting::INITIAL_BUDGET,
                     LeagueSetting::RELEASE_REFUND_PERCENTAGE,
                     LeagueSetting::MAX_ROSTER_PLAYERS,
+                    LeagueSetting::BENCH_SIZE,
+                    LeagueSetting::MAX_SUBSTITUTIONS,
                 ] as $key
             ) {
                 if (! array_key_exists($key, $settings)) {
@@ -67,10 +96,47 @@ class LeagueSettingsService
                     ['value' => LeagueSetting::roleLimitsPayload($settings[LeagueSetting::ROSTER_ROLE_LIMITS])],
                 );
             }
+
+            if (array_key_exists(LeagueSetting::BENCH_ROLE_LIMITS, $settings)) {
+                LeagueSetting::query()->updateOrCreate(
+                    ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::BENCH_ROLE_LIMITS],
+                    ['value' => LeagueSetting::roleLimitsPayload($settings[LeagueSetting::BENCH_ROLE_LIMITS])],
+                );
+            }
+
+            if (array_key_exists(LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES, $settings)) {
+                LeagueSetting::query()->updateOrCreate(
+                    ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES],
+                    ['value' => LeagueSetting::stringListPayload($settings[LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES])],
+                );
+            }
+
+            if (array_key_exists(LeagueSetting::SUBSTITUTION_ORDER_MODE, $settings)) {
+                LeagueSetting::query()->updateOrCreate(
+                    ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::SUBSTITUTION_ORDER_MODE],
+                    ['value' => LeagueSetting::stringPayload($settings[LeagueSetting::SUBSTITUTION_ORDER_MODE])],
+                );
+            }
+
+            foreach (
+                [
+                    LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
+                    LeagueSetting::CAPTAIN_ENABLED,
+                    LeagueSetting::VICE_CAPTAIN_ENABLED,
+                ] as $key
+            ) {
+                if (array_key_exists($key, $settings)) {
+                    LeagueSetting::query()->updateOrCreate(
+                        ['league_id' => $lockedLeague->id, 'key' => $key],
+                        ['value' => LeagueSetting::booleanPayload((bool) $settings[$key])],
+                    );
+                }
+            }
         });
 
         return $league->refresh();
     }
+
     /** @param array<string, mixed> $settings */
     private function ensureLifecycleAllows(League $league, array $settings): void
     {

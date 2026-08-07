@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { SubmitEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { accountApi, type UpdateProfilePayload } from '../../api/account';
 import { authKeys } from '../../api/queryKeys';
 import { useAuth } from '../../auth/useAuth';
@@ -9,7 +9,7 @@ import { accountError, fieldErrors, type FieldErrors } from './accountFormErrors
 const inputClassName = 'w-full rounded-md border border-slate-300 px-3 py-2 text-slate-950';
 
 export function AccountProfileForm() {
-  const { user, refreshUser, setAuthenticatedUser } = useAuth();
+  const { user, setAuthenticatedUser } = useAuth();
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const [name, setName] = useState(user?.name ?? '');
@@ -20,11 +20,14 @@ export function AccountProfileForm() {
   const emailChanged = useMemo(() => email.trim() !== (user?.email ?? ''), [email, user?.email]);
   const profileMutation = useMutation({
     mutationFn: accountApi.updateProfile,
-    onSuccess: async (updated) => {
-      setAuthenticatedUser(updated);
-      queryClient.setQueryData(authKeys.currentUser(), updated);
-      await queryClient.invalidateQueries({ queryKey: authKeys.currentUser() });
-      await refreshUser();
+    onSuccess: (updatedUser) => {
+      setAuthenticatedUser(updatedUser);
+
+      queryClient.setQueryData(
+        authKeys.currentUser(),
+        updatedUser,
+      );
+
       setCurrentPassword('');
       setStatus(t('account.profile.success'));
     },
@@ -39,7 +42,7 @@ export function AccountProfileForm() {
     setEmail(user?.email ?? '');
   }, [user]);
 
-  function submit(event: SubmitEvent<HTMLFormElement>) {
+  function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrors({});
     setStatus(null);

@@ -85,6 +85,13 @@ class League extends Model
         return $setting instanceof LeagueSetting ? $setting->booleanValue() : $default;
     }
 
+    public function stringSettingValue(string $key, string $default): string
+    {
+        $setting = $this->settings()->where('key', $key)->first();
+
+        return $setting instanceof LeagueSetting ? $setting->stringValue() : $default;
+    }
+
     public function initialFantasyBudget(): int
     {
         return $this->settingValue(LeagueSetting::INITIAL_BUDGET, LeagueSetting::DEFAULT_INITIAL_BUDGET);
@@ -128,5 +135,56 @@ class League extends Model
         }
 
         return $orderedLimits;
+    }
+
+    /** @return list<string> */
+    public function allowedFormationModuleNames(): array
+    {
+        $setting = $this->settings()->where('key', LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES)->first();
+
+        return $setting instanceof LeagueSetting
+            ? $setting->stringListValue()
+            : LeagueSetting::DEFAULT_ALLOWED_FORMATION_MODULE_NAMES;
+    }
+
+    public function benchSize(): int
+    {
+        return $this->settingValue(LeagueSetting::BENCH_SIZE, LeagueSetting::DEFAULT_BENCH_SIZE);
+    }
+
+    /** @return array<string, int> */
+    public function benchRoleLimits(): array
+    {
+        $setting = $this->settings()->where('key', LeagueSetting::BENCH_ROLE_LIMITS)->first();
+        $stored = $setting instanceof LeagueSetting ? $setting->roleLimitsValue() : [];
+
+        return collect(LeagueSetting::DEFAULT_BENCH_ROLE_LIMITS)
+            ->mapWithKeys(fn(int $default, string $role): array => [$role => (int) ($stored[$role] ?? $default)])
+            ->all();
+    }
+
+    public function maxSubstitutions(): int
+    {
+        return $this->settingValue(LeagueSetting::MAX_SUBSTITUTIONS, LeagueSetting::DEFAULT_MAX_SUBSTITUTIONS);
+    }
+
+    public function substitutionOrderMode(): string
+    {
+        return $this->stringSettingValue(LeagueSetting::SUBSTITUTION_ORDER_MODE, LeagueSetting::DEFAULT_SUBSTITUTION_ORDER_MODE);
+    }
+
+    public function allowsFormationChangeOnSubstitution(): bool
+    {
+        return $this->booleanSettingValue(LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION, false);
+    }
+
+    public function captainEnabled(): bool
+    {
+        return $this->booleanSettingValue(LeagueSetting::CAPTAIN_ENABLED, false);
+    }
+
+    public function viceCaptainEnabled(): bool
+    {
+        return $this->booleanSettingValue(LeagueSetting::VICE_CAPTAIN_ENABLED, false);
     }
 }

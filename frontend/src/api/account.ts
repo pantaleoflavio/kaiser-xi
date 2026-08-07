@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { User } from '../types/auth';
+import type { ApiResource, User } from '../types/auth';
 
 export type UpdateProfilePayload = {
   name?: string;
@@ -14,11 +14,17 @@ export type UpdatePasswordPayload = {
 };
 
 export const accountApi = {
-  updateProfile: (payload: UpdateProfilePayload) =>
-    apiClient<User>('/auth/me', {
+  updateProfile: async (
+    payload: UpdateProfilePayload,
+  ): Promise<User> => {
+    const response = await apiClient<ApiResource<User>>('/auth/me', {
       method: 'PATCH',
       body: JSON.stringify(payload),
-    }),
+    });
+
+    return response.data;
+  },
+
   updatePassword: (payload: UpdatePasswordPayload) =>
     apiClient<void>('/auth/me/password', {
       method: 'PUT',

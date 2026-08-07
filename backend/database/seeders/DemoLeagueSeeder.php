@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\FantasyTeam;
 use App\Models\League;
 use App\Models\LeagueRole;
-use App\Models\LeagueSetting;
 use App\Models\LeagueStatus;
 use App\Models\LeagueType;
 use App\Models\RealClub;
@@ -97,12 +96,8 @@ class DemoLeagueSeeder extends Seeder
         );
 
         $this->leagueSettingsService->initializeDefaults($league);
-        $this->leagueSettingsService->update($league, [
-            'initial_budget' => 500,
-            'release_refund_percentage' => 50,
-            'max_roster_players' => LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS,
-            'roster_role_limits' => LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS,
-        ]);
+
+
         $roles = LeagueRole::query()->pluck('id', 'key');
         foreach (self::MEMBERS as $email => [$role, $teamName, $teamSlug]) {
             $user = User::query()->where('email', $email)->firstOrFail();
