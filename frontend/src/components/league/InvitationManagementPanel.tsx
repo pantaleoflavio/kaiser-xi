@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 import { leaguesApi } from '../../api/leagues';
 import { useTranslation } from '../../i18n';
 import type { LeagueInvitation } from '../../types/league';
@@ -36,7 +36,7 @@ export function InvitationManagementPanel({
       setError(err instanceof Error ? err.message : t('leagueDetail.invitations.error'));
     }
   }
-  async function create(event: FormEvent<HTMLFormElement>) {
+  async function create(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       setIsCreating(true);
