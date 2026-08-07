@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 import { ApiError } from '../../api/client';
 import { leaguesApi } from '../../api/leagues';
 import { useTranslation } from '../../i18n';
@@ -49,7 +49,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
   );
   const canEdit = league.my_role === 'commissioner' || league.my_role === 'co_commissioner';
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!canEdit) return;
     const parsedMaximum = Number(maxRosterPlayers);

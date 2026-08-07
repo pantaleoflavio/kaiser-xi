@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { SubmitEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ApiError } from '../../api/client';
 import { leaguesApi } from '../../api/leagues';
@@ -35,7 +35,7 @@ export function FantasyTeamsPanel({
       setListError(error instanceof Error ? error.message : t('fantasyTeams.errors.list'));
     }
   }
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       setIsCreating(true);

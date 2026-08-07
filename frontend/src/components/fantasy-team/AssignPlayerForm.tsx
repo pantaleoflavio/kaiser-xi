@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useState, type SubmitEvent } from 'react';
 import { EligiblePlayerSelector } from '../EligiblePlayerSelector';
 import { ErrorPanel } from '../feedback/ErrorPanel';
 import { useTranslation } from '../../i18n';
@@ -25,7 +25,7 @@ export function AssignPlayerForm({
   const { t } = useTranslation();
   const [selected, setSelected] = useState<EligiblePlayer | null>(null);
   const [purchasePrice, setPurchasePrice] = useState('');
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selected) {
       setFieldErrors({ player_id: t('roster.assign.playerRequired') });
