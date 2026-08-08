@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PlayerScores\Schemas;
 
+use App\Enums\PlayerScoreStatus;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -61,9 +62,10 @@ class PlayerScoreForm
                     ->required(),
                 TextInput::make('final_score')
                     ->numeric(),
-                TextInput::make('status')
+            Select::make('status')
+                ->options(PlayerScoreStatus::options())
                     ->required()
-                    ->default('pending'),
+                ->default(PlayerScoreStatus::Pending->value),
             ]);
     }
 }

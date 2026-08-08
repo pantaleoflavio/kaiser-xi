@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PlayerScoreStatus;
 use App\Models\Matchday;
 use App\Models\PlayerScore;
 use App\Models\PlayerSeasonRegistration;
@@ -34,7 +35,32 @@ class PlayerScoreFactory extends Factory
             'goals_conceded' => 0,
             'clean_sheet' => false,
             'final_score' => 6.00,
-            'status' => 'confirmed',
+            'status' => PlayerScoreStatus::Confirmed,
         ];
+    }
+
+    public function pending(): static
+    {
+        return $this->state(fn(): array => [
+            'final_score' => null,
+            'status' => PlayerScoreStatus::Pending,
+        ]);
+    }
+
+    public function confirmed(float $finalScore = 6.00): static
+    {
+        return $this->state(fn(): array => [
+            'final_score' => $finalScore,
+            'status' => PlayerScoreStatus::Confirmed,
+        ]);
+    }
+
+    public function didNotPlay(): static
+    {
+        return $this->state(fn(): array => [
+            'base_rating' => null,
+            'final_score' => null,
+            'status' => PlayerScoreStatus::DidNotPlay,
+        ]);
     }
 }

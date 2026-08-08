@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -28,6 +29,10 @@ return new class extends Migration
             $table->timestamps();
             $table->unique(['matchday_id', 'player_season_registration_id']);
         });
+
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement("ALTER TABLE player_scores ADD CONSTRAINT player_scores_status_check CHECK (status IN ('pending', 'confirmed', 'did_not_play'))");
+        }
     }
 
     public function down(): void

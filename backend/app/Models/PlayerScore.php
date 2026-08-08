@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\PlayerScoreStatus;
+use App\Models\Matchday;
+use App\Models\PlayerSeasonRegistration;
+use App\Models\TeamMatchdayScoreDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,6 +38,7 @@ class PlayerScore extends Model
         'base_rating' => 'decimal:2',
         'clean_sheet' => 'boolean',
         'final_score' => 'decimal:2',
+        'status' => PlayerScoreStatus::class,
     ];
 
     protected static function booted(): void
@@ -45,6 +50,21 @@ class PlayerScore extends Model
                 throw ValidationException::withMessages(['player_season_registration_id' => 'The player registration must belong to the matchday season.']);
             }
         });
+    }
+
+    public function isPlayable(): bool
+    {
+        return $this->status === PlayerScoreStatus::Confirmed
+            && $this->final_score !== null;
+    }
+
+    public static function isPlayableFor(int $playerSeasonRegistrationId, int $matchdayId): bool
+    {
+        return self::query()
+            ->where('player_season_registration_id', $playerSeasonRegistrationId)
+            ->where('matchday_id', $matchdayId)
+            ->first()
+            ?->isPlayable() ?? false;
     }
 
     public function playerSeasonRegistration(): BelongsTo
