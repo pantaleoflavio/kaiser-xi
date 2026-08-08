@@ -12,7 +12,6 @@ use App\Models\PlayerRole;
 use App\Models\PlayerSeasonRegistration;
 use App\Models\SeasonClub;
 use App\Models\User;
-use App\Services\League\LeagueSettingsService;
 use Database\Seeders\DemoLeagueSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
@@ -25,40 +24,68 @@ class LeagueSettingsLifecycleTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->seed();
     }
 
-    public function test_mutable_refund_and_roster_increases_are_allowed(): void
+    public function test_refund_and_roster_increases_are_allowed(): void
     {
-        [$league, $commissioner] = $this->activeDemoLeague([
-            'budget_rules_mutable' => true,
-            'roster_size_mutable' => true,
-            'roster_role_limits_mutable' => true,
-        ]);
+        [$league, $commissioner] = $this->activeDemoLeague();
+
         Sanctum::actingAs($commissioner);
 
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['release_refund_percentage' => 75])
-            ->assertOk()->assertJsonPath('data.release_refund_percentage', 75);
-        $limits = [...LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS, 'forward' => 7];
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
-            'max_roster_players' => 26,
-            'roster_role_limits' => $limits,
-        ])->assertOk()
+        $this->patchJson(
+            "/api/v1/leagues/{$league->id}/settings",
+            ['release_refund_percentage' => 75]
+        )
+            ->assertOk()
+            ->assertJsonPath('data.release_refund_percentage', 75);
+
+        $limits = [
+            ...LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS,
+            'forward' => 7,
+        ];
+
+        $this->patchJson(
+            "/api/v1/leagues/{$league->id}/settings",
+            [
+                'max_roster_players' => 26,
+                'roster_role_limits' => $limits,
+            ]
+        )
+            ->assertOk()
             ->assertJsonPath('data.max_roster_players', 26)
             ->assertJsonPath('data.roster_role_limits.forward', 7);
     }
 
     public function test_initial_budget_is_not_changed_after_teams_exist(): void
     {
-        [$league, $commissioner] = $this->activeDemoLeague(['budget_rules_mutable' => true]);
+        [$league, $commissioner] = $this->activeDemoLeague();
+
         Sanctum::actingAs($commissioner);
-        $budgets = FantasyTeam::query()->where('league_id', $league->id)->pluck('remaining_budget', 'id');
 
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['initial_budget' => 999])
-            ->assertConflict()->assertJsonPath('code', 'initial_budget_change_unsupported');
+        $budgets = FantasyTeam::query()
+            ->where('league_id', $league->id)
+            ->pluck('remaining_budget', 'id');
 
-        $this->assertSame(500, $league->refresh()->initialFantasyBudget());
-        $this->assertEquals($budgets, FantasyTeam::query()->where('league_id', $league->id)->pluck('remaining_budget', 'id'));
+        $this->patchJson(
+            "/api/v1/leagues/{$league->id}/settings",
+            ['initial_budget' => 999]
+        )
+            ->assertConflict()
+            ->assertJsonPath('code', 'initial_budget_change_unsupported');
+
+        $this->assertSame(
+            500,
+            $league->refresh()->initialFantasyBudget()
+        );
+
+        $this->assertEquals(
+            $budgets,
+            FantasyTeam::query()
+                ->where('league_id', $league->id)
+                ->pluck('remaining_budget', 'id')
+        );
     }
 
     public function test_roster_size_cannot_drop_below_largest_active_roster(): void
@@ -189,13 +216,19 @@ class LeagueSettingsLifecycleTest extends TestCase
             ->assertJsonPath('code', 'league_rules_locked');
     }
 
-    private function activeDemoLeague(array $mutability = []): array
+    private function activeDemoLeague(): array
     {
-        $league = League::query()->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)->firstOrFail();
-        $commissioner = User::query()->where('email', 'demo.commissioner@example.com')->firstOrFail();
-        app(LeagueSettingsService::class)->update($league, $mutability);
-        $league->update(['league_status_id' => LeagueStatus::query()->where('key', LeagueStatus::ACTIVE)->value('id')]);
+        $league = League::query()
+            ->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)
+            ->firstOrFail();
 
-        return [$league->refresh(), $commissioner];
+        $commissioner = User::query()
+            ->where('email', 'demo.commissioner@example.com')
+            ->firstOrFail();
+
+        return [
+            $league->refresh(),
+            $commissioner,
+        ];
     }
 }

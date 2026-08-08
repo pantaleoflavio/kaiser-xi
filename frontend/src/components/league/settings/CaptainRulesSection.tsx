@@ -2,12 +2,10 @@ import { errorId, exactError, type SettingsFieldErrors } from './leagueSettingsF
 
 type Props = {
   captainEnabled: boolean;
-  viceCaptainEnabled: boolean;
   errors: SettingsFieldErrors;
   disabled: boolean;
   t: (key: string) => string;
   onCaptainChange: (enabled: boolean) => void;
-  onViceCaptainChange: (enabled: boolean) => void;
 };
 
 function FieldError({ errors, field }: { errors: SettingsFieldErrors; field: string }) {
@@ -21,12 +19,10 @@ function FieldError({ errors, field }: { errors: SettingsFieldErrors; field: str
 
 export function CaptainRulesSection({
   captainEnabled,
-  viceCaptainEnabled,
   errors,
   disabled,
   t,
   onCaptainChange,
-  onViceCaptainChange,
 }: Props) {
   return (
     <fieldset className="grid gap-3">
@@ -46,20 +42,6 @@ export function CaptainRulesSection({
         <span>{t('leagueSettings.captains.captain')}</span>
       </label>
       <FieldError errors={errors} field="captain_enabled" />
-      <label className="flex items-start gap-2 text-sm text-slate-200">
-        <input
-          aria-describedby={
-            exactError(errors, 'vice_captain_enabled') ? errorId('vice_captain_enabled') : undefined
-          }
-          checked={viceCaptainEnabled}
-          disabled={!captainEnabled || disabled}
-          onChange={(event) => onViceCaptainChange(event.target.checked)}
-          type="checkbox"
-        />
-        <span>{t('leagueSettings.captains.viceCaptain')}</span>
-      </label>
-      <p className="text-sm text-slate-400">{t('leagueSettings.captains.dependency')}</p>
-      <FieldError errors={errors} field="vice_captain_enabled" />
     </fieldset>
   );
 }

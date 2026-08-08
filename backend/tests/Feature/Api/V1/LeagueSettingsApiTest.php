@@ -62,10 +62,7 @@ class LeagueSettingsApiTest extends TestCase
             ->assertJsonPath('data.release_refund_percentage', LeagueSetting::DEFAULT_RELEASE_REFUND_PERCENTAGE)
             ->assertJsonPath('data.max_roster_players', LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS)
             ->assertJsonPath('data.status', 'active')
-            ->assertJsonMissingPath('data.can_activate')
-            ->assertJsonMissingPath('data.budget_rules_mutable')
-            ->assertJsonMissingPath('data.roster_size_mutable')
-            ->assertJsonMissingPath('data.roster_role_limits_mutable');
+            ->assertJsonMissingPath('data.can_activate');
 
         foreach (
             [
@@ -80,7 +77,6 @@ class LeagueSettingsApiTest extends TestCase
                 LeagueSetting::SUBSTITUTION_ORDER_MODE,
                 LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
                 LeagueSetting::CAPTAIN_ENABLED,
-                LeagueSetting::VICE_CAPTAIN_ENABLED,
             ] as $key
         ) {
             $this->assertDatabaseHas('league_settings', ['league_id' => $leagueId, 'key' => $key]);

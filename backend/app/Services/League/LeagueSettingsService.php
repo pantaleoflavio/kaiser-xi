@@ -53,7 +53,6 @@ class LeagueSettingsService
             [
                 LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => LeagueSetting::DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
                 LeagueSetting::CAPTAIN_ENABLED => LeagueSetting::DEFAULT_CAPTAIN_ENABLED,
-                LeagueSetting::VICE_CAPTAIN_ENABLED => LeagueSetting::DEFAULT_VICE_CAPTAIN_ENABLED,
             ] as $key => $enabled
         ) {
             $league->settings()->firstOrCreate(
@@ -122,7 +121,6 @@ class LeagueSettingsService
                 [
                     LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
                     LeagueSetting::CAPTAIN_ENABLED,
-                    LeagueSetting::VICE_CAPTAIN_ENABLED,
                 ] as $key
             ) {
                 if (array_key_exists($key, $settings)) {

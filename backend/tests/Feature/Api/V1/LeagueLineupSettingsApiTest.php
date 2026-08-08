@@ -39,8 +39,7 @@ class LeagueLineupSettingsApiTest extends TestCase
             ->assertJsonPath('data.max_substitutions', 3)
             ->assertJsonPath('data.substitution_order_mode', 'bench_order')
             ->assertJsonPath('data.allow_formation_change_on_substitution', false)
-            ->assertJsonPath('data.captain_enabled', false)
-            ->assertJsonPath('data.vice_captain_enabled', false);
+            ->assertJsonPath('data.captain_enabled', false);
 
         $this->assertSame(LeagueSetting::DEFAULT_ALLOWED_FORMATION_MODULE_NAMES, array_column($response->json('data.allowed_formation_modules'), 'name'));
         $this->assertSame([1, 3, 4, 3], array_values($response->json('data.allowed_formation_modules.0.requirements')));
@@ -125,25 +124,17 @@ class LeagueLineupSettingsApiTest extends TestCase
             ->assertUnprocessable()->assertJsonValidationErrors('allow_formation_change_on_substitution');
     }
 
-    public function test_captain_rules_use_persisted_values_for_partial_updates(): void
+    public function test_captain_rule_accepts_boolean_updates(): void
     {
         [$league, $commissioner] = $this->leagueWithMember('commissioner');
         Sanctum::actingAs($commissioner);
 
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['vice_captain_enabled' => true])
-            ->assertUnprocessable()->assertJsonValidationErrors('vice_captain_enabled');
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
-            'captain_enabled' => true,
-            'vice_captain_enabled' => true,
-        ])->assertOk();
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['captain_enabled' => true])
+            ->assertOk()->assertJsonPath('data.captain_enabled', true);
         $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['captain_enabled' => false])
-            ->assertUnprocessable()->assertJsonValidationErrors('vice_captain_enabled');
+            ->assertOk()->assertJsonPath('data.captain_enabled', false);
         $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['captain_enabled' => 'enabled'])
             ->assertUnprocessable()->assertJsonValidationErrors('captain_enabled');
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
-            'captain_enabled' => false,
-            'vice_captain_enabled' => false,
-        ])->assertOk()->assertJsonPath('data.captain_enabled', false);
     }
 
     public function test_formation_and_bench_limits_must_be_compatible_with_roster_limits(): void
@@ -188,7 +179,6 @@ class LeagueLineupSettingsApiTest extends TestCase
             LeagueSetting::SUBSTITUTION_ORDER_MODE,
             LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
             LeagueSetting::CAPTAIN_ENABLED,
-            LeagueSetting::VICE_CAPTAIN_ENABLED,
         ];
     }
 }

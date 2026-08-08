@@ -388,8 +388,7 @@
     "captains": {
       "title": "Captain rules",
       "captain": "Enable captain selection",
-      "viceCaptain": "Enable vice-captain selection",
-      "dependency": "Vice-captain selection is available only when captain selection is enabled."
+      "viceCaptain": "Enable vice-captain selection"
     },
     "validation": {
       "formationRequired": "Select at least one allowed formation.",

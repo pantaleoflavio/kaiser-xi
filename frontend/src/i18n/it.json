@@ -335,9 +335,7 @@
     },
     "captains": {
       "title": "Regole capitano",
-      "captain": "Abilita selezione capitano",
-      "viceCaptain": "Abilita selezione vice-capitano",
-      "dependency": "La selezione del vice-capitano è disponibile solo quando è abilitata quella del capitano."
+      "captain": "Abilita selezione capitano"
     },
     "validation": {
       "formationRequired": "Seleziona almeno una formazione consentita.",

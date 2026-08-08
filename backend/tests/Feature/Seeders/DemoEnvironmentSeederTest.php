@@ -56,7 +56,6 @@ class DemoEnvironmentSeederTest extends TestCase
             LeagueSetting::SUBSTITUTION_ORDER_MODE,
             LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
             LeagueSetting::CAPTAIN_ENABLED,
-            LeagueSetting::VICE_CAPTAIN_ENABLED,
         ];
 
         $this->assertSame(

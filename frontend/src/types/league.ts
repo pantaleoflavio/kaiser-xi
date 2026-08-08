@@ -143,7 +143,6 @@ export type LeagueSettings = {
   substitution_order_mode: SubstitutionOrderMode;
   allow_formation_change_on_substitution: boolean;
   captain_enabled: boolean;
-  vice_captain_enabled: boolean;
   status: string;
   can_update_settings: boolean;
   locked_rule_groups: string[];
@@ -180,7 +179,6 @@ export type LeagueSettingsPayload = Partial<{
   substitution_order_mode: SubstitutionOrderMode;
   allow_formation_change_on_substitution: boolean;
   captain_enabled: boolean;
-  vice_captain_enabled: boolean;
 }>;
 
 export type RosterPlayer = {

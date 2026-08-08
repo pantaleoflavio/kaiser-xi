@@ -52,7 +52,6 @@ class LeagueSettingsResource extends JsonResource
             LeagueSetting::SUBSTITUTION_ORDER_MODE => $this->substitutionOrderMode(),
             LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => $this->allowsFormationChangeOnSubstitution(),
             LeagueSetting::CAPTAIN_ENABLED => $this->captainEnabled(),
-            LeagueSetting::VICE_CAPTAIN_ENABLED => $this->viceCaptainEnabled(),
             'status' => $this->statusKey(),
             'can_update_settings' => $request->user()?->can('manageSettings', $this->resource)
                 && ! in_array($this->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true),

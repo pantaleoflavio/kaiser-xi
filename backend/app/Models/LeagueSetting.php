@@ -21,7 +21,6 @@ class LeagueSetting extends Model
     public const SUBSTITUTION_ORDER_MODE = 'substitution_order_mode';
     public const ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION = 'allow_formation_change_on_substitution';
     public const CAPTAIN_ENABLED = 'captain_enabled';
-    public const VICE_CAPTAIN_ENABLED = 'vice_captain_enabled';
     public const DEFAULT_INITIAL_BUDGET = 500;
     public const DEFAULT_RELEASE_REFUND_PERCENTAGE = 50;
     public const DEFAULT_MAX_ROSTER_PLAYERS = 25;
@@ -51,7 +50,6 @@ class LeagueSetting extends Model
     public const DEFAULT_SUBSTITUTION_ORDER_MODE = self::SUBSTITUTION_ORDER_BENCH;
     public const DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION = false;
     public const DEFAULT_CAPTAIN_ENABLED = false;
-    public const DEFAULT_VICE_CAPTAIN_ENABLED = false;
     public const PLAYER_ROLE_KEYS = ['goalkeeper', 'defender', 'midfielder', 'forward'];
     public const DEFAULT_ROSTER_ROLE_LIMITS = [
         'goalkeeper' => 3,

@@ -126,12 +126,6 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'boolean',
             ],
 
-            LeagueSetting::VICE_CAPTAIN_ENABLED => [
-                'sometimes',
-                'required',
-                'boolean',
-            ],
-
             'remaining_budget' => ['prohibited'],
             'league_id' => ['prohibited'],
         ];
@@ -154,8 +148,6 @@ class UpdateLeagueSettingsRequest extends FormRequest
             $benchSize = (int) $this->input(LeagueSetting::BENCH_SIZE, $league->benchSize());
             $benchLimits = $this->input(LeagueSetting::BENCH_ROLE_LIMITS, $league->benchRoleLimits());
             $maxSubstitutions = (int) $this->input(LeagueSetting::MAX_SUBSTITUTIONS, $league->maxSubstitutions());
-            $captainEnabled = $this->booleanValue(LeagueSetting::CAPTAIN_ENABLED, $league->captainEnabled());
-            $viceCaptainEnabled = $this->booleanValue(LeagueSetting::VICE_CAPTAIN_ENABLED, $league->viceCaptainEnabled());
 
             if (array_sum($rosterLimits) < $maximum) {
                 $validator->errors()->add(
@@ -178,10 +170,6 @@ class UpdateLeagueSettingsRequest extends FormRequest
 
             if ($maxSubstitutions > $benchSize) {
                 $validator->errors()->add(LeagueSetting::MAX_SUBSTITUTIONS, 'The maximum substitutions cannot exceed the bench size.');
-            }
-
-            if ($viceCaptainEnabled && ! $captainEnabled) {
-                $validator->errors()->add(LeagueSetting::VICE_CAPTAIN_ENABLED, 'Vice-captain selection requires captain selection to be enabled.');
             }
 
             $this->validateFormations($validator, $league, $rosterLimits, $maximum);

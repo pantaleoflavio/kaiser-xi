@@ -182,9 +182,4 @@ class League extends Model
     {
         return $this->booleanSettingValue(LeagueSetting::CAPTAIN_ENABLED, false);
     }
-
-    public function viceCaptainEnabled(): bool
-    {
-        return $this->booleanSettingValue(LeagueSetting::VICE_CAPTAIN_ENABLED, false);
-    }
 }

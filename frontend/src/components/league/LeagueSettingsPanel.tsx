@@ -91,14 +91,6 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
     }));
   }
 
-  function setCaptain(enabled: boolean) {
-    setForm((current) => ({
-      ...current,
-      captainEnabled: enabled,
-      viceCaptainEnabled: enabled ? current.viceCaptainEnabled : false,
-    }));
-  }
-
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!canEdit) return;
@@ -182,10 +174,8 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
             captainEnabled={form.captainEnabled}
             disabled={updateSettings.isPending}
             errors={fieldErrors}
-            onCaptainChange={setCaptain}
-            onViceCaptainChange={(value) => setField('viceCaptainEnabled', value)}
+            onCaptainChange={(value) => setField('captainEnabled', value)}
             t={t}
-            viceCaptainEnabled={form.viceCaptainEnabled}
           />
           <button
             className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"

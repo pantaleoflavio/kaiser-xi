@@ -387,9 +387,7 @@
     },
     "captains": {
       "title": "Kapitänsregeln",
-      "captain": "Kapitänsauswahl aktivieren",
-      "viceCaptain": "Vizekapitänsauswahl aktivieren",
-      "dependency": "Die Vizekapitänsauswahl ist nur verfügbar, wenn die Kapitänsauswahl aktiviert ist."
+      "captain": "Kapitänsauswahl aktivieren"
     },
     "validation": {
       "formationRequired": "Wähle mindestens eine erlaubte Formation aus.",

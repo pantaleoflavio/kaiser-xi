@@ -28,7 +28,6 @@ export type LeagueSettingsFormState = {
   substitutionMode: SubstitutionOrderMode;
   allowFormationChange: boolean;
   captainEnabled: boolean;
-  viceCaptainEnabled: boolean;
 };
 
 function roleStrings(limits: Record<PlayerRoleKey, number>): StringRoleLimits {
@@ -59,7 +58,6 @@ export function createLeagueSettingsFormState(
     substitutionMode: settings?.substitution_order_mode ?? 'bench_order',
     allowFormationChange: settings?.allow_formation_change_on_substitution ?? false,
     captainEnabled: settings?.captain_enabled ?? false,
-    viceCaptainEnabled: settings?.vice_captain_enabled ?? false,
   };
 }
 
@@ -192,7 +190,6 @@ export function validateLeagueSettingsForm(
       substitution_order_mode: form.substitutionMode,
       allow_formation_change_on_substitution: form.allowFormationChange,
       captain_enabled: form.captainEnabled,
-      vice_captain_enabled: form.viceCaptainEnabled,
     },
   };
 }

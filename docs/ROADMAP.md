@@ -122,7 +122,6 @@ Planned
 
 * Formation management
 * Captain selection
-* Vice-captain selection
 * Bench management
 * Formation validation
 
