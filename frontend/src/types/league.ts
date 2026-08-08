@@ -23,6 +23,18 @@ export type League = {
   my_role: LeagueRole | null;
 };
 
+export type LeagueResponse = {
+  data: League;
+};
+
+export type CreatedLeagueResponse = {
+  data: League;
+};
+
+export type LeagueCollectionResponse = {
+  data: League[];
+};
+
 export type CreateLeaguePayload = {
   name: string;
   season_id: number;
@@ -55,6 +67,14 @@ export type LeagueMember = {
   role: LeagueReference;
 };
 
+export type LeagueMemberResponse = {
+  data: LeagueMember;
+};
+
+export type LeagueMemberCollectionResponse = {
+  data: LeagueMember[];
+};
+
 export type ManageableLeagueRole = 'participant' | 'co_commissioner';
 
 export type LeagueInvitation = {
@@ -78,6 +98,14 @@ export type LeagueInvitation = {
   role: { key: InvitationRole; label: string };
   league?: { id: number; name: string };
   available_actions: Array<'accept' | 'reject'>;
+};
+
+export type LeagueInvitationResponse = {
+  data: LeagueInvitation;
+};
+
+export type LeagueInvitationCollectionResponse = {
+  data: LeagueInvitation[];
 };
 
 export type InvitationStatus = 'pending' | 'accepted' | 'rejected' | 'revoked' | 'expired';
@@ -106,6 +134,14 @@ export type FantasyTeam = {
   updated_at: string | null;
 };
 
+export type FantasyTeamResponse = {
+  data: FantasyTeam;
+};
+
+export type FantasyTeamCollectionResponse = {
+  data: FantasyTeam[];
+};
+
 export type FantasyTeamPayload = {
   name: string;
 };
@@ -115,20 +151,54 @@ export type LeagueSettings = {
   release_refund_percentage: string | number | null;
   max_roster_players: number;
   roster_role_limits: RosterRoleLimits;
+  allowed_formation_module_names: FormationModuleName[];
+  allowed_formation_modules: FormationModule[];
+  bench_size: number;
+  bench_role_limits: BenchRoleLimits;
+  max_substitutions: number;
+  substitution_order_mode: SubstitutionOrderMode;
+  allow_formation_change_on_substitution: boolean;
+  captain_enabled: boolean;
+  vice_captain_enabled: boolean;
   status: string;
   can_update_settings: boolean;
   locked_rule_groups: string[];
+};
+
+export type LeagueSettingsResponse = {
+  data: LeagueSettings;
 };
 
 export type PlayerRoleKey = 'goalkeeper' | 'defender' | 'midfielder' | 'forward';
 
 export type RosterRoleLimits = Record<PlayerRoleKey, number>;
 
+export type FormationModuleName = string;
+
+export type FormationModule = {
+  name: FormationModuleName;
+  label: string;
+  required_players_count: number;
+  requirements: Record<PlayerRoleKey, number>;
+};
+
+export type BenchRoleLimits = Record<PlayerRoleKey, number>;
+
+export type SubstitutionOrderMode = 'bench_order' | 'role_priority';
+
 export type LeagueSettingsPayload = Partial<{
   initial_budget: number;
   release_refund_percentage: number;
   max_roster_players: number;
   roster_role_limits: RosterRoleLimits;
+  allowed_formation_module_names: FormationModuleName[];
+  bench_size: number;
+  bench_role_limits: BenchRoleLimits;
+  max_substitutions: number;
+  substitution_order_mode: SubstitutionOrderMode;
+  allow_formation_change_on_substitution: boolean;
+  captain_enabled: boolean;
+  vice_captain_enabled: boolean;
 }>;
 
 export type RosterPlayer = {
@@ -142,6 +212,14 @@ export type RosterPlayer = {
   };
 };
 
+export type RosterPlayerResponse = {
+  data: RosterPlayer;
+};
+
+export type RosterPlayerCollectionResponse = {
+  data: RosterPlayer[];
+};
+
 export type AssignPlayerPayload = {
   player_id: number;
   purchase_price: number;
@@ -151,105 +229,26 @@ export type EligiblePlayer = {
   id: number;
   name: string;
   role: {
-    key: string | null;
+    key: PlayerRoleKey | null;
     label: string | null;
   };
   club: {
-    id: number | null;
-    name: string | null;
-    real_club_id: number | null;
-  };
-  quotation: number | null;
+    id: number;
+    name: string;
+    real_club_id: number;
+  } | null;
+  quotation: string | number | null;
   availability: string;
+};
+
+export type EligiblePlayerCollectionResponse = {
+  data: EligiblePlayer[];
 };
 
 export type EligiblePlayerFilters = {
   search?: string;
-  role?: string;
+  role?: PlayerRoleKey;
   club_id?: number;
   page?: number;
   per_page?: number;
-};
-
-export type PaginationLink = {
-  url: string | null;
-  label: string;
-  active: boolean;
-};
-
-export type PaginationMeta = {
-  current_page: number;
-  from: number | null;
-  last_page: number;
-  links: PaginationLink[];
-  path: string;
-  per_page: number;
-  to: number | null;
-  total: number;
-};
-
-export type PaginationLinks = {
-  first: string | null;
-  last: string | null;
-  prev: string | null;
-  next: string | null;
-};
-
-export type PaginatedResponse<T> = {
-  data: T[];
-  links: PaginationLinks;
-  meta: PaginationMeta;
-};
-
-export type EligiblePlayerCollectionResponse = PaginatedResponse<EligiblePlayer>;
-
-export type LeagueSettingsResponse = {
-  data: LeagueSettings;
-};
-
-export type RosterPlayerCollectionResponse = {
-  data: RosterPlayer[];
-  meta?: {
-    budget?: string | number | null;
-    total_budget?: string | number | null;
-    remaining_budget?: string | number | null;
-  };
-};
-
-export type RosterPlayerResponse = {
-  data: RosterPlayer;
-};
-
-export type LeagueResponse = {
-  data: League;
-};
-
-export type CreatedLeagueResponse = LeagueResponse;
-
-export type LeagueCollectionResponse = {
-  data: League[];
-};
-
-export type LeagueMemberCollectionResponse = {
-  data: LeagueMember[];
-};
-
-export type LeagueMemberResponse = {
-  data: LeagueMember;
-};
-
-export type LeagueInvitationResponse = {
-  data: LeagueInvitation;
-};
-
-export type LeagueInvitationCollectionResponse = {
-  data: LeagueInvitation[];
-};
-
-export type FantasyTeamResponse = {
-  data: FantasyTeam;
-};
-
-export type FantasyTeamCollectionResponse = {
-  data: FantasyTeam[];
 };

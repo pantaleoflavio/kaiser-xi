@@ -279,7 +279,7 @@
   },
   "leagueSettings": {
     "title": "Impostazioni lega",
-    "description": "Regole di budget e rosa per ogni fantasy team di questa lega.",
+    "description": "Regole di budget, rosa, formazione, panchina, sostituzioni e capitano per ogni fantasy team della lega.",
     "maxRosterPlayers": "Numero massimo di giocatori attivi",
     "rosterRuleHelp": "I limiti per ruolo sono massimi indipendenti. La loro somma deve essere almeno pari al limite totale della rosa.",
     "roles": {
@@ -296,7 +296,56 @@
       "load": "Impossibile caricare le impostazioni della lega.",
       "update": "Impossibile aggiornare le impostazioni della lega.",
       "title": "Impossibile aggiornare le impostazioni della lega",
-      "rosterValidation": "Inserisci un limite totale intero positivo e limiti per ruolo interi non negativi la cui somma raggiunga il limite totale."
+       "rosterValidation": "Inserisci un limite totale intero positivo e limiti per ruolo interi non negativi la cui somma raggiunga il limite totale.",
+      "conflict": "Queste impostazioni sono in conflitto con la configurazione esistente della lega."
+    },
+    "sections": {
+      "roster": "Budget e rosa"
+    },
+    "formations": {
+      "title": "Formazioni consentite",
+      "help": "Seleziona almeno una formazione che i fantasy team possono utilizzare."
+    },
+    "bench": {
+      "title": "Configurazione panchina",
+      "help": "Imposta le dimensioni della panchina e i massimi indipendenti per ogni ruolo. I limiti devono coprire le dimensioni della panchina.",
+      "size": "Dimensioni panchina",
+      "roles": {
+        "goalkeeper": "Limite portieri in panchina",
+        "defender": "Limite difensori in panchina",
+        "midfielder": "Limite centrocampisti in panchina",
+        "forward": "Limite attaccanti in panchina"
+      }
+    },
+    "substitutions": {
+      "title": "Regole sostituzioni",
+      "maximum": "Sostituzioni massime",
+      "order": "Ordine sostituzioni",
+      "allowFormationChange": "Consenti cambi di formazione durante le sostituzioni",
+      "modes": {
+        "bench_order": {
+          "label": "Ordine panchina",
+          "description": "Le riserve vengono considerate nel loro ordine in panchina."
+        },
+        "role_priority": {
+          "label": "Priorità ruolo",
+          "description": "Le riserve vengono considerate in base alla priorità del ruolo."
+        }
+      }
+    },
+    "captains": {
+      "title": "Regole capitano",
+      "captain": "Abilita selezione capitano",
+      "viceCaptain": "Abilita selezione vice-capitano",
+      "dependency": "La selezione del vice-capitano è disponibile solo quando è abilitata quella del capitano."
+    },
+    "validation": {
+      "formationRequired": "Seleziona almeno una formazione consentita.",
+      "nonNegativeInteger": "Inserisci un numero intero non negativo.",
+      "benchTotal": "La somma dei limiti per ruolo in panchina deve essere almeno pari alle dimensioni della panchina.",
+      "substitutionRange": "Le sostituzioni massime devono essere un numero intero tra zero e le dimensioni della panchina.",
+      "positiveInteger": "Inserisci un numero intero positivo.",
+      "percentage": "Inserisci una percentuale intera da 0 a 100."
     }
   },
   "budget": {

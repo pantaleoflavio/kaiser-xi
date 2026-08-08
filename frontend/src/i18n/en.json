@@ -331,7 +331,7 @@
   },
   "leagueSettings": {
     "title": "League settings",
-    "description": "Budget and roster rules for every fantasy team in this league.",
+    "description": "Budget, roster, lineup, bench, substitution, and captain rules for every fantasy team in this league.",
     "maxRosterPlayers": "Maximum active roster players",
     "rosterRuleHelp": "Role limits are independent upper bounds. Their sum must be at least the overall roster maximum.",
     "roles": {
@@ -348,7 +348,56 @@
       "load": "Unable to load league settings.",
       "update": "Unable to update league settings.",
       "title": "Unable to update league settings",
-      "rosterValidation": "Enter a positive whole-number roster maximum and non-negative whole-number role limits whose sum reaches that maximum."
+       "rosterValidation": "Enter a positive whole-number roster maximum and non-negative whole-number role limits whose sum reaches that maximum.",
+      "conflict": "These settings conflict with the league’s existing configuration."
+    },
+    "sections": {
+      "roster": "Budget and roster"
+    },
+    "formations": {
+      "title": "Allowed formations",
+      "help": "Select at least one formation that fantasy teams may use."
+    },
+    "bench": {
+      "title": "Bench configuration",
+      "help": "Set the bench size and independent maximum for each player role. Role limits must cover the bench size.",
+      "size": "Bench size",
+      "roles": {
+        "goalkeeper": "Goalkeeper bench limit",
+        "defender": "Defender bench limit",
+        "midfielder": "Midfielder bench limit",
+        "forward": "Forward bench limit"
+      }
+    },
+    "substitutions": {
+      "title": "Substitution rules",
+      "maximum": "Maximum substitutions",
+      "order": "Substitution order",
+      "allowFormationChange": "Allow formation changes during substitutions",
+      "modes": {
+        "bench_order": {
+          "label": "Bench order",
+          "description": "Substitutes are considered in their bench order."
+        },
+        "role_priority": {
+          "label": "Role priority",
+          "description": "Substitutes are considered according to player-role priority."
+        }
+      }
+    },
+    "captains": {
+      "title": "Captain rules",
+      "captain": "Enable captain selection",
+      "viceCaptain": "Enable vice-captain selection",
+      "dependency": "Vice-captain selection is available only when captain selection is enabled."
+    },
+    "validation": {
+      "formationRequired": "Select at least one allowed formation.",
+      "nonNegativeInteger": "Enter a non-negative whole number.",
+      "benchTotal": "The sum of bench role limits must be at least the bench size.",
+      "substitutionRange": "Maximum substitutions must be a whole number between zero and the bench size.",
+      "positiveInteger": "Enter a positive whole number.",
+      "percentage": "Enter a whole-number percentage from 0 to 100."
     }
   },
   "budget": {

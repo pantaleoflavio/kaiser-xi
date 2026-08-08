@@ -331,7 +331,7 @@
   },
   "leagueSettings": {
     "title": "Liga-Einstellungen",
-    "description": "Budget- und Kaderregeln für alle Fantasy-Teams dieser Liga.",
+    "description": "Budget-, Kader-, Aufstellungs-, Bank-, Auswechslungs- und Kapitänsregeln für alle Fantasy-Teams dieser Liga.",
     "maxRosterPlayers": "Maximale aktive Kadergröße",
     "rosterRuleHelp": "Rollenlimits sind unabhängige Obergrenzen. Ihre Summe muss mindestens der maximalen Kadergröße entsprechen.",
     "roles": {
@@ -348,7 +348,56 @@
       "load": "Liga-Einstellungen konnten nicht geladen werden.",
       "update": "Liga-Einstellungen konnten nicht aktualisiert werden.",
       "title": "Liga-Einstellungen konnten nicht aktualisiert werden",
-      "rosterValidation": "Gib eine positive ganzzahlige Kadergröße und nichtnegative ganzzahlige Rollenlimits ein, deren Summe diese Größe erreicht."
+       "rosterValidation": "Gib eine positive ganzzahlige Kadergröße und nichtnegative ganzzahlige Rollenlimits ein, deren Summe diese Größe erreicht.",
+      "conflict": "Diese Einstellungen stehen im Konflikt mit der bestehenden Ligakonfiguration."
+    },
+    "sections": {
+      "roster": "Budget und Kader"
+    },
+    "formations": {
+      "title": "Erlaubte Formationen",
+      "help": "Wähle mindestens eine Formation aus, die Fantasy-Teams verwenden dürfen."
+    },
+    "bench": {
+      "title": "Bankkonfiguration",
+      "help": "Lege die Bankgröße und unabhängige Höchstwerte je Spielerrolle fest. Die Rollenlimits müssen die Bankgröße abdecken.",
+      "size": "Bankgröße",
+      "roles": {
+        "goalkeeper": "Torwartlimit auf der Bank",
+        "defender": "Verteidigerlimit auf der Bank",
+        "midfielder": "Mittelfeldspielerlimit auf der Bank",
+        "forward": "Stürmerlimit auf der Bank"
+      }
+    },
+    "substitutions": {
+      "title": "Auswechslungsregeln",
+      "maximum": "Maximale Auswechslungen",
+      "order": "Auswechslungsreihenfolge",
+      "allowFormationChange": "Formationswechsel bei Auswechslungen erlauben",
+      "modes": {
+        "bench_order": {
+          "label": "Bankreihenfolge",
+          "description": "Ersatzspieler werden in ihrer Reihenfolge auf der Bank berücksichtigt."
+        },
+        "role_priority": {
+          "label": "Rollenpriorität",
+          "description": "Ersatzspieler werden nach der Priorität ihrer Spielerrolle berücksichtigt."
+        }
+      }
+    },
+    "captains": {
+      "title": "Kapitänsregeln",
+      "captain": "Kapitänsauswahl aktivieren",
+      "viceCaptain": "Vizekapitänsauswahl aktivieren",
+      "dependency": "Die Vizekapitänsauswahl ist nur verfügbar, wenn die Kapitänsauswahl aktiviert ist."
+    },
+    "validation": {
+      "formationRequired": "Wähle mindestens eine erlaubte Formation aus.",
+      "nonNegativeInteger": "Gib eine nichtnegative ganze Zahl ein.",
+      "benchTotal": "Die Summe der Bank-Rollenlimits muss mindestens der Bankgröße entsprechen.",
+      "substitutionRange": "Die maximale Anzahl Auswechslungen muss eine ganze Zahl zwischen null und der Bankgröße sein.",
+      "positiveInteger": "Gib eine positive ganze Zahl ein.",
+      "percentage": "Gib einen ganzzahligen Prozentsatz von 0 bis 100 ein."
     }
   },
   "budget": {
