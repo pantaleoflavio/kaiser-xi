@@ -28,7 +28,3 @@ export type ApiErrorResponse = {
   message?: string;
   errors?: Record<string, string[]>;
 };
-
-export type ApiResource<T> = {
-  data: T;
-};

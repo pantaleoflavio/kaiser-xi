@@ -1,3 +1,5 @@
+import type { CollectionResponse, PaginatedResponse, ResourceResponse } from './api';
+
 export type LeagueRole = 'commissioner' | 'co_commissioner' | 'participant';
 
 export type LeagueReference = {
@@ -23,17 +25,11 @@ export type League = {
   my_role: LeagueRole | null;
 };
 
-export type LeagueResponse = {
-  data: League;
-};
+export type LeagueResponse = ResourceResponse<League>;
 
-export type CreatedLeagueResponse = {
-  data: League;
-};
+export type CreatedLeagueResponse = LeagueResponse;
 
-export type LeagueCollectionResponse = {
-  data: League[];
-};
+export type LeagueCollectionResponse = PaginatedResponse<League>;
 
 export type CreateLeaguePayload = {
   name: string;
@@ -58,8 +54,8 @@ export type LeagueType = {
   label: string;
 };
 
-export type SeasonCollectionResponse = { data: Season[] };
-export type LeagueTypeCollectionResponse = { data: LeagueType[] };
+export type SeasonCollectionResponse = CollectionResponse<Season>;
+export type LeagueTypeCollectionResponse = CollectionResponse<LeagueType>;
 
 export type LeagueMember = {
   id: number;
@@ -67,13 +63,9 @@ export type LeagueMember = {
   role: LeagueReference;
 };
 
-export type LeagueMemberResponse = {
-  data: LeagueMember;
-};
+export type LeagueMemberResponse = ResourceResponse<LeagueMember>;
 
-export type LeagueMemberCollectionResponse = {
-  data: LeagueMember[];
-};
+export type LeagueMemberCollectionResponse = CollectionResponse<LeagueMember>;
 
 export type ManageableLeagueRole = 'participant' | 'co_commissioner';
 
@@ -100,13 +92,9 @@ export type LeagueInvitation = {
   available_actions: Array<'accept' | 'reject'>;
 };
 
-export type LeagueInvitationResponse = {
-  data: LeagueInvitation;
-};
+export type LeagueInvitationResponse = ResourceResponse<LeagueInvitation>;
 
-export type LeagueInvitationCollectionResponse = {
-  data: LeagueInvitation[];
-};
+export type LeagueInvitationCollectionResponse = PaginatedResponse<LeagueInvitation>;
 
 export type InvitationStatus = 'pending' | 'accepted' | 'rejected' | 'revoked' | 'expired';
 export type InvitationRole = 'participant' | 'co_commissioner';
@@ -134,13 +122,9 @@ export type FantasyTeam = {
   updated_at: string | null;
 };
 
-export type FantasyTeamResponse = {
-  data: FantasyTeam;
-};
+export type FantasyTeamResponse = ResourceResponse<FantasyTeam>;
 
-export type FantasyTeamCollectionResponse = {
-  data: FantasyTeam[];
-};
+export type FantasyTeamCollectionResponse = CollectionResponse<FantasyTeam>;
 
 export type FantasyTeamPayload = {
   name: string;
@@ -165,9 +149,7 @@ export type LeagueSettings = {
   locked_rule_groups: string[];
 };
 
-export type LeagueSettingsResponse = {
-  data: LeagueSettings;
-};
+export type LeagueSettingsResponse = ResourceResponse<LeagueSettings>;
 
 export type PlayerRoleKey = 'goalkeeper' | 'defender' | 'midfielder' | 'forward';
 
@@ -212,13 +194,9 @@ export type RosterPlayer = {
   };
 };
 
-export type RosterPlayerResponse = {
-  data: RosterPlayer;
-};
+export type RosterPlayerResponse = ResourceResponse<RosterPlayer>;
 
-export type RosterPlayerCollectionResponse = {
-  data: RosterPlayer[];
-};
+export type RosterPlayerCollectionResponse = CollectionResponse<RosterPlayer>;
 
 export type AssignPlayerPayload = {
   player_id: number;
@@ -241,9 +219,7 @@ export type EligiblePlayer = {
   availability: string;
 };
 
-export type EligiblePlayerCollectionResponse = {
-  data: EligiblePlayer[];
-};
+export type EligiblePlayerCollectionResponse = PaginatedResponse<EligiblePlayer>;
 
 export type EligiblePlayerFilters = {
   search?: string;

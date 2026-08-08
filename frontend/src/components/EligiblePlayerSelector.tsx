@@ -25,7 +25,7 @@ export function EligiblePlayerSelector({ leagueId, selected, onSelect, disabled,
     setClubs((current) => {
       const values = new Map(current.map((club) => [club.id, club]));
       query.data.data.forEach((player) => {
-        if (player.club.id && player.club.name)
+        if (player.club?.id && player.club.name)
           values.set(player.club.id, { id: player.club.id, name: player.club.name });
       });
       return [...values.values()].sort((a, b) => a.name.localeCompare(b.name));

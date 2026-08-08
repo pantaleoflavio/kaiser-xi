@@ -3,10 +3,13 @@ import { ApiError } from '../api/client';
 import { leaguesApi } from '../api/leagues';
 import type { EligiblePlayerFilters } from '../types/league';
 
+type EligiblePlayerQueryFilters = Required<Omit<EligiblePlayerFilters, 'role'>> &
+  Pick<EligiblePlayerFilters, 'role'>;
+
 export const eligiblePlayerKeys = {
   all: ['eligible-players'] as const,
   league: (leagueId: string | number) => [...eligiblePlayerKeys.all, String(leagueId)] as const,
-  list: (leagueId: string | number, filters: Required<EligiblePlayerFilters>) =>
+  list: (leagueId: string | number, filters: EligiblePlayerQueryFilters) =>
     [
       ...eligiblePlayerKeys.league(leagueId),
       filters.search,
@@ -19,7 +22,7 @@ export const eligiblePlayerKeys = {
 
 export function useEligiblePlayers(
   leagueId: string | undefined,
-  filters: Required<EligiblePlayerFilters>,
+  filters: EligiblePlayerQueryFilters,
   enabled = true,
 ) {
   return useQuery({

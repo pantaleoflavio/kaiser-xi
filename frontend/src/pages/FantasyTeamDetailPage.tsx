@@ -54,7 +54,7 @@ export function FantasyTeamDetailPage() {
       {team && roster ? (
         <div className="space-y-6">
           <FantasyTeamSummary team={team} />
-          <FantasyTeamBudgetSummary team={team} rosterMeta={roster.meta} />
+          <FantasyTeamBudgetSummary team={team} />
           <FantasyRosterSection
             leagueId={leagueId}
             players={roster.data}

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { SubmitEvent, useEffect, useMemo, useState } from 'react';
 import { accountApi, type UpdateProfilePayload } from '../../api/account';
 import { authKeys } from '../../api/queryKeys';
 import { useAuth } from '../../auth/useAuth';
@@ -42,7 +42,7 @@ export function AccountProfileForm() {
     setEmail(user?.email ?? '');
   }, [user]);
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  function submit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrors({});
     setStatus(null);

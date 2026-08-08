@@ -113,7 +113,8 @@ export const leaguesApi = {
     fantasyTeamId: string | number,
     playerId: string | number,
   ) =>
-    apiClient<void>(`/leagues/${leagueId}/fantasy-teams/${fantasyTeamId}/players/${playerId}`, {
-      method: 'DELETE',
-    }),
+    apiClient<RosterPlayerResponse>(
+      `/leagues/${leagueId}/fantasy-teams/${fantasyTeamId}/players/${playerId}`,
+      { method: 'DELETE' },
+    ),
 };

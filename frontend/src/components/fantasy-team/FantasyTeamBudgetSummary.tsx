@@ -1,13 +1,11 @@
 import { useTranslation } from '../../i18n';
-import type { FantasyTeam, RosterPlayerCollectionResponse } from '../../types/league';
+import type { FantasyTeam } from '../../types/league';
 import { formatMoney } from '../../utils/formatters';
 
 export function FantasyTeamBudgetSummary({
   team,
-  rosterMeta,
 }: {
   team: FantasyTeam;
-  rosterMeta?: RosterPlayerCollectionResponse['meta'];
 }) {
   const { language, t } = useTranslation();
   const fallback = t('leagueDetail.notAvailable');
@@ -18,17 +16,13 @@ export function FantasyTeamBudgetSummary({
         <div>
           <dt className="text-slate-500">{t('budget.totalBudget')}</dt>
           <dd>
-            {formatMoney(
-              rosterMeta?.total_budget ?? rosterMeta?.budget ?? team.budget,
-              fallback,
-              language,
-            )}
+            {formatMoney(team.budget, fallback, language)}
           </dd>
         </div>
         <div>
           <dt className="text-slate-500">{t('budget.remainingBudget')}</dt>
           <dd>
-            {formatMoney(rosterMeta?.remaining_budget ?? team.remaining_budget, fallback, language)}
+            {formatMoney(team.remaining_budget, fallback, language)}
           </dd>
         </div>
       </dl>

@@ -1,5 +1,6 @@
 import { apiClient } from './client';
-import type { ApiResource, User } from '../types/auth';
+import type { ResourceResponse } from '../types/api';
+import type { User } from '../types/auth';
 
 export type UpdateProfilePayload = {
   name?: string;
@@ -17,7 +18,7 @@ export const accountApi = {
   updateProfile: async (
     payload: UpdateProfilePayload,
   ): Promise<User> => {
-    const response = await apiClient<ApiResource<User>>('/auth/me', {
+    const response = await apiClient<ResourceResponse<User>>('/auth/me', {
       method: 'PATCH',
       body: JSON.stringify(payload),
     });

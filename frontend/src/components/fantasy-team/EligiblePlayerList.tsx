@@ -1,6 +1,7 @@
 import { ApiError } from '../../api/client';
 import { useTranslation } from '../../i18n';
-import type { EligiblePlayer, PaginationMeta } from '../../types/league';
+import type { PaginationMeta } from '../../types/api';
+import type { EligiblePlayer } from '../../types/league';
 
 export function EligiblePlayerList({
   players,
@@ -62,7 +63,7 @@ export function EligiblePlayerList({
               <span className="font-semibold text-white">{player.name}</span>
               <span className="ml-2 text-slate-400">
                 {player.role.label ?? t('roster.eligible.unknownRole')} ·{' '}
-                {player.club.name ?? t('roster.eligible.unknownClub')} ·{' '}
+                {player.club?.name ?? t('roster.eligible.unknownClub')} ·{' '}
                 {t('roster.eligible.quotation', { value: player.quotation ?? '—' })}
               </span>
             </button>

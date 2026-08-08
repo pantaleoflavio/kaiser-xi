@@ -1,11 +1,17 @@
 import { apiClient } from './client';
-import type { LeagueInvitation, LeagueMember, PaginatedResponse } from '../types/league';
+import type { PaginatedResponse } from '../types/api';
+import type {
+  LeagueInvitation,
+  LeagueInvitationResponse,
+  LeagueMemberResponse,
+} from '../types/league';
 
 export const invitationsApi = {
   inbox: () => apiClient<PaginatedResponse<LeagueInvitation>>('/invitations'),
-  preview: (code: string) => apiClient<{ data: LeagueInvitation }>(`/league-invitations/${code}`),
+  preview: (code: string) =>
+    apiClient<LeagueInvitationResponse>(`/league-invitations/${code}`),
   accept: (id: number) =>
-    apiClient<{ data: LeagueMember }>(`/invitations/${id}/accept`, { method: 'POST' }),
+    apiClient<LeagueMemberResponse>(`/invitations/${id}/accept`, { method: 'POST' }),
   reject: (id: number) =>
-    apiClient<{ data: LeagueInvitation }>(`/invitations/${id}/reject`, { method: 'POST' }),
+    apiClient<LeagueInvitationResponse>(`/invitations/${id}/reject`, { method: 'POST' }),
 };

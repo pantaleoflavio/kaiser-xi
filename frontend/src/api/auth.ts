@@ -1,11 +1,11 @@
 import { apiClient } from './client';
 import type {
-  ApiResource,
   AuthResponse,
   LoginPayload,
   RegisterPayload,
   User,
 } from '../types/auth';
+import type { ResourceResponse } from '../types/api';
 
 export const authApi = {
   register: (payload: RegisterPayload) =>
@@ -28,7 +28,7 @@ export const authApi = {
     }),
 
   me: async (): Promise<User> => {
-    const response = await apiClient<ApiResource<User>>('/auth/me');
+    const response = await apiClient<ResourceResponse<User>>('/auth/me');
 
     return response.data;
   },
