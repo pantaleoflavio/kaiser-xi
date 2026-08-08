@@ -49,4 +49,14 @@ class FantasyTeamPolicy
             )
             ->exists();
     }
+
+    public function viewFormation(User $user, FantasyTeam $fantasyTeam): bool
+    {
+        return $fantasyTeam->user_id === $user->id && $this->view($user, $fantasyTeam);
+    }
+
+    public function manageFormation(User $user, FantasyTeam $fantasyTeam): bool
+    {
+        return $fantasyTeam->user_id === $user->id && $this->view($user, $fantasyTeam);
+    }
 }

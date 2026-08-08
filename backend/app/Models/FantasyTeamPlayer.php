@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\FantasyTeam;
+use App\Models\FormationPlayer;
+use App\Models\League;
+use App\Models\Player;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FantasyTeamPlayer extends Model
 {
@@ -56,5 +62,10 @@ class FantasyTeamPlayer extends Model
     public function releasedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'released_by_user_id');
+    }
+
+    public function formationPlayers(): HasMany
+    {
+        return $this->hasMany(FormationPlayer::class);
     }
 }

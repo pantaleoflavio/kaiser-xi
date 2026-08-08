@@ -71,6 +71,11 @@ class League extends Model
         return $this->hasMany(LeagueInvitation::class);
     }
 
+    public function formations(): HasMany
+    {
+        return $this->hasMany(Formation::class);
+    }
+
     public function settingValue(string $key, int $default): int
     {
         $setting = $this->settings()->where('key', $key)->first();

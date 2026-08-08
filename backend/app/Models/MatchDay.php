@@ -34,4 +34,9 @@ class Matchday extends Model
     {
         return $this->hasMany(PlayerScore::class);
     }
+
+    public function formations(): HasMany
+    {
+        return $this->hasMany(Formation::class);
+    }
 }

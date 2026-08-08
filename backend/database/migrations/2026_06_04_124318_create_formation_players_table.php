@@ -10,15 +10,43 @@ return new class extends Migration
     {
         Schema::create('formation_players', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('formation_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('player_id')->constrained()->restrictOnDelete();
-            $table->foreignId('player_role_id')->constrained()->restrictOnDelete();
+
+            $table->foreignId('formation_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('fantasy_team_player_id')
+                ->constrained()
+                ->restrictOnDelete();
+
+            $table->foreignId('player_id')
+                ->constrained()
+                ->restrictOnDelete();
+
+            $table->foreignId('player_role_id')
+                ->constrained()
+                ->restrictOnDelete();
+
             $table->string('slot_type');
+
             $table->unsignedSmallInteger('position_index');
-            $table->boolean('is_captain')->default(false);
+
+            $table->boolean('is_captain')
+                ->default(false);
+
             $table->timestamps();
-            $table->unique(['formation_id', 'player_id']);
-            $table->unique(['formation_id', 'slot_type', 'position_index']);
+
+            $table->unique(
+                ['formation_id', 'fantasy_team_player_id']
+            );
+
+            $table->unique(
+                ['formation_id', 'player_id']
+            );
+
+            $table->unique(
+                ['formation_id', 'slot_type', 'position_index']
+            );
         });
     }
 

@@ -5,11 +5,13 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\EligiblePlayerController;
 use App\Http\Controllers\Api\V1\FantasyTeamController;
 use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
+use App\Http\Controllers\Api\V1\FormationController;
 use App\Http\Controllers\Api\V1\LeagueController;
 use App\Http\Controllers\Api\V1\LeagueInvitationController;
 use App\Http\Controllers\Api\V1\LeagueMemberController;
 use App\Http\Controllers\Api\V1\LeagueSettingController;
 use App\Http\Controllers\Api\V1\LeagueTypeController;
+use App\Http\Controllers\Api\V1\MatchdayController;
 use App\Http\Controllers\Api\V1\SeasonController;
 use App\Models\FantasyTeam;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +64,16 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/{league}/eligible-players', [EligiblePlayerController::class, 'index'])
             ->name('api.v1.leagues.eligible-players.index')
             ->middleware('can:view,league');
+
+        Route::get('/{league}/matchdays', [MatchdayController::class, 'index'])
+            ->name('api.v1.leagues.matchdays.index')->middleware('can:view,league');
+
+        Route::get('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation', [FormationController::class, 'show'])
+            ->name('api.v1.leagues.matchdays.formation.show')->withoutScopedBindings()->middleware('can:viewFormation,fantasyTeam');
+        Route::put('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation', [FormationController::class, 'update'])
+            ->name('api.v1.leagues.matchdays.formation.update')->withoutScopedBindings()->middleware('can:manageFormation,fantasyTeam');
+        Route::post('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation/submit', [FormationController::class, 'submit'])
+            ->name('api.v1.leagues.matchdays.formation.submit')->withoutScopedBindings()->middleware('can:manageFormation,fantasyTeam');
 
         // League settings routes
         Route::get('/{league}/settings', [LeagueSettingController::class, 'show'])

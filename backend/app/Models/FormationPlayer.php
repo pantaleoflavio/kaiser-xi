@@ -12,6 +12,7 @@ class FormationPlayer extends Model
 
     protected $fillable = [
         'formation_id',
+        'fantasy_team_player_id',
         'player_id',
         'player_role_id',
         'slot_type',
@@ -31,6 +32,11 @@ class FormationPlayer extends Model
     public function player(): BelongsTo
     {
         return $this->belongsTo(Player::class);
+    }
+
+    public function fantasyTeamPlayer(): BelongsTo
+    {
+        return $this->belongsTo(FantasyTeamPlayer::class);
     }
 
     public function playerRole(): BelongsTo
