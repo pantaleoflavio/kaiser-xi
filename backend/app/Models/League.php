@@ -21,6 +21,12 @@ class League extends Model
         'slug',
         'description',
         'max_participants',
+        'h2h_start_matchday_id',
+        'h2h_schedule_generated_at',
+    ];
+
+    protected $casts = [
+        'h2h_schedule_generated_at' => 'datetime',
     ];
 
     public function season(): BelongsTo
@@ -60,6 +66,22 @@ class League extends Model
     {
         return $this->hasMany(FantasyTeam::class);
     }
+
+    public function fantasyMatches(): HasMany
+    {
+        return $this->hasMany(FantasyMatch::class);
+    }
+
+    public function h2hStartMatchday(): BelongsTo
+    {
+        return $this->belongsTo(Matchday::class, 'h2h_start_matchday_id');
+    }
+
+    public function hasInitializedHeadToHeadSchedule(): bool
+    {
+        return $this->h2h_schedule_generated_at !== null;
+    }
+
 
     public function settings(): HasMany
     {
@@ -164,7 +186,7 @@ class League extends Model
         $stored = $setting instanceof LeagueSetting ? $setting->roleLimitsValue() : [];
 
         return collect(LeagueSetting::DEFAULT_BENCH_ROLE_LIMITS)
-            ->mapWithKeys(fn (int $default, string $role): array => [$role => (int) ($stored[$role] ?? $default)])
+            ->mapWithKeys(fn(int $default, string $role): array => [$role => (int) ($stored[$role] ?? $default)])
             ->all();
     }
 

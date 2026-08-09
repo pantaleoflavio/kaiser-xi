@@ -3,6 +3,7 @@
 namespace App\Services\LeagueInvitation;
 
 use App\Enums\LeagueInvitationStatus;
+use App\Exceptions\LeagueScheduleAlreadyInitializedException;
 use App\Models\League;
 use App\Models\LeagueInvitation;
 use App\Models\LeagueMembership;
@@ -26,6 +27,10 @@ class AcceptLeagueInvitationAction
                 }
 
                 $league = League::query()->whereKey($locked->league_id)->lockForUpdate()->firstOrFail();
+
+                if ($league->hasInitializedHeadToHeadSchedule()) {
+                    throw new LeagueScheduleAlreadyInitializedException;
+                }
 
                 if ($league->memberships()->where('user_id', $user->id)->exists()) {
                     throw new ConflictHttpException('User is already a member of this league.');

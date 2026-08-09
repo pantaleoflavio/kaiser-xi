@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\EligiblePlayerController;
 use App\Http\Controllers\Api\V1\FantasyTeamController;
 use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
 use App\Http\Controllers\Api\V1\FormationController;
+use App\Http\Controllers\Api\V1\HeadToHeadScheduleController;
 use App\Http\Controllers\Api\V1\LeagueController;
 use App\Http\Controllers\Api\V1\LeagueInvitationController;
 use App\Http\Controllers\Api\V1\LeagueMemberController;
@@ -17,7 +18,7 @@ use App\Models\FantasyTeam;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
-    Route::get('/health', static fn () => response()->json([
+    Route::get('/health', static fn() => response()->json([
         'status' => 'ok',
         'competition' => config('competition.code'),
     ]));
@@ -68,6 +69,13 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/{league}/matchdays', [MatchdayController::class, 'index'])
             ->name('api.v1.leagues.matchdays.index')->middleware('can:view,league');
 
+        Route::get('/{league}/head-to-head-schedule', [HeadToHeadScheduleController::class, 'show'])
+            ->name('api.v1.leagues.head-to-head-schedule.show')
+            ->middleware('can:view,league');
+        Route::post('/{league}/head-to-head-schedule', [HeadToHeadScheduleController::class, 'store'])
+            ->name('api.v1.leagues.head-to-head-schedule.store')
+            ->middleware('can:manageSchedule,league');
+
         Route::get('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation', [FormationController::class, 'show'])
             ->name('api.v1.leagues.matchdays.formation.show')->withoutScopedBindings()->middleware('can:viewFormation,fantasyTeam');
         Route::put('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation', [FormationController::class, 'update'])
@@ -100,11 +108,11 @@ Route::prefix('v1')->group(function (): void {
         // Fantasy team routes
         Route::get('/{league}/fantasy-teams', [FantasyTeamController::class, 'index'])
             ->name('api.v1.leagues.fantasy-teams.index')
-            ->middleware('can:viewAny,'.FantasyTeam::class.',league');
+            ->middleware('can:viewAny,' . FantasyTeam::class . ',league');
 
         Route::post('/{league}/fantasy-teams', [FantasyTeamController::class, 'store'])
             ->name('api.v1.leagues.fantasy-teams.store')
-            ->middleware('can:create,'.FantasyTeam::class.',league');
+            ->middleware('can:create,' . FantasyTeam::class . ',league');
 
         Route::get('/{league}/fantasy-teams/{fantasyTeam}', [FantasyTeamController::class, 'show'])
             ->name('api.v1.leagues.fantasy-teams.show')

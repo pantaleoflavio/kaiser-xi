@@ -28,6 +28,11 @@ class LeaguePolicy
         return $this->hasAnyRole($user, $league, ['commissioner', 'co_commissioner']);
     }
 
+    public function manageSchedule(User $user, League $league): bool
+    {
+        return $this->hasAnyRole($user, $league, ['commissioner', 'co_commissioner']);
+    }
+
     public function removeMember(User $user, League $league, User $target): bool
     {
         if ($user->is($target) || ! $this->isMember($target, $league)) {

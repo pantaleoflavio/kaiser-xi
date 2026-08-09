@@ -18,6 +18,16 @@ class FantasyMatch extends Model
         'away_fantasy_team_id',
     ];
 
+    protected static function booted(): void
+    {
+        static::saving(function (FantasyMatch $match): void {
+            if ($match->home_fantasy_team_id === $match->away_fantasy_team_id) {
+                throw new \DomainException('A fantasy team cannot play itself.');
+            }
+        });
+    }
+
+
     public function league(): BelongsTo
     {
         return $this->belongsTo(League::class);

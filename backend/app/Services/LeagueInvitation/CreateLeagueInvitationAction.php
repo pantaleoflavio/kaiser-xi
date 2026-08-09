@@ -3,10 +3,12 @@
 namespace App\Services\LeagueInvitation;
 
 use App\Enums\LeagueInvitationStatus;
+use App\Exceptions\LeagueScheduleAlreadyInitializedException;
 use App\Models\League;
 use App\Models\LeagueInvitation;
 use App\Models\LeagueRole;
 use App\Models\User;
+use App\Services\LeagueInvitation\InvitationCodeGenerator;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
@@ -18,6 +20,9 @@ class CreateLeagueInvitationAction
     {
         return DB::transaction(function () use ($league, $creator, $data): LeagueInvitation {
             $lockedLeague = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
+            if ($lockedLeague->hasInitializedHeadToHeadSchedule()) {
+                throw new LeagueScheduleAlreadyInitializedException;
+            }
             $recipient = User::query()->where('email', $data['email'])->firstOrFail();
 
             if ($lockedLeague->memberships()->where('user_id', $recipient->id)->exists()) {
