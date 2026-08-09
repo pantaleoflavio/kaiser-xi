@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Seeders;
 
+use App\Models\FantasyMatch;
 use App\Models\FantasyTeam;
 use App\Models\FantasyTeamPlayer;
 use App\Models\League;
@@ -13,6 +14,7 @@ use App\Models\SeasonClub;
 use App\Models\User;
 use App\Services\FantasyTeam\EligiblePlayerQueryService;
 use Database\Seeders\DemoEnvironmentSeeder;
+use Database\Seeders\DemoHeadToHeadLeagueSeeder;
 use Database\Seeders\DemoLeagueSeeder;
 use Database\Seeders\DemoMatchdaySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -141,7 +143,7 @@ class DemoEnvironmentSeederTest extends TestCase
 
         $activeRoleComposition = FantasyTeamPlayer::query()
             ->active()
-            ->where('fantasy_team_id', $commissionerTeam->id)
+            ->where('fantasy_team_players.fantasy_team_id', $commissionerTeam->id)
             ->join('players', 'players.id', '=', 'fantasy_team_players.player_id')
             ->join('player_season_registrations', 'player_season_registrations.player_id', '=', 'players.id')
             ->join('season_clubs', function ($join) use ($league): void {
@@ -213,6 +215,46 @@ class DemoEnvironmentSeederTest extends TestCase
             0,
             (clone $eligiblePlayerQuery)->count()
         );
+    }
+
+    public function test_uninitialized_head_to_head_demo_league_is_useful_and_idempotent(): void
+    {
+        $this->seed(DemoEnvironmentSeeder::class);
+        $this->seed(DemoEnvironmentSeeder::class);
+
+        $league = League::query()
+            ->with('type')
+            ->where('slug', DemoHeadToHeadLeagueSeeder::LEAGUE_SLUG)
+            ->firstOrFail();
+
+        $teamCount = count(DemoHeadToHeadLeagueSeeder::PARTICIPANTS);
+        $futureMatchdayCount = Matchday::query()
+            ->where('season_id', $league->season_id)
+            ->where('starts_at', '>', now())
+            ->count();
+
+        $this->assertSame(1, League::query()->where('slug', DemoHeadToHeadLeagueSeeder::LEAGUE_SLUG)->count());
+        $this->assertSame('head_to_head', $league->type->key);
+        $this->assertSame($teamCount, $league->memberships()->count());
+        $this->assertSame($teamCount, $league->fantasyTeams()->count());
+        $this->assertGreaterThanOrEqual(2, $teamCount);
+        $this->assertLessThan($league->max_participants, $teamCount);
+        $this->assertNull($league->h2h_start_matchday_id);
+        $this->assertNull($league->h2h_schedule_generated_at);
+        $this->assertSame(0, FantasyMatch::query()->where('league_id', $league->id)->count());
+        $this->assertGreaterThanOrEqual(DemoHeadToHeadLeagueSeeder::FUTURE_MATCHDAY_COUNT, $futureMatchdayCount);
+
+        $this->assertSame(3, intdiv($teamCount, 2));
+        $this->assertSame(10, 2 * ($teamCount - 1));
+
+        foreach (DemoHeadToHeadLeagueSeeder::PARTICIPANTS as $email => [$role]) {
+            $membership = $league->memberships()
+                ->with('role')
+                ->whereBelongsTo(User::query()->where('email', $email)->firstOrFail())
+                ->firstOrFail();
+
+            $this->assertSame($role, $membership->role->key);
+        }
     }
 
     public function test_seeded_players_can_be_filtered_by_role_and_club_through_the_endpoint(): void

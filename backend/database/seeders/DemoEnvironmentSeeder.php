@@ -29,6 +29,7 @@ class DemoEnvironmentSeeder extends Seeder
             FormationModuleSeeder::class,
             DemoLeagueSeeder::class,
             DemoMatchdaySeeder::class,
+            DemoHeadToHeadLeagueSeeder::class,
             DemoPlayersSeeder::class,
             DemoFantasyRostersSeeder::class,
         ]);

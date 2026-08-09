@@ -51,7 +51,7 @@ class FantasyTeamPlayer extends Model
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->whereNull('released_at');
+        return $query->whereNull('fantasy_team_players.released_at');
     }
 
     public function releasedBy(): BelongsTo
