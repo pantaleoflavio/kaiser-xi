@@ -13,6 +13,8 @@ export const leagueKeys = {
   types: () => ['league-create', 'league-types'] as const,
   invitations: (leagueId: string | number) =>
     [...leagueKeys.detail(leagueId), 'invitations'] as const,
+  fantasyTeams: (leagueId: string | number) =>
+    [...leagueKeys.detail(leagueId), 'fantasy-teams'] as const,
 };
 
 export const invitationKeys = {

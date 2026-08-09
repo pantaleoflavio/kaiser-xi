@@ -251,7 +251,8 @@
         "leagueId": "ID lega",
         "createdAt": "Creato",
         "updatedAt": "Aggiornato"
-      }
+      },
+      "formationDescription": "Apri la formazione della giornata attuale nel relativo contesto."
     },
     "update": {
       "title": "Rinomina fantasy team",
@@ -621,6 +622,34 @@
       "starters": "I titolari devono rispettare i requisiti del modulo e la rosa.",
       "bench": "La panchina supera i limiti di dimensione o ruolo, oppure contiene un giocatore non valido.",
       "captain": "Il capitano deve essere uno dei titolari."
-    }
+    },
+    "unsaved": "Modifiche non salvate",
+    "draftSaved": "Bozza salvata",
+    "remaining": "{{count}} rimanenti"
+  },
+  "leagueNavigation": {
+    "label": "Navigazione lega",
+    "overview": "Panoramica lega",
+    "matchdays": "Giornate",
+    "rules": "Regole",
+    "fantasyTeams": "Fantasquadre",
+    "myTeam": "La mia squadra",
+    "matchdaysDescription": "Consulta le giornate passate e gestisci la formazione attuale.",
+    "rulesDescription": "Consulta le regole effettive per rosa, formazione, panchina, sostituzioni e capitano.",
+    "teamsDescription": "Visualizza le fantasquadre della lega e crea la tua squadra."
+  },
+  "matchdays": {
+    "title": "Giornate",
+    "description": "Giornate passate, attuale e future di questa lega.",
+    "past": "Passate",
+    "current": "Giornata attuale",
+    "upcoming": "In arrivo",
+    "open": "Apri giornata",
+    "openFormation": "Apri formazione",
+    "createFormation": "Crea formazione",
+    "editFormation": "Modifica formazione",
+    "viewFormation": "Visualizza formazione",
+    "notFound": "Giornata non trovata",
+    "backToMatchday": "← Torna alla giornata"
   }
 }

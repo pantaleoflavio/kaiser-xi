@@ -3,31 +3,16 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '../api/client';
 import { formationsApi } from '../api/formations';
 import { formationKeys } from '../api/queryKeys';
-import type { Formation, FormationSavePayload } from '../types/formation';
 import type { FormationModule, PlayerRoleKey, RosterPlayer } from '../types/league';
 
-export type FormationDraft = {
-  formationModuleId: number | null;
-  starters: number[];
-  bench: number[];
-  captainId: number | null;
-};
-
-const emptyDraft: FormationDraft = {
-  formationModuleId: null,
-  starters: [],
-  bench: [],
-  captainId: null,
-};
-
-function draftFromFormation(formation: Formation): FormationDraft {
-  return {
-    formationModuleId: formation.formation_module.id,
-    starters: formation.starters.map((player) => player.fantasy_team_player_id),
-    bench: formation.bench.map((player) => player.fantasy_team_player_id),
-    captainId: formation.captain_fantasy_team_player_id,
-  };
-}
+import {
+  emptyFormationDraft,
+  formationDraftPayload,
+  formationDraftValidation,
+  formationToDraft,
+  sameFormationDraft,
+  type FormationDraft,
+} from '../utils/formationDraft';
 
 export function useFormationEditor({
   leagueId,
@@ -40,93 +25,71 @@ export function useFormationEditor({
 }: {
   leagueId: string;
   fantasyTeamId: string;
-  matchdayId: number | null;
+  matchdayId: number;
   modules: FormationModule[];
   roster: RosterPlayer[];
   benchSize: number;
   benchRoleLimits: Record<PlayerRoleKey, number>;
 }) {
   const queryClient = useQueryClient();
-  const [draft, setDraft] = useState<FormationDraft>(emptyDraft);
+  const [draft, setDraft] = useState<FormationDraft>(emptyFormationDraft);
+  const [savedDraft, setSavedDraft] = useState<FormationDraft>(emptyFormationDraft);
   const [success, setSuccess] = useState<'saved' | 'submitted' | null>(null);
   const [deadlineConflict, setDeadlineConflict] = useState(false);
-  const hydratedMatchday = useRef<number | null>(null);
-  const queryKey = formationKeys.detail(leagueId, matchdayId ?? '', fantasyTeamId);
+  const hydrated = useRef(false);
+  const queryKey = formationKeys.detail(leagueId, matchdayId, fantasyTeamId);
   const formationQuery = useQuery({
     queryKey,
-    queryFn: () => formationsApi.show(leagueId, matchdayId!, fantasyTeamId),
-    enabled: matchdayId !== null,
+    queryFn: () => formationsApi.show(leagueId, matchdayId, fantasyTeamId),
     retry: (count, error) => !(error instanceof ApiError && error.status < 500) && count < 2,
   });
   const formation = formationQuery.data?.data;
 
   useEffect(() => {
-    if (matchdayId === null || formationQuery.isLoading || hydratedMatchday.current === matchdayId)
-      return;
-    setDraft(formation ? draftFromFormation(formation) : emptyDraft);
-    setSuccess(null);
-    setDeadlineConflict(false);
-    hydratedMatchday.current = matchdayId;
-  }, [formation, formationQuery.isLoading, matchdayId]);
+    if (formationQuery.isLoading || hydrated.current) return;
+    const initial = formation ? formationToDraft(formation) : emptyFormationDraft;
+    setDraft(initial);
+    setSavedDraft(initial);
+    hydrated.current = true;
+  }, [formation, formationQuery.isLoading]);
 
-  const selectedModule = modules.find((module) => module.id === draft.formationModuleId) ?? null;
-  const rosterById = useMemo(() => new Map(roster.map((player) => [player.id, player])), [roster]);
-  const starterCounts = useMemo(
-    () =>
-      draft.starters.reduce<Partial<Record<PlayerRoleKey, number>>>((counts, id) => {
-        const role = rosterById.get(id)?.player.role as PlayerRoleKey | null;
-        if (role) counts[role] = (counts[role] ?? 0) + 1;
-        return counts;
-      }, {}),
-    [draft.starters, rosterById],
-  );
-  const locallyValid = Boolean(
-    selectedModule &&
-    Object.entries(selectedModule.requirements).every(
-      ([role, required]) => starterCounts[role as PlayerRoleKey] === required,
-    ) &&
-    draft.bench.length <= benchSize &&
-    Object.entries(benchRoleLimits).every(
-      ([role, limit]) =>
-        draft.bench.filter((id) => rosterById.get(id)?.player.role === role).length <= limit,
-    ) &&
-    (draft.captainId === null || draft.starters.includes(draft.captainId)),
+  const validation = useMemo(
+    () => formationDraftValidation(draft, modules, roster, benchSize, benchRoleLimits),
+    [benchRoleLimits, benchSize, draft, modules, roster],
   );
 
   const updateDraft = (next: (current: FormationDraft) => FormationDraft) => {
     setSuccess(null);
     setDraft(next);
   };
-  const payload = (): FormationSavePayload => ({
-    formation_module_id: draft.formationModuleId!,
-    starters: draft.starters,
-    bench: draft.bench.map((id, index) => ({ fantasy_team_player_id: id, order: index + 1 })),
-    captain_fantasy_team_player_id: draft.captainId,
-  });
+  const handleSuccess = (
+    response: Awaited<ReturnType<typeof formationsApi.save>>,
+    state: 'saved' | 'submitted',
+  ) => {
+    const next = formationToDraft(response.data);
+    queryClient.setQueryData(queryKey, response);
+    setDraft(next);
+    setSavedDraft(next);
+    setSuccess(state);
+  };
   const handleError = (error: unknown) => {
     if (
       error instanceof ApiError &&
       error.status === 409 &&
       error.code === 'lineup_deadline_passed'
-    )
+    ) {
       setDeadlineConflict(true);
+    }
   };
   const save = useMutation({
-    mutationFn: () => formationsApi.save(leagueId, matchdayId!, fantasyTeamId, payload()),
-    onSuccess: (response) => {
-      queryClient.setQueryData(queryKey, response);
-      setDraft(draftFromFormation(response.data));
-      setSuccess('saved');
-    },
+    mutationFn: () =>
+      formationsApi.save(leagueId, matchdayId, fantasyTeamId, formationDraftPayload(draft)),
+    onSuccess: (response) => handleSuccess(response, 'saved'),
     onError: handleError,
   });
   const submit = useMutation({
-    mutationFn: () => formationsApi.submit(leagueId, matchdayId!, fantasyTeamId),
-    onSuccess: (response) => {
-      queryClient.setQueryData(queryKey, response);
-      setDraft(draftFromFormation(response.data));
-      setSuccess('submitted');
-    },
+    mutationFn: () => formationsApi.submit(leagueId, matchdayId, fantasyTeamId),
+    onSuccess: (response) => handleSuccess(response, 'submitted'),
     onError: handleError,
   });
 
@@ -134,9 +97,10 @@ export function useFormationEditor({
     draft,
     formation,
     formationQuery,
-    selectedModule,
-    starterCounts,
-    locallyValid,
+    selectedModule: validation.module,
+    starterCounts: validation.starterCounts,
+    locallyValid: validation.valid,
+    isDirty: !sameFormationDraft(draft, savedDraft),
     success,
     deadlineConflict,
     save,

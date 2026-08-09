@@ -1,16 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { ApiError } from '../../api/client';
-import { formationsApi } from '../../api/formations';
-import { formationKeys } from '../../api/queryKeys';
+import { BenchSelectionSection } from './BenchSelectionSection';
+import { CaptainSelectionSection } from './CaptainSelectionSection';
+import { FormationActions } from './FormationActions';
+import { FormationModuleSelector } from './FormationModuleSelector';
+import { StarterSelectionSection } from './StarterSelectionSection';
 import { useFormationEditor } from '../../hooks/useFormationEditor';
 import { useTranslation } from '../../i18n';
 import type { LeagueSettings, RosterPlayer } from '../../types/league';
-import { formatDate } from '../../utils/formatters';
-import { CaptainSelectionSection } from './CaptainSelectionSection';
-import { BenchSelectionSection } from './BenchSelectionSection';
-import { FormationModuleSelector } from './FormationModuleSelector';
-import { StarterSelectionSection } from './StarterSelectionSection';
+import { ApiError } from '../../api/client';
 
 const fieldError = (error: unknown, fields: string[], fallback: string) =>
   error instanceof ApiError &&
@@ -22,31 +18,19 @@ const fieldError = (error: unknown, fields: string[], fallback: string) =>
 export function FormationEditor({
   leagueId,
   fantasyTeamId,
+  matchdayId,
   settings,
   roster,
+  locked,
 }: {
   leagueId: string;
   fantasyTeamId: string;
+  matchdayId: number;
   settings: LeagueSettings;
   roster: RosterPlayer[];
+  locked: boolean;
 }) {
-  const { language, t } = useTranslation();
-  const matchdaysQuery = useQuery({
-    queryKey: formationKeys.matchdays(leagueId),
-    queryFn: () => formationsApi.matchdays(leagueId),
-    retry: (count, error) => !(error instanceof ApiError && error.status < 500) && count < 2,
-  });
-  const matchdays = matchdaysQuery.data?.data ?? [];
-  const [matchdayId, setMatchdayId] = useState<number | null>(null);
-  useEffect(() => {
-    if (matchdayId === null && matchdays.length) {
-      setMatchdayId(
-        matchdays.find((item) => new Date(item.deadline).getTime() > Date.now())?.id ??
-          matchdays[matchdays.length - 1].id,
-      );
-    }
-  }, [matchdayId, matchdays]);
-  const matchday = matchdays.find((item) => item.id === matchdayId);
+  const { t } = useTranslation();
   const editor = useFormationEditor({
     leagueId,
     fantasyTeamId,
@@ -56,9 +40,10 @@ export function FormationEditor({
     benchSize: settings.bench_size,
     benchRoleLimits: settings.bench_role_limits,
   });
-  const deadlinePassed = Boolean(matchday && Date.now() >= new Date(matchday.deadline).getTime());
-  const readOnly = deadlinePassed || editor.deadlineConflict;
+  const readOnly = locked || editor.deadlineConflict;
   const mutationError = editor.save.error ?? editor.submit.error;
+  const formationMissing =
+    editor.formationQuery.error instanceof ApiError && editor.formationQuery.error.status === 404;
   const generalError =
     mutationError instanceof ApiError
       ? mutationError.status === 409 && mutationError.code === 'lineup_deadline_passed'
@@ -70,64 +55,26 @@ export function FormationEditor({
             : mutationError.status === 422
               ? t('formation.errors.invalid')
               : t('common.errors.unexpected')
-      : null;
-  const formationMissing =
-    editor.formationQuery.error instanceof ApiError && editor.formationQuery.error.status === 404;
-  const loadError =
-    editor.formationQuery.error && !formationMissing ? t('formation.errors.load') : null;
+      : editor.formationQuery.error && !formationMissing
+        ? t('formation.errors.load')
+        : null;
+  const activeRoster = roster.filter((item) => !item.released_at);
 
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
       <h2 className="text-2xl font-semibold text-white">{t('formation.title')}</h2>
       <p className="mt-1 text-sm text-slate-300">{t('formation.description')}</p>
-      {matchdaysQuery.isError ? (
-        <p className="mt-4 text-red-300" role="alert">
-          {t('formation.errors.matchdays')}
-        </p>
-      ) : null}
-      {matchdays.length ? (
-        <div className="mt-5">
-          <label className="font-semibold text-white" htmlFor="formation-matchday">
-            {t('formation.matchday')}
-          </label>
-          <select
-            className="mt-2 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-white"
-            id="formation-matchday"
-            onChange={(event) => setMatchdayId(Number(event.target.value))}
-            value={matchdayId ?? ''}
-          >
-            {matchdays.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name || t('formation.matchdayNumber', { number: item.number })}
-              </option>
-            ))}
-          </select>
-          {matchday ? (
-            <div className="mt-3 rounded-lg bg-slate-950/60 p-3 text-sm text-slate-300">
-              <p>
-                {t('formation.deadline')}:{' '}
-                {formatDate(matchday.deadline, t('leagueDetail.notAvailable'), language)}
-              </p>
-              <p className={readOnly ? 'text-amber-300' : 'text-emerald-300'}>
-                {readOnly ? t('formation.locked') : t('formation.editable')}
-              </p>
-            </div>
-          ) : null}
-        </div>
-      ) : matchdaysQuery.isSuccess ? (
-        <p className="mt-4 text-slate-300">{t('formation.noMatchdays')}</p>
-      ) : null}
-      {loadError ? (
-        <p className="mt-4 text-red-300" role="alert">
-          {loadError}
-        </p>
-      ) : null}
       {formationMissing && !editor.formationQuery.isLoading ? (
         <p className="mt-4 text-slate-400">{t('formation.noneYet')}</p>
       ) : null}
       {editor.formation?.submitted ? (
         <p className="mt-4 rounded-lg bg-emerald-950/50 p-3 text-emerald-200" role="status">
           {t('formation.submitted')}
+        </p>
+      ) : null}
+      {readOnly ? (
+        <p className="mt-4 rounded-lg bg-amber-950/40 p-3 text-amber-200" role="status">
+          {t('formation.locked')}
         </p>
       ) : null}
       {editor.success ? (
@@ -140,7 +87,7 @@ export function FormationEditor({
           {generalError}
         </p>
       ) : null}
-      {matchdayId !== null && !editor.formationQuery.isLoading ? (
+      {!editor.formationQuery.isLoading ? (
         <div className="mt-6 space-y-7">
           <FormationModuleSelector
             disabled={readOnly}
@@ -159,7 +106,7 @@ export function FormationEditor({
             )}
             module={editor.selectedModule}
             onToggle={editor.toggleStarter}
-            roster={roster.filter((item) => !item.released_at)}
+            roster={activeRoster}
             selected={editor.draft.starters}
           />
           <BenchSelectionSection
@@ -169,7 +116,7 @@ export function FormationEditor({
             onMove={editor.moveBench}
             onToggle={editor.toggleBench}
             roleLimits={settings.bench_role_limits}
-            roster={roster.filter((item) => !item.released_at)}
+            roster={activeRoster}
             selected={editor.draft.bench}
             starters={editor.draft.starters}
           />
@@ -182,30 +129,20 @@ export function FormationEditor({
                 t('formation.errors.captain'),
               )}
               onSelect={editor.selectCaptain}
-              roster={roster}
+              roster={activeRoster}
               selectedId={editor.draft.captainId}
               starters={editor.draft.starters}
             />
           ) : null}
           {!readOnly ? (
-            <div className="flex flex-wrap gap-3">
-              <button
-                className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-50"
-                disabled={!editor.locallyValid || editor.save.isPending}
-                onClick={() => editor.save.mutate()}
-                type="button"
-              >
-                {editor.save.isPending ? t('formation.saving') : t('formation.save')}
-              </button>
-              <button
-                className="rounded-lg border border-emerald-400 px-4 py-2 font-semibold text-emerald-200 disabled:opacity-50"
-                disabled={!editor.formation || editor.submit.isPending}
-                onClick={() => editor.submit.mutate()}
-                type="button"
-              >
-                {editor.submit.isPending ? t('formation.submitting') : t('formation.submit')}
-              </button>
-            </div>
+            <FormationActions
+              canSubmit={Boolean(editor.formation) && editor.locallyValid}
+              isDirty={editor.isDirty}
+              isSaving={editor.save.isPending}
+              isSubmitting={editor.submit.isPending}
+              onSave={() => editor.save.mutate()}
+              onSubmit={() => editor.submit.mutate()}
+            />
           ) : null}
         </div>
       ) : null}

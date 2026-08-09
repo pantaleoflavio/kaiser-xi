@@ -303,7 +303,8 @@
         "leagueId": "League ID",
         "createdAt": "Created",
         "updatedAt": "Updated"
-      }
+      },
+      "formationDescription": "Open your current matchday formation in its dedicated matchday context."
     },
     "update": {
       "title": "Rename fantasy team",
@@ -387,8 +388,7 @@
     },
     "captains": {
       "title": "Captain rules",
-      "captain": "Enable captain selection",
-      "viceCaptain": "Enable vice-captain selection"
+      "captain": "Enable captain selection"
     },
     "validation": {
       "formationRequired": "Select at least one allowed formation.",
@@ -670,6 +670,34 @@
       "starters": "Starters must exactly match the module role requirements and roster.",
       "bench": "The bench exceeds its size or role limits, or contains an invalid player.",
       "captain": "The captain must be one of the selected starters."
-    }
+    },
+    "unsaved": "Unsaved changes",
+    "draftSaved": "Saved draft",
+    "remaining": "{{count}} remaining"
+  },
+  "leagueNavigation": {
+    "label": "League navigation",
+    "overview": "League overview",
+    "matchdays": "Matchdays",
+    "rules": "Rules",
+    "fantasyTeams": "Fantasy teams",
+    "myTeam": "My team",
+    "matchdaysDescription": "Review past matchdays and manage your current formation.",
+    "rulesDescription": "Read the effective roster, formation, bench, substitution, and captain rules.",
+    "teamsDescription": "View league fantasy teams and create your own team."
+  },
+  "matchdays": {
+    "title": "Matchdays",
+    "description": "Past, current, and upcoming matchdays for this league.",
+    "past": "Past",
+    "current": "Current matchday",
+    "upcoming": "Upcoming",
+    "open": "Open matchday",
+    "openFormation": "Open formation",
+    "createFormation": "Create formation",
+    "editFormation": "Edit formation",
+    "viewFormation": "View formation",
+    "notFound": "Matchday not found",
+    "backToMatchday": "← Back to matchday"
   }
 }

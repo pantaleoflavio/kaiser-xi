@@ -303,7 +303,8 @@
         "leagueId": "Liga-ID",
         "createdAt": "Erstellt",
         "updatedAt": "Aktualisiert"
-      }
+      },
+      "formationDescription": "Öffne die Aufstellung des aktuellen Spieltags im zugehörigen Spieltagskontext."
     },
     "update": {
       "title": "Fantasy-Team umbenennen",
@@ -669,6 +670,34 @@
       "starters": "Die Startelf muss den Positionsvorgaben und dem Kader entsprechen.",
       "bench": "Die Bank überschreitet Größen- oder Positionslimits oder enthält einen ungültigen Spieler.",
       "captain": "Der Kapitän muss zur Startelf gehören."
-    }
+    },
+    "unsaved": "Ungespeicherte Änderungen",
+    "draftSaved": "Gespeicherter Entwurf",
+    "remaining": "noch {{count}}"
+  },
+  "leagueNavigation": {
+    "label": "Liga-Navigation",
+    "overview": "Ligaübersicht",
+    "matchdays": "Spieltage",
+    "rules": "Regeln",
+    "fantasyTeams": "Fantasy-Teams",
+    "myTeam": "Mein Team",
+    "matchdaysDescription": "Vergangene Spieltage ansehen und die aktuelle Aufstellung verwalten.",
+    "rulesDescription": "Die gültigen Kader-, Aufstellungs-, Bank-, Wechsel- und Kapitänsregeln lesen.",
+    "teamsDescription": "Fantasy-Teams der Liga ansehen und ein eigenes Team erstellen."
+  },
+  "matchdays": {
+    "title": "Spieltage",
+    "description": "Vergangene, aktuelle und kommende Spieltage dieser Liga.",
+    "past": "Vergangen",
+    "current": "Aktueller Spieltag",
+    "upcoming": "Bevorstehend",
+    "open": "Spieltag öffnen",
+    "openFormation": "Aufstellung öffnen",
+    "createFormation": "Aufstellung erstellen",
+    "editFormation": "Aufstellung bearbeiten",
+    "viewFormation": "Aufstellung ansehen",
+    "notFound": "Spieltag nicht gefunden",
+    "backToMatchday": "← Zurück zum Spieltag"
   }
 }

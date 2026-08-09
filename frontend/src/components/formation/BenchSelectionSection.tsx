@@ -32,6 +32,11 @@ export function BenchSelectionSection({
       <p className="mt-1 text-sm text-slate-300">
         {t('formation.benchCount', { count: selected.length, limit: benchSize })}
       </p>
+      <p className="mt-1 text-sm text-slate-400">
+        {Object.entries(roleLimits)
+          .map(([role, limit]) => `${t(`formation.roles.${role}`)} ${roleCount(role)}/${limit}`)
+          .join(' · ')}
+      </p>
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         {roster
           .filter((item) => !starters.includes(item.id))

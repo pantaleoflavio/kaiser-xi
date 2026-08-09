@@ -13,6 +13,11 @@ import { FantasyTeamDetailPage } from '../pages/FantasyTeamDetailPage';
 import { CreateLeaguePage } from '../pages/CreateLeaguePage';
 import { InvitationsPage } from '../pages/InvitationsPage';
 import { AccountPage } from '../pages/AccountPage';
+import { LeagueRulesPage } from '../pages/LeagueRulesPage';
+import { LeagueFantasyTeamsPage } from '../pages/LeagueFantasyTeamsPage';
+import { MatchdayListPage } from '../pages/MatchdayListPage';
+import { MatchdayDetailPage } from '../pages/MatchdayDetailPage';
+import { FormationPage } from '../pages/FormationPage';
 
 export function AppRoutes() {
   return (
@@ -27,6 +32,14 @@ export function AppRoutes() {
           <Route path="invitations" element={<InvitationsPage />} />
           <Route path="leagues/create" element={<CreateLeaguePage />} />
           <Route path="leagues/:leagueId" element={<LeagueDetailPage />} />
+          <Route path="leagues/:leagueId/rules" element={<LeagueRulesPage />} />
+          <Route path="leagues/:leagueId/fantasy-teams" element={<LeagueFantasyTeamsPage />} />
+          <Route path="leagues/:leagueId/matchdays" element={<MatchdayListPage />} />
+          <Route path="leagues/:leagueId/matchdays/:matchdayId" element={<MatchdayDetailPage />} />
+          <Route
+            path="leagues/:leagueId/matchdays/:matchdayId/fantasy-teams/:fantasyTeamId/formation"
+            element={<FormationPage />}
+          />
           <Route
             path="leagues/:leagueId/fantasy-teams/:fantasyTeamId"
             element={<FantasyTeamDetailPage />}

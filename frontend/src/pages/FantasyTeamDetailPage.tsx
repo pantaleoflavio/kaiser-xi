@@ -1,10 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { formationsApi } from '../api/formations';
+import { formationKeys } from '../api/queryKeys';
 import { LoadingState } from '../components/LoadingState';
 import { ErrorPanel } from '../components/feedback/ErrorPanel';
 import { FantasyTeamBudgetSummary } from '../components/fantasy-team/FantasyTeamBudgetSummary';
 import { FantasyTeamNameForm } from '../components/fantasy-team/FantasyTeamNameForm';
 import { FantasyRosterSection } from '../components/fantasy-team/FantasyRosterSection';
-import { FormationEditor } from '../components/formation/FormationEditor';
 import { FantasyTeamSummary } from '../components/fantasy-team/FantasyTeamSummary';
 import { useFantasyTeamDetail } from '../hooks/useFantasyTeamDetail';
 import { useFantasyTeamName } from '../hooks/useFantasyTeamName';
@@ -24,6 +26,14 @@ export function FantasyTeamDetailPage() {
     league?.my_role === 'commissioner' || league?.my_role === 'co_commissioner';
   const nameForm = useFantasyTeamName(leagueId, fantasyTeamId, team);
   const rosterManagement = useRosterManagement(leagueId, fantasyTeamId, canManageRoster, settings);
+  const matchdays = useQuery({
+    queryKey: formationKeys.matchdays(leagueId),
+    queryFn: () => formationsApi.matchdays(leagueId),
+    enabled: Boolean(team?.is_owned_by_current_user),
+  });
+  const currentMatchday = matchdays.data?.data.find(
+    (item) => new Date(item.deadline).getTime() > Date.now(),
+  );
   const queryError = [
     detail.league.error,
     detail.settings.error,
@@ -71,13 +81,19 @@ export function FantasyTeamDetailPage() {
             onRelease={rosterManagement.release}
           />
 
-          {team.is_owned_by_current_user && settings ? (
-            <FormationEditor
-              fantasyTeamId={fantasyTeamId}
-              leagueId={leagueId}
-              roster={roster.data}
-              settings={settings}
-            />
+          {team.is_owned_by_current_user && currentMatchday ? (
+            <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
+              <h2 className="text-2xl font-semibold text-white">{t('formation.title')}</h2>
+              <p className="mt-1 text-sm text-slate-300">
+                {t('fantasyTeams.detail.formationDescription')}
+              </p>
+              <Link
+                className="mt-4 inline-block rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950"
+                to={`/leagues/${leagueId}/matchdays/${currentMatchday.id}/fantasy-teams/${fantasyTeamId}/formation`}
+              >
+                {t('matchdays.openFormation')}
+              </Link>
+            </section>
           ) : null}
 
           {team.is_owned_by_current_user ? (
