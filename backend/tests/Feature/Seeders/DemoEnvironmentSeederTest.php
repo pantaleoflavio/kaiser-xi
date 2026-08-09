@@ -6,6 +6,7 @@ use App\Models\FantasyTeam;
 use App\Models\FantasyTeamPlayer;
 use App\Models\League;
 use App\Models\LeagueSetting;
+use App\Models\Matchday;
 use App\Models\Player;
 use App\Models\RealClub;
 use App\Models\SeasonClub;
@@ -13,6 +14,7 @@ use App\Models\User;
 use App\Services\FantasyTeam\EligiblePlayerQueryService;
 use Database\Seeders\DemoEnvironmentSeeder;
 use Database\Seeders\DemoLeagueSeeder;
+use Database\Seeders\DemoMatchdaySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -109,12 +111,64 @@ class DemoEnvironmentSeederTest extends TestCase
         }
 
         $this->assertSame(
-            7,
+            19,
             FantasyTeamPlayer::query()
                 ->where('league_id', $league->id)
                 ->active()
                 ->count()
         );
+
+        $matchday = Matchday::query()
+            ->where('season_id', $league->season_id)
+            ->where('number', DemoMatchdaySeeder::MATCHDAY_NUMBER)
+            ->firstOrFail();
+
+        $this->assertSame(DemoMatchdaySeeder::MATCHDAY_NAME, $matchday->name);
+        $this->assertTrue($matchday->starts_at->isFuture());
+        $this->assertTrue($matchday->ends_at->isAfter($matchday->starts_at));
+        $this->assertSame(
+            1,
+            Matchday::query()
+                ->where('season_id', $league->season_id)
+                ->where('number', DemoMatchdaySeeder::MATCHDAY_NUMBER)
+                ->count()
+        );
+
+        $commissionerTeam = FantasyTeam::query()
+            ->where('league_id', $league->id)
+            ->where('slug', 'commissioner-fc')
+            ->firstOrFail();
+
+        $activeRoleComposition = FantasyTeamPlayer::query()
+            ->active()
+            ->where('fantasy_team_id', $commissionerTeam->id)
+            ->join('players', 'players.id', '=', 'fantasy_team_players.player_id')
+            ->join('player_season_registrations', 'player_season_registrations.player_id', '=', 'players.id')
+            ->join('season_clubs', function ($join) use ($league): void {
+                $join->on('season_clubs.id', '=', 'player_season_registrations.season_club_id')
+                    ->where('season_clubs.season_id', $league->season_id);
+            })
+            ->join('player_roles', 'player_roles.id', '=', 'player_season_registrations.player_role_id')
+            ->selectRaw('player_roles.key, count(*) as aggregate')
+            ->groupBy('player_roles.key')
+            ->pluck('aggregate', 'player_roles.key')
+            ->map(fn($count) => (int) $count);
+
+        $this->assertGreaterThanOrEqual(1, $activeRoleComposition['goalkeeper']);
+        $this->assertGreaterThanOrEqual(4, $activeRoleComposition['defender']);
+        $this->assertGreaterThanOrEqual(3, $activeRoleComposition['midfielder']);
+        $this->assertGreaterThanOrEqual(3, $activeRoleComposition['forward']);
+        $this->assertContains('4-3-3', $league->allowedFormationModuleNames());
+
+        $duplicateActiveAssignments = FantasyTeamPlayer::query()
+            ->active()
+            ->where('league_id', $league->id)
+            ->selectRaw('player_id, count(*) as aggregate')
+            ->groupBy('player_id')
+            ->havingRaw('count(*) > 1')
+            ->count();
+
+        $this->assertSame(0, $duplicateActiveAssignments);
 
         $this->assertSame(
             1,
@@ -185,9 +239,9 @@ class DemoEnvironmentSeederTest extends TestCase
         $response = $this->actingAs($member)
             ->getJson(
                 "/api/v1/leagues/{$league->id}/eligible-players"
-                .'?role=midfielder'
-                ."&club_id={$seasonClub->id}"
-                .'&per_page=2'
+                    . '?role=midfielder'
+                    . "&club_id={$seasonClub->id}"
+                    . '&per_page=2'
             )
             ->assertOk()
             ->assertJsonCount(2, 'data');

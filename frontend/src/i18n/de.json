@@ -348,7 +348,7 @@
       "load": "Liga-Einstellungen konnten nicht geladen werden.",
       "update": "Liga-Einstellungen konnten nicht aktualisiert werden.",
       "title": "Liga-Einstellungen konnten nicht aktualisiert werden",
-       "rosterValidation": "Gib eine positive ganzzahlige Kadergröße und nichtnegative ganzzahlige Rollenlimits ein, deren Summe diese Größe erreicht.",
+      "rosterValidation": "Gib eine positive ganzzahlige Kadergröße und nichtnegative ganzzahlige Rollenlimits ein, deren Summe diese Größe erreicht.",
       "conflict": "Diese Einstellungen stehen im Konflikt mit der bestehenden Ligakonfiguration."
     },
     "sections": {
@@ -621,6 +621,54 @@
       "conflict": "Die Kontoänderung steht in Konflikt mit aktuellen Kontodaten.",
       "validation": "Bitte korrigiere die markierten Kontofelder.",
       "generic": "Dein Konto konnte nicht aktualisiert werden."
+    }
+  },
+  "formation": {
+    "title": "Spieltagsaufstellung",
+    "description": "Wähle System, Startelf, geordnete Bank und Kapitän für den Spieltag.",
+    "module": "Spielsystem",
+    "starters": "Startelf",
+    "bench": "Bank",
+    "captain": "Kapitän",
+    "matchday": "Spieltag",
+    "matchdayNumber": "Spieltag {{number}}",
+    "deadline": "Frist",
+    "locked": "Aufstellung gesperrt — die Frist ist abgelaufen.",
+    "editable": "Die Aufstellung kann bis zur Frist bearbeitet werden.",
+    "submitted": "Eingereicht",
+    "noneYet": "Für diesen Spieltag wurde noch keine Aufstellung gespeichert.",
+    "noMatchdays": "Keine Spieltage verfügbar.",
+    "chooseModuleFirst": "Wähle zuerst ein Spielsystem.",
+    "roleRequirements": "Positionsvorgaben",
+    "unknownRole": "Unbekannte Position",
+    "benchCount": "{{count}} von {{limit}} ausgewählt",
+    "benchOrder": "Reihenfolge der Bank",
+    "moveUp": "{{player}} nach oben",
+    "moveDown": "{{player}} nach unten",
+    "noCaptain": "Kein Kapitän ausgewählt",
+    "save": "Aufstellung speichern",
+    "saving": "Wird gespeichert…",
+    "submit": "Aufstellung einreichen",
+    "submitting": "Wird eingereicht…",
+    "roles": {
+      "goalkeeper": "Torwart",
+      "defender": "Verteidiger",
+      "midfielder": "Mittelfeldspieler",
+      "forward": "Stürmer"
+    },
+    "success": {
+      "saved": "Aufstellung gespeichert.",
+      "submitted": "Aufstellung eingereicht."
+    },
+    "errors": {
+      "load": "Die Aufstellung konnte nicht geladen werden.",
+      "matchdays": "Die Spieltage konnten nicht geladen werden.",
+      "deadline": "Die Aufstellungsfrist ist abgelaufen. Die Ansicht ist schreibgeschützt.",
+      "invalid": "Die Aufstellung ist ungültig. Prüfe die markierten Bereiche.",
+      "module": "Wähle ein erlaubtes Spielsystem.",
+      "starters": "Die Startelf muss den Positionsvorgaben und dem Kader entsprechen.",
+      "bench": "Die Bank überschreitet Größen- oder Positionslimits oder enthält einen ungültigen Spieler.",
+      "captain": "Der Kapitän muss zur Startelf gehören."
     }
   }
 }

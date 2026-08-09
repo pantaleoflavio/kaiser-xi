@@ -26,5 +26,6 @@ export type RegisterPayload = {
 
 export type ApiErrorResponse = {
   message?: string;
+  code?: string;
   errors?: Record<string, string[]>;
 };

@@ -4,6 +4,7 @@ import { ErrorPanel } from '../components/feedback/ErrorPanel';
 import { FantasyTeamBudgetSummary } from '../components/fantasy-team/FantasyTeamBudgetSummary';
 import { FantasyTeamNameForm } from '../components/fantasy-team/FantasyTeamNameForm';
 import { FantasyRosterSection } from '../components/fantasy-team/FantasyRosterSection';
+import { FormationEditor } from '../components/formation/FormationEditor';
 import { FantasyTeamSummary } from '../components/fantasy-team/FantasyTeamSummary';
 import { useFantasyTeamDetail } from '../hooks/useFantasyTeamDetail';
 import { useFantasyTeamName } from '../hooks/useFantasyTeamName';
@@ -69,6 +70,15 @@ export function FantasyTeamDetailPage() {
             onAssign={rosterManagement.assign}
             onRelease={rosterManagement.release}
           />
+
+          {team.is_owned_by_current_user && settings ? (
+            <FormationEditor
+              fantasyTeamId={fantasyTeamId}
+              leagueId={leagueId}
+              roster={roster.data}
+              settings={settings}
+            />
+          ) : null}
 
           {team.is_owned_by_current_user ? (
             <FantasyTeamNameForm

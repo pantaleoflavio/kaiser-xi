@@ -157,6 +157,7 @@ export type RosterRoleLimits = Record<PlayerRoleKey, number>;
 export type FormationModuleName = string;
 
 export type FormationModule = {
+  id: number;
   name: FormationModuleName;
   label: string;
   required_players_count: number;
@@ -182,6 +183,7 @@ export type LeagueSettingsPayload = Partial<{
 }>;
 
 export type RosterPlayer = {
+  id: number;
   purchase_price: string | number;
   assigned_at: string | null;
   released_at: string | null;

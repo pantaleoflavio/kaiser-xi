@@ -25,3 +25,9 @@ export const leagueMutationKeys = {
   settings: (leagueId: string | number) =>
     ['leagues', 'settings', String(leagueId), 'update'] as const,
 };
+
+export const formationKeys = {
+  matchdays: (leagueId: string | number) => ['matchdays', String(leagueId)] as const,
+  detail: (leagueId: string | number, matchdayId: string | number, teamId: string | number) =>
+    ['formation', String(leagueId), String(matchdayId), String(teamId)] as const,
+};

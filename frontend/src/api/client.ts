@@ -3,17 +3,22 @@ import type { ApiErrorResponse } from '../types/auth';
 
 const fallbackApiUrl = 'http://localhost:8000/api/v1';
 
-export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? fallbackApiUrl).replace(/\/$/, '');
+export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? fallbackApiUrl).replace(
+  /\/$/,
+  '',
+);
 
 export class ApiError extends Error {
   status: number;
+  code?: string;
   errors?: Record<string, string[]>;
 
-  constructor(message: string, status: number, errors?: Record<string, string[]>) {
+  constructor(message: string, status: number, errors?: Record<string, string[]>, code?: string) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
     this.errors = errors;
+    this.code = code;
   }
 }
 
@@ -49,6 +54,7 @@ export async function apiClient<T>(path: string, options: ApiRequestOptions = {}
       errorBody?.message ?? `Request failed with status ${response.status}`,
       response.status,
       errorBody?.errors,
+      errorBody?.code,
     );
   }
 

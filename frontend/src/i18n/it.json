@@ -296,7 +296,7 @@
       "load": "Impossibile caricare le impostazioni della lega.",
       "update": "Impossibile aggiornare le impostazioni della lega.",
       "title": "Impossibile aggiornare le impostazioni della lega",
-       "rosterValidation": "Inserisci un limite totale intero positivo e limiti per ruolo interi non negativi la cui somma raggiunga il limite totale.",
+      "rosterValidation": "Inserisci un limite totale intero positivo e limiti per ruolo interi non negativi la cui somma raggiunga il limite totale.",
       "conflict": "Queste impostazioni sono in conflitto con la configurazione esistente della lega."
     },
     "sections": {
@@ -573,6 +573,54 @@
       "conflict": "L’aggiornamento dell’account è in conflitto con i dati attuali.",
       "validation": "Correggi i campi dell’account evidenziati.",
       "generic": "Impossibile aggiornare l’account."
+    }
+  },
+  "formation": {
+    "title": "Formazione della giornata",
+    "description": "Scegli modulo, titolari, panchina ordinata e capitano per la giornata.",
+    "module": "Modulo",
+    "starters": "Titolari",
+    "bench": "Panchina",
+    "captain": "Capitano",
+    "matchday": "Giornata",
+    "matchdayNumber": "Giornata {{number}}",
+    "deadline": "Scadenza",
+    "locked": "Formazione bloccata — la scadenza è passata.",
+    "editable": "La formazione è modificabile fino alla scadenza.",
+    "submitted": "Inviata",
+    "noneYet": "Nessuna formazione salvata per questa giornata.",
+    "noMatchdays": "Nessuna giornata disponibile.",
+    "chooseModuleFirst": "Scegli un modulo prima di selezionare i titolari.",
+    "roleRequirements": "Requisiti per ruolo",
+    "unknownRole": "Ruolo sconosciuto",
+    "benchCount": "Selezionati {{count}} di {{limit}}",
+    "benchOrder": "Ordine della panchina",
+    "moveUp": "Sposta {{player}} su",
+    "moveDown": "Sposta {{player}} giù",
+    "noCaptain": "Nessun capitano selezionato",
+    "save": "Salva formazione",
+    "saving": "Salvataggio…",
+    "submit": "Invia formazione",
+    "submitting": "Invio…",
+    "roles": {
+      "goalkeeper": "Portiere",
+      "defender": "Difensore",
+      "midfielder": "Centrocampista",
+      "forward": "Attaccante"
+    },
+    "success": {
+      "saved": "Formazione salvata.",
+      "submitted": "Formazione inviata."
+    },
+    "errors": {
+      "load": "Impossibile caricare la formazione.",
+      "matchdays": "Impossibile caricare le giornate.",
+      "deadline": "La scadenza è passata. La formazione è ora in sola lettura.",
+      "invalid": "La formazione non è valida. Controlla le sezioni evidenziate.",
+      "module": "Scegli un modulo consentito.",
+      "starters": "I titolari devono rispettare i requisiti del modulo e la rosa.",
+      "bench": "La panchina supera i limiti di dimensione o ruolo, oppure contiene un giocatore non valido.",
+      "captain": "Il capitano deve essere uno dei titolari."
     }
   }
 }
