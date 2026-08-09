@@ -164,7 +164,7 @@ class League extends Model
         $stored = $setting instanceof LeagueSetting ? $setting->roleLimitsValue() : [];
 
         return collect(LeagueSetting::DEFAULT_BENCH_ROLE_LIMITS)
-            ->mapWithKeys(fn(int $default, string $role): array => [$role => (int) ($stored[$role] ?? $default)])
+            ->mapWithKeys(fn (int $default, string $role): array => [$role => (int) ($stored[$role] ?? $default)])
             ->all();
     }
 

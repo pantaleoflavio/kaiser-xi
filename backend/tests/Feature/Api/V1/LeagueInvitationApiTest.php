@@ -108,12 +108,15 @@ class LeagueInvitationApiTest extends TestCase
     {
         $league = League::factory()->create(['max_participants' => 10]);
         $this->attach($league, $league->commissioner, 'commissioner');
+
         return LeagueInvitation::factory()->for($league)->create([...$state, 'invited_user_id' => $recipient->id, 'created_by_user_id' => $league->commissioner_user_id]);
     }
 
     private function attach(League $league, User $user, string $role): void
     {
-        if ($league->memberships()->where('user_id', $user->id)->exists()) return;
+        if ($league->memberships()->where('user_id', $user->id)->exists()) {
+            return;
+        }
         $league->users()->attach($user->id, ['league_role_id' => LeagueRole::query()->where('key', $role)->value('id'), 'joined_at' => now()]);
     }
 }

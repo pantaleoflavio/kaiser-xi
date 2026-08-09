@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class LeagueInvitationResource extends JsonResource
 {
-   public function toArray(Request $request): array
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -26,15 +26,15 @@ class LeagueInvitationResource extends JsonResource
                 'id' => $this->createdBy->id,
                 'name' => $this->createdBy->name,
             ]),
-            'recipient' => $this->whenLoaded('invitedUser', fn() => [
+            'recipient' => $this->whenLoaded('invitedUser', fn () => [
                 'id' => $this->invitedUser->id,
                 'name' => $this->invitedUser->name,
             ]),
-            'role' => $this->whenLoaded('role', fn() => [
+            'role' => $this->whenLoaded('role', fn () => [
                 'key' => $this->role->key,
                 'label' => $this->role->label,
             ]),
-            'league' => $this->whenLoaded('league', fn() => [
+            'league' => $this->whenLoaded('league', fn () => [
                 'id' => $this->league->id,
                 'name' => $this->league->name,
             ]),

@@ -12,6 +12,7 @@ class FantasyTeamPlayerResource extends JsonResource
         $registration = $this->player?->playerSeasonRegistrations?->first();
 
         return [
+            'id' => $this->id,
             'player' => [
                 'id' => $this->player_id,
                 'name' => $this->player?->display_name,

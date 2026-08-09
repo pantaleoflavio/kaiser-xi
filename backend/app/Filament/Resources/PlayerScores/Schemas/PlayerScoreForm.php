@@ -62,10 +62,10 @@ class PlayerScoreForm
                     ->required(),
                 TextInput::make('final_score')
                     ->numeric(),
-            Select::make('status')
-                ->options(PlayerScoreStatus::options())
+                Select::make('status')
+                    ->options(PlayerScoreStatus::options())
                     ->required()
-                ->default(PlayerScoreStatus::Pending->value),
+                    ->default(PlayerScoreStatus::Pending->value),
             ]);
     }
 }

@@ -34,10 +34,12 @@ class FantasyRosterApiTest extends TestCase
         $player = $this->eligiblePlayer($league);
 
         Sanctum::actingAs($owner);
-        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", [
+        $assignmentResponse = $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", [
             'player_id' => $player->id,
             'purchase_price' => 37,
         ])->assertCreated()->assertJsonPath('data.player.id', $player->id);
+        $this->assertIsInt($assignmentResponse->json('data.id'));
+        $this->assertIsInt($assignmentResponse->json('data.id'));
         $this->assertSame('63.00', $team->refresh()->remaining_budget);
         $this->assertDatabaseHas('fantasy_team_players', [
             'fantasy_team_id' => $team->id,
@@ -468,11 +470,11 @@ class FantasyRosterApiTest extends TestCase
         $this->assertSame(1, FantasyTeamPlayer::query()->where('fantasy_team_id', $team->id)->whereNotNull('released_at')->count());
     }
 
-
     private function leagueOwnerAndTeam(array $teamAttributes = []): array
     {
         [$league, $owner] = $this->leagueWithMember('commissioner');
         $team = FantasyTeam::factory()->forLeagueAndUser($league, $owner)->create($teamAttributes + ['budget' => 500, 'remaining_budget' => 500]);
+
         return [$league, $owner, $team];
     }
 
@@ -481,6 +483,7 @@ class FantasyRosterApiTest extends TestCase
         $league = League::factory()->create();
         $user = User::factory()->create();
         $this->attachMember($league, $user, $role);
+
         return [$league, $user];
     }
 
@@ -497,6 +500,7 @@ class FantasyRosterApiTest extends TestCase
             'season_club_id' => SeasonClub::factory()->create(['season_id' => $league->season_id])->id,
             ...($roleKey ? ['player_role_id' => PlayerRole::query()->where('key', $roleKey)->firstOrFail()->id] : []),
         ]);
+
         return $player;
     }
 

@@ -38,59 +38,59 @@ class FormationApiTest extends TestCase
         parent::tearDown();
     }
 
-public function test_owner_can_save_update_submit_and_read_after_deadline(): void
-{
-    [$league, $team, $matchday, $payload] = $this->context();
+    public function test_owner_can_save_update_submit_and_read_after_deadline(): void
+    {
+        [$league, $team, $matchday, $payload] = $this->context();
 
-    Sanctum::actingAs($team->user);
+        Sanctum::actingAs($team->user);
 
-    $url = $this->url($league, $matchday, $team);
+        $url = $this->url($league, $matchday, $team);
 
-    // Prima PUT: crea la formation.
-    $this->putJson($url, $payload)
-        ->assertCreated()
-        ->assertJsonPath('data.submitted', false);
+        // Prima PUT: crea la formation.
+        $this->putJson($url, $payload)
+            ->assertCreated()
+            ->assertJsonPath('data.submitted', false);
 
-    $payload['bench'] = [
-        [
-            'fantasy_team_player_id' => $this
-                ->assignment($league, $team, 'goalkeeper')
-                ->id,
-            'order' => 1,
-        ],
-    ];
+        $payload['bench'] = [
+            [
+                'fantasy_team_player_id' => $this
+                    ->assignment($league, $team, 'goalkeeper')
+                    ->id,
+                'order' => 1,
+            ],
+        ];
 
-    // Seconda PUT: la formation esiste già, quindi è un update.
-    $this->putJson($url, $payload)
-        ->assertOk()
-        ->assertJsonPath('data.bench.0.order', 1);
+        // Seconda PUT: la formation esiste già, quindi è un update.
+        $this->putJson($url, $payload)
+            ->assertOk()
+            ->assertJsonPath('data.bench.0.order', 1);
 
-    $this->postJson("{$url}/submit")
-        ->assertOk()
-        ->assertJsonPath('data.submitted', true);
+        $this->postJson("{$url}/submit")
+            ->assertOk()
+            ->assertJsonPath('data.submitted', true);
 
-    $this->assertSame(
-        1,
-        Formation::query()
-            ->where('fantasy_team_id', $team->id)
-            ->where('matchday_id', $matchday->id)
-            ->count()
-    );
+        $this->assertSame(
+            1,
+            Formation::query()
+                ->where('fantasy_team_id', $team->id)
+                ->where('matchday_id', $matchday->id)
+                ->count()
+        );
 
-    Carbon::setTestNow($matchday->starts_at);
+        Carbon::setTestNow($matchday->starts_at);
 
-    $this->putJson($url, $payload)
-        ->assertConflict()
-        ->assertJsonPath('code', 'lineup_deadline_passed');
+        $this->putJson($url, $payload)
+            ->assertConflict()
+            ->assertJsonPath('code', 'lineup_deadline_passed');
 
-    $this->postJson("{$url}/submit")
-        ->assertConflict()
-        ->assertJsonPath('code', 'lineup_deadline_passed');
+        $this->postJson("{$url}/submit")
+            ->assertConflict()
+            ->assertJsonPath('code', 'lineup_deadline_passed');
 
-    $this->getJson($url)
-        ->assertOk()
-        ->assertJsonPath('data.submitted', true);
-}
+        $this->getJson($url)
+            ->assertOk()
+            ->assertJsonPath('data.submitted', true);
+    }
 
     public function test_other_users_and_invalid_nested_resources_cannot_edit(): void
     {
@@ -108,12 +108,12 @@ public function test_owner_can_save_update_submit_and_read_after_deadline(): voi
     {
         [$league, $team, $matchday, $payload] = $this->context();
 
-            Sanctum::actingAs($team->user);
+        Sanctum::actingAs($team->user);
 
-            $url = $this->url($league, $matchday, $team);
+        $url = $this->url($league, $matchday, $team);
 
-            $this->putJson($url, $payload)
-                ->assertCreated();
+        $this->putJson($url, $payload)
+            ->assertCreated();
         $originalIds = Formation::query()->firstOrFail()->players()->pluck('fantasy_team_player_id')->all();
 
         $invalid = $payload;

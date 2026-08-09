@@ -46,7 +46,7 @@ class FantasyRosterService
                 || count($roleLimits) !== count(LeagueSetting::PLAYER_ROLE_KEYS)
                 || array_diff(LeagueSetting::PLAYER_ROLE_KEYS, array_keys($roleLimits)) !== []
                 || array_sum($roleLimits) < $maxRosterPlayers
-                || array_any($roleLimits, fn(mixed $limit): bool => ! is_int($limit) || $limit < 0)
+                || array_any($roleLimits, fn (mixed $limit): bool => ! is_int($limit) || $limit < 0)
             ) {
                 throw new InvalidLeagueConfigurationException('The league roster limits are invalid.');
             }
@@ -67,7 +67,7 @@ class FantasyRosterService
             $activeRoleCount = (clone $activeRoster)
                 ->whereHas('player.playerSeasonRegistrations', function ($query) use ($league, $roleKey): void {
                     $query->activeForSeason($league->season_id)
-                        ->whereHas('playerRole', fn($query) => $query->where('key', $roleKey));
+                        ->whereHas('playerRole', fn ($query) => $query->where('key', $roleKey));
                 })
                 ->count();
 

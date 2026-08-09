@@ -97,7 +97,6 @@ class DemoLeagueSeeder extends Seeder
 
         $this->leagueSettingsService->initializeDefaults($league);
 
-
         $roles = LeagueRole::query()->pluck('id', 'key');
         foreach (self::MEMBERS as $email => [$role, $teamName, $teamSlug]) {
             $user = User::query()->where('email', $email)->firstOrFail();

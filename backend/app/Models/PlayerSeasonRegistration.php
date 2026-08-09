@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
 
 class PlayerSeasonRegistration extends Model
 {
@@ -59,7 +59,7 @@ class PlayerSeasonRegistration extends Model
             ->whereNull('player_season_registrations.released_at')
             ->whereHas(
                 'seasonClub',
-                fn(Builder $query) => $query->where('season_clubs.season_id', $seasonId)
+                fn (Builder $query) => $query->where('season_clubs.season_id', $seasonId)
             );
     }
 }

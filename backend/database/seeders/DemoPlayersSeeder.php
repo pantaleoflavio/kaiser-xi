@@ -62,4 +62,3 @@ class DemoPlayersSeeder extends Seeder
         }
     }
 }
-

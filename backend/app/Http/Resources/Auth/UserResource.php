@@ -15,7 +15,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'email_verified_at' => $this->email_verified_at?->toISOString(),
             'created_at' => $this->created_at?->toISOString(),
-            'roles' => $this->whenLoaded('roles', fn() => $this->roles->pluck('name')->values()),
+            'roles' => $this->whenLoaded('roles', fn () => $this->roles->pluck('name')->values()),
         ];
     }
 }

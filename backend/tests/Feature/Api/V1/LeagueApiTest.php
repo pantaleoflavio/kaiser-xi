@@ -57,7 +57,7 @@ class LeagueApiTest extends TestCase
             ->assertJsonPath('data.season.id', $this->season->id)
             ->assertJsonPath('data.season.competition.id', $this->season->real_competition_id)
             ->assertJsonPath('data.type.key', 'classic')
-            ->assertJsonPath('data.status.key',  LeagueStatus::ACTIVE);
+            ->assertJsonPath('data.status.key', LeagueStatus::ACTIVE);
 
         $league = League::query()->where('name', 'Weekend League')->firstOrFail();
         $commissionerRole = LeagueRole::query()->where('key', 'commissioner')->firstOrFail();
@@ -179,7 +179,7 @@ class LeagueApiTest extends TestCase
 
     public function test_only_commissioner_can_update_league(): void
     {
-       $commissioner = User::factory()->create();
+        $commissioner = User::factory()->create();
         $participant = User::factory()->create();
         $league = League::factory()->create([
             'season_id' => $this->season->id,

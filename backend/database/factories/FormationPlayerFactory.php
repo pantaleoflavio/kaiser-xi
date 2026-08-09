@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\FantasyTeamPlayer;
 use App\Models\Formation;
 use App\Models\FormationPlayer;
-use App\Models\FantasyTeamPlayer;
 use App\Models\PlayerRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -100,11 +100,11 @@ Route::prefix('v1')->group(function (): void {
         // Fantasy team routes
         Route::get('/{league}/fantasy-teams', [FantasyTeamController::class, 'index'])
             ->name('api.v1.leagues.fantasy-teams.index')
-            ->middleware('can:viewAny,' . FantasyTeam::class . ',league');
+            ->middleware('can:viewAny,'.FantasyTeam::class.',league');
 
         Route::post('/{league}/fantasy-teams', [FantasyTeamController::class, 'store'])
             ->name('api.v1.leagues.fantasy-teams.store')
-            ->middleware('can:create,' . FantasyTeam::class . ',league');
+            ->middleware('can:create,'.FantasyTeam::class.',league');
 
         Route::get('/{league}/fantasy-teams/{fantasyTeam}', [FantasyTeamController::class, 'show'])
             ->name('api.v1.leagues.fantasy-teams.show')

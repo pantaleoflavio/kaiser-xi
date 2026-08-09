@@ -13,18 +13,16 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FantasyTeamController extends Controller
 {
-    public function __construct(private FantasyTeamService $fantasyTeamService)
-    {
-    }
+    public function __construct(private FantasyTeamService $fantasyTeamService) {}
 
     public function index(League $league): AnonymousResourceCollection
     {
         return FantasyTeamResource::collection(
             $league->fantasyTeams()
-            ->with('user')
-            ->orderBy('name')
-            ->orderBy('id')
-            ->get(),
+                ->with('user')
+                ->orderBy('name')
+                ->orderBy('id')
+                ->get(),
         );
     }
 

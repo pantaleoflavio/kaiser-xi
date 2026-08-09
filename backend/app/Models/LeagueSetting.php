@@ -11,19 +11,33 @@ class LeagueSetting extends Model
     use HasFactory;
 
     public const INITIAL_BUDGET = 'initial_budget';
+
     public const RELEASE_REFUND_PERCENTAGE = 'release_refund_percentage';
+
     public const MAX_ROSTER_PLAYERS = 'max_roster_players';
+
     public const ROSTER_ROLE_LIMITS = 'roster_role_limits';
+
     public const ALLOWED_FORMATION_MODULE_NAMES = 'allowed_formation_module_names';
+
     public const BENCH_SIZE = 'bench_size';
+
     public const BENCH_ROLE_LIMITS = 'bench_role_limits';
+
     public const MAX_SUBSTITUTIONS = 'max_substitutions';
+
     public const SUBSTITUTION_ORDER_MODE = 'substitution_order_mode';
+
     public const ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION = 'allow_formation_change_on_substitution';
+
     public const CAPTAIN_ENABLED = 'captain_enabled';
+
     public const DEFAULT_INITIAL_BUDGET = 500;
+
     public const DEFAULT_RELEASE_REFUND_PERCENTAGE = 50;
+
     public const DEFAULT_MAX_ROSTER_PLAYERS = 25;
+
     public const DEFAULT_ALLOWED_FORMATION_MODULE_NAMES = [
         '3-4-3',
         '3-5-2',
@@ -33,24 +47,35 @@ class LeagueSetting extends Model
         '5-3-2',
         '5-4-1',
     ];
+
     public const DEFAULT_BENCH_SIZE = 7;
+
     public const DEFAULT_BENCH_ROLE_LIMITS = [
         'goalkeeper' => 1,
         'defender' => 3,
         'midfielder' => 3,
         'forward' => 3,
     ];
+
     public const DEFAULT_MAX_SUBSTITUTIONS = 3;
+
     public const SUBSTITUTION_ORDER_BENCH = 'bench_order';
+
     public const SUBSTITUTION_ORDER_ROLE_PRIORITY = 'role_priority';
+
     public const SUBSTITUTION_ORDER_MODES = [
         self::SUBSTITUTION_ORDER_BENCH,
         self::SUBSTITUTION_ORDER_ROLE_PRIORITY,
     ];
+
     public const DEFAULT_SUBSTITUTION_ORDER_MODE = self::SUBSTITUTION_ORDER_BENCH;
+
     public const DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION = false;
+
     public const DEFAULT_CAPTAIN_ENABLED = false;
+
     public const PLAYER_ROLE_KEYS = ['goalkeeper', 'defender', 'midfielder', 'forward'];
+
     public const DEFAULT_ROSTER_ROLE_LIMITS = [
         'goalkeeper' => 3,
         'defender' => 8,

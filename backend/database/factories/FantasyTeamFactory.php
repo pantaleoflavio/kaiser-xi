@@ -32,7 +32,7 @@ class FantasyTeamFactory extends Factory
 
     public function forLeagueAndUser(League $league, User $user): static
     {
-        return $this->state(fn() => [
+        return $this->state(fn () => [
             'league_id' => $league->id,
             'user_id' => $user->id,
         ]);

@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class DuplicateFantasyTeamOwnershipException extends ConflictHttpException

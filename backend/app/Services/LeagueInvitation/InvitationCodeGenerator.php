@@ -5,6 +5,7 @@ namespace App\Services\LeagueInvitation;
 class InvitationCodeGenerator
 {
     private const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
     private const LENGTH = 12;
 
     public function generate(): string

@@ -42,6 +42,7 @@ class LeagueLineupSettingsApiTest extends TestCase
             ->assertJsonPath('data.captain_enabled', false);
 
         $this->assertSame(LeagueSetting::DEFAULT_ALLOWED_FORMATION_MODULE_NAMES, array_column($response->json('data.allowed_formation_modules'), 'name'));
+        $this->assertIsInt($response->json('data.allowed_formation_modules.0.id'));
         $this->assertSame([1, 3, 4, 3], array_values($response->json('data.allowed_formation_modules.0.requirements')));
         foreach ($this->lineupSettingKeys() as $key) {
             $this->assertSame(1, $league->settings()->where('key', $key)->count());

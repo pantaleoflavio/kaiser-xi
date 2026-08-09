@@ -43,6 +43,7 @@ class AcceptLeagueInvitationAction
                 ]);
 
                 $locked->forceFill(['status' => LeagueInvitationStatus::Accepted, 'used_count' => 1])->save();
+
                 return $membership->load(['league', 'role', 'user']);
             });
         } catch (UniqueConstraintViolationException $exception) {

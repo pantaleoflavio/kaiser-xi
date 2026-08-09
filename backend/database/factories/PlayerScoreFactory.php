@@ -41,7 +41,7 @@ class PlayerScoreFactory extends Factory
 
     public function pending(): static
     {
-        return $this->state(fn(): array => [
+        return $this->state(fn (): array => [
             'final_score' => null,
             'status' => PlayerScoreStatus::Pending,
         ]);
@@ -49,7 +49,7 @@ class PlayerScoreFactory extends Factory
 
     public function confirmed(float $finalScore = 6.00): static
     {
-        return $this->state(fn(): array => [
+        return $this->state(fn (): array => [
             'final_score' => $finalScore,
             'status' => PlayerScoreStatus::Confirmed,
         ]);
@@ -57,7 +57,7 @@ class PlayerScoreFactory extends Factory
 
     public function didNotPlay(): static
     {
-        return $this->state(fn(): array => [
+        return $this->state(fn (): array => [
             'base_rating' => null,
             'final_score' => null,
             'status' => PlayerScoreStatus::DidNotPlay,

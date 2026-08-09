@@ -7,14 +7,12 @@ use App\Models\League;
 use App\Models\LeagueInvitation;
 use App\Models\LeagueRole;
 use App\Models\User;
-use App\Services\LeagueInvitation\InvitationCodeGenerator;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class CreateLeagueInvitationAction
 {
     public function __construct(private readonly InvitationCodeGenerator $codeGenerator) {}
-
 
     public function handle(League $league, User $creator, array $data): LeagueInvitation
     {
@@ -25,7 +23,6 @@ class CreateLeagueInvitationAction
             if ($lockedLeague->memberships()->where('user_id', $recipient->id)->exists()) {
                 throw new ConflictHttpException('User is already a member of this league.', null, 0, ['X-Error-Code' => 'already_a_member']);
             }
-
 
             if ($lockedLeague->invitations()->where('invited_user_id', $recipient->id)->where('status', LeagueInvitationStatus::Pending)->exists()) {
                 throw new ConflictHttpException('A pending invitation already exists.', null, 0, ['X-Error-Code' => 'duplicate_active_invitation']);

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreLeagueInvitationRequest extends FormRequest
 {
-       public function authorize(): bool
+    public function authorize(): bool
     {
         return true;
     }

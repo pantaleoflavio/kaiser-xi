@@ -27,12 +27,14 @@ class LeagueMemberController extends Controller
     {
         $membership = $this->membership($league, $user);
         $this->membershipService->remove($league, $membership);
+
         return response()->noContent();
     }
 
     public function updateRole(UpdateLeagueMemberRoleRequest $request, League $league, User $user): LeagueMemberResource
     {
         $membership = $this->membership($league, $user);
+
         return new LeagueMemberResource(
             $this->membershipService->updateRole($league, $membership, $request->validated('role'))
         );

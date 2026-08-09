@@ -3,9 +3,6 @@
 namespace App\Models;
 
 use App\Enums\PlayerScoreStatus;
-use App\Models\Matchday;
-use App\Models\PlayerSeasonRegistration;
-use App\Models\TeamMatchdayScoreDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

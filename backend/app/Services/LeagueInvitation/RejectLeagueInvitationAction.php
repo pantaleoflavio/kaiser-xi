@@ -17,6 +17,7 @@ class RejectLeagueInvitationAction
                 throw new ConflictHttpException($locked->isExpired() ? 'Invitation has expired.' : 'Invitation has already been processed.');
             }
             $locked->forceFill(['status' => LeagueInvitationStatus::Rejected])->save();
+
             return $locked;
         });
     }

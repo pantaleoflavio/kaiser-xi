@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\UpdatePasswordRequest;
+use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Http\Resources\Auth\UserResource;
 use App\Models\User;
 use App\Services\Auth\LoginUserService;
@@ -18,8 +20,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use App\Http\Requests\Auth\UpdateProfileRequest;
-use App\Http\Requests\Auth\UpdatePasswordRequest;
 
 class AuthController extends Controller
 {
@@ -92,7 +92,6 @@ class AuthController extends Controller
 
         return response()->json(null, 204);
     }
-
 
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {

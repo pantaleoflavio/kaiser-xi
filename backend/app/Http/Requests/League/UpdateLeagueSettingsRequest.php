@@ -16,7 +16,6 @@ class UpdateLeagueSettingsRequest extends FormRequest
         return true;
     }
 
-
     protected function prepareForValidation(): void
     {
         $key = LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES;
@@ -29,8 +28,8 @@ class UpdateLeagueSettingsRequest extends FormRequest
 
     public function rules(): array
     {
-        $roleShape = 'array:' . implode(',', LeagueSetting::PLAYER_ROLE_KEYS);
-        $requiredRoles = 'required_array_keys:' . implode(',', LeagueSetting::PLAYER_ROLE_KEYS);
+        $roleShape = 'array:'.implode(',', LeagueSetting::PLAYER_ROLE_KEYS);
+        $requiredRoles = 'required_array_keys:'.implode(',', LeagueSetting::PLAYER_ROLE_KEYS);
 
         return [
             LeagueSetting::INITIAL_BUDGET => [
@@ -61,7 +60,7 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 $requiredRoles,
             ],
 
-            LeagueSetting::ROSTER_ROLE_LIMITS . '.*' => [
+            LeagueSetting::ROSTER_ROLE_LIMITS.'.*' => [
                 'required',
                 'integer',
                 'min:0',
@@ -74,7 +73,7 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'min:1',
             ],
 
-            LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES . '.*' => [
+            LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES.'.*' => [
                 'required',
                 'string',
                 'distinct',
@@ -94,7 +93,7 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 $requiredRoles,
             ],
 
-            LeagueSetting::BENCH_ROLE_LIMITS . '.*' => [
+            LeagueSetting::BENCH_ROLE_LIMITS.'.*' => [
                 'required',
                 'integer',
                 'min:0',
@@ -162,7 +161,7 @@ class UpdateLeagueSettingsRequest extends FormRequest
             foreach (LeagueSetting::PLAYER_ROLE_KEYS as $role) {
                 if ($benchLimits[$role] > $rosterLimits[$role]) {
                     $validator->errors()->add(
-                        LeagueSetting::BENCH_ROLE_LIMITS . '.' . $role,
+                        LeagueSetting::BENCH_ROLE_LIMITS.'.'.$role,
                         'The bench role limit cannot exceed the corresponding roster role limit.'
                     );
                 }
@@ -199,19 +198,20 @@ class UpdateLeagueSettingsRequest extends FormRequest
         foreach ($names as $name) {
             $module = $modules->get($name);
             $requirements = $module->requirements
-                ->mapWithKeys(fn($requirement): array => [$requirement->playerRole?->key => (int) $requirement->required_count])
+                ->mapWithKeys(fn ($requirement): array => [$requirement->playerRole?->key => (int) $requirement->required_count])
                 ->all();
 
             if (
                 count($requirements) !== count(LeagueSetting::PLAYER_ROLE_KEYS)
                 || array_diff(LeagueSetting::PLAYER_ROLE_KEYS, array_keys($requirements)) !== []
-                || collect($requirements)->contains(fn(int $count): bool => $count < 1)
+                || collect($requirements)->contains(fn (int $count): bool => $count < 1)
                 || $module->requiredPlayersCount() < 1
             ) {
                 $validator->errors()->add(
                     LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES,
                     "Formation module {$name} has incomplete or incoherent role requirements."
                 );
+
                 continue;
             }
 
@@ -220,6 +220,7 @@ class UpdateLeagueSettingsRequest extends FormRequest
                     LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES,
                     "Formation module {$name} requires more players than the roster maximum."
                 );
+
                 continue;
             }
 

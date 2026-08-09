@@ -21,10 +21,10 @@ class LeagueSettingsService
         foreach ([
             LeagueSetting::INITIAL_BUDGET => LeagueSetting::DEFAULT_INITIAL_BUDGET,
             LeagueSetting::RELEASE_REFUND_PERCENTAGE => LeagueSetting::DEFAULT_RELEASE_REFUND_PERCENTAGE,
-                LeagueSetting::MAX_ROSTER_PLAYERS => LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS,
-                LeagueSetting::BENCH_SIZE => LeagueSetting::DEFAULT_BENCH_SIZE,
-                LeagueSetting::MAX_SUBSTITUTIONS => LeagueSetting::DEFAULT_MAX_SUBSTITUTIONS,
-            ] as $key => $value
+            LeagueSetting::MAX_ROSTER_PLAYERS => LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS,
+            LeagueSetting::BENCH_SIZE => LeagueSetting::DEFAULT_BENCH_SIZE,
+            LeagueSetting::MAX_SUBSTITUTIONS => LeagueSetting::DEFAULT_MAX_SUBSTITUTIONS,
+        ] as $key => $value
         ) {
             $league->settings()->firstOrCreate(
                 ['key' => $key],
@@ -72,12 +72,12 @@ class LeagueSettingsService
             $this->ensureRosterCompatibility($lockedLeague, $settings);
 
             foreach ([
-                    LeagueSetting::INITIAL_BUDGET,
-                    LeagueSetting::RELEASE_REFUND_PERCENTAGE,
-                    LeagueSetting::MAX_ROSTER_PLAYERS,
-                    LeagueSetting::BENCH_SIZE,
-                    LeagueSetting::MAX_SUBSTITUTIONS,
-                ] as $key
+                LeagueSetting::INITIAL_BUDGET,
+                LeagueSetting::RELEASE_REFUND_PERCENTAGE,
+                LeagueSetting::MAX_ROSTER_PLAYERS,
+                LeagueSetting::BENCH_SIZE,
+                LeagueSetting::MAX_SUBSTITUTIONS,
+            ] as $key
             ) {
                 if (! array_key_exists($key, $settings)) {
                     continue;
@@ -171,7 +171,7 @@ class LeagueSettingsService
                 ->where('league_id', $league->id)
                 ->selectRaw('fantasy_team_id, count(*) as aggregate')
                 ->groupBy('fantasy_team_id')
-                ->pluck('aggregate')->map(fn($count): int => (int) $count)->max() ?? 0;
+                ->pluck('aggregate')->map(fn ($count): int => (int) $count)->max() ?? 0;
 
             if ((int) $settings[LeagueSetting::MAX_ROSTER_PLAYERS] < $largest) {
                 throw new IncompatibleRosterSizeException($largest);
@@ -187,11 +187,11 @@ class LeagueSettingsService
                 ->where('fantasy_team_players.league_id', $league->id)
                 ->whereHas('player.playerSeasonRegistrations', function ($query) use ($league, $role): void {
                     $query->activeForSeason($league->season_id)
-                    ->whereHas('playerRole', fn($query) => $query->where('key', $role));
+                        ->whereHas('playerRole', fn ($query) => $query->where('key', $role));
                 })
                 ->selectRaw('fantasy_team_id, count(*) as aggregate')
                 ->groupBy('fantasy_team_id')
-                ->pluck('aggregate')->map(fn($count): int => (int) $count)->max() ?? 0;
+                ->pluck('aggregate')->map(fn ($count): int => (int) $count)->max() ?? 0;
 
             if ((int) $limit < $largest) {
                 throw new IncompatibleRosterRoleLimitException($role, $largest);

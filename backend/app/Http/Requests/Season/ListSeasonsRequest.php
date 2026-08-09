@@ -12,7 +12,7 @@ class ListSeasonsRequest extends FormRequest
         return true;
     }
 
-        protected function prepareForValidation(): void
+    protected function prepareForValidation(): void
     {
         if (! $this->query->has('active')) {
             return;

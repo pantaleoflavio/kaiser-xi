@@ -8,7 +8,6 @@ use App\Http\Requests\League\UpdateLeagueRequest;
 use App\Http\Resources\League\LeagueResource;
 use App\Models\League;
 use App\Services\League\CreateLeague;
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 

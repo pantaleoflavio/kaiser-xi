@@ -2,6 +2,4 @@
 
 namespace App\Http\Requests\FantasyTeam;
 
-class UpdateFantasyTeamRequest extends StoreFantasyTeamRequest
-{
-}
+class UpdateFantasyTeamRequest extends StoreFantasyTeamRequest {}

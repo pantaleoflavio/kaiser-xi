@@ -36,16 +36,16 @@ class FantasyTeamApiTest extends TestCase
             $response = $this->postJson(
                 "/api/v1/leagues/{$league->id}/fantasy-teams",
                 [
-                'name' => '  '.ucfirst($role).' Lions  ',
+                    'name' => '  '.ucfirst($role).' Lions  ',
                 ]
             );
 
             $response
                 ->assertCreated()
-                ->assertJsonPath('data.name', ucfirst($role) . ' Lions')
+                ->assertJsonPath('data.name', ucfirst($role).' Lions')
                 ->assertJsonPath(
                     'data.slug',
-                    strtolower(str_replace('_', '-', $role)) . '-lions'
+                    strtolower(str_replace('_', '-', $role)).'-lions'
                 )
                 ->assertJsonPath('data.owner.id', $user->id)
                 ->assertJsonPath('data.league_id', $league->id)
@@ -63,7 +63,7 @@ class FantasyTeamApiTest extends TestCase
                 'id' => $teamId,
                 'league_id' => $league->id,
                 'user_id' => $user->id,
-                'name' => ucfirst($role) . ' Lions',
+                'name' => ucfirst($role).' Lions',
                 'budget' => 500,
                 'remaining_budget' => 500,
                 'logo_path' => null,

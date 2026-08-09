@@ -2,13 +2,12 @@
 
 namespace App\Http\Requests\Player;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class ListEligiblePlayersRequest extends FormRequest
 {
-        public const MAX_PER_PAGE = 100;
+    public const MAX_PER_PAGE = 100;
 
     public function authorize(): bool
     {

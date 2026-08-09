@@ -10,6 +10,7 @@ use App\Models\Player;
 use App\Models\RealClub;
 use App\Models\SeasonClub;
 use App\Models\User;
+use App\Services\FantasyTeam\EligiblePlayerQueryService;
 use Database\Seeders\DemoEnvironmentSeeder;
 use Database\Seeders\DemoLeagueSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -145,7 +146,7 @@ class DemoEnvironmentSeederTest extends TestCase
             ->firstOrFail();
 
         $eligiblePlayerQuery = app(
-            \App\Services\FantasyTeam\EligiblePlayerQueryService::class
+            EligiblePlayerQueryService::class
         )->query($league);
 
         $this->assertTrue(
@@ -184,9 +185,9 @@ class DemoEnvironmentSeederTest extends TestCase
         $response = $this->actingAs($member)
             ->getJson(
                 "/api/v1/leagues/{$league->id}/eligible-players"
-                . '?role=midfielder'
-                . "&club_id={$seasonClub->id}"
-                . '&per_page=2'
+                .'?role=midfielder'
+                ."&club_id={$seasonClub->id}"
+                .'&per_page=2'
             )
             ->assertOk()
             ->assertJsonCount(2, 'data');

@@ -5,6 +5,8 @@ namespace Tests\Feature\Api\V1;
 use App\Models\League;
 use App\Models\LeagueRole;
 use App\Models\LeagueSetting;
+use App\Models\LeagueType;
+use App\Models\Season;
 use App\Models\User;
 use App\Services\League\LeagueSettingsService;
 use Database\Seeders\DemoLeagueSeeder;
@@ -46,8 +48,8 @@ class LeagueSettingsApiTest extends TestCase
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
-        $season = \App\Models\Season::factory()->create();
-        $type = \App\Models\LeagueType::query()->where('key', 'classic')->firstOrFail();
+        $season = Season::factory()->create();
+        $type = LeagueType::query()->where('key', 'classic')->firstOrFail();
 
         $leagueId = $this->postJson('/api/v1/leagues', [
             'name' => 'Lifecycle defaults',
@@ -170,8 +172,8 @@ class LeagueSettingsApiTest extends TestCase
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
-        $season = \App\Models\Season::factory()->create();
-        $type = \App\Models\LeagueType::query()->where('key', 'classic')->firstOrFail();
+        $season = Season::factory()->create();
+        $type = LeagueType::query()->where('key', 'classic')->firstOrFail();
 
         $response = $this->postJson('/api/v1/leagues', [
             'name' => 'Roster defaults league',
