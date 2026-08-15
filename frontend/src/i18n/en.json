@@ -699,5 +699,42 @@
     "viewFormation": "View formation",
     "notFound": "Matchday not found",
     "backToMatchday": "← Back to matchday"
+  },
+  "h2h": {
+    "title": "Head-to-head championship",
+    "schedule": "Schedule",
+    "notStarted": "Championship not started",
+    "startChampionship": "Start championship",
+    "startingMatchday": "Starting Matchday",
+    "currentParticipants": "Current participants",
+    "maximumParticipants": "Maximum participants",
+    "minimumTeams": "Minimum two teams required.",
+    "maximumNotRequired": "You do not need to reach the maximum participants.",
+    "irreversible": "Schedule generation is irreversible.",
+    "participantsBlocked": "New participants cannot join afterward.",
+    "invitationsBlocked": "New invitations are unavailable because the championship has started.",
+    "participantsAndInvitationsBlocked": "New participants and invitations will be blocked.",
+    "cannotRegenerate": "The schedule cannot be regenerated.",
+    "confirmStart": "Confirm start",
+    "confirmParticipants": "Current participants: {{count}}",
+    "confirmMatchday": "Starting Matchday: {{matchday}}",
+    "generated": "Schedule generated",
+    "generatedAt": "Generated at",
+    "startedFrom": "Started from {{matchday}}",
+    "viewSchedule": "View schedule",
+    "configureStart": "Configure / Start",
+    "restDay": "Rest day",
+    "opponent": "Opponent",
+    "vsTeam": "vs {{team}}",
+    "versus": "vs",
+    "noFutureMatchdays": "No future Matchdays are available.",
+    "unauthorized": "Only the commissioner or a co-commissioner can start the championship.",
+    "notAvailable": "The head-to-head schedule is only available for head-to-head leagues.",
+    "errors": {
+      "load": "The schedule could not be loaded.",
+      "initialize": "The championship could not be started.",
+      "alreadyInitialized": "The schedule is already initialized. Reloading the generated schedule.",
+      "invalidMatchday": "The selected starting Matchday or league configuration is invalid."
+    }
   }
 }

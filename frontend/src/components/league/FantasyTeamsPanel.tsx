@@ -14,10 +14,12 @@ export function FantasyTeamsPanel({
   league,
   initialTeams,
   initialError,
+  creationLocked = false,
 }: {
   league: League;
   initialTeams: FantasyTeam[];
   initialError: string | null;
+  creationLocked?: boolean;
 }) {
   const { t } = useTranslation();
   const [teams, setTeams] = useState(initialTeams);
@@ -107,7 +109,12 @@ export function FantasyTeamsPanel({
           ))}
         </div>
       ) : null}
-      {!ownedTeam ? (
+      {!ownedTeam && creationLocked ? (
+        <p className="mt-6 rounded-xl border border-amber-400/30 bg-amber-950/30 p-4 text-sm text-amber-100">
+          {t('h2h.participantsBlocked')}
+        </p>
+      ) : null}
+      {!ownedTeam && !creationLocked ? (
         <form
           className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4"
           onSubmit={submit}

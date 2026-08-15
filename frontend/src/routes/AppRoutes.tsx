@@ -18,6 +18,7 @@ import { LeagueFantasyTeamsPage } from '../pages/LeagueFantasyTeamsPage';
 import { MatchdayListPage } from '../pages/MatchdayListPage';
 import { MatchdayDetailPage } from '../pages/MatchdayDetailPage';
 import { FormationPage } from '../pages/FormationPage';
+import { HeadToHeadSchedulePage } from '../pages/HeadToHeadSchedulePage';
 
 export function AppRoutes() {
   return (
@@ -35,6 +36,10 @@ export function AppRoutes() {
           <Route path="leagues/:leagueId/rules" element={<LeagueRulesPage />} />
           <Route path="leagues/:leagueId/fantasy-teams" element={<LeagueFantasyTeamsPage />} />
           <Route path="leagues/:leagueId/matchdays" element={<MatchdayListPage />} />
+          <Route
+            path="leagues/:leagueId/head-to-head-schedule"
+            element={<HeadToHeadSchedulePage />}
+          />
           <Route path="leagues/:leagueId/matchdays/:matchdayId" element={<MatchdayDetailPage />} />
           <Route
             path="leagues/:leagueId/matchdays/:matchdayId/fantasy-teams/:fantasyTeamId/formation"

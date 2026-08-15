@@ -699,5 +699,42 @@
     "viewFormation": "Aufstellung ansehen",
     "notFound": "Spieltag nicht gefunden",
     "backToMatchday": "← Zurück zum Spieltag"
+  },
+  "h2h": {
+    "title": "Head-to-Head-Meisterschaft",
+    "schedule": "Spielplan",
+    "notStarted": "Meisterschaft noch nicht gestartet",
+    "startChampionship": "Meisterschaft starten",
+    "startingMatchday": "Startspieltag",
+    "currentParticipants": "Aktuelle Teilnehmer",
+    "maximumParticipants": "Maximale Teilnehmerzahl",
+    "minimumTeams": "Mindestens zwei Teams erforderlich.",
+    "maximumNotRequired": "Die maximale Teilnehmerzahl muss nicht erreicht werden.",
+    "irreversible": "Die Spielplanerstellung kann nicht rückgängig gemacht werden.",
+    "participantsBlocked": "Danach können keine neuen Teilnehmer beitreten.",
+    "invitationsBlocked": "Neue Einladungen sind nicht verfügbar, da die Meisterschaft gestartet wurde.",
+    "participantsAndInvitationsBlocked": "Neue Teilnehmer und Einladungen werden gesperrt.",
+    "cannotRegenerate": "Der Spielplan kann nicht neu erstellt werden.",
+    "confirmStart": "Start bestätigen",
+    "confirmParticipants": "Aktuelle Teilnehmer: {{count}}",
+    "confirmMatchday": "Startspieltag: {{matchday}}",
+    "generated": "Spielplan erstellt",
+    "generatedAt": "Erstellt am",
+    "startedFrom": "Gestartet ab {{matchday}}",
+    "viewSchedule": "Spielplan anzeigen",
+    "configureStart": "Konfigurieren / Starten",
+    "restDay": "Spielfrei",
+    "opponent": "Gegner",
+    "vsTeam": "gegen {{team}}",
+    "versus": "gegen",
+    "noFutureMatchdays": "Keine zukünftigen Spieltage verfügbar.",
+    "unauthorized": "Nur der Commissioner oder ein Co-Commissioner kann die Meisterschaft starten.",
+    "notAvailable": "Der Head-to-Head-Spielplan ist nur für Head-to-Head-Ligen verfügbar.",
+    "errors": {
+      "load": "Der Spielplan konnte nicht geladen werden.",
+      "initialize": "Die Meisterschaft konnte nicht gestartet werden.",
+      "alreadyInitialized": "Der Spielplan wurde bereits erstellt. Der erstellte Spielplan wird neu geladen.",
+      "invalidMatchday": "Der gewählte Startspieltag oder die Ligakonfiguration ist ungültig."
+    }
   }
 }

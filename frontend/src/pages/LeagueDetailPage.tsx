@@ -2,13 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { leaguesApi } from '../api/leagues';
 import { leagueKeys } from '../api/queryKeys';
+import { headToHeadScheduleApi } from '../api/headToHeadSchedule';
 import { LeagueMemberList } from '../components/LeagueMemberList';
 import { LoadingState } from '../components/LoadingState';
 import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { LeagueNavigation } from '../components/league/LeagueNavigation';
 import { LeagueSummary } from '../components/league/LeagueSummary';
 import { useTranslation } from '../i18n';
-import type { FantasyTeam, League, LeagueInvitation, LeagueSettings } from '../types/league';
 
 export function LeagueDetailPage() {
   const { leagueId = '' } = useParams();
@@ -26,6 +26,11 @@ export function LeagueDetailPage() {
     enabled: Boolean(leagueId),
   });
   const league = leagueQuery.data?.data;
+  const scheduleQuery = useQuery({
+    queryKey: leagueKeys.headToHeadSchedule(leagueId),
+    queryFn: () => headToHeadScheduleApi.getSchedule(leagueId),
+    enabled: league?.type.key === 'head_to_head',
+  });
   const myTeam = teamsQuery.data?.data.find((team) => team.is_owned_by_current_user);
 
   if (leagueQuery.isLoading) return <LoadingState message={t('leagueDetail.loading')} />;
@@ -52,7 +57,11 @@ export function LeagueDetailPage() {
       ) : null}
       {league ? (
         <div className="space-y-6">
-          <LeagueNavigation leagueId={leagueId} myTeamId={myTeam?.id} />
+          <LeagueNavigation
+            leagueId={leagueId}
+            myTeamId={myTeam?.id}
+            showSchedule={league.type.key === 'head_to_head'}
+          />
           <LeagueSummary league={league} />
           <div className="grid gap-4 md:grid-cols-2">
             <Link
@@ -66,6 +75,30 @@ export function LeagueDetailPage() {
                 {t('leagueNavigation.matchdaysDescription')}
               </p>
             </Link>
+            {league.type.key === 'head_to_head' ? (
+              <Link
+                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
+                to={`/leagues/${leagueId}/head-to-head-schedule`}
+              >
+                <h2 className="text-xl font-semibold text-white">{t('h2h.title')}</h2>
+                <p className="mt-2 text-sm text-slate-300">
+                  {scheduleQuery.data?.data.initialized
+                    ? t('h2h.startedFrom', {
+                        matchday:
+                          scheduleQuery.data.data.start_matchday?.name ||
+                          t('formation.matchdayNumber', {
+                            number: scheduleQuery.data.data.start_matchday?.number,
+                          }),
+                      })
+                    : t('h2h.notStarted')}
+                </p>
+                <span className="mt-4 inline-block text-sm font-semibold text-emerald-300">
+                  {scheduleQuery.data?.data.initialized
+                    ? t('h2h.viewSchedule')
+                    : t('h2h.configureStart')}
+                </span>
+              </Link>
+            ) : null}
             <Link
               className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
               to={`/leagues/${leagueId}/rules`}

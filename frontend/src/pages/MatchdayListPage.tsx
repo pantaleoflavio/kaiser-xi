@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ApiError } from '../api/client';
 import { formationsApi } from '../api/formations';
 import { leaguesApi } from '../api/leagues';
+import { headToHeadScheduleApi } from '../api/headToHeadSchedule';
 import { formationKeys, leagueKeys } from '../api/queryKeys';
 import { LoadingState } from '../components/LoadingState';
 import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
@@ -17,11 +18,13 @@ function MatchdayRow({
   leagueId,
   state,
   myTeam,
+  opponent,
 }: {
   item: Matchday;
   leagueId: string;
   state: 'past' | 'current' | 'upcoming';
   myTeam?: FantasyTeam;
+  opponent?: string;
 }) {
   const { language, t } = useTranslation();
   const formation = useQuery({
@@ -51,6 +54,11 @@ function MatchdayRow({
             {t('formation.deadline')}:{' '}
             {formatDate(item.deadline, t('leagueDetail.notAvailable'), language)}
           </p>
+          {state !== 'past' && opponent ? (
+            <p className="mt-2 text-sm font-semibold text-emerald-200">
+              {t('h2h.opponent')}: {t('h2h.vsTeam', { team: opponent })}
+            </p>
+          ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
           {state !== 'upcoming' ? (
@@ -94,7 +102,13 @@ export function MatchdayListPage() {
     queryKey: formationKeys.matchdays(leagueId),
     queryFn: () => formationsApi.matchdays(leagueId),
   });
-  if (league.isLoading || teams.isLoading || matchdays.isLoading)
+  const schedule = useQuery({
+    queryKey: leagueKeys.headToHeadSchedule(leagueId),
+    queryFn: () => headToHeadScheduleApi.getSchedule(leagueId),
+    enabled: league.data?.data.type.key === 'head_to_head',
+    retry: false,
+  });
+  if (league.isLoading || teams.isLoading || matchdays.isLoading || schedule.isLoading)
     return <LoadingState message={t('common.loading')} />;
   if (league.error || matchdays.error)
     return (
@@ -113,9 +127,26 @@ export function MatchdayListPage() {
         ? ('current' as const)
         : ('upcoming' as const);
   const myTeam = teams.data?.data.find((team) => team.is_owned_by_current_user);
+  const opponentFor = (matchdayId: number) => {
+    if (!myTeam || !schedule.data?.data.initialized) return undefined;
+    const fixtures =
+      schedule.data.data.matchdays.find((group) => group.matchday.id === matchdayId)?.fixtures ??
+      [];
+    const fixture = fixtures.find(
+      (item) => item.home_fantasy_team.id === myTeam.id || item.away_fantasy_team.id === myTeam.id,
+    );
+    if (!fixture) return undefined;
+    return fixture.home_fantasy_team.id === myTeam.id
+      ? fixture.away_fantasy_team.name
+      : fixture.home_fantasy_team.name;
+  };
   return (
     <section className="space-y-6">
-      <LeagueNavigation leagueId={leagueId} myTeamId={myTeam?.id} />
+      <LeagueNavigation
+        leagueId={leagueId}
+        myTeamId={myTeam?.id}
+        showSchedule={league.data?.data.type.key === 'head_to_head'}
+      />
       <div>
         <h1 className="text-3xl font-bold text-white">{t('matchdays.title')}</h1>
         <p className="mt-2 text-slate-300">{t('matchdays.description')}</p>
@@ -128,6 +159,7 @@ export function MatchdayListPage() {
               key={item.id}
               leagueId={leagueId}
               myTeam={myTeam}
+              opponent={opponentFor(item.id)}
               state={stateFor(item)}
             />
           ))}

@@ -651,5 +651,42 @@
     "viewFormation": "Visualizza formazione",
     "notFound": "Giornata non trovata",
     "backToMatchday": "← Torna alla giornata"
+  },
+  "h2h": {
+    "title": "Campionato testa a testa",
+    "schedule": "Calendario",
+    "notStarted": "Campionato non iniziato",
+    "startChampionship": "Inizia campionato",
+    "startingMatchday": "Giornata iniziale",
+    "currentParticipants": "Partecipanti attuali",
+    "maximumParticipants": "Partecipanti massimi",
+    "minimumTeams": "Sono richieste almeno due squadre.",
+    "maximumNotRequired": "Non è necessario raggiungere il numero massimo di partecipanti.",
+    "irreversible": "La generazione del calendario è irreversibile.",
+    "participantsBlocked": "Dopo l’avvio non potranno unirsi nuovi partecipanti.",
+    "invitationsBlocked": "I nuovi inviti non sono disponibili perché il campionato è iniziato.",
+    "participantsAndInvitationsBlocked": "Nuovi partecipanti e inviti saranno bloccati.",
+    "cannotRegenerate": "Il calendario non può essere rigenerato.",
+    "confirmStart": "Conferma avvio",
+    "confirmParticipants": "Partecipanti attuali: {{count}}",
+    "confirmMatchday": "Giornata iniziale: {{matchday}}",
+    "generated": "Calendario generato",
+    "generatedAt": "Generato il",
+    "startedFrom": "Iniziato da {{matchday}}",
+    "viewSchedule": "Visualizza calendario",
+    "configureStart": "Configura / Avvia",
+    "restDay": "Turno di riposo",
+    "opponent": "Avversario",
+    "vsTeam": "contro {{team}}",
+    "versus": "contro",
+    "noFutureMatchdays": "Non sono disponibili giornate future.",
+    "unauthorized": "Solo il commissioner o un co-commissioner può avviare il campionato.",
+    "notAvailable": "Il calendario testa a testa è disponibile solo per le leghe testa a testa.",
+    "errors": {
+      "load": "Impossibile caricare il calendario.",
+      "initialize": "Impossibile avviare il campionato.",
+      "alreadyInitialized": "Il calendario è già inizializzato. Ricaricamento del calendario generato.",
+      "invalidMatchday": "La giornata iniziale selezionata o la configurazione della lega non è valida."
+    }
   }
 }

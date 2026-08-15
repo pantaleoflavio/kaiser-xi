@@ -8,7 +8,15 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
       : 'text-slate-300 hover:bg-slate-800 hover:text-white'
   }`;
 
-export function LeagueNavigation({ leagueId, myTeamId }: { leagueId: string; myTeamId?: number }) {
+export function LeagueNavigation({
+  leagueId,
+  myTeamId,
+  showSchedule = false,
+}: {
+  leagueId: string;
+  myTeamId?: number;
+  showSchedule?: boolean;
+}) {
   const { t } = useTranslation();
   const base = `/leagues/${leagueId}`;
   return (
@@ -22,6 +30,11 @@ export function LeagueNavigation({ leagueId, myTeamId }: { leagueId: string; myT
       <NavLink className={linkClass} to={`${base}/matchdays`}>
         {t('leagueNavigation.matchdays')}
       </NavLink>
+      {showSchedule ? (
+        <NavLink className={linkClass} to={`${base}/head-to-head-schedule`}>
+          {t('h2h.schedule')}
+        </NavLink>
+      ) : null}
       <NavLink className={linkClass} to={`${base}/rules`}>
         {t('leagueNavigation.rules')}
       </NavLink>
