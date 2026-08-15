@@ -709,7 +709,8 @@
     "scheduleNotInitialized": "This head-to-head schedule is not initialized. These matchdays are real-season context and are not yet playable fantasy rounds.",
     "openScheduleSetup": "Open schedule setup",
     "notFound": "Matchday not found",
-    "backToMatchday": "← Back to matchday"
+    "backToMatchday": "← Back to matchday",
+    "backToMatchdays": "← Back to matchdays"
   },
   "h2h": {
     "title": "Head-to-head championship",
@@ -777,6 +778,7 @@
   },
   "results": {
     "matchResult": "Match result",
+    "yourFixture": "Your fixture",
     "pendingResult": "Pending result",
     "finalScore": "Final score",
     "fantasyPoints": "Fantasy points",

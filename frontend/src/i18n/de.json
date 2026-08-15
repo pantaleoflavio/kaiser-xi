@@ -709,7 +709,8 @@
     "scheduleNotInitialized": "Der Head-to-Head-Spielplan ist nicht initialisiert. Diese Spieltage dienen nur als Kontext der realen Saison und sind noch keine spielbaren Fantasy-Runden.",
     "openScheduleSetup": "Spielplan-Einrichtung öffnen",
     "notFound": "Spieltag nicht gefunden",
-    "backToMatchday": "← Zurück zum Spieltag"
+    "backToMatchday": "← Zurück zum Spieltag",
+    "backToMatchdays": "← Zurück zu den Spieltagen"
   },
   "h2h": {
     "title": "Head-to-Head-Meisterschaft",
@@ -777,6 +778,7 @@
   },
   "results": {
     "matchResult": "Spielergebnis",
+    "yourFixture": "Deine Begegnung",
     "pendingResult": "Ergebnis ausstehend",
     "finalScore": "Endstand",
     "fantasyPoints": "Fantasy-Punkte",

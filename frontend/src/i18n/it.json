@@ -661,7 +661,8 @@
     "scheduleNotInitialized": "Il calendario testa a testa non è inizializzato. Queste giornate sono solo il contesto della stagione reale e non sono ancora giornate fantasy giocabili.",
     "openScheduleSetup": "Apri configurazione calendario",
     "notFound": "Giornata non trovata",
-    "backToMatchday": "← Torna alla giornata"
+    "backToMatchday": "← Torna alla giornata",
+    "backToMatchdays": "← Torna alle giornate"
   },
   "h2h": {
     "title": "Campionato testa a testa",
@@ -729,6 +730,7 @@
   },
   "results": {
     "matchResult": "Risultato partita",
+    "yourFixture": "La tua partita",
     "pendingResult": "Risultato in attesa",
     "finalScore": "Risultato finale",
     "fantasyPoints": "Fantapunti",

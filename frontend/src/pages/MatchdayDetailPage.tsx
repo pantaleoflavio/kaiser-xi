@@ -55,6 +55,15 @@ export function MatchdayDetailPage() {
       schedule.data?.data.initialized &&
       schedule.data.data.matchdays.some((group) => group.matchday.id === numericId),
     );
+  const fixtures =
+    schedule.data?.data.matchdays.find((group) => group.matchday.id === numericId)?.fixtures ?? [];
+  const orderedFixtures = myTeam
+    ? [...fixtures].sort((left, right) => {
+        const includesMyTeam = (fixture: (typeof fixtures)[number]) =>
+          fixture.home_fantasy_team.id === myTeam.id || fixture.away_fantasy_team.id === myTeam.id;
+        return Number(includesMyTeam(right)) - Number(includesMyTeam(left));
+      })
+    : fixtures;
   return (
     <section className="space-y-6">
       <LeagueNavigation
@@ -63,6 +72,22 @@ export function MatchdayDetailPage() {
         showSchedule={league.data?.data.type.key === 'head_to_head'}
         showStandings={league.data?.data.type.key === 'head_to_head'}
       />
+      <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label={t('results.matchdayResults')}>
+        <Link
+          className="text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+          to={`/leagues/${leagueId}/matchdays`}
+        >
+          {t('matchdays.backToMatchdays')}
+        </Link>
+        {league.data?.data.type.key === 'head_to_head' ? (
+          <Link
+            className="text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+            to={`/leagues/${leagueId}/standings`}
+          >
+            {t('standings.title')}
+          </Link>
+        ) : null}
+      </nav>
       <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
         <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
           {open ? t('matchdays.current') : t('matchdays.past')}
@@ -92,10 +117,7 @@ export function MatchdayDetailPage() {
           <h2 className="text-2xl font-semibold text-white" id="fixtures-title">
             {t('results.matchdayResults')}
           </h2>
-          {(
-            schedule.data?.data.matchdays.find((group) => group.matchday.id === numericId)
-              ?.fixtures ?? []
-          ).map((fixture) => (
+          {orderedFixtures.map((fixture) => (
             <HeadToHeadMatchCard
               fixture={fixture}
               leagueId={leagueId}
@@ -104,8 +126,7 @@ export function MatchdayDetailPage() {
               key={fixture.id}
             />
           ))}
-          {!schedule.data?.data.matchdays.find((group) => group.matchday.id === numericId)?.fixtures
-            .length ? (
+          {!fixtures.length ? (
             <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">
               {t('results.noFixtures')}
             </p>
