@@ -780,6 +780,21 @@
     "viewTeamFormation": "View {{team}} formation",
     "substitute": "Substitute",
     "replaced": "Replaced",
-    "noCalculatedResult": "No calculated result yet"
+    "noCalculatedResult": "No calculated result yet",
+    "submittedFormation": "Submitted formation",
+    "effectiveLineup": "Effective lineup",
+    "starter": "Starter",
+    "bench": "Bench",
+    "replacedBy": "Replaced by",
+    "noPlayableScore": "No playable score",
+    "importedScore": "Imported score",
+    "effectiveContribution": "Effective contribution",
+    "realCaptain": "Real-club captain",
+    "realCaptainBonus": "Real captain bonus",
+    "teamTotal": "Team total",
+    "basePoints": "Base points",
+    "enteredFromBench": "Entered from bench",
+    "viewTeamResult": "View team result",
+    "matchdayResults": "Matchday results"
   }
 }

@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\LeagueTypeController;
 use App\Http\Controllers\Api\V1\MatchdayController;
 use App\Http\Controllers\Api\V1\SeasonController;
 use App\Http\Controllers\Api\V1\StandingController;
+use App\Http\Controllers\Api\V1\TeamMatchdayScoreController;
 use App\Models\FantasyTeam;
 use Illuminate\Support\Facades\Route;
 
@@ -81,7 +82,11 @@ Route::prefix('v1')->group(function (): void {
             ->middleware('can:manageSchedule,league');
 
         Route::get('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation', [FormationController::class, 'show'])
-            ->name('api.v1.leagues.matchdays.formation.show')->withoutScopedBindings()->middleware('can:viewFormation,fantasyTeam');
+            ->name('api.v1.leagues.matchdays.formation.show')->withoutScopedBindings()
+            ->middleware('can:viewFormation,fantasyTeam,league,matchday');
+        Route::get('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/score', [TeamMatchdayScoreController::class, 'show'])
+            ->name('api.v1.leagues.matchdays.score.show')->withoutScopedBindings()
+            ->middleware('can:viewMatchdayScore,fantasyTeam,league,matchday');
         Route::put('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation', [FormationController::class, 'update'])
             ->name('api.v1.leagues.matchdays.formation.update')->withoutScopedBindings()->middleware('can:manageFormation,fantasyTeam');
         Route::post('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation/submit', [FormationController::class, 'submit'])

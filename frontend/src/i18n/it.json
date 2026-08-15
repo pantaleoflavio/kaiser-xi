@@ -731,7 +731,22 @@
     "viewFormation": "Visualizza formazione",
     "viewTeamFormation": "Visualizza la formazione di {{team}}",
     "substitute": "Subentrato",
-    "replaced": "Sostituito",
-    "noCalculatedResult": "Nessun risultato calcolato disponibile"
+    "replaced": "Ha sostituito",
+    "noCalculatedResult": "Nessun risultato calcolato disponibile",
+    "submittedFormation": "Formazione inviata",
+    "effectiveLineup": "Formazione effettiva",
+    "starter": "Titolare",
+    "bench": "Panchina",
+    "replacedBy": "Sostituito da",
+    "noPlayableScore": "Nessun punteggio valido",
+    "importedScore": "Punteggio importato",
+    "effectiveContribution": "Contributo effettivo",
+    "realCaptain": "Capitano della squadra reale",
+    "realCaptainBonus": "Bonus capitano reale",
+    "teamTotal": "Totale squadra",
+    "basePoints": "Punti base",
+    "enteredFromBench": "Entrato dalla panchina",
+    "viewTeamResult": "Vedi risultato squadra",
+    "matchdayResults": "Risultati giornata"
   }
 }

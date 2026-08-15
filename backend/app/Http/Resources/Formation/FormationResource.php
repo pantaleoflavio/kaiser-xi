@@ -12,6 +12,11 @@ class FormationResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'fantasy_team' => [
+                'id' => $this->fantasyTeam->id,
+                'name' => $this->fantasyTeam->name,
+                'slug' => $this->fantasyTeam->slug,
+            ],
             'formation_module' => [
                 'id' => $this->formationModule->id,
                 'name' => $this->formationModule->name,

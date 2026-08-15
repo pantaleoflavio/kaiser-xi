@@ -19,9 +19,11 @@ class FormationController extends Controller
     public function show(League $league, Matchday $matchday, FantasyTeam $fantasyTeam): FormationResource
     {
         $this->assertContext($league, $matchday, $fantasyTeam);
-        $formation = Formation::query()->where('league_id', $league->id)->where('fantasy_team_id', $fantasyTeam->id)->where('matchday_id', $matchday->id)->firstOrFail();
+        $formation = Formation::query()->where('league_id', $league->id)->where('fantasy_team_id', $fantasyTeam->id)->where('matchday_id', $matchday->id)
+            ->when($fantasyTeam->user_id !== request()->user()->id, fn($query) => $query->whereNotNull('submitted_at'))
+            ->firstOrFail();
 
-        return new FormationResource($formation->load($this->saveService->relations()));
+        return new FormationResource($formation->load([...$this->saveService->relations(), 'fantasyTeam']));
     }
 
     public function update(SaveFormationRequest $request, League $league, Matchday $matchday, FantasyTeam $fantasyTeam): FormationResource

@@ -88,6 +88,7 @@ export function MatchdayDetailPage() {
               leagueId={leagueId}
               matchdayId={numericId}
               currentTeamId={myTeam?.id}
+              formationsVisible={!open}
               key={fixture.id}
             />
           ))}

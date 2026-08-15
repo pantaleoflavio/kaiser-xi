@@ -779,7 +779,22 @@
     "viewFormation": "Aufstellung ansehen",
     "viewTeamFormation": "Aufstellung von {{team}} ansehen",
     "substitute": "Einwechselspieler",
-    "replaced": "Ersetzt",
-    "noCalculatedResult": "Noch kein berechnetes Ergebnis"
+    "replaced": "Ersetzte",
+    "noCalculatedResult": "Noch kein berechnetes Ergebnis",
+    "submittedFormation": "Eingereichte Aufstellung",
+    "effectiveLineup": "Effektive Aufstellung",
+    "starter": "Startelf",
+    "bench": "Bank",
+    "replacedBy": "Ersetzt durch",
+    "noPlayableScore": "Keine spielbare Wertung",
+    "importedScore": "Importierte Wertung",
+    "effectiveContribution": "Effektiver Beitrag",
+    "realCaptain": "Kapitän des realen Vereins",
+    "realCaptainBonus": "Echter Kapitänsbonus",
+    "teamTotal": "Teamgesamtwert",
+    "basePoints": "Basispunkte",
+    "enteredFromBench": "Von der Bank eingewechselt",
+    "viewTeamResult": "Teamergebnis ansehen",
+    "matchdayResults": "Spieltagergebnisse"
   }
 }

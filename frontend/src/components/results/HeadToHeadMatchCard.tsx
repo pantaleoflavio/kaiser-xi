@@ -7,11 +7,13 @@ export function HeadToHeadMatchCard({
   leagueId,
   matchdayId,
   currentTeamId,
+  formationsVisible,
 }: {
   fixture: HeadToHeadFixture;
   leagueId: string;
   matchdayId: number;
   currentTeamId?: number;
+  formationsVisible: boolean;
 }) {
   const { t } = useTranslation();
   const calculated = fixture.result?.status === 'calculated';
@@ -52,7 +54,7 @@ export function HeadToHeadMatchCard({
                 {t('results.fantasyPoints')}: {points(side)}
               </p>
             ) : null}
-            {team(side).id === currentTeamId ? (
+            {formationsVisible || team(side).id === currentTeamId ? (
               <Link
                 className="mt-4 inline-block text-sm font-semibold text-emerald-300 hover:text-emerald-200"
                 to={`/leagues/${leagueId}/matchdays/${matchdayId}/fantasy-teams/${team(side).id}/formation`}

@@ -18,6 +18,7 @@ export type FormationPlayer = {
 
 export type Formation = {
   id: number;
+  fantasy_team: { id: number; name: string; slug: string };
   formation_module: {
     id: number;
     name: string;

@@ -103,6 +103,41 @@ class FormationApiTest extends TestCase
         $this->putJson($this->url($league, $otherMatchday, $team), $payload)->assertNotFound();
     }
 
+    public function test_historical_formation_visibility_uses_deadline_not_submission_time(): void
+    {
+        [$league, $team, $matchday, $payload] = $this->context();
+        $member = User::factory()->create();
+        $league->users()->attach($member, [
+            'league_role_id' => LeagueRole::query()->where('key', 'participant')->firstOrFail()->id,
+            'joined_at' => now(),
+        ]);
+
+        Sanctum::actingAs($team->user);
+        $this->putJson($this->url($league, $matchday, $team), $payload)->assertCreated();
+        $this->postJson($this->url($league, $matchday, $team) . '/submit')->assertOk();
+
+        // Submission is not a disclosure event: the owner can read it, another member cannot.
+        $this->getJson($this->url($league, $matchday, $team))->assertOk();
+        Sanctum::actingAs($member);
+        $this->getJson($this->url($league, $matchday, $team))->assertForbidden();
+
+        Carbon::setTestNow($matchday->starts_at);
+        $this->getJson($this->url($league, $matchday, $team))
+            ->assertOk()
+            ->assertJsonPath('data.fantasy_team.id', $team->id)
+            ->assertJsonPath('data.submitted', true);
+
+        Sanctum::actingAs(User::factory()->create());
+        $this->getJson($this->url($league, $matchday, $team))->assertForbidden();
+
+        $otherLeague = League::factory()->create(['season_id' => $league->season_id]);
+        Sanctum::actingAs($member);
+        $this->getJson($this->url($otherLeague, $matchday, $team))->assertNotFound();
+
+        $otherMatchday = Matchday::factory()->create(['starts_at' => now()->subHour()]);
+        $this->getJson($this->url($league, $otherMatchday, $team))->assertNotFound();
+    }
+
     public function test_database_requirements_roster_bench_rules_are_enforced_transactionally(): void
     {
         [$league, $team, $matchday, $payload] = $this->context();

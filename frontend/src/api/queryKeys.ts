@@ -36,3 +36,8 @@ export const formationKeys = {
   detail: (leagueId: string | number, matchdayId: string | number, teamId: string | number) =>
     ['formation', String(leagueId), String(matchdayId), String(teamId)] as const,
 };
+
+export const teamMatchdayResultKeys = {
+  detail: (leagueId: string | number, matchdayId: string | number, teamId: string | number) =>
+    ['team-matchday-result', String(leagueId), String(matchdayId), String(teamId)] as const,
+};
