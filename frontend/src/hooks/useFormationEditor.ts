@@ -40,7 +40,17 @@ export function useFormationEditor({
   const queryKey = formationKeys.detail(leagueId, matchdayId, fantasyTeamId);
   const formationQuery = useQuery({
     queryKey,
-    queryFn: () => formationsApi.show(leagueId, matchdayId, fantasyTeamId),
+    queryFn: async () => {
+      try {
+        return await formationsApi.show(leagueId, matchdayId, fantasyTeamId);
+      } catch (error) {
+        if (error instanceof ApiError && error.status === 404) {
+          return null;
+        }
+
+        throw error;
+      }
+    },
     retry: (count, error) => !(error instanceof ApiError && error.status < 500) && count < 2,
   });
   const formation = formationQuery.data?.data;

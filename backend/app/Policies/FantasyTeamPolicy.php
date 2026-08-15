@@ -56,32 +56,26 @@ class FantasyTeamPolicy
             ->exists();
     }
 
-    public function viewFormation(User $user, FantasyTeam $fantasyTeam, League $league, Matchday $matchday): bool|Response
-    {
-        if ($fantasyTeam->league_id !== $league->id || $matchday->season_id !== $league->season_id) {
-            return Response::denyAsNotFound();
-        }
-
-        $isMember = $league->users()->whereKey($user->id)->exists();
-
-        if (! $isMember) {
-            return false;
-        }
-
-        $this->formationEligibility->assert($league, $matchday);
-
+    public function viewFormation(
+        User $user,
+        FantasyTeam $fantasyTeam,
+        League $league,
+        Matchday $matchday,
+    ): bool {
         if ($fantasyTeam->user_id === $user->id) {
             return true;
         }
 
+        if (! $league->users()->whereKey($user->id)->exists()) {
+            return false;
+        }
+
         return Formation::query()
             ->where('league_id', $league->id)
-            ->where('fantasy_team_id', $fantasyTeam->id)
             ->where('matchday_id', $matchday->id)
+            ->where('fantasy_team_id', $fantasyTeam->id)
             ->whereNotNull('submitted_at')
-            ->exists()
-            ? true
-            : Response::denyAsNotFound();
+            ->exists();
     }
 
     public function viewMatchdayScore(User $user, FantasyTeam $fantasyTeam, League $league, Matchday $matchday): bool|Response
