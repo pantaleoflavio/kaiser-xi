@@ -6,6 +6,7 @@ import { teamMatchdayResultsApi } from '../api/teamMatchdayResults';
 import { headToHeadScheduleApi } from '../api/headToHeadSchedule';
 import { formationKeys, leagueKeys, teamMatchdayResultKeys } from '../api/queryKeys';
 import { FormationEditor } from '../components/formation/FormationEditor';
+import { SubmittedFormationView } from '../components/formation/SubmittedFormationView';
 import { HistoricalFormationView } from '../components/results/HistoricalFormationView';
 import { LoadingState } from '../components/LoadingState';
 import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
@@ -71,6 +72,7 @@ export function FormationPage() {
   const matchday = matchdays.data?.data.find((item) => item.id === numericId);
   const team = teams.data?.data.find((item) => String(item.id) === fantasyTeamId);
   const historical = Boolean(matchday && Date.now() >= new Date(matchday.deadline).getTime());
+  const owned = Boolean(team?.is_owned_by_current_user);
   const isHeadToHead = league.data?.data.type.key === 'head_to_head';
   const formationAllowed =
     !isHeadToHead ||
@@ -81,7 +83,7 @@ export function FormationPage() {
   const visibleFormation = useQuery({
     queryKey: formationKeys.detail(leagueId, numericId, fantasyTeamId),
     queryFn: () => formationsApi.show(leagueId, numericId, fantasyTeamId),
-    enabled: formationAllowed && Boolean(team && !team.is_owned_by_current_user && !historical),
+    enabled: formationAllowed && Boolean(team && !owned && !historical),
     retry: false,
   });
   const result = useQuery({
@@ -109,7 +111,7 @@ export function FormationPage() {
         title={t('formation.errors.load')}
       />
     );
-  if (!historical && !team.is_owned_by_current_user && !visibleFormation.data)
+  if (!historical && !owned && !visibleFormation.data)
     return (
       <ContentErrorPanel
         message={t('common.errors.forbidden')}
@@ -118,10 +120,7 @@ export function FormationPage() {
     );
   if (historical && (!result.data || result.error))
     return (
-      <ContentErrorPanel
-        message={result.error?.message ?? t('common.errors.notFound')}
-        title={t('formation.errors.load')}
-      />
+      <ContentErrorPanel message={t('common.errors.notFound')} title={t('formation.errors.load')} />
     );
   return (
     <section className="space-y-6">
@@ -145,10 +144,12 @@ export function FormationPage() {
       </header>
       {historical && result.data ? (
         <HistoricalFormationView data={result.data.data} />
+      ) : !owned && visibleFormation.data ? (
+        <SubmittedFormationView formation={visibleFormation.data.data} />
       ) : (
         <OwnedFormationEditor
           leagueId={leagueId}
-          locked={!team.is_owned_by_current_user}
+          locked={false}
           matchdayId={numericId}
           teamId={fantasyTeamId}
         />

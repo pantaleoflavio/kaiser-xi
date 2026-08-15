@@ -17,6 +17,9 @@ export function HistoricalFormationView({ data }: { data: TeamMatchdayResult }) 
           <p className="mt-1 text-slate-300">
             {t('formation.title')}: {data.formation.module}
           </p>
+          <p className="mt-2 text-sm text-emerald-200" role="status">
+            {t('formation.submitted')}
+          </p>
         </div>
         <div className="text-right">
           <p className="text-sm text-slate-400">{t('results.teamTotal')}</p>
@@ -24,14 +27,18 @@ export function HistoricalFormationView({ data }: { data: TeamMatchdayResult }) 
             {data.result ? data.result.points : t('results.pendingResult')}
           </p>
           {data.result ? (
-            <p className="text-sm text-slate-400">
-              {t('results.basePoints')}: {data.result.base_points}
-            </p>
+            <>
+              <p className="text-sm font-semibold text-emerald-200">{t('results.finalScore')}</p>
+              <p className="text-sm text-slate-400">
+                {t('results.basePoints')}: {data.result.base_points}
+              </p>
+            </>
           ) : null}
         </div>
       </div>
+      <h3 className="mt-6 text-xl font-semibold text-white">{t('results.effectiveLineup')}</h3>
       <section className="mt-6">
-        <h3 className="mb-3 text-lg font-semibold text-white">{t('results.starter')}</h3>
+        <h4 className="mb-3 text-lg font-semibold text-white">{t('results.starter')}</h4>
         <ul className="grid gap-3 lg:grid-cols-2">
           {starters.map((player) => (
             <PlayerScoreBreakdownRow item={player} key={player.player.id} />

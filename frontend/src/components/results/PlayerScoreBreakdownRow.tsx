@@ -10,7 +10,7 @@ export function PlayerScoreBreakdownRow({ item }: { item: HistoricalPlayerResult
       <div className="flex flex-wrap justify-between gap-3">
         <div>
           <p className="font-semibold text-white">{item.player.name}</p>
-          <p className="text-sm text-slate-400">{t(`formation.roles.${item.player.role}`)}</p>
+          <p className="text-sm text-slate-400">{t(`roster.roles.${item.player.role}`)}</p>
         </div>
         <span className="text-sm font-semibold text-emerald-200">
           {t(`results.${item.submitted_slot}`)} #{item.submitted_order}
@@ -41,6 +41,25 @@ export function PlayerScoreBreakdownRow({ item }: { item: HistoricalPlayerResult
       ) : null}
       {item.player_score?.is_real_captain ? (
         <p className="mt-3 text-xs text-slate-400">{t('results.realCaptain')}</p>
+      ) : null}
+      {item.player_score ? (
+        <p className="mt-2 text-xs text-slate-400">
+          {[
+            item.player_score.goals ? `${t('results.goals')}: ${item.player_score.goals}` : null,
+            item.player_score.assists
+              ? `${t('results.assists')}: ${item.player_score.assists}`
+              : null,
+            item.player_score.yellow_cards
+              ? `${t('results.yellowCards')}: ${item.player_score.yellow_cards}`
+              : null,
+            item.player_score.red_cards
+              ? `${t('results.redCards')}: ${item.player_score.red_cards}`
+              : null,
+            item.player_score.clean_sheet ? t('results.cleanSheet') : null,
+          ]
+            .filter((value) => value !== null)
+            .join(' · ')}
+        </p>
       ) : null}
     </li>
   );

@@ -36,7 +36,6 @@ export function HeadToHeadMatchCard({
     retry: false,
   });
   const formationVisible = (side: 'home' | 'away') =>
-    team(side).id === currentTeamId ||
     Boolean(side === 'home' ? homeFormation.data : awayFormation.data);
   return (
     <article
@@ -74,7 +73,7 @@ export function HeadToHeadMatchCard({
                 to={`/leagues/${leagueId}/matchdays/${matchdayId}/fantasy-teams/${team(side).id}/formation`}
                 aria-label={t('results.viewTeamFormation', { team: team(side).name })}
               >
-                {t('results.viewFormation')}
+                {calculated ? t('results.viewTeamResult') : t('results.viewFormation')}
               </Link>
             ) : null}
           </div>

@@ -40,6 +40,13 @@ export function MatchdayDetailPage() {
     return (
       <ContentErrorPanel message={t('common.errors.notFound')} title={t('matchdays.notFound')} />
     );
+  if (league.data?.data.type.key === 'head_to_head' && schedule.error)
+    return (
+      <ContentErrorPanel
+        message={t('common.errors.unexpected')}
+        title={t('results.matchdayResults')}
+      />
+    );
   const myTeam = teams.data?.data.find((team) => team.is_owned_by_current_user);
   const open = Date.now() < new Date(matchday.deadline).getTime();
   const scheduled =
@@ -83,7 +90,7 @@ export function MatchdayDetailPage() {
       {league.data?.data.type.key === 'head_to_head' ? (
         <section className="space-y-4" aria-labelledby="fixtures-title">
           <h2 className="text-2xl font-semibold text-white" id="fixtures-title">
-            {t('results.matchResult')}
+            {t('results.matchdayResults')}
           </h2>
           {(
             schedule.data?.data.matchdays.find((group) => group.matchday.id === numericId)
@@ -97,6 +104,12 @@ export function MatchdayDetailPage() {
               key={fixture.id}
             />
           ))}
+          {!schedule.data?.data.matchdays.find((group) => group.matchday.id === numericId)?.fixtures
+            .length ? (
+            <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">
+              {t('results.noFixtures')}
+            </p>
+          ) : null}
         </section>
       ) : null}
     </section>

@@ -799,6 +799,12 @@
     "basePoints": "Basispunkte",
     "enteredFromBench": "Von der Bank eingewechselt",
     "viewTeamResult": "Teamergebnis ansehen",
-    "matchdayResults": "Spieltagergebnisse"
+    "matchdayResults": "Spieltagergebnisse",
+    "noFixtures": "Für diesen Spieltag sind keine Begegnungen verfügbar",
+    "goals": "Tore",
+    "assists": "Vorlagen",
+    "yellowCards": "Gelbe Karten",
+    "redCards": "Rote Karten",
+    "cleanSheet": "Ohne Gegentor"
   }
 }

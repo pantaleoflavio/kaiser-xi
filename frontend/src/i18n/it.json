@@ -751,6 +751,12 @@
     "basePoints": "Punti base",
     "enteredFromBench": "Entrato dalla panchina",
     "viewTeamResult": "Vedi risultato squadra",
-    "matchdayResults": "Risultati giornata"
+    "matchdayResults": "Risultati giornata",
+    "noFixtures": "Nessun incontro disponibile per questa giornata",
+    "goals": "Gol",
+    "assists": "Assist",
+    "yellowCards": "Cartellini gialli",
+    "redCards": "Cartellini rossi",
+    "cleanSheet": "Porta inviolata"
   }
 }
