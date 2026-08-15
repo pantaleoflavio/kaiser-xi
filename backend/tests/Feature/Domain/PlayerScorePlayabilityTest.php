@@ -44,6 +44,11 @@ class PlayerScorePlayabilityTest extends TestCase
         $this->assertTrue($score->isPlayable());
     }
 
+    public function test_final_score_is_the_authoritative_future_fantasy_scoring_input(): void
+    {
+        $this->assertSame('final_score', PlayerScore::FANTASY_SCORE_INPUT_FIELD);
+    }
+
     public function test_missing_score_is_not_playable(): void
     {
         $score = PlayerScore::factory()->make();

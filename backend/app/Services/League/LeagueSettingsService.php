@@ -18,13 +18,14 @@ class LeagueSettingsService
 {
     public function initializeDefaults(League $league): void
     {
-        foreach ([
-            LeagueSetting::INITIAL_BUDGET => LeagueSetting::DEFAULT_INITIAL_BUDGET,
-            LeagueSetting::RELEASE_REFUND_PERCENTAGE => LeagueSetting::DEFAULT_RELEASE_REFUND_PERCENTAGE,
-            LeagueSetting::MAX_ROSTER_PLAYERS => LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS,
-            LeagueSetting::BENCH_SIZE => LeagueSetting::DEFAULT_BENCH_SIZE,
-            LeagueSetting::MAX_SUBSTITUTIONS => LeagueSetting::DEFAULT_MAX_SUBSTITUTIONS,
-        ] as $key => $value
+        foreach (
+            [
+                LeagueSetting::INITIAL_BUDGET => LeagueSetting::DEFAULT_INITIAL_BUDGET,
+                LeagueSetting::RELEASE_REFUND_PERCENTAGE => LeagueSetting::DEFAULT_RELEASE_REFUND_PERCENTAGE,
+                LeagueSetting::MAX_ROSTER_PLAYERS => LeagueSetting::DEFAULT_MAX_ROSTER_PLAYERS,
+                LeagueSetting::BENCH_SIZE => LeagueSetting::DEFAULT_BENCH_SIZE,
+                LeagueSetting::MAX_SUBSTITUTIONS => LeagueSetting::DEFAULT_MAX_SUBSTITUTIONS,
+            ] as $key => $value
         ) {
             $league->settings()->firstOrCreate(
                 ['key' => $key],
@@ -49,10 +50,16 @@ class LeagueSettingsService
             ['key' => LeagueSetting::SUBSTITUTION_ORDER_MODE],
             ['value' => LeagueSetting::stringPayload(LeagueSetting::DEFAULT_SUBSTITUTION_ORDER_MODE)],
         );
+        $league->settings()->firstOrCreate(
+            ['key' => LeagueSetting::CAPTAIN_SCORE_MULTIPLIER],
+            ['value' => LeagueSetting::decimalPayload(LeagueSetting::DEFAULT_CAPTAIN_SCORE_MULTIPLIER)],
+        );
         foreach (
             [
                 LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => LeagueSetting::DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
                 LeagueSetting::CAPTAIN_ENABLED => LeagueSetting::DEFAULT_CAPTAIN_ENABLED,
+                LeagueSetting::DEFENSE_MODIFIER_ENABLED =>
+                LeagueSetting::DEFAULT_DEFENSE_MODIFIER_ENABLED,
             ] as $key => $enabled
         ) {
             $league->settings()->firstOrCreate(
@@ -71,13 +78,14 @@ class LeagueSettingsService
             $this->ensureCombinedRosterRulesAreValid($lockedLeague, $settings);
             $this->ensureRosterCompatibility($lockedLeague, $settings);
 
-            foreach ([
-                LeagueSetting::INITIAL_BUDGET,
-                LeagueSetting::RELEASE_REFUND_PERCENTAGE,
-                LeagueSetting::MAX_ROSTER_PLAYERS,
-                LeagueSetting::BENCH_SIZE,
-                LeagueSetting::MAX_SUBSTITUTIONS,
-            ] as $key
+            foreach (
+                [
+                    LeagueSetting::INITIAL_BUDGET,
+                    LeagueSetting::RELEASE_REFUND_PERCENTAGE,
+                    LeagueSetting::MAX_ROSTER_PLAYERS,
+                    LeagueSetting::BENCH_SIZE,
+                    LeagueSetting::MAX_SUBSTITUTIONS,
+                ] as $key
             ) {
                 if (! array_key_exists($key, $settings)) {
                     continue;
@@ -117,10 +125,20 @@ class LeagueSettingsService
                 );
             }
 
+            if (array_key_exists(LeagueSetting::CAPTAIN_SCORE_MULTIPLIER, $settings)) {
+                LeagueSetting::query()->updateOrCreate(
+                    ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::CAPTAIN_SCORE_MULTIPLIER],
+                    ['value' => LeagueSetting::decimalPayload(
+                        (float) $settings[LeagueSetting::CAPTAIN_SCORE_MULTIPLIER]
+                    )],
+                );
+            }
+
             foreach (
                 [
                     LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
                     LeagueSetting::CAPTAIN_ENABLED,
+                    LeagueSetting::DEFENSE_MODIFIER_ENABLED,
                 ] as $key
             ) {
                 if (array_key_exists($key, $settings)) {
@@ -171,7 +189,7 @@ class LeagueSettingsService
                 ->where('league_id', $league->id)
                 ->selectRaw('fantasy_team_id, count(*) as aggregate')
                 ->groupBy('fantasy_team_id')
-                ->pluck('aggregate')->map(fn ($count): int => (int) $count)->max() ?? 0;
+                ->pluck('aggregate')->map(fn($count): int => (int) $count)->max() ?? 0;
 
             if ((int) $settings[LeagueSetting::MAX_ROSTER_PLAYERS] < $largest) {
                 throw new IncompatibleRosterSizeException($largest);
@@ -187,11 +205,11 @@ class LeagueSettingsService
                 ->where('fantasy_team_players.league_id', $league->id)
                 ->whereHas('player.playerSeasonRegistrations', function ($query) use ($league, $role): void {
                     $query->activeForSeason($league->season_id)
-                        ->whereHas('playerRole', fn ($query) => $query->where('key', $role));
+                        ->whereHas('playerRole', fn($query) => $query->where('key', $role));
                 })
                 ->selectRaw('fantasy_team_id, count(*) as aggregate')
                 ->groupBy('fantasy_team_id')
-                ->pluck('aggregate')->map(fn ($count): int => (int) $count)->max() ?? 0;
+                ->pluck('aggregate')->map(fn($count): int => (int) $count)->max() ?? 0;
 
             if ((int) $limit < $largest) {
                 throw new IncompatibleRosterRoleLimitException($role, $largest);

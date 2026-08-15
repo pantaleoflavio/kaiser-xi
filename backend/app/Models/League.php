@@ -112,6 +112,13 @@ class League extends Model
         return $setting instanceof LeagueSetting ? $setting->booleanValue() : $default;
     }
 
+    public function decimalSettingValue(string $key, float $default): float
+    {
+        $setting = $this->settings()->where('key', $key)->first();
+
+        return $setting instanceof LeagueSetting ? $setting->decimalValue() : $default;
+    }
+
     public function stringSettingValue(string $key, string $default): string
     {
         $setting = $this->settings()->where('key', $key)->first();
@@ -208,5 +215,21 @@ class League extends Model
     public function captainEnabled(): bool
     {
         return $this->booleanSettingValue(LeagueSetting::CAPTAIN_ENABLED, false);
+    }
+
+    public function captainScoreMultiplier(): float
+    {
+        return $this->decimalSettingValue(
+            LeagueSetting::CAPTAIN_SCORE_MULTIPLIER,
+            LeagueSetting::DEFAULT_CAPTAIN_SCORE_MULTIPLIER,
+        );
+    }
+
+    public function defenseModifierEnabled(): bool
+    {
+        return $this->booleanSettingValue(
+            LeagueSetting::DEFENSE_MODIFIER_ENABLED,
+            LeagueSetting::DEFAULT_DEFENSE_MODIFIER_ENABLED,
+        );
     }
 }

@@ -396,7 +396,15 @@
       "benchTotal": "The sum of bench role limits must be at least the bench size.",
       "substitutionRange": "Maximum substitutions must be a whole number between zero and the bench size.",
       "positiveInteger": "Enter a positive whole number.",
-      "percentage": "Enter a whole-number percentage from 0 to 100."
+      "percentage": "Enter a whole-number percentage from 0 to 100.",
+      "multiplierRange": "Enter a multiplier from 1 to 3."
+    },
+    "scoring": {
+      "title": "Scoring",
+      "captainMultiplier": "Captain multiplier",
+      "captainMultiplierDescription": "The captain's score will be multiplied by this value when captain scoring applies.",
+      "defenseModifier": "Enable defense modifier",
+      "defenseModifierDescription": "Stores whether the league uses a defense modifier; calculation will be added in a future scoring milestone."
     }
   },
   "budget": {

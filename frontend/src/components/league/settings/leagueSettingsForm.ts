@@ -28,6 +28,8 @@ export type LeagueSettingsFormState = {
   substitutionMode: SubstitutionOrderMode;
   allowFormationChange: boolean;
   captainEnabled: boolean;
+  captainScoreMultiplier: string;
+  defenseModifierEnabled: boolean;
 };
 
 function roleStrings(limits: Record<PlayerRoleKey, number>): StringRoleLimits {
@@ -58,6 +60,8 @@ export function createLeagueSettingsFormState(
     substitutionMode: settings?.substitution_order_mode ?? 'bench_order',
     allowFormationChange: settings?.allow_formation_change_on_substitution ?? false,
     captainEnabled: settings?.captain_enabled ?? false,
+    captainScoreMultiplier: String(settings?.captain_score_multiplier ?? ''),
+    defenseModifierEnabled: settings?.defense_modifier_enabled ?? false,
   };
 }
 
@@ -117,6 +121,7 @@ export function validateLeagueSettingsForm(
   const benchSize = requiredNumber(form.benchSize);
   const benchLimits = parsedRoleLimits(form.benchRoleLimits);
   const maximumSubstitutions = requiredNumber(form.maxSubstitutions);
+  const captainScoreMultiplier = requiredNumber(form.captainScoreMultiplier);
   const errors: SettingsFieldErrors = {};
 
   if (initialBudget === null || !Number.isInteger(initialBudget) || initialBudget < 0)
@@ -163,7 +168,8 @@ export function validateLeagueSettingsForm(
     maximumSubstitutions > benchSize
   )
     errors.max_substitutions = [t('leagueSettings.validation.substitutionRange')];
-
+  if (captainScoreMultiplier === null || captainScoreMultiplier < 1 || captainScoreMultiplier > 3)
+    errors.captain_score_multiplier = [t('leagueSettings.validation.multiplierRange')];
   if (
     Object.keys(errors).length > 0 ||
     initialBudget === null ||
@@ -171,6 +177,7 @@ export function validateLeagueSettingsForm(
     maximum === null ||
     benchSize === null ||
     maximumSubstitutions === null ||
+    captainScoreMultiplier === null ||
     !completeRoleLimits(rosterLimits) ||
     !completeRoleLimits(benchLimits)
   )
@@ -190,6 +197,8 @@ export function validateLeagueSettingsForm(
       substitution_order_mode: form.substitutionMode,
       allow_formation_change_on_substitution: form.allowFormationChange,
       captain_enabled: form.captainEnabled,
+      captain_score_multiplier: captainScoreMultiplier,
+      defense_modifier_enabled: form.defenseModifierEnabled,
     },
   };
 }

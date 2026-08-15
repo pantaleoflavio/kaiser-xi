@@ -344,7 +344,15 @@
       "benchTotal": "La somma dei limiti per ruolo in panchina deve essere almeno pari alle dimensioni della panchina.",
       "substitutionRange": "Le sostituzioni massime devono essere un numero intero tra zero e le dimensioni della panchina.",
       "positiveInteger": "Inserisci un numero intero positivo.",
-      "percentage": "Inserisci una percentuale intera da 0 a 100."
+      "percentage": "Inserisci una percentuale intera da 0 a 100.",
+      "multiplierRange": "Inserisci un moltiplicatore da 1 a 3."
+    },
+    "scoring": {
+      "title": "Punteggio",
+      "captainMultiplier": "Moltiplicatore capitano",
+      "captainMultiplierDescription": "Il punteggio del capitano verrà moltiplicato per questo valore quando si applica il punteggio del capitano.",
+      "defenseModifier": "Abilita modificatore difesa",
+      "defenseModifierDescription": "Memorizza se la lega usa un modificatore difesa; il calcolo verrà aggiunto in un futuro milestone del punteggio."
     }
   },
   "budget": {

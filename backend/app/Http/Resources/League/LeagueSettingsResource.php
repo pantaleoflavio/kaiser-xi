@@ -23,7 +23,7 @@ class LeagueSettingsResource extends JsonResource
                 $requirements = collect(LeagueSetting::PLAYER_ROLE_KEYS)
                     ->mapWithKeys(function (string $role) use ($module): array {
                         $requirement = $module->requirements->first(
-                            fn ($requirement): bool => $requirement->playerRole?->key === $role
+                            fn($requirement): bool => $requirement->playerRole?->key === $role
                         );
 
                         return [$role => (int) ($requirement?->required_count ?? 0)];
@@ -53,6 +53,8 @@ class LeagueSettingsResource extends JsonResource
             LeagueSetting::SUBSTITUTION_ORDER_MODE => $this->substitutionOrderMode(),
             LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => $this->allowsFormationChangeOnSubstitution(),
             LeagueSetting::CAPTAIN_ENABLED => $this->captainEnabled(),
+            LeagueSetting::CAPTAIN_SCORE_MULTIPLIER => $this->captainScoreMultiplier(),
+            LeagueSetting::DEFENSE_MODIFIER_ENABLED => $this->defenseModifierEnabled(),
             'status' => $this->statusKey(),
             'can_update_settings' => $request->user()?->can('manageSettings', $this->resource)
                 && ! in_array($this->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true),

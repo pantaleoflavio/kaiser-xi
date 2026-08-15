@@ -396,7 +396,15 @@
       "benchTotal": "Die Summe der Bank-Rollenlimits muss mindestens der Bankgröße entsprechen.",
       "substitutionRange": "Die maximale Anzahl Auswechslungen muss eine ganze Zahl zwischen null und der Bankgröße sein.",
       "positiveInteger": "Gib eine positive ganze Zahl ein.",
-      "percentage": "Gib einen ganzzahligen Prozentsatz von 0 bis 100 ein."
+      "percentage": "Gib einen ganzzahligen Prozentsatz von 0 bis 100 ein.",
+      "multiplierRange": "Gib einen Multiplikator von 1 bis 3 ein."
+    },
+    "scoring": {
+      "title": "Punktewertung",
+      "captainMultiplier": "Kapitänsmultiplikator",
+      "captainMultiplierDescription": "Die Punktzahl des Kapitäns wird mit diesem Wert multipliziert, wenn die Kapitänswertung angewendet wird.",
+      "defenseModifier": "Abwehrmodifikator aktivieren",
+      "defenseModifierDescription": "Legt fest, ob die Liga einen Abwehrmodifikator verwendet; die Berechnung folgt in einem späteren Wertungs-Meilenstein."
     }
   },
   "budget": {

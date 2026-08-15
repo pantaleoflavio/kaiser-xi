@@ -25,6 +25,7 @@ import {
   type SettingsFieldErrors,
 } from './settings/leagueSettingsForm';
 import { RosterRulesSection } from './settings/RosterRulesSection';
+import { ScoringRulesSection } from './settings/ScoringRulesSection';
 import { SubstitutionRulesSection } from './settings/SubstitutionRulesSection';
 
 type Props = {
@@ -41,7 +42,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
   const [error, setError] = useState(initialError);
   const [fieldErrors, setFieldErrors] = useState<SettingsFieldErrors>({});
   const [success, setSuccess] = useState<string | null>(null);
- 
+
   const canEdit = settings?.can_update_settings ?? false;
 
   const updateSettings = useMutation({
@@ -94,7 +95,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!canEdit) return;
-    
+
     const result = validateLeagueSettingsForm(form, t);
     if (!result.payload) {
       setError(t('common.errors.validation'));
@@ -114,7 +115,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
       <p className="mt-1 text-sm text-slate-300">{t('leagueSettings.description')}</p>
       {error ? (
         <div className="mt-4">
-            <ContentErrorPanel message={error} title={t('leagueSettings.errors.title')} />
+          <ContentErrorPanel message={error} title={t('leagueSettings.errors.title')} />
         </div>
       ) : null}
       {success ? (
@@ -127,7 +128,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
       ) : null}
       <LeagueSettingsSummary locale={language} settings={settings} t={t} />
       {canEdit ? (
-         <form className="mt-6 grid gap-6" noValidate onSubmit={handleSubmit}>
+        <form className="mt-6 grid gap-6" noValidate onSubmit={handleSubmit}>
           <RosterRulesSection
             disabled={updateSettings.isPending}
             errors={fieldErrors}
@@ -177,12 +178,21 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
             onCaptainChange={(value) => setField('captainEnabled', value)}
             t={t}
           />
+          <ScoringRulesSection
+            captainScoreMultiplier={form.captainScoreMultiplier}
+            defenseModifierEnabled={form.defenseModifierEnabled}
+            disabled={updateSettings.isPending}
+            errors={fieldErrors}
+            onCaptainScoreMultiplierChange={(value) => setField('captainScoreMultiplier', value)}
+            onDefenseModifierChange={(value) => setField('defenseModifierEnabled', value)}
+            t={t}
+          />
           <button
             className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
             disabled={updateSettings.isPending}
             type="submit"
           >
-                {updateSettings.isPending ? t('leagueSettings.saving') : t('leagueSettings.save')}
+            {updateSettings.isPending ? t('leagueSettings.saving') : t('leagueSettings.save')}
           </button>
         </form>
       ) : (

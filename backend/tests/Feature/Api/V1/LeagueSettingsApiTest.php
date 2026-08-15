@@ -79,6 +79,8 @@ class LeagueSettingsApiTest extends TestCase
                 LeagueSetting::SUBSTITUTION_ORDER_MODE,
                 LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
                 LeagueSetting::CAPTAIN_ENABLED,
+                LeagueSetting::CAPTAIN_SCORE_MULTIPLIER,
+                LeagueSetting::DEFENSE_MODIFIER_ENABLED,
             ] as $key
         ) {
             $this->assertDatabaseHas('league_settings', ['league_id' => $leagueId, 'key' => $key]);
@@ -197,6 +199,8 @@ class LeagueSettingsApiTest extends TestCase
 
         $this->assertSame(1, $league->settings()->where('key', LeagueSetting::MAX_ROSTER_PLAYERS)->count());
         $this->assertSame(1, $league->settings()->where('key', LeagueSetting::ROSTER_ROLE_LIMITS)->count());
+        $this->assertSame(1, $league->settings()->where('key', LeagueSetting::CAPTAIN_SCORE_MULTIPLIER)->count());
+        $this->assertSame(1, $league->settings()->where('key', LeagueSetting::DEFENSE_MODIFIER_ENABLED)->count());
     }
 
     private function leagueWithMember(string $role): array

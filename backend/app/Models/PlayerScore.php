@@ -13,6 +13,9 @@ class PlayerScore extends Model
 {
     use HasFactory;
 
+    /** The authoritative input field for the future league team-scoring engine. */
+    public const FANTASY_SCORE_INPUT_FIELD = 'final_score';
+
     protected $fillable = [
         'player_season_registration_id',
         'matchday_id',
