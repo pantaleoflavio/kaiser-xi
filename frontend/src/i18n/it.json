@@ -341,7 +341,8 @@
       "substitutionRange": "Le sostituzioni massime devono essere un numero intero tra zero e le dimensioni della panchina.",
       "positiveInteger": "Inserisci un numero intero positivo.",
       "percentage": "Inserisci una percentuale intera da 0 a 100.",
-      "realCaptainBonusRange": "Inserisci punti bonus da 0 a 5 in incrementi di 0,5."
+      "realCaptainBonusRange": "Inserisci punti bonus da 0 a 5 in incrementi di 0,5.",
+      "halfPoint": "Inserisci un valore nell’intervallo consentito con incrementi di 0,5."
     },
     "scoring": {
       "title": "Punteggio",
@@ -349,7 +350,11 @@
       "defenseModifierDescription": "Memorizza se la lega usa un modificatore difesa; il calcolo verrà aggiunto in un futuro milestone del punteggio.",
       "enableRealCaptainBonus": "Abilita bonus capitano reale",
       "realCaptainBonusPoints": "Punti bonus capitano reale",
-      "realCaptainBonusDescription": "Assegna il bonus configurato quando un giocatore che contribuisce era il vero capitano del suo club in quella partita."
+      "realCaptainBonusDescription": "Assegna il bonus configurato quando un giocatore che contribuisce era il vero capitano del suo club in quella partita.",
+      "firstGoalThreshold": "Soglia del primo gol",
+      "firstGoalThresholdDescription": "Il punteggio minimo della squadra necessario per segnare il primo gol.",
+      "goalInterval": "Intervallo gol",
+      "goalIntervalDescription": "Ogni ulteriore intervallo di punti aggiunge un altro gol."
     }
   },
   "budget": {

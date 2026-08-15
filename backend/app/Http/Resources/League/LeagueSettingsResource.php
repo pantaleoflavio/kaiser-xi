@@ -55,6 +55,8 @@ class LeagueSettingsResource extends JsonResource
             LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => $this->realCaptainBonusEnabled(),
             LeagueSetting::REAL_CAPTAIN_BONUS_POINTS => $this->realCaptainBonusPoints(),
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => $this->defenseModifierEnabled(),
+            LeagueSetting::FIRST_GOAL_THRESHOLD => $this->firstGoalThreshold(),
+            LeagueSetting::GOAL_INTERVAL => $this->goalInterval(),
             'status' => $this->statusKey(),
             'can_update_settings' => $request->user()?->can('manageSettings', $this->resource)
                 && ! in_array($this->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true),

@@ -56,6 +56,17 @@ class LeagueSettingsService
         );
         foreach (
             [
+                LeagueSetting::FIRST_GOAL_THRESHOLD => LeagueSetting::DEFAULT_FIRST_GOAL_THRESHOLD,
+                LeagueSetting::GOAL_INTERVAL => LeagueSetting::DEFAULT_GOAL_INTERVAL,
+            ] as $key => $value
+        ) {
+            $league->settings()->firstOrCreate(
+                ['key' => $key],
+                ['value' => LeagueSetting::decimalPayload($value)],
+            );
+        }
+        foreach (
+            [
                 LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => LeagueSetting::DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
                 LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => LeagueSetting::DEFAULT_REAL_CAPTAIN_BONUS_ENABLED,
                 LeagueSetting::DEFENSE_MODIFIER_ENABLED =>
@@ -132,6 +143,15 @@ class LeagueSettingsService
                         (float) $settings[LeagueSetting::REAL_CAPTAIN_BONUS_POINTS]
                     )],
                 );
+            }
+
+            foreach ([LeagueSetting::FIRST_GOAL_THRESHOLD, LeagueSetting::GOAL_INTERVAL] as $key) {
+                if (array_key_exists($key, $settings)) {
+                    LeagueSetting::query()->updateOrCreate(
+                        ['league_id' => $lockedLeague->id, 'key' => $key],
+                        ['value' => LeagueSetting::decimalPayload((float) $settings[$key])],
+                    );
+                }
             }
 
             foreach (

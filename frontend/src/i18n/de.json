@@ -393,7 +393,8 @@
       "substitutionRange": "Die maximale Anzahl Auswechslungen muss eine ganze Zahl zwischen null und der Bankgröße sein.",
       "positiveInteger": "Gib eine positive ganze Zahl ein.",
       "percentage": "Gib einen ganzzahligen Prozentsatz von 0 bis 100 ein.",
-      "realCaptainBonusRange": "Bonuspunkte zwischen 0 und 5 in Schritten von 0,5 eingeben."
+      "realCaptainBonusRange": "Bonuspunkte zwischen 0 und 5 in Schritten von 0,5 eingeben.",
+      "halfPoint": "Gib einen Wert im zulässigen Bereich in Schritten von 0,5 ein."
     },
     "scoring": {
       "title": "Punktewertung",
@@ -401,7 +402,11 @@
       "defenseModifierDescription": "Legt fest, ob die Liga einen Abwehrmodifikator verwendet; die Berechnung folgt in einem späteren Wertungs-Meilenstein.",
       "enableRealCaptainBonus": "Bonus für echten Kapitän aktivieren",
       "realCaptainBonusPoints": "Bonuspunkte für echten Kapitän",
-      "realCaptainBonusDescription": "Vergibt den festgelegten Bonus, wenn ein beitragender Spieler in diesem Spiel der echte Kapitän seines Vereins war."
+      "realCaptainBonusDescription": "Vergibt den festgelegten Bonus, wenn ein beitragender Spieler in diesem Spiel der echte Kapitän seines Vereins war.",
+      "firstGoalThreshold": "Schwelle für das erste Tor",
+      "firstGoalThresholdDescription": "Die Mindestpunktzahl eines Teams für das erste Tor.",
+      "goalInterval": "Torintervall",
+      "goalIntervalDescription": "Jedes zusätzliche Punkteintervall ergibt ein weiteres Tor."
     }
   },
   "budget": {

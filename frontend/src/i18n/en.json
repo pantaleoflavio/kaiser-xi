@@ -393,7 +393,8 @@
       "substitutionRange": "Maximum substitutions must be a whole number between zero and the bench size.",
       "positiveInteger": "Enter a positive whole number.",
       "percentage": "Enter a whole-number percentage from 0 to 100.",
-      "realCaptainBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5."
+      "realCaptainBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5.",
+      "halfPoint": "Enter a value within the allowed range in increments of 0.5."
     },
     "scoring": {
       "title": "Scoring",
@@ -401,7 +402,11 @@
       "defenseModifierDescription": "Stores whether the league uses a defense modifier; calculation will be added in a future scoring milestone.",
       "enableRealCaptainBonus": "Enable real captain bonus",
       "realCaptainBonusPoints": "Real captain bonus points",
-      "realCaptainBonusDescription": "Awards the configured bonus when a contributing player was the real captain of his club in that match."
+      "realCaptainBonusDescription": "Awards the configured bonus when a contributing player was the real captain of his club in that match.",
+      "firstGoalThreshold": "First goal threshold",
+      "firstGoalThresholdDescription": "The minimum team points required to score the first goal.",
+      "goalInterval": "Goal interval",
+      "goalIntervalDescription": "Each additional interval of team points adds one more goal."
     }
   },
   "budget": {

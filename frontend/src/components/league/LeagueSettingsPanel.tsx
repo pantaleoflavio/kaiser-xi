@@ -174,11 +174,15 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
             realCaptainBonusEnabled={form.realCaptainBonusEnabled}
             realCaptainBonusPoints={form.realCaptainBonusPoints}
             defenseModifierEnabled={form.defenseModifierEnabled}
+            firstGoalThreshold={form.firstGoalThreshold}
+            goalInterval={form.goalInterval}
             disabled={updateSettings.isPending}
             errors={fieldErrors}
             onRealCaptainBonusEnabledChange={(value) => setField('realCaptainBonusEnabled', value)}
             onRealCaptainBonusPointsChange={(value) => setField('realCaptainBonusPoints', value)}
             onDefenseModifierChange={(value) => setField('defenseModifierEnabled', value)}
+            onFirstGoalThresholdChange={(value) => setField('firstGoalThreshold', value)}
+            onGoalIntervalChange={(value) => setField('goalInterval', value)}
             t={t}
           />
           <button

@@ -232,4 +232,17 @@ class League extends Model
             LeagueSetting::DEFAULT_DEFENSE_MODIFIER_ENABLED,
         );
     }
+
+    public function firstGoalThreshold(): float
+    {
+        return $this->decimalSettingValue(
+            LeagueSetting::FIRST_GOAL_THRESHOLD,
+            LeagueSetting::DEFAULT_FIRST_GOAL_THRESHOLD,
+        );
+    }
+
+    public function goalInterval(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::GOAL_INTERVAL, LeagueSetting::DEFAULT_GOAL_INTERVAL);
+    }
 }

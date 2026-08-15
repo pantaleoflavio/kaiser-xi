@@ -23,6 +23,8 @@ class LeagueSetting extends Model
     public const REAL_CAPTAIN_BONUS_ENABLED = 'real_captain_bonus_enabled';
     public const REAL_CAPTAIN_BONUS_POINTS = 'real_captain_bonus_points';
     public const DEFENSE_MODIFIER_ENABLED = 'defense_modifier_enabled';
+    public const FIRST_GOAL_THRESHOLD = 'first_goal_threshold';
+    public const GOAL_INTERVAL = 'goal_interval';
     public const DEFAULT_INITIAL_BUDGET = 500;
     public const DEFAULT_RELEASE_REFUND_PERCENTAGE = 50;
     public const DEFAULT_MAX_ROSTER_PLAYERS = 25;
@@ -55,6 +57,8 @@ class LeagueSetting extends Model
     public const DEFAULT_REAL_CAPTAIN_BONUS_POINTS = 0.5;
     public const DEFAULT_DEFENSE_MODIFIER_ENABLED = false;
     public const PLAYER_ROLE_KEYS = ['goalkeeper', 'defender', 'midfielder', 'forward'];
+    public const DEFAULT_FIRST_GOAL_THRESHOLD = 66.0;
+    public const DEFAULT_GOAL_INTERVAL = 6.0;
     public const DEFAULT_ROSTER_ROLE_LIMITS = [
         'goalkeeper' => 3,
         'defender' => 8,

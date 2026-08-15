@@ -34,9 +34,11 @@ class LeagueScoringSettingsApiTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.real_captain_bonus_enabled', false)
             ->assertJsonPath('data.real_captain_bonus_points', 0.5)
-            ->assertJsonPath('data.defense_modifier_enabled', false);
+            ->assertJsonPath('data.defense_modifier_enabled', false)
+            ->assertJsonPath('data.first_goal_threshold', 66)
+            ->assertJsonPath('data.goal_interval', 6);
 
-        foreach ([LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED, LeagueSetting::REAL_CAPTAIN_BONUS_POINTS, LeagueSetting::DEFENSE_MODIFIER_ENABLED] as $key) {
+        foreach ([LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED, LeagueSetting::REAL_CAPTAIN_BONUS_POINTS, LeagueSetting::DEFENSE_MODIFIER_ENABLED, LeagueSetting::FIRST_GOAL_THRESHOLD, LeagueSetting::GOAL_INTERVAL] as $key) {
             $this->assertSame(1, $league->settings()->where('key', $key)->count());
         }
     }

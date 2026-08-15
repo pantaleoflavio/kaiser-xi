@@ -145,6 +145,8 @@ export type LeagueSettings = {
   real_captain_bonus_enabled: boolean;
   real_captain_bonus_points: number;
   defense_modifier_enabled: boolean;
+  first_goal_threshold: number;
+  goal_interval: number;
   status: string;
   can_update_settings: boolean;
   locked_rule_groups: string[];
@@ -184,6 +186,8 @@ export type LeagueSettingsPayload = Partial<{
   real_captain_bonus_enabled: boolean;
   real_captain_bonus_points: number;
   defense_modifier_enabled: boolean;
+  first_goal_threshold: number;
+  goal_interval: number;
 }>;
 
 export type RosterPlayer = {

@@ -10,23 +10,31 @@ type Props = {
   realCaptainBonusPoints: string;
   defenseModifierEnabled: boolean;
   errors: SettingsFieldErrors;
+  firstGoalThreshold: string;
+  goalInterval: string;
   disabled: boolean;
   t: (key: string) => string;
   onRealCaptainBonusEnabledChange: (enabled: boolean) => void;
   onRealCaptainBonusPointsChange: (value: string) => void;
   onDefenseModifierChange: (enabled: boolean) => void;
+  onFirstGoalThresholdChange: (value: string) => void;
+  onGoalIntervalChange: (value: string) => void;
 };
 
 export function ScoringRulesSection({
   realCaptainBonusEnabled,
   realCaptainBonusPoints,
   defenseModifierEnabled,
+  firstGoalThreshold,
+  goalInterval,
   errors,
   disabled,
   t,
   onRealCaptainBonusEnabledChange,
   onRealCaptainBonusPointsChange,
   onDefenseModifierChange,
+  onFirstGoalThresholdChange,
+  onGoalIntervalChange,
 }: Props) {
   const bonusError = exactError(errors, 'real_captain_bonus_points');
 
@@ -43,6 +51,46 @@ export function ScoringRulesSection({
           type="checkbox"
         />
         <span>{t('leagueSettings.scoring.enableRealCaptainBonus')}</span>
+      </label>
+      <label className="block text-sm text-slate-200">
+        {t('leagueSettings.scoring.firstGoalThreshold')}
+        <input
+          className={settingsInputClass}
+          disabled={disabled}
+          max={200}
+          min={0}
+          onChange={(event) => onFirstGoalThresholdChange(event.target.value)}
+          step={0.5}
+          type="number"
+          value={firstGoalThreshold}
+        />
+        <span className="mt-1 block text-slate-400">
+          {t('leagueSettings.scoring.firstGoalThresholdDescription')}
+        </span>
+        {exactError(errors, 'first_goal_threshold') ? (
+          <span className="mt-1 block text-red-300">
+            {exactError(errors, 'first_goal_threshold')}
+          </span>
+        ) : null}
+      </label>
+      <label className="block text-sm text-slate-200">
+        {t('leagueSettings.scoring.goalInterval')}
+        <input
+          className={settingsInputClass}
+          disabled={disabled}
+          max={50}
+          min={0.5}
+          onChange={(event) => onGoalIntervalChange(event.target.value)}
+          step={0.5}
+          type="number"
+          value={goalInterval}
+        />
+        <span className="mt-1 block text-slate-400">
+          {t('leagueSettings.scoring.goalIntervalDescription')}
+        </span>
+        {exactError(errors, 'goal_interval') ? (
+          <span className="mt-1 block text-red-300">{exactError(errors, 'goal_interval')}</span>
+        ) : null}
       </label>
       <label className="block text-sm text-slate-200">
         {t('leagueSettings.scoring.realCaptainBonusPoints')}

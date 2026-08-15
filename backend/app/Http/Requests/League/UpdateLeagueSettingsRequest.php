@@ -148,8 +148,28 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'boolean',
             ],
 
+            LeagueSetting::FIRST_GOAL_THRESHOLD => $this->halfPointRules(0, 200),
+            LeagueSetting::GOAL_INTERVAL => $this->halfPointRules(0.5, 50),
+
             'remaining_budget' => ['prohibited'],
             'league_id' => ['prohibited'],
+        ];
+    }
+
+    /** @return array<int, mixed> */
+    private function halfPointRules(float $minimum, float $maximum): array
+    {
+        return [
+            'sometimes',
+            'required',
+            'numeric',
+            "between:{$minimum},{$maximum}",
+            function (string $attribute, mixed $value, Closure $fail): void {
+                $doubled = (float) $value * 2;
+                if (abs($doubled - round($doubled)) > PHP_FLOAT_EPSILON * max(1, abs($doubled)) * 4) {
+                    $fail("The {$attribute} field must be in increments of 0.5.");
+                }
+            },
         ];
     }
 

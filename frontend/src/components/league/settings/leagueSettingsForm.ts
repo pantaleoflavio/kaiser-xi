@@ -30,6 +30,8 @@ export type LeagueSettingsFormState = {
   realCaptainBonusEnabled: boolean;
   realCaptainBonusPoints: string;
   defenseModifierEnabled: boolean;
+  firstGoalThreshold: string;
+  goalInterval: string;
 };
 
 function roleStrings(limits: Record<PlayerRoleKey, number>): StringRoleLimits {
@@ -62,6 +64,8 @@ export function createLeagueSettingsFormState(
     realCaptainBonusEnabled: settings?.real_captain_bonus_enabled ?? false,
     realCaptainBonusPoints: String(settings?.real_captain_bonus_points ?? ''),
     defenseModifierEnabled: settings?.defense_modifier_enabled ?? false,
+    firstGoalThreshold: String(settings?.first_goal_threshold ?? 66),
+    goalInterval: String(settings?.goal_interval ?? 6),
   };
 }
 
@@ -122,6 +126,8 @@ export function validateLeagueSettingsForm(
   const benchLimits = parsedRoleLimits(form.benchRoleLimits);
   const maximumSubstitutions = requiredNumber(form.maxSubstitutions);
   const realCaptainBonusPoints = requiredNumber(form.realCaptainBonusPoints);
+  const firstGoalThreshold = requiredNumber(form.firstGoalThreshold);
+  const goalInterval = requiredNumber(form.goalInterval);
   const errors: SettingsFieldErrors = {};
 
   if (initialBudget === null || !Number.isInteger(initialBudget) || initialBudget < 0)
@@ -176,6 +182,20 @@ export function validateLeagueSettingsForm(
   )
     errors.real_captain_bonus_points = [t('leagueSettings.validation.realCaptainBonusRange')];
   if (
+    firstGoalThreshold === null ||
+    firstGoalThreshold < 0 ||
+    firstGoalThreshold > 200 ||
+    !Number.isInteger(firstGoalThreshold * 2)
+  )
+    errors.first_goal_threshold = [t('leagueSettings.validation.halfPoint')];
+  if (
+    goalInterval === null ||
+    goalInterval <= 0 ||
+    goalInterval > 50 ||
+    !Number.isInteger(goalInterval * 2)
+  )
+    errors.goal_interval = [t('leagueSettings.validation.halfPoint')];
+  if (
     Object.keys(errors).length > 0 ||
     initialBudget === null ||
     refund === null ||
@@ -183,6 +203,8 @@ export function validateLeagueSettingsForm(
     benchSize === null ||
     maximumSubstitutions === null ||
     realCaptainBonusPoints === null ||
+    firstGoalThreshold === null ||
+    goalInterval === null ||
     !completeRoleLimits(rosterLimits) ||
     !completeRoleLimits(benchLimits)
   )
@@ -204,6 +226,8 @@ export function validateLeagueSettingsForm(
       real_captain_bonus_enabled: form.realCaptainBonusEnabled,
       real_captain_bonus_points: realCaptainBonusPoints,
       defense_modifier_enabled: form.defenseModifierEnabled,
+      first_goal_threshold: firstGoalThreshold,
+      goal_interval: goalInterval,
     },
   };
 }
