@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\V1\LeagueSettingController;
 use App\Http\Controllers\Api\V1\LeagueTypeController;
 use App\Http\Controllers\Api\V1\MatchdayController;
 use App\Http\Controllers\Api\V1\SeasonController;
+use App\Http\Controllers\Api\V1\StandingController;
 use App\Models\FantasyTeam;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,9 @@ Route::prefix('v1')->group(function (): void {
 
         Route::get('/{league}/matchdays', [MatchdayController::class, 'index'])
             ->name('api.v1.leagues.matchdays.index')->middleware('can:view,league');
+
+        Route::get('/{league}/standings', [StandingController::class, 'index'])
+            ->name('api.v1.leagues.standings.index')->middleware('can:view,league');
 
         Route::get('/{league}/head-to-head-schedule', [HeadToHeadScheduleController::class, 'show'])
             ->name('api.v1.leagues.head-to-head-schedule.show')

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Service\scoring;
+namespace Tests\Feature\Services\Scoring;
 
 use App\Exceptions\IncompleteFantasyMatchScoreException;
 use App\Models\FantasyMatch;

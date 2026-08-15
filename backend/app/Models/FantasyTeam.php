@@ -23,10 +23,10 @@ class FantasyTeam extends Model
     ];
 
     protected $casts =
-        [
-            'budget' => 'decimal:2',
-            'remaining_budget' => 'decimal:2',
-        ];
+    [
+        'budget' => 'decimal:2',
+        'remaining_budget' => 'decimal:2',
+    ];
 
     public function league(): BelongsTo
     {
@@ -70,5 +70,10 @@ class FantasyTeam extends Model
     public function matchdayScores(): HasMany
     {
         return $this->hasMany(TeamMatchdayScore::class);
+    }
+
+    public function standings(): HasMany
+    {
+        return $this->hasMany(Standing::class);
     }
 }

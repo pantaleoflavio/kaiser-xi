@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Service\Scoring;
+namespace Tests\Feature\Services\Scoring;
 
 use App\Enums\PlayerScoreStatus;
 use App\Exceptions\SubmittedFormationNotFound;

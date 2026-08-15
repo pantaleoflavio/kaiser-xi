@@ -72,6 +72,11 @@ class League extends Model
         return $this->hasMany(FantasyMatch::class);
     }
 
+    public function standings(): HasMany
+    {
+        return $this->hasMany(Standing::class);
+    }
+
     public function h2hStartMatchday(): BelongsTo
     {
         return $this->belongsTo(Matchday::class, 'h2h_start_matchday_id');
