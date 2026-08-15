@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Database\Seeders\DemoFantasyRostersSeeder;
+use Database\Seeders\DemoHeadToHeadLeagueSeeder;
+use Database\Seeders\DemoHeadToHeadResultsSeeder;
 use Database\Seeders\DemoLeagueSeeder;
 use Database\Seeders\DemoMatchdaySeeder;
 use Database\Seeders\DemoPlayersSeeder;
@@ -32,6 +34,7 @@ class DemoEnvironmentSeeder extends Seeder
             DemoHeadToHeadLeagueSeeder::class,
             DemoPlayersSeeder::class,
             DemoFantasyRostersSeeder::class,
+            DemoHeadToHeadResultsSeeder::class,
         ]);
     }
 }

@@ -47,7 +47,10 @@ final class FinalizeMatchday
                     $this->teamScores->calculate($formation->fantasyTeam, $matchday);
                 });
 
-            if ($league->type?->key !== 'head_to_head') {
+            if (
+                $league->type?->key !== 'head_to_head'
+                || ! $league->hasInitializedHeadToHeadSchedule()
+            ) {
                 return;
             }
 

@@ -213,7 +213,7 @@ export type RosterPlayer = {
   player: {
     id: number;
     name: string | null;
-    role: string | null;
+    role: PlayerRoleKey | null;
   };
 };
 

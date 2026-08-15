@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FantasyTeam\AddFantasyTeamPlayerRequest;
 use App\Http\Resources\FantasyTeam\FantasyTeamPlayerResource;
 use App\Models\FantasyTeam;
+use App\Models\FantasyTeamPlayer;
 use App\Models\League;
 use App\Models\Player;
 use App\Services\FantasyTeam\FantasyRosterService;
@@ -20,7 +21,9 @@ class FantasyTeamPlayerController extends Controller
     {
         return FantasyTeamPlayerResource::collection(
             $fantasyTeam->activePlayerAssignments()
-                ->with('player.playerSeasonRegistrations.playerRole')
+                ->with(['player.playerSeasonRegistrations' => fn($query) => $query
+                    ->activeForSeason($league->season_id)
+                    ->with('playerRole')])
                 ->orderBy('assigned_at')
                 ->get()
         );
@@ -36,13 +39,20 @@ class FantasyTeamPlayerController extends Controller
             $request->integer('purchase_price')
         );
 
-        return new FantasyTeamPlayerResource($assignment);
+        return new FantasyTeamPlayerResource($this->loadSeasonRole($assignment, $league));
     }
 
     public function destroy(Request $request, League $league, FantasyTeam $fantasyTeam, Player $player): FantasyTeamPlayerResource
     {
-        return new FantasyTeamPlayerResource(
-            $this->rosterService->release($league, $fantasyTeam, $player, $request->user())
-        );
+        $assignment = $this->rosterService->release($league, $fantasyTeam, $player, $request->user());
+
+        return new FantasyTeamPlayerResource($this->loadSeasonRole($assignment, $league));
+    }
+
+    private function loadSeasonRole(FantasyTeamPlayer $assignment, League $league): FantasyTeamPlayer
+    {
+        return $assignment->load(['player.playerSeasonRegistrations' => fn($query) => $query
+            ->activeForSeason($league->season_id)
+            ->with('playerRole')]);
     }
 }
