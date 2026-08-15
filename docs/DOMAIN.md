@@ -250,7 +250,7 @@ The domain is designed to support future functionality including:
 * player auctions;
 * transfer windows;
 * roster validation;
-* captain mechanics;
+* real-match captain bonus mechanics;
 * formation management;
 * live scoring;
 * standings;

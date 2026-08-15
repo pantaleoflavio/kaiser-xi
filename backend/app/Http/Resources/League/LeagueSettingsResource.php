@@ -52,8 +52,8 @@ class LeagueSettingsResource extends JsonResource
             LeagueSetting::MAX_SUBSTITUTIONS => $this->maxSubstitutions(),
             LeagueSetting::SUBSTITUTION_ORDER_MODE => $this->substitutionOrderMode(),
             LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => $this->allowsFormationChangeOnSubstitution(),
-            LeagueSetting::CAPTAIN_ENABLED => $this->captainEnabled(),
-            LeagueSetting::CAPTAIN_SCORE_MULTIPLIER => $this->captainScoreMultiplier(),
+            LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => $this->realCaptainBonusEnabled(),
+            LeagueSetting::REAL_CAPTAIN_BONUS_POINTS => $this->realCaptainBonusPoints(),
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => $this->defenseModifierEnabled(),
             'status' => $this->statusKey(),
             'can_update_settings' => $request->user()?->can('manageSettings', $this->resource)

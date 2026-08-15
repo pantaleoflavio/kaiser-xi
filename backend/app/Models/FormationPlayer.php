@@ -17,11 +17,6 @@ class FormationPlayer extends Model
         'player_role_id',
         'slot_type',
         'position_index',
-        'is_captain',
-    ];
-
-    protected $casts = [
-        'is_captain' => 'boolean',
     ];
 
     public function formation(): BelongsTo

@@ -20,8 +20,8 @@ class LeagueSetting extends Model
     public const MAX_SUBSTITUTIONS = 'max_substitutions';
     public const SUBSTITUTION_ORDER_MODE = 'substitution_order_mode';
     public const ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION = 'allow_formation_change_on_substitution';
-    public const CAPTAIN_ENABLED = 'captain_enabled';
-    public const CAPTAIN_SCORE_MULTIPLIER = 'captain_score_multiplier';
+    public const REAL_CAPTAIN_BONUS_ENABLED = 'real_captain_bonus_enabled';
+    public const REAL_CAPTAIN_BONUS_POINTS = 'real_captain_bonus_points';
     public const DEFENSE_MODIFIER_ENABLED = 'defense_modifier_enabled';
     public const DEFAULT_INITIAL_BUDGET = 500;
     public const DEFAULT_RELEASE_REFUND_PERCENTAGE = 50;
@@ -51,8 +51,8 @@ class LeagueSetting extends Model
     ];
     public const DEFAULT_SUBSTITUTION_ORDER_MODE = self::SUBSTITUTION_ORDER_BENCH;
     public const DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION = false;
-    public const DEFAULT_CAPTAIN_ENABLED = false;
-    public const DEFAULT_CAPTAIN_SCORE_MULTIPLIER = 2.0;
+    public const DEFAULT_REAL_CAPTAIN_BONUS_ENABLED = false;
+    public const DEFAULT_REAL_CAPTAIN_BONUS_POINTS = 0.5;
     public const DEFAULT_DEFENSE_MODIFIER_ENABLED = false;
     public const PLAYER_ROLE_KEYS = ['goalkeeper', 'defender', 'midfielder', 'forward'];
     public const DEFAULT_ROSTER_ROLE_LIMITS = [

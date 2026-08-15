@@ -16,7 +16,7 @@ use Illuminate\Validation\ValidationException;
 
 class SaveFormationService
 {
-    /** @param array{formation_module_id: int, starters: list<int>, bench: list<array{fantasy_team_player_id: int, order: int}>, captain_fantasy_team_player_id: ?int} $data */
+    /** @param array{formation_module_id: int, starters: list<int>, bench: list<array{fantasy_team_player_id: int, order: int}>} $data */
     public function save(League $league, Matchday $matchday, FantasyTeam $team, array $data): Formation
     {
         $this->assertContext($league, $matchday, $team);
@@ -36,7 +36,7 @@ class SaveFormationService
 
             $assignments = FantasyTeamPlayer::query()
                 ->whereIn('id', $allIds)
-                ->with(['player.playerSeasonRegistrations' => fn ($query) => $query->activeForSeason($league->season_id)->with('playerRole')])
+                ->with(['player.playerSeasonRegistrations' => fn($query) => $query->activeForSeason($league->season_id)->with('playerRole')])
                 ->get()->keyBy('id');
 
             if ($assignments->count() !== count($allIds)) {
@@ -47,15 +47,17 @@ class SaveFormationService
             foreach ($allIds as $assignmentId) {
                 $assignment = $assignments->get($assignmentId);
                 $registration = $assignment?->player?->playerSeasonRegistrations?->first();
-                if (! $assignment || $assignment->league_id !== $league->id || $assignment->fantasy_team_id !== $team->id
-                    || $assignment->released_at !== null || $assignment->assigned_at->isFuture() || ! $registration) {
+                if (
+                    ! $assignment || $assignment->league_id !== $league->id || $assignment->fantasy_team_id !== $team->id
+                    || $assignment->released_at !== null || $assignment->assigned_at->isFuture() || ! $registration
+                ) {
                     throw ValidationException::withMessages(['players' => 'Every player must have an active assignment and registration for this fantasy team and league season.']);
                 }
                 $roles[$assignmentId] = $registration->playerRole;
             }
 
-            $required = $module->requirements->mapWithKeys(fn ($requirement): array => [$requirement->playerRole->key => (int) $requirement->required_count])->all();
-            $actual = collect($starterIds)->countBy(fn (int $id): string => $roles[$id]->key)->all();
+            $required = $module->requirements->mapWithKeys(fn($requirement): array => [$requirement->playerRole->key => (int) $requirement->required_count])->all();
+            $actual = collect($starterIds)->countBy(fn(int $id): string => $roles[$id]->key)->all();
             ksort($required);
             ksort($actual);
             if ($actual !== $required) {
@@ -69,19 +71,11 @@ class SaveFormationService
             if ($bench->pluck('order')->all() !== $expectedOrders) {
                 throw ValidationException::withMessages(['bench' => 'Bench orders must be contiguous and start at one.']);
             }
-            $benchRoleCounts = collect($benchIds)->countBy(fn (int $id): string => $roles[$id]->key);
+            $benchRoleCounts = collect($benchIds)->countBy(fn(int $id): string => $roles[$id]->key);
             foreach ($benchRoleCounts as $role => $count) {
                 if ($count > ($league->benchRoleLimits()[$role] ?? -1)) {
                     throw ValidationException::withMessages(['bench' => "The bench exceeds the {$role} role limit."]);
                 }
-            }
-
-            $captainId = $data['captain_fantasy_team_player_id'] ?? null;
-            if ($captainId !== null && ! $league->captainEnabled()) {
-                throw ValidationException::withMessages(['captain_fantasy_team_player_id' => 'Captain selection is disabled for this league.']);
-            }
-            if ($captainId !== null && ! in_array($captainId, $starterIds, true)) {
-                throw ValidationException::withMessages(['captain_fantasy_team_player_id' => 'The captain must be a selected starter.']);
             }
 
             $formation = Formation::query()->firstOrNew(['fantasy_team_id' => $team->id, 'matchday_id' => $matchday->id]);
@@ -89,11 +83,11 @@ class SaveFormationService
             $formation->save();
             $formation->players()->delete();
             foreach ($starterIds as $index => $assignmentId) {
-                $this->createPlayer($formation, $assignments[$assignmentId], $roles[$assignmentId]->id, 'starter', $index + 1, $captainId === $assignmentId);
+                $this->createPlayer($formation, $assignments[$assignmentId], $roles[$assignmentId]->id, 'starter', $index + 1);
             }
             foreach ($bench as $slot) {
                 $assignmentId = $slot['fantasy_team_player_id'];
-                $this->createPlayer($formation, $assignments[$assignmentId], $roles[$assignmentId]->id, 'bench', $slot['order'], false);
+                $this->createPlayer($formation, $assignments[$assignmentId], $roles[$assignmentId]->id, 'bench', $slot['order']);
             }
 
             return $formation->load($this->relations());
@@ -123,9 +117,9 @@ class SaveFormationService
         }
     }
 
-    private function createPlayer(Formation $formation, FantasyTeamPlayer $assignment, int $roleId, string $type, int $position, bool $captain): void
+    private function createPlayer(Formation $formation, FantasyTeamPlayer $assignment, int $roleId, string $type, int $position): void
     {
-        $formation->players()->create(['fantasy_team_player_id' => $assignment->id, 'player_id' => $assignment->player_id, 'player_role_id' => $roleId, 'slot_type' => $type, 'position_index' => $position, 'is_captain' => $captain]);
+        $formation->players()->create(['fantasy_team_player_id' => $assignment->id, 'player_id' => $assignment->player_id, 'player_role_id' => $roleId, 'slot_type' => $type, 'position_index' => $position]);
     }
 
     /** @return list<string> */

@@ -180,14 +180,14 @@ class ResolveFormationSubstitutionsTest extends TestCase
 
         $this->assertSame('4-3-3', $first->effectiveFormationModule->name);
         $this->assertSame(
-            $first->substitutions->map(fn ($substitution): array => [$substitution->outgoing->id, $substitution->incoming->id])->all(),
-            $second->substitutions->map(fn ($substitution): array => [$substitution->outgoing->id, $substitution->incoming->id])->all(),
+            $first->substitutions->map(fn($substitution): array => [$substitution->outgoing->id, $substitution->incoming->id])->all(),
+            $second->substitutions->map(fn($substitution): array => [$substitution->outgoing->id, $substitution->incoming->id])->all(),
         );
     }
 
     public function test_released_historical_assignment_remains_eligible_and_resolution_is_side_effect_free(): void
     {
-        [$formation, $starters, $bench] = $this->formation(['defender'], true);
+        [$formation, $starters, $bench] = $this->formation(['defender']);
         $this->scoreAll($formation, [...array_slice($starters, 1), ...$bench]);
         FantasyTeamPlayer::query()->findOrFail($bench[0])->update(['released_at' => now()]);
         $beforeFormation = $formation->fresh()->getAttributes();
@@ -197,8 +197,6 @@ class ResolveFormationSubstitutionsTest extends TestCase
         $result = $this->resolver()->resolve($formation->fresh());
 
         $this->assertSame($bench[0], $result->substitutions->first()->incoming->fantasy_team_player_id);
-        $this->assertFalse($result->substitutions->first()->incoming->is_captain);
-        $this->assertTrue($result->substitutions->first()->outgoing->is_captain);
         $this->assertSame($beforeFormation, $formation->fresh()->getAttributes());
         $this->assertSame($beforePlayers, $formation->players()->orderBy('id')->get()->map->getAttributes()->all());
         $this->assertSame($beforeAssignments, FantasyTeamPlayer::query()->orderBy('id')->get()->map->getAttributes()->all());
@@ -214,13 +212,10 @@ class ResolveFormationSubstitutionsTest extends TestCase
     }
 
     /** @return array{Formation, list<int>, list<int>} */
-    private function formation(array $benchRoles, bool $captain = false): array
+    private function formation(array $benchRoles): array
     {
         $league = League::factory()->create();
         app(LeagueSettingsService::class)->initializeDefaults($league);
-        if ($captain) {
-            $this->setting($league, LeagueSetting::CAPTAIN_ENABLED, LeagueSetting::booleanPayload(true));
-        }
         $team = FantasyTeam::factory()->create(['league_id' => $league->id]);
         $matchday = Matchday::factory()->create(['season_id' => $league->season_id, 'starts_at' => now()->addDay()]);
         $module = FormationModule::query()->with('requirements.playerRole')->where('name', '4-3-3')->firstOrFail();
@@ -234,15 +229,14 @@ class ResolveFormationSubstitutionsTest extends TestCase
             }
         }
         $starters = collect($starterRows)
-            ->sortBy(fn (array $row): int => $row['role'] === 'defender' ? 0 : 1)
+            ->sortBy(fn(array $row): int => $row['role'] === 'defender' ? 0 : 1)
             ->pluck('id')
             ->all();
-        $bench = array_map(fn (string $role): int => $this->assignment($league, $team, $role)->id, $benchRoles);
+        $bench = array_map(fn(string $role): int => $this->assignment($league, $team, $role)->id, $benchRoles);
         $formation = app(SaveFormationService::class)->save($league, $matchday, $team, [
             'formation_module_id' => $module->id,
             'starters' => $starters,
-            'bench' => collect($bench)->map(fn (int $id, int $index): array => ['fantasy_team_player_id' => $id, 'order' => $index + 1])->all(),
-            'captain_fantasy_team_player_id' => $captain ? $starters[0] : null,
+            'bench' => collect($bench)->map(fn(int $id, int $index): array => ['fantasy_team_player_id' => $id, 'order' => $index + 1])->all(),
         ]);
         $formation->update(['is_confirmed' => true, 'submitted_at' => now()]);
 

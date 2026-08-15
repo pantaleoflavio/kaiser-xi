@@ -30,6 +30,7 @@ class PlayerScore extends Model
         'penalties_saved',
         'goals_conceded',
         'clean_sheet',
+        'is_captain',
         'final_score',
         'status',
     ];
@@ -37,6 +38,7 @@ class PlayerScore extends Model
     protected $casts = [
         'base_rating' => 'decimal:2',
         'clean_sheet' => 'boolean',
+        'is_captain' => 'boolean',
         'final_score' => 'decimal:2',
         'status' => PlayerScoreStatus::class,
     ];

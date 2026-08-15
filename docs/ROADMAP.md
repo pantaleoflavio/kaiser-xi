@@ -121,7 +121,7 @@ Planned
 ### Goals
 
 * Formation management
-* Captain selection
+* Real-match captain bonus configuration
 * Bench management
 * Formation validation
 

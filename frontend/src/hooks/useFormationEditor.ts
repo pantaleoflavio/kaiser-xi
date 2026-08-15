@@ -115,7 +115,6 @@ export function useFormationEditor({
             ? current.starters.filter((value) => value !== id)
             : [...current.starters, id],
           bench: current.bench.filter((value) => value !== id),
-          captainId: selected && current.captainId === id ? null : current.captainId,
         };
       }),
     toggleBench: (id: number) =>
@@ -125,7 +124,6 @@ export function useFormationEditor({
           ? current.bench.filter((value) => value !== id)
           : [...current.bench, id],
         starters: current.starters.filter((value) => value !== id),
-        captainId: current.captainId === id ? null : current.captainId,
       })),
     moveBench: (index: number, direction: -1 | 1) =>
       updateDraft((current) => {
@@ -135,6 +133,5 @@ export function useFormationEditor({
         [bench[index], bench[target]] = [bench[target], bench[index]];
         return { ...current, bench };
       }),
-    selectCaptain: (id: number | null) => updateDraft((current) => ({ ...current, captainId: id })),
   };
 }

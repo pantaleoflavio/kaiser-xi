@@ -5,28 +5,24 @@ export type FormationDraft = {
   formationModuleId: number | null;
   starters: number[];
   bench: number[];
-  captainId: number | null;
 };
 
 export const emptyFormationDraft: FormationDraft = {
   formationModuleId: null,
   starters: [],
   bench: [],
-  captainId: null,
 };
 
 export const formationToDraft = (formation: Formation): FormationDraft => ({
   formationModuleId: formation.formation_module.id,
   starters: formation.starters.map((player) => player.fantasy_team_player_id),
   bench: formation.bench.map((player) => player.fantasy_team_player_id),
-  captainId: formation.captain_fantasy_team_player_id,
 });
 
 export const formationDraftPayload = (draft: FormationDraft): FormationSavePayload => ({
   formation_module_id: draft.formationModuleId!,
   starters: draft.starters,
   bench: draft.bench.map((id, index) => ({ fantasy_team_player_id: id, order: index + 1 })),
-  captain_fantasy_team_player_id: draft.captainId,
 });
 
 export function formationDraftValidation(
@@ -55,8 +51,7 @@ export function formationDraftValidation(
     Object.entries(benchRoleLimits).every(
       ([role, limit]) =>
         draft.bench.filter((id) => rosterById.get(id)?.player.role === role).length <= limit,
-    ) &&
-    (draft.captainId === null || draft.starters.includes(draft.captainId)),
+    ),
   );
   return { module, starterCounts, valid };
 }

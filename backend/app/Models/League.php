@@ -212,16 +212,16 @@ class League extends Model
         return $this->booleanSettingValue(LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION, false);
     }
 
-    public function captainEnabled(): bool
+    public function realCaptainBonusEnabled(): bool
     {
-        return $this->booleanSettingValue(LeagueSetting::CAPTAIN_ENABLED, false);
+        return $this->booleanSettingValue(LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED, false);
     }
 
-    public function captainScoreMultiplier(): float
+    public function realCaptainBonusPoints(): float
     {
         return $this->decimalSettingValue(
-            LeagueSetting::CAPTAIN_SCORE_MULTIPLIER,
-            LeagueSetting::DEFAULT_CAPTAIN_SCORE_MULTIPLIER,
+            LeagueSetting::REAL_CAPTAIN_BONUS_POINTS,
+            LeagueSetting::DEFAULT_REAL_CAPTAIN_BONUS_POINTS,
         );
     }
 

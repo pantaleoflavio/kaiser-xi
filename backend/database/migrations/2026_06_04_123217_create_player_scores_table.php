@@ -24,6 +24,8 @@ return new class extends Migration
             $table->integer('penalties_saved')->default(0);
             $table->integer('goals_conceded')->default(0);
             $table->boolean('clean_sheet')->default(false);
+            // Whether the player captained his real club in this matchday performance.
+            $table->boolean('is_captain')->default(false);
             $table->decimal('final_score', 5, 2)->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();

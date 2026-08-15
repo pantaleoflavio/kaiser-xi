@@ -60,6 +60,10 @@ class PlayerScoreForm
                     ->default(0),
                 Toggle::make('clean_sheet')
                     ->required(),
+                Toggle::make('is_captain')
+                    ->label('Real club captain')
+                    ->helperText('The player captained his real club in this matchday performance.')
+                    ->default(false),
                 TextInput::make('final_score')
                     ->numeric(),
                 Select::make('status')

@@ -34,6 +34,7 @@ class PlayerScoreFactory extends Factory
             'penalties_saved' => 0,
             'goals_conceded' => 0,
             'clean_sheet' => false,
+            'is_captain' => false,
             'final_score' => 6.00,
             'status' => PlayerScoreStatus::Confirmed,
         ];
@@ -41,15 +42,21 @@ class PlayerScoreFactory extends Factory
 
     public function pending(): static
     {
-        return $this->state(fn (): array => [
+        return $this->state(fn(): array => [
             'final_score' => null,
             'status' => PlayerScoreStatus::Pending,
         ]);
     }
 
+    /** Mark this performance as the player captaining his real club. */
+    public function captain(): static
+    {
+        return $this->state(fn(): array => ['is_captain' => true]);
+    }
+
     public function confirmed(float $finalScore = 6.00): static
     {
-        return $this->state(fn (): array => [
+        return $this->state(fn(): array => [
             'final_score' => $finalScore,
             'status' => PlayerScoreStatus::Confirmed,
         ]);
@@ -57,7 +64,7 @@ class PlayerScoreFactory extends Factory
 
     public function didNotPlay(): static
     {
-        return $this->state(fn (): array => [
+        return $this->state(fn(): array => [
             'base_rating' => null,
             'final_score' => null,
             'status' => PlayerScoreStatus::DidNotPlay,

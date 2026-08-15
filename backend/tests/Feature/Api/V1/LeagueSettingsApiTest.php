@@ -78,8 +78,8 @@ class LeagueSettingsApiTest extends TestCase
                 LeagueSetting::MAX_SUBSTITUTIONS,
                 LeagueSetting::SUBSTITUTION_ORDER_MODE,
                 LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
-                LeagueSetting::CAPTAIN_ENABLED,
-                LeagueSetting::CAPTAIN_SCORE_MULTIPLIER,
+                LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED,
+                LeagueSetting::REAL_CAPTAIN_BONUS_POINTS,
                 LeagueSetting::DEFENSE_MODIFIER_ENABLED,
             ] as $key
         ) {
@@ -199,7 +199,7 @@ class LeagueSettingsApiTest extends TestCase
 
         $this->assertSame(1, $league->settings()->where('key', LeagueSetting::MAX_ROSTER_PLAYERS)->count());
         $this->assertSame(1, $league->settings()->where('key', LeagueSetting::ROSTER_ROLE_LIMITS)->count());
-        $this->assertSame(1, $league->settings()->where('key', LeagueSetting::CAPTAIN_SCORE_MULTIPLIER)->count());
+        $this->assertSame(1, $league->settings()->where('key', LeagueSetting::REAL_CAPTAIN_BONUS_POINTS)->count());
         $this->assertSame(1, $league->settings()->where('key', LeagueSetting::DEFENSE_MODIFIER_ENABLED)->count());
     }
 

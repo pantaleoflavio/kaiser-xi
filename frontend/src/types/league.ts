@@ -142,8 +142,8 @@ export type LeagueSettings = {
   max_substitutions: number;
   substitution_order_mode: SubstitutionOrderMode;
   allow_formation_change_on_substitution: boolean;
-  captain_enabled: boolean;
-  captain_score_multiplier: number;
+  real_captain_bonus_enabled: boolean;
+  real_captain_bonus_points: number;
   defense_modifier_enabled: boolean;
   status: string;
   can_update_settings: boolean;
@@ -181,8 +181,8 @@ export type LeagueSettingsPayload = Partial<{
   max_substitutions: number;
   substitution_order_mode: SubstitutionOrderMode;
   allow_formation_change_on_substitution: boolean;
-  captain_enabled: boolean;
-  captain_score_multiplier: number;
+  real_captain_bonus_enabled: boolean;
+  real_captain_bonus_points: number;
   defense_modifier_enabled: boolean;
 }>;
 

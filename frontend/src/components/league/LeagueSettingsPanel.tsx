@@ -14,7 +14,6 @@ import type {
 import { ContentErrorPanel } from '../feedback/ContentErrorPanel';
 
 import { BenchRulesSection } from './settings/BenchRulesSection';
-import { CaptainRulesSection } from './settings/CaptainRulesSection';
 import { FormationRulesSection } from './settings/FormationRulesSection';
 import { LeagueSettingsSummary } from './settings/LeagueSettingsSummary';
 import {
@@ -171,19 +170,14 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
             onModeChange={(value) => setField('substitutionMode', value)}
             t={t}
           />
-          <CaptainRulesSection
-            captainEnabled={form.captainEnabled}
-            disabled={updateSettings.isPending}
-            errors={fieldErrors}
-            onCaptainChange={(value) => setField('captainEnabled', value)}
-            t={t}
-          />
           <ScoringRulesSection
-            captainScoreMultiplier={form.captainScoreMultiplier}
+            realCaptainBonusEnabled={form.realCaptainBonusEnabled}
+            realCaptainBonusPoints={form.realCaptainBonusPoints}
             defenseModifierEnabled={form.defenseModifierEnabled}
             disabled={updateSettings.isPending}
             errors={fieldErrors}
-            onCaptainScoreMultiplierChange={(value) => setField('captainScoreMultiplier', value)}
+            onRealCaptainBonusEnabledChange={(value) => setField('realCaptainBonusEnabled', value)}
+            onRealCaptainBonusPointsChange={(value) => setField('realCaptainBonusPoints', value)}
             onDefenseModifierChange={(value) => setField('defenseModifierEnabled', value)}
             t={t}
           />

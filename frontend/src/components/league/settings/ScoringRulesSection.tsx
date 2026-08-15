@@ -6,50 +6,63 @@ import {
 } from './leagueSettingsForm';
 
 type Props = {
-  captainScoreMultiplier: string;
+  realCaptainBonusEnabled: boolean;
+  realCaptainBonusPoints: string;
   defenseModifierEnabled: boolean;
   errors: SettingsFieldErrors;
   disabled: boolean;
   t: (key: string) => string;
-  onCaptainScoreMultiplierChange: (value: string) => void;
+  onRealCaptainBonusEnabledChange: (enabled: boolean) => void;
+  onRealCaptainBonusPointsChange: (value: string) => void;
   onDefenseModifierChange: (enabled: boolean) => void;
 };
 
 export function ScoringRulesSection({
-  captainScoreMultiplier,
+  realCaptainBonusEnabled,
+  realCaptainBonusPoints,
   defenseModifierEnabled,
   errors,
   disabled,
   t,
-  onCaptainScoreMultiplierChange,
+  onRealCaptainBonusEnabledChange,
+  onRealCaptainBonusPointsChange,
   onDefenseModifierChange,
 }: Props) {
-  const multiplierError = exactError(errors, 'captain_score_multiplier');
+  const bonusError = exactError(errors, 'real_captain_bonus_points');
 
   return (
     <fieldset className="grid gap-4">
       <legend className="text-lg font-semibold text-white">
         {t('leagueSettings.scoring.title')}
       </legend>
-      <label className="block text-sm text-slate-200">
-        {t('leagueSettings.scoring.captainMultiplier')}
+      <label className="flex items-center gap-2 text-sm text-slate-200">
         <input
-          aria-describedby={multiplierError ? errorId('captain_score_multiplier') : undefined}
-          className={settingsInputClass}
+          checked={realCaptainBonusEnabled}
           disabled={disabled}
-          max="3"
-          min="1"
-          onChange={(event) => onCaptainScoreMultiplierChange(event.target.value)}
+          onChange={(event) => onRealCaptainBonusEnabledChange(event.target.checked)}
+          type="checkbox"
+        />
+        <span>{t('leagueSettings.scoring.enableRealCaptainBonus')}</span>
+      </label>
+      <label className="block text-sm text-slate-200">
+        {t('leagueSettings.scoring.realCaptainBonusPoints')}
+        <input
+          aria-describedby={bonusError ? errorId('real_captain_bonus_points') : undefined}
+          className={settingsInputClass}
+          disabled={disabled || !realCaptainBonusEnabled}
+          max="5"
+          min="0"
+          onChange={(event) => onRealCaptainBonusPointsChange(event.target.value)}
           step="0.1"
           type="number"
-          value={captainScoreMultiplier}
+          value={realCaptainBonusPoints}
         />
         <span className="mt-1 block text-slate-400">
-          {t('leagueSettings.scoring.captainMultiplierDescription')}
+          {t('leagueSettings.scoring.realCaptainBonusDescription')}
         </span>
-        {multiplierError ? (
-          <span className="mt-1 block text-red-300" id={errorId('captain_score_multiplier')}>
-            {multiplierError}
+        {bonusError ? (
+          <span className="mt-1 block text-red-300" id={errorId('real_captain_bonus_points')}>
+            {bonusError}
           </span>
         ) : null}
       </label>

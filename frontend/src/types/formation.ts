@@ -14,7 +14,6 @@ export type FormationPlayer = {
   fantasy_team_player_id: number;
   player: { id: number; name: string; role: PlayerRoleKey };
   order: number;
-  is_captain: boolean;
 };
 
 export type Formation = {
@@ -26,7 +25,6 @@ export type Formation = {
   };
   starters: FormationPlayer[];
   bench: FormationPlayer[];
-  captain_fantasy_team_player_id: number | null;
   submitted: boolean;
   submitted_at: string | null;
   matchday: Pick<Matchday, 'id' | 'number' | 'name' | 'deadline'>;
@@ -36,7 +34,6 @@ export type FormationSavePayload = {
   formation_module_id: number;
   starters: number[];
   bench: Array<{ fantasy_team_player_id: number; order: number }>;
-  captain_fantasy_team_player_id: number | null;
 };
 
 export type FormationResponse = ResourceResponse<Formation>;

@@ -51,13 +51,13 @@ class LeagueSettingsService
             ['value' => LeagueSetting::stringPayload(LeagueSetting::DEFAULT_SUBSTITUTION_ORDER_MODE)],
         );
         $league->settings()->firstOrCreate(
-            ['key' => LeagueSetting::CAPTAIN_SCORE_MULTIPLIER],
-            ['value' => LeagueSetting::decimalPayload(LeagueSetting::DEFAULT_CAPTAIN_SCORE_MULTIPLIER)],
+            ['key' => LeagueSetting::REAL_CAPTAIN_BONUS_POINTS],
+            ['value' => LeagueSetting::decimalPayload(LeagueSetting::DEFAULT_REAL_CAPTAIN_BONUS_POINTS)],
         );
         foreach (
             [
                 LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => LeagueSetting::DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
-                LeagueSetting::CAPTAIN_ENABLED => LeagueSetting::DEFAULT_CAPTAIN_ENABLED,
+                LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => LeagueSetting::DEFAULT_REAL_CAPTAIN_BONUS_ENABLED,
                 LeagueSetting::DEFENSE_MODIFIER_ENABLED =>
                 LeagueSetting::DEFAULT_DEFENSE_MODIFIER_ENABLED,
             ] as $key => $enabled
@@ -125,11 +125,11 @@ class LeagueSettingsService
                 );
             }
 
-            if (array_key_exists(LeagueSetting::CAPTAIN_SCORE_MULTIPLIER, $settings)) {
+            if (array_key_exists(LeagueSetting::REAL_CAPTAIN_BONUS_POINTS, $settings)) {
                 LeagueSetting::query()->updateOrCreate(
-                    ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::CAPTAIN_SCORE_MULTIPLIER],
+                    ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::REAL_CAPTAIN_BONUS_POINTS],
                     ['value' => LeagueSetting::decimalPayload(
-                        (float) $settings[LeagueSetting::CAPTAIN_SCORE_MULTIPLIER]
+                        (float) $settings[LeagueSetting::REAL_CAPTAIN_BONUS_POINTS]
                     )],
                 );
             }
@@ -137,7 +137,7 @@ class LeagueSettingsService
             foreach (
                 [
                     LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
-                    LeagueSetting::CAPTAIN_ENABLED,
+                    LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED,
                     LeagueSetting::DEFENSE_MODIFIER_ENABLED,
                 ] as $key
             ) {

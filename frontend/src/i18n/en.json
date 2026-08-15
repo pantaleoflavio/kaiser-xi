@@ -332,7 +332,7 @@
   },
   "leagueSettings": {
     "title": "League settings",
-    "description": "Budget, roster, lineup, bench, substitution, and captain rules for every fantasy team in this league.",
+    "description": "Budget, roster, lineup, bench, substitution, and scoring rules for every fantasy team in this league.",
     "maxRosterPlayers": "Maximum active roster players",
     "rosterRuleHelp": "Role limits are independent upper bounds. Their sum must be at least the overall roster maximum.",
     "roles": {
@@ -386,10 +386,6 @@
         }
       }
     },
-    "captains": {
-      "title": "Captain rules",
-      "captain": "Enable captain selection"
-    },
     "validation": {
       "formationRequired": "Select at least one allowed formation.",
       "nonNegativeInteger": "Enter a non-negative whole number.",
@@ -397,14 +393,15 @@
       "substitutionRange": "Maximum substitutions must be a whole number between zero and the bench size.",
       "positiveInteger": "Enter a positive whole number.",
       "percentage": "Enter a whole-number percentage from 0 to 100.",
-      "multiplierRange": "Enter a multiplier from 1 to 3."
+      "realCaptainBonusRange": "Enter bonus points from 0 to 5."
     },
     "scoring": {
       "title": "Scoring",
-      "captainMultiplier": "Captain multiplier",
-      "captainMultiplierDescription": "The captain's score will be multiplied by this value when captain scoring applies.",
       "defenseModifier": "Enable defense modifier",
-      "defenseModifierDescription": "Stores whether the league uses a defense modifier; calculation will be added in a future scoring milestone."
+      "defenseModifierDescription": "Stores whether the league uses a defense modifier; calculation will be added in a future scoring milestone.",
+      "enableRealCaptainBonus": "Enable real captain bonus",
+      "realCaptainBonusPoints": "Real captain bonus points",
+      "realCaptainBonusDescription": "Awards the configured bonus when a contributing player was the real captain of his club in that match."
     }
   },
   "budget": {
@@ -634,11 +631,10 @@
   },
   "formation": {
     "title": "Matchday formation",
-    "description": "Choose your module, starters, ordered bench, and captain for the selected matchday.",
+    "description": "Choose your module, starters, and ordered bench for the selected matchday.",
     "module": "Formation module",
     "starters": "Starters",
     "bench": "Bench",
-    "captain": "Captain",
     "matchday": "Matchday",
     "matchdayNumber": "Matchday {{number}}",
     "deadline": "Deadline",
@@ -654,7 +650,6 @@
     "benchOrder": "Bench order",
     "moveUp": "Move {{player}} up",
     "moveDown": "Move {{player}} down",
-    "noCaptain": "No captain selected",
     "save": "Save formation",
     "saving": "Saving…",
     "submit": "Submit formation",
@@ -676,8 +671,7 @@
       "invalid": "The lineup is invalid. Review the highlighted sections.",
       "module": "Choose an allowed formation module.",
       "starters": "Starters must exactly match the module role requirements and roster.",
-      "bench": "The bench exceeds its size or role limits, or contains an invalid player.",
-      "captain": "The captain must be one of the selected starters."
+      "bench": "The bench exceeds its size or role limits, or contains an invalid player."
     },
     "unsaved": "Unsaved changes",
     "draftSaved": "Saved draft",
@@ -691,7 +685,7 @@
     "fantasyTeams": "Fantasy teams",
     "myTeam": "My team",
     "matchdaysDescription": "Review past matchdays and manage your current formation.",
-    "rulesDescription": "Read the effective roster, formation, bench, substitution, and captain rules.",
+    "rulesDescription": "Read the effective roster, formation, bench, and substitution rules.",
     "teamsDescription": "View league fantasy teams and create your own team."
   },
   "matchdays": {

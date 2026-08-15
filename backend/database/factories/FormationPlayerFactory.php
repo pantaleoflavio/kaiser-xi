@@ -33,7 +33,6 @@ class FormationPlayerFactory extends Factory
             )->id,
             'slot_type' => 'starter',
             'position_index' => $this->faker->numberBetween(1, 11),
-            'is_captain' => false,
         ];
     }
 }

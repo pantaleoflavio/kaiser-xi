@@ -119,17 +119,17 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'boolean',
             ],
 
-            LeagueSetting::CAPTAIN_ENABLED => [
+            LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => [
                 'sometimes',
                 'required',
                 'boolean',
             ],
 
-            LeagueSetting::CAPTAIN_SCORE_MULTIPLIER => [
+            LeagueSetting::REAL_CAPTAIN_BONUS_POINTS  => [
                 'sometimes',
                 'required',
                 'numeric',
-                'between:1,3',
+                'between:0,5',
             ],
 
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => [

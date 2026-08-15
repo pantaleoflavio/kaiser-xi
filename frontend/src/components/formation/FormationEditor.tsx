@@ -1,5 +1,4 @@
 import { BenchSelectionSection } from './BenchSelectionSection';
-import { CaptainSelectionSection } from './CaptainSelectionSection';
 import { FormationActions } from './FormationActions';
 import { FormationModuleSelector } from './FormationModuleSelector';
 import { StarterSelectionSection } from './StarterSelectionSection';
@@ -120,20 +119,6 @@ export function FormationEditor({
             selected={editor.draft.bench}
             starters={editor.draft.starters}
           />
-          {settings.captain_enabled ? (
-            <CaptainSelectionSection
-              disabled={readOnly}
-              error={fieldError(
-                mutationError,
-                ['captain_fantasy_team_player_id'],
-                t('formation.errors.captain'),
-              )}
-              onSelect={editor.selectCaptain}
-              roster={activeRoster}
-              selectedId={editor.draft.captainId}
-              starters={editor.draft.starters}
-            />
-          ) : null}
           {!readOnly ? (
             <FormationActions
               canSubmit={Boolean(editor.formation) && editor.locallyValid}

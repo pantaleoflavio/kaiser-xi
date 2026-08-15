@@ -38,8 +38,7 @@ class LeagueLineupSettingsApiTest extends TestCase
             ->assertJsonPath('data.bench_role_limits', LeagueSetting::DEFAULT_BENCH_ROLE_LIMITS)
             ->assertJsonPath('data.max_substitutions', 3)
             ->assertJsonPath('data.substitution_order_mode', 'bench_order')
-            ->assertJsonPath('data.allow_formation_change_on_substitution', false)
-            ->assertJsonPath('data.captain_enabled', false);
+            ->assertJsonPath('data.allow_formation_change_on_substitution', false);
 
         $this->assertSame(LeagueSetting::DEFAULT_ALLOWED_FORMATION_MODULE_NAMES, array_column($response->json('data.allowed_formation_modules'), 'name'));
         $this->assertIsInt($response->json('data.allowed_formation_modules.0.id'));
@@ -125,19 +124,6 @@ class LeagueLineupSettingsApiTest extends TestCase
             ->assertUnprocessable()->assertJsonValidationErrors('allow_formation_change_on_substitution');
     }
 
-    public function test_captain_rule_accepts_boolean_updates(): void
-    {
-        [$league, $commissioner] = $this->leagueWithMember('commissioner');
-        Sanctum::actingAs($commissioner);
-
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['captain_enabled' => true])
-            ->assertOk()->assertJsonPath('data.captain_enabled', true);
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['captain_enabled' => false])
-            ->assertOk()->assertJsonPath('data.captain_enabled', false);
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['captain_enabled' => 'enabled'])
-            ->assertUnprocessable()->assertJsonValidationErrors('captain_enabled');
-    }
-
     public function test_formation_and_bench_limits_must_be_compatible_with_roster_limits(): void
     {
         [$league, $commissioner] = $this->leagueWithMember('commissioner');
@@ -179,7 +165,6 @@ class LeagueLineupSettingsApiTest extends TestCase
             LeagueSetting::MAX_SUBSTITUTIONS,
             LeagueSetting::SUBSTITUTION_ORDER_MODE,
             LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
-            LeagueSetting::CAPTAIN_ENABLED,
         ];
     }
 }

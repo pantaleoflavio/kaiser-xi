@@ -280,7 +280,7 @@
   },
   "leagueSettings": {
     "title": "Impostazioni lega",
-    "description": "Regole di budget, rosa, formazione, panchina, sostituzioni e capitano per ogni fantasy team della lega.",
+    "description": "Regole di budget, rosa, formazione, panchina, sostituzioni e punteggio per ogni squadra fantasy della lega.",
     "maxRosterPlayers": "Numero massimo di giocatori attivi",
     "rosterRuleHelp": "I limiti per ruolo sono massimi indipendenti. La loro somma deve essere almeno pari al limite totale della rosa.",
     "roles": {
@@ -334,10 +334,6 @@
         }
       }
     },
-    "captains": {
-      "title": "Regole capitano",
-      "captain": "Abilita selezione capitano"
-    },
     "validation": {
       "formationRequired": "Seleziona almeno una formazione consentita.",
       "nonNegativeInteger": "Inserisci un numero intero non negativo.",
@@ -345,14 +341,15 @@
       "substitutionRange": "Le sostituzioni massime devono essere un numero intero tra zero e le dimensioni della panchina.",
       "positiveInteger": "Inserisci un numero intero positivo.",
       "percentage": "Inserisci una percentuale intera da 0 a 100.",
-      "multiplierRange": "Inserisci un moltiplicatore da 1 a 3."
+      "realCaptainBonusRange": "Inserisci punti bonus da 0 a 5."
     },
     "scoring": {
       "title": "Punteggio",
-      "captainMultiplier": "Moltiplicatore capitano",
-      "captainMultiplierDescription": "Il punteggio del capitano verrà moltiplicato per questo valore quando si applica il punteggio del capitano.",
       "defenseModifier": "Abilita modificatore difesa",
-      "defenseModifierDescription": "Memorizza se la lega usa un modificatore difesa; il calcolo verrà aggiunto in un futuro milestone del punteggio."
+      "defenseModifierDescription": "Memorizza se la lega usa un modificatore difesa; il calcolo verrà aggiunto in un futuro milestone del punteggio.",
+      "enableRealCaptainBonus": "Abilita bonus capitano reale",
+      "realCaptainBonusPoints": "Punti bonus capitano reale",
+      "realCaptainBonusDescription": "Assegna il bonus configurato quando un giocatore che contribuisce era il vero capitano del suo club in quella partita."
     }
   },
   "budget": {
@@ -586,11 +583,10 @@
   },
   "formation": {
     "title": "Formazione della giornata",
-    "description": "Scegli modulo, titolari, panchina ordinata e capitano per la giornata.",
+    "description": "Scegli modulo, titolari e panchina ordinata per la giornata selezionata.",
     "module": "Modulo",
     "starters": "Titolari",
     "bench": "Panchina",
-    "captain": "Capitano",
     "matchday": "Giornata",
     "matchdayNumber": "Giornata {{number}}",
     "deadline": "Scadenza",
@@ -606,7 +602,6 @@
     "benchOrder": "Ordine della panchina",
     "moveUp": "Sposta {{player}} su",
     "moveDown": "Sposta {{player}} giù",
-    "noCaptain": "Nessun capitano selezionato",
     "save": "Salva formazione",
     "saving": "Salvataggio…",
     "submit": "Invia formazione",
@@ -628,8 +623,7 @@
       "invalid": "La formazione non è valida. Controlla le sezioni evidenziate.",
       "module": "Scegli un modulo consentito.",
       "starters": "I titolari devono rispettare i requisiti del modulo e la rosa.",
-      "bench": "La panchina supera i limiti di dimensione o ruolo, oppure contiene un giocatore non valido.",
-      "captain": "Il capitano deve essere uno dei titolari."
+      "bench": "La panchina supera i limiti di dimensione o ruolo, oppure contiene un giocatore non valido."
     },
     "unsaved": "Modifiche non salvate",
     "draftSaved": "Bozza salvata",
@@ -643,7 +637,7 @@
     "fantasyTeams": "Fantasquadre",
     "myTeam": "La mia squadra",
     "matchdaysDescription": "Consulta le giornate passate e gestisci la formazione attuale.",
-    "rulesDescription": "Consulta le regole effettive per rosa, formazione, panchina, sostituzioni e capitano.",
+    "rulesDescription": "Leggi le regole effettive per rosa, formazione, panchina e sostituzioni.",
     "teamsDescription": "Visualizza le fantasquadre della lega e crea la tua squadra."
   },
   "matchdays": {

@@ -8,7 +8,6 @@ use App\Models\Formation;
 use App\Models\FormationModule;
 use App\Models\League;
 use App\Models\LeagueRole;
-use App\Models\LeagueSetting;
 use App\Models\Matchday;
 use App\Models\Player;
 use App\Models\PlayerRole;
@@ -104,7 +103,7 @@ class FormationApiTest extends TestCase
         $this->putJson($this->url($league, $otherMatchday, $team), $payload)->assertNotFound();
     }
 
-    public function test_database_requirements_roster_bench_and_captain_rules_are_enforced_transactionally(): void
+    public function test_database_requirements_roster_bench_rules_are_enforced_transactionally(): void
     {
         [$league, $team, $matchday, $payload] = $this->context();
 
@@ -124,13 +123,6 @@ class FormationApiTest extends TestCase
         $invalid = $payload;
         $invalid['bench'] = [['fantasy_team_player_id' => $payload['starters'][0], 'order' => 1]];
         $this->putJson($url, $invalid)->assertUnprocessable()->assertJsonValidationErrors('players');
-
-        $invalid = $payload;
-        $invalid['captain_fantasy_team_player_id'] = $payload['starters'][0];
-        $this->putJson($url, $invalid)->assertUnprocessable()->assertJsonValidationErrors('captain_fantasy_team_player_id');
-
-        $league->settings()->updateOrCreate(['key' => LeagueSetting::CAPTAIN_ENABLED], ['value' => LeagueSetting::booleanPayload(true)]);
-        $this->putJson($url, $invalid)->assertOk()->assertJsonPath('data.captain_fantasy_team_player_id', $payload['starters'][0]);
 
         $released = FantasyTeamPlayer::query()->findOrFail($payload['starters'][0]);
         $released->update(['released_at' => now()]);
@@ -153,7 +145,7 @@ class FormationApiTest extends TestCase
             }
         }
 
-        return [$league, $team, $matchday, ['formation_module_id' => $module->id, 'starters' => $starters, 'bench' => [], 'captain_fantasy_team_player_id' => null]];
+        return [$league, $team, $matchday, ['formation_module_id' => $module->id, 'starters' => $starters, 'bench' => []]];
     }
 
     private function assignment(League $league, FantasyTeam $team, string $roleKey): FantasyTeamPlayer

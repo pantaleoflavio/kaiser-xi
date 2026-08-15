@@ -27,8 +27,8 @@ export type LeagueSettingsFormState = {
   maxSubstitutions: string;
   substitutionMode: SubstitutionOrderMode;
   allowFormationChange: boolean;
-  captainEnabled: boolean;
-  captainScoreMultiplier: string;
+  realCaptainBonusEnabled: boolean;
+  realCaptainBonusPoints: string;
   defenseModifierEnabled: boolean;
 };
 
@@ -59,8 +59,8 @@ export function createLeagueSettingsFormState(
     maxSubstitutions: String(settings?.max_substitutions ?? ''),
     substitutionMode: settings?.substitution_order_mode ?? 'bench_order',
     allowFormationChange: settings?.allow_formation_change_on_substitution ?? false,
-    captainEnabled: settings?.captain_enabled ?? false,
-    captainScoreMultiplier: String(settings?.captain_score_multiplier ?? ''),
+    realCaptainBonusEnabled: settings?.real_captain_bonus_enabled ?? false,
+    realCaptainBonusPoints: String(settings?.real_captain_bonus_points ?? ''),
     defenseModifierEnabled: settings?.defense_modifier_enabled ?? false,
   };
 }
@@ -121,7 +121,7 @@ export function validateLeagueSettingsForm(
   const benchSize = requiredNumber(form.benchSize);
   const benchLimits = parsedRoleLimits(form.benchRoleLimits);
   const maximumSubstitutions = requiredNumber(form.maxSubstitutions);
-  const captainScoreMultiplier = requiredNumber(form.captainScoreMultiplier);
+  const realCaptainBonusPoints = requiredNumber(form.realCaptainBonusPoints);
   const errors: SettingsFieldErrors = {};
 
   if (initialBudget === null || !Number.isInteger(initialBudget) || initialBudget < 0)
@@ -168,8 +168,8 @@ export function validateLeagueSettingsForm(
     maximumSubstitutions > benchSize
   )
     errors.max_substitutions = [t('leagueSettings.validation.substitutionRange')];
-  if (captainScoreMultiplier === null || captainScoreMultiplier < 1 || captainScoreMultiplier > 3)
-    errors.captain_score_multiplier = [t('leagueSettings.validation.multiplierRange')];
+  if (realCaptainBonusPoints === null || realCaptainBonusPoints < 0 || realCaptainBonusPoints > 5)
+    errors.real_captain_bonus_points = [t('leagueSettings.validation.realCaptainBonusRange')];
   if (
     Object.keys(errors).length > 0 ||
     initialBudget === null ||
@@ -177,7 +177,7 @@ export function validateLeagueSettingsForm(
     maximum === null ||
     benchSize === null ||
     maximumSubstitutions === null ||
-    captainScoreMultiplier === null ||
+    realCaptainBonusPoints === null ||
     !completeRoleLimits(rosterLimits) ||
     !completeRoleLimits(benchLimits)
   )
@@ -196,8 +196,8 @@ export function validateLeagueSettingsForm(
       max_substitutions: maximumSubstitutions,
       substitution_order_mode: form.substitutionMode,
       allow_formation_change_on_substitution: form.allowFormationChange,
-      captain_enabled: form.captainEnabled,
-      captain_score_multiplier: captainScoreMultiplier,
+      real_captain_bonus_enabled: form.realCaptainBonusEnabled,
+      real_captain_bonus_points: realCaptainBonusPoints,
       defense_modifier_enabled: form.defenseModifierEnabled,
     },
   };

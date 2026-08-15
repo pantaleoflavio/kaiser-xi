@@ -332,7 +332,7 @@
   },
   "leagueSettings": {
     "title": "Liga-Einstellungen",
-    "description": "Budget-, Kader-, Aufstellungs-, Bank-, Auswechslungs- und Kapitänsregeln für alle Fantasy-Teams dieser Liga.",
+    "description": "Budget-, Kader-, Aufstellungs-, Bank-, Auswechslungs- und Wertungsregeln für jedes Fantasy-Team dieser Liga.",
     "maxRosterPlayers": "Maximale aktive Kadergröße",
     "rosterRuleHelp": "Rollenlimits sind unabhängige Obergrenzen. Ihre Summe muss mindestens der maximalen Kadergröße entsprechen.",
     "roles": {
@@ -386,10 +386,6 @@
         }
       }
     },
-    "captains": {
-      "title": "Kapitänsregeln",
-      "captain": "Kapitänsauswahl aktivieren"
-    },
     "validation": {
       "formationRequired": "Wähle mindestens eine erlaubte Formation aus.",
       "nonNegativeInteger": "Gib eine nichtnegative ganze Zahl ein.",
@@ -397,14 +393,15 @@
       "substitutionRange": "Die maximale Anzahl Auswechslungen muss eine ganze Zahl zwischen null und der Bankgröße sein.",
       "positiveInteger": "Gib eine positive ganze Zahl ein.",
       "percentage": "Gib einen ganzzahligen Prozentsatz von 0 bis 100 ein.",
-      "multiplierRange": "Gib einen Multiplikator von 1 bis 3 ein."
+      "realCaptainBonusRange": "Bonuspunkte zwischen 0 und 5 eingeben."
     },
     "scoring": {
       "title": "Punktewertung",
-      "captainMultiplier": "Kapitänsmultiplikator",
-      "captainMultiplierDescription": "Die Punktzahl des Kapitäns wird mit diesem Wert multipliziert, wenn die Kapitänswertung angewendet wird.",
       "defenseModifier": "Abwehrmodifikator aktivieren",
-      "defenseModifierDescription": "Legt fest, ob die Liga einen Abwehrmodifikator verwendet; die Berechnung folgt in einem späteren Wertungs-Meilenstein."
+      "defenseModifierDescription": "Legt fest, ob die Liga einen Abwehrmodifikator verwendet; die Berechnung folgt in einem späteren Wertungs-Meilenstein.",
+      "enableRealCaptainBonus": "Bonus für echten Kapitän aktivieren",
+      "realCaptainBonusPoints": "Bonuspunkte für echten Kapitän",
+      "realCaptainBonusDescription": "Vergibt den festgelegten Bonus, wenn ein beitragender Spieler in diesem Spiel der echte Kapitän seines Vereins war."
     }
   },
   "budget": {
@@ -634,11 +631,10 @@
   },
   "formation": {
     "title": "Spieltagsaufstellung",
-    "description": "Wähle System, Startelf, geordnete Bank und Kapitän für den Spieltag.",
+    "description": "Wähle Formation, Startelf und geordnete Bank für den ausgewählten Spieltag.",
     "module": "Spielsystem",
     "starters": "Startelf",
     "bench": "Bank",
-    "captain": "Kapitän",
     "matchday": "Spieltag",
     "matchdayNumber": "Spieltag {{number}}",
     "deadline": "Frist",
@@ -654,7 +650,6 @@
     "benchOrder": "Reihenfolge der Bank",
     "moveUp": "{{player}} nach oben",
     "moveDown": "{{player}} nach unten",
-    "noCaptain": "Kein Kapitän ausgewählt",
     "save": "Aufstellung speichern",
     "saving": "Wird gespeichert…",
     "submit": "Aufstellung einreichen",
@@ -676,8 +671,7 @@
       "invalid": "Die Aufstellung ist ungültig. Prüfe die markierten Bereiche.",
       "module": "Wähle ein erlaubtes Spielsystem.",
       "starters": "Die Startelf muss den Positionsvorgaben und dem Kader entsprechen.",
-      "bench": "Die Bank überschreitet Größen- oder Positionslimits oder enthält einen ungültigen Spieler.",
-      "captain": "Der Kapitän muss zur Startelf gehören."
+      "bench": "Die Bank überschreitet Größen- oder Positionslimits oder enthält einen ungültigen Spieler."
     },
     "unsaved": "Ungespeicherte Änderungen",
     "draftSaved": "Gespeicherter Entwurf",
@@ -691,7 +685,7 @@
     "fantasyTeams": "Fantasy-Teams",
     "myTeam": "Mein Team",
     "matchdaysDescription": "Vergangene Spieltage ansehen und die aktuelle Aufstellung verwalten.",
-    "rulesDescription": "Die gültigen Kader-, Aufstellungs-, Bank-, Wechsel- und Kapitänsregeln lesen.",
+    "rulesDescription": "Lies die geltenden Kader-, Aufstellungs-, Bank- und Auswechslungsregeln.",
     "teamsDescription": "Fantasy-Teams der Liga ansehen und ein eigenes Team erstellen."
   },
   "matchdays": {
