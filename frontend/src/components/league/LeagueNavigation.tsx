@@ -12,10 +12,12 @@ export function LeagueNavigation({
   leagueId,
   myTeamId,
   showSchedule = false,
+  showStandings = false,
 }: {
   leagueId: string;
   myTeamId?: number;
   showSchedule?: boolean;
+  showStandings?: boolean;
 }) {
   const { t } = useTranslation();
   const base = `/leagues/${leagueId}`;
@@ -33,6 +35,11 @@ export function LeagueNavigation({
       {showSchedule ? (
         <NavLink className={linkClass} to={`${base}/head-to-head-schedule`}>
           {t('h2h.schedule')}
+        </NavLink>
+      ) : null}
+      {showStandings ? (
+        <NavLink className={linkClass} to={`${base}/standings`}>
+          {t('standings.title')}
         </NavLink>
       ) : null}
       <NavLink className={linkClass} to={`${base}/rules`}>

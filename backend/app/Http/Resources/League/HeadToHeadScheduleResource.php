@@ -20,6 +20,15 @@ class HeadToHeadScheduleResource extends JsonResource
                     'id' => $match->id,
                     'home_fantasy_team' => $this->teamData($match->homeFantasyTeam),
                     'away_fantasy_team' => $this->teamData($match->awayFantasyTeam),
+                    'result' => $match->result === null ? null : [
+                        'id' => $match->result->id,
+                        'home_points' => $match->result->home_points,
+                        'away_points' => $match->result->away_points,
+                        'home_goals' => $match->result->home_goals,
+                        'away_goals' => $match->result->away_goals,
+                        'status' => $match->result->result_status,
+                        'calculated_at' => $match->result->calculated_at,
+                    ],
                 ])->values()->all(),
             ])->values();
 

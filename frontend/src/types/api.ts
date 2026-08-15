@@ -52,6 +52,19 @@ export type HeadToHeadFixture = {
   id: number;
   home_fantasy_team: HeadToHeadFantasyTeam;
   away_fantasy_team: HeadToHeadFantasyTeam;
+  result: FantasyMatchResult | null;
+};
+
+export type FantasyMatchResultStatus = 'pending' | 'calculated';
+
+export type FantasyMatchResult = {
+  id: number;
+  home_points: string | number;
+  away_points: string | number;
+  home_goals: number;
+  away_goals: number;
+  status: FantasyMatchResultStatus;
+  calculated_at: string | null;
 };
 
 export type HeadToHeadScheduleMatchday = {

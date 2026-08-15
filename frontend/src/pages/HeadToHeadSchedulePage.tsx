@@ -80,7 +80,7 @@ export function HeadToHeadSchedulePage() {
 
   return (
     <section className="space-y-6">
-      <LeagueNavigation leagueId={leagueId} myTeamId={myTeam?.id} showSchedule />
+      <LeagueNavigation leagueId={leagueId} myTeamId={myTeam?.id} showSchedule showStandings />
       {schedule.data?.data.initialized ? (
         <HeadToHeadScheduleSummary schedule={schedule.data.data} />
       ) : (

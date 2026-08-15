@@ -11,6 +11,7 @@ import { LeagueNavigation } from '../components/league/LeagueNavigation';
 import { useTranslation } from '../i18n';
 import type { Matchday } from '../types/formation';
 import type { FantasyTeam } from '../types/league';
+import type { HeadToHeadFixture } from '../types/api';
 import { formatDate } from '../utils/formatters';
 
 function MatchdayRow({
@@ -19,12 +20,16 @@ function MatchdayRow({
   state,
   myTeam,
   opponent,
+  fixture,
+  scheduleInitialized,
 }: {
   item: Matchday;
   leagueId: string;
   state: 'past' | 'current' | 'upcoming';
   myTeam?: FantasyTeam;
   opponent?: string;
+  fixture?: HeadToHeadFixture;
+  scheduleInitialized?: boolean;
 }) {
   const { language, t } = useTranslation();
   const formation = useQuery({
@@ -58,6 +63,21 @@ function MatchdayRow({
             <p className="mt-2 text-sm font-semibold text-emerald-200">
               {t('h2h.opponent')}: {t('h2h.vsTeam', { team: opponent })}
             </p>
+          ) : null}
+          {state !== 'past' && scheduleInitialized && !fixture ? (
+            <p className="mt-2 text-sm font-semibold text-slate-300">{t('h2h.restDay')}</p>
+          ) : null}
+          {state === 'past' && fixture ? (
+            fixture.result?.status === 'calculated' ? (
+              <p className="mt-3 font-semibold text-white">
+                {fixture.home_fantasy_team.name} {fixture.result.home_goals}–
+                {fixture.result.away_goals} {fixture.away_fantasy_team.name}
+              </p>
+            ) : (
+              <p className="mt-3 text-sm font-semibold text-amber-200">
+                {t('results.pendingResult')}
+              </p>
+            )
           ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
@@ -146,6 +166,7 @@ export function MatchdayListPage() {
         leagueId={leagueId}
         myTeamId={myTeam?.id}
         showSchedule={league.data?.data.type.key === 'head_to_head'}
+        showStandings={league.data?.data.type.key === 'head_to_head'}
       />
       <div>
         <h1 className="text-3xl font-bold text-white">{t('matchdays.title')}</h1>
@@ -160,6 +181,22 @@ export function MatchdayListPage() {
               leagueId={leagueId}
               myTeam={myTeam}
               opponent={opponentFor(item.id)}
+              fixture={
+                myTeam && schedule.data?.data.initialized
+                  ? schedule.data.data.matchdays
+                      .find((group) => group.matchday.id === item.id)
+                      ?.fixtures.find(
+                        (fixture) =>
+                          fixture.home_fantasy_team.id === myTeam.id ||
+                          fixture.away_fantasy_team.id === myTeam.id,
+                      )
+                  : undefined
+              }
+              scheduleInitialized={Boolean(
+                myTeam &&
+                schedule.data?.data.initialized &&
+                schedule.data.data.matchdays.some((group) => group.matchday.id === item.id),
+              )}
               state={stateFor(item)}
             />
           ))}

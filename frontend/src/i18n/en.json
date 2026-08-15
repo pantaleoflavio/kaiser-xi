@@ -743,5 +743,43 @@
       "alreadyInitialized": "The schedule is already initialized. Reloading the generated schedule.",
       "invalidMatchday": "The selected starting Matchday or league configuration is invalid."
     }
+  },
+  "standings": {
+    "title": "Standings",
+    "description": "Head-to-head league ranking from calculated results.",
+    "position": "Position",
+    "positionShort": "Pos",
+    "team": "Fantasy team",
+    "played": "Played",
+    "playedShort": "P",
+    "wins": "Wins",
+    "winsShort": "W",
+    "draws": "Draws",
+    "drawsShort": "D",
+    "losses": "Losses",
+    "lossesShort": "L",
+    "goalsFor": "Goals for",
+    "goalsForShort": "GF",
+    "goalsAgainst": "Goals against",
+    "goalsAgainstShort": "GA",
+    "goalDifference": "Goal difference",
+    "goalDifferenceShort": "GD",
+    "points": "Points",
+    "pointsShort": "Pts",
+    "you": "You",
+    "currentTeam": "{{team}}, your fantasy team",
+    "empty": "No standings are available yet.",
+    "errorTitle": "Unable to load standings"
+  },
+  "results": {
+    "matchResult": "Match result",
+    "pendingResult": "Pending result",
+    "finalScore": "Final score",
+    "fantasyPoints": "Fantasy points",
+    "viewFormation": "View formation",
+    "viewTeamFormation": "View {{team}} formation",
+    "substitute": "Substitute",
+    "replaced": "Replaced",
+    "noCalculatedResult": "No calculated result yet"
   }
 }

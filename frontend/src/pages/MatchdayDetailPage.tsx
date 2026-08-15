@@ -2,10 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import { formationsApi } from '../api/formations';
 import { leaguesApi } from '../api/leagues';
+import { headToHeadScheduleApi } from '../api/headToHeadSchedule';
 import { formationKeys, leagueKeys } from '../api/queryKeys';
 import { LoadingState } from '../components/LoadingState';
 import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { LeagueNavigation } from '../components/league/LeagueNavigation';
+import { HeadToHeadMatchCard } from '../components/results/HeadToHeadMatchCard';
 import { useTranslation } from '../i18n';
 import { formatDate } from '../utils/formatters';
 
@@ -22,7 +24,17 @@ export function MatchdayDetailPage() {
     queryKey: leagueKeys.fantasyTeams(leagueId),
     queryFn: () => leaguesApi.fantasyTeams(leagueId),
   });
-  if (matchdays.isLoading || teams.isLoading) return <LoadingState message={t('common.loading')} />;
+  const league = useQuery({
+    queryKey: leagueKeys.detail(leagueId),
+    queryFn: () => leaguesApi.show(leagueId),
+  });
+  const schedule = useQuery({
+    queryKey: leagueKeys.headToHeadSchedule(leagueId),
+    queryFn: () => headToHeadScheduleApi.getSchedule(leagueId),
+    enabled: league.data?.data.type.key === 'head_to_head',
+  });
+  if (matchdays.isLoading || teams.isLoading || league.isLoading || schedule.isLoading)
+    return <LoadingState message={t('common.loading')} />;
   const matchday = matchdays.data?.data.find((item) => item.id === numericId);
   if (!matchday || matchdays.error)
     return (
@@ -32,7 +44,12 @@ export function MatchdayDetailPage() {
   const open = Date.now() < new Date(matchday.deadline).getTime();
   return (
     <section className="space-y-6">
-      <LeagueNavigation leagueId={leagueId} myTeamId={myTeam?.id} />
+      <LeagueNavigation
+        leagueId={leagueId}
+        myTeamId={myTeam?.id}
+        showSchedule={league.data?.data.type.key === 'head_to_head'}
+        showStandings={league.data?.data.type.key === 'head_to_head'}
+      />
       <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
         <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
           {open ? t('matchdays.current') : t('matchdays.past')}
@@ -57,6 +74,25 @@ export function MatchdayDetailPage() {
           </Link>
         ) : null}
       </article>
+      {league.data?.data.type.key === 'head_to_head' ? (
+        <section className="space-y-4" aria-labelledby="fixtures-title">
+          <h2 className="text-2xl font-semibold text-white" id="fixtures-title">
+            {t('results.matchResult')}
+          </h2>
+          {(
+            schedule.data?.data.matchdays.find((group) => group.matchday.id === numericId)
+              ?.fixtures ?? []
+          ).map((fixture) => (
+            <HeadToHeadMatchCard
+              fixture={fixture}
+              leagueId={leagueId}
+              matchdayId={numericId}
+              currentTeamId={myTeam?.id}
+              key={fixture.id}
+            />
+          ))}
+        </section>
+      ) : null}
     </section>
   );
 }

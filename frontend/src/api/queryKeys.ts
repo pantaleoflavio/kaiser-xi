@@ -17,6 +17,7 @@ export const leagueKeys = {
     [...leagueKeys.detail(leagueId), 'fantasy-teams'] as const,
   headToHeadSchedule: (leagueId: string | number) =>
     [...leagueKeys.detail(leagueId), 'head-to-head-schedule'] as const,
+  standings: (leagueId: string | number) => [...leagueKeys.detail(leagueId), 'standings'] as const,
 };
 
 export const invitationKeys = {

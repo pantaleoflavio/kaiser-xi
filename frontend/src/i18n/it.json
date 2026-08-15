@@ -695,5 +695,43 @@
       "alreadyInitialized": "Il calendario è già inizializzato. Ricaricamento del calendario generato.",
       "invalidMatchday": "La giornata iniziale selezionata o la configurazione della lega non è valida."
     }
+  },
+  "standings": {
+    "title": "Classifica",
+    "description": "Classifica degli scontri diretti basata sui risultati calcolati.",
+    "position": "Posizione",
+    "positionShort": "Pos",
+    "team": "Fantasquadra",
+    "played": "Giocate",
+    "playedShort": "G",
+    "wins": "Vittorie",
+    "winsShort": "V",
+    "draws": "Pareggi",
+    "drawsShort": "N",
+    "losses": "Sconfitte",
+    "lossesShort": "P",
+    "goalsFor": "Gol fatti",
+    "goalsForShort": "GF",
+    "goalsAgainst": "Gol subiti",
+    "goalsAgainstShort": "GS",
+    "goalDifference": "Differenza reti",
+    "goalDifferenceShort": "DR",
+    "points": "Punti",
+    "pointsShort": "Pt",
+    "you": "Tu",
+    "currentTeam": "{{team}}, la tua fantasquadra",
+    "empty": "Nessuna classifica ancora disponibile.",
+    "errorTitle": "Impossibile caricare la classifica"
+  },
+  "results": {
+    "matchResult": "Risultato partita",
+    "pendingResult": "Risultato in attesa",
+    "finalScore": "Risultato finale",
+    "fantasyPoints": "Fantapunti",
+    "viewFormation": "Visualizza formazione",
+    "viewTeamFormation": "Visualizza la formazione di {{team}}",
+    "substitute": "Subentrato",
+    "replaced": "Sostituito",
+    "noCalculatedResult": "Nessun risultato calcolato disponibile"
   }
 }

@@ -743,5 +743,43 @@
       "alreadyInitialized": "Der Spielplan wurde bereits erstellt. Der erstellte Spielplan wird neu geladen.",
       "invalidMatchday": "Der gewählte Startspieltag oder die Ligakonfiguration ist ungültig."
     }
+  },
+  "standings": {
+    "title": "Tabelle",
+    "description": "Tabelle der direkten Duelle aus berechneten Ergebnissen.",
+    "position": "Position",
+    "positionShort": "Pos",
+    "team": "Fantasy-Team",
+    "played": "Spiele",
+    "playedShort": "Sp",
+    "wins": "Siege",
+    "winsShort": "S",
+    "draws": "Unentschieden",
+    "drawsShort": "U",
+    "losses": "Niederlagen",
+    "lossesShort": "N",
+    "goalsFor": "Tore",
+    "goalsForShort": "TF",
+    "goalsAgainst": "Gegentore",
+    "goalsAgainstShort": "TG",
+    "goalDifference": "Tordifferenz",
+    "goalDifferenceShort": "TD",
+    "points": "Punkte",
+    "pointsShort": "Pkt",
+    "you": "Du",
+    "currentTeam": "{{team}}, dein Fantasy-Team",
+    "empty": "Noch keine Tabelle verfügbar.",
+    "errorTitle": "Tabelle konnte nicht geladen werden"
+  },
+  "results": {
+    "matchResult": "Spielergebnis",
+    "pendingResult": "Ergebnis ausstehend",
+    "finalScore": "Endstand",
+    "fantasyPoints": "Fantasy-Punkte",
+    "viewFormation": "Aufstellung ansehen",
+    "viewTeamFormation": "Aufstellung von {{team}} ansehen",
+    "substitute": "Einwechselspieler",
+    "replaced": "Ersetzt",
+    "noCalculatedResult": "Noch kein berechnetes Ergebnis"
   }
 }

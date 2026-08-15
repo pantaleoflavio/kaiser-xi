@@ -31,7 +31,7 @@ class HeadToHeadScheduleController extends Controller
         return $league->loadCount('fantasyTeams')->load([
             'h2hStartMatchday',
             'fantasyMatches' => fn($query) => $query
-                ->with(['matchday', 'homeFantasyTeam', 'awayFantasyTeam'])
+                ->with(['matchday', 'homeFantasyTeam', 'awayFantasyTeam', 'result'])
                 ->orderBy('matchday_id')
                 ->orderBy('id'),
         ]);

@@ -130,6 +130,21 @@ export type FantasyTeamPayload = {
   name: string;
 };
 
+export type Standing = {
+  position: number;
+  fantasy_team: Pick<FantasyTeam, 'id' | 'name' | 'slug'>;
+  played: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  goals_for: number;
+  goals_against: number;
+  goal_difference: number;
+  points: number;
+};
+
+export type StandingsResponse = CollectionResponse<Standing>;
+
 export type LeagueSettings = {
   initial_budget: string | number | null;
   release_refund_percentage: string | number | null;

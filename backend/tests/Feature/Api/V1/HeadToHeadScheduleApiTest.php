@@ -3,6 +3,7 @@
 namespace Tests\Feature\Api\V1;
 
 use App\Models\FantasyMatch;
+use App\Models\FantasyMatchResult;
 use App\Models\FantasyTeam;
 use App\Models\League;
 use App\Models\LeagueInvitation;
@@ -56,6 +57,33 @@ class HeadToHeadScheduleApiTest extends TestCase
             'start_matchday_id' => $matchdays[1]->id,
         ])->assertConflict()->assertHeader('X-Error-Code', 'league_schedule_already_initialized');
         $this->assertSame(14, FantasyMatch::query()->where('league_id', $league->id)->count());
+    }
+
+    public function test_schedule_exposes_authoritative_calculated_and_missing_results(): void
+    {
+        [$league,, $matchdays] = $this->leagueWithScheduleInputs(4, 1, 6);
+        Sanctum::actingAs($league->commissioner);
+        $this->postJson("/api/v1/leagues/{$league->id}/head-to-head-schedule", [
+            'start_matchday_id' => $matchdays[0]->id,
+        ])->assertOk();
+
+        $matches = FantasyMatch::query()->where('league_id', $league->id)->orderBy('id')->get();
+        FantasyMatchResult::factory()->for($matches->first())->create([
+            'home_points' => 77,
+            'away_points' => 69.5,
+            'home_goals' => 2,
+            'away_goals' => 1,
+            'result_status' => 'calculated',
+            'calculated_at' => now(),
+        ]);
+
+        $this->getJson("/api/v1/leagues/{$league->id}/head-to-head-schedule")
+            ->assertOk()
+            ->assertJsonPath('data.matchdays.0.fixtures.0.result.status', 'calculated')
+            ->assertJsonPath('data.matchdays.0.fixtures.0.result.home_goals', 2)
+            ->assertJsonPath('data.matchdays.0.fixtures.0.result.away_goals', 1)
+            ->assertJsonPath('data.matchdays.0.fixtures.0.result.home_points', '77.00')
+            ->assertJsonPath('data.matchdays.0.fixtures.1.result', null);
     }
 
     public function test_six_teams_repeat_the_ten_round_cycle_across_twenty_three_matchdays(): void

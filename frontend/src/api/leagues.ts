@@ -19,6 +19,7 @@ import type {
   EligiblePlayerCollectionResponse,
   EligiblePlayerFilters,
   CreateLeagueInvitationPayload,
+  StandingsResponse,
 } from '../types/league';
 import { apiClient } from './client';
 
@@ -74,6 +75,8 @@ export const leaguesApi = {
     apiClient<void>(`/leagues/${leagueId}/invitations/${invitationId}`, { method: 'DELETE' }),
   fantasyTeams: (leagueId: string | number) =>
     apiClient<FantasyTeamCollectionResponse>(`/leagues/${leagueId}/fantasy-teams`),
+  standings: (leagueId: string | number) =>
+    apiClient<StandingsResponse>(`/leagues/${leagueId}/standings`),
   createFantasyTeam: (leagueId: string | number, payload: FantasyTeamPayload) =>
     apiClient<FantasyTeamResponse>(`/leagues/${leagueId}/fantasy-teams`, {
       method: 'POST',
