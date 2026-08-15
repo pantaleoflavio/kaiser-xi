@@ -623,6 +623,7 @@
     },
     "errors": {
       "load": "Impossibile caricare la formazione.",
+      "scheduleNotInitialized": "Questa giornata non fa parte di un calendario testa a testa inizializzato. La modifica della formazione non è disponibile.",
       "matchdays": "Impossibile caricare le giornate.",
       "deadline": "La scadenza è passata. La formazione è ora in sola lettura.",
       "invalid": "La formazione non è valida. Controlla le sezioni evidenziate.",
@@ -656,6 +657,9 @@
     "createFormation": "Crea formazione",
     "editFormation": "Modifica formazione",
     "viewFormation": "Visualizza formazione",
+    "viewOpponentFormation": "Visualizza formazione avversaria",
+    "scheduleNotInitialized": "Il calendario testa a testa non è inizializzato. Queste giornate sono solo il contesto della stagione reale e non sono ancora giornate fantasy giocabili.",
+    "openScheduleSetup": "Apri configurazione calendario",
     "notFound": "Giornata non trovata",
     "backToMatchday": "← Torna alla giornata"
   },

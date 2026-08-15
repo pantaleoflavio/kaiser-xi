@@ -671,6 +671,7 @@
     },
     "errors": {
       "load": "The formation could not be loaded.",
+      "scheduleNotInitialized": "This matchday is not part of an initialized head-to-head championship schedule. Formation editing is unavailable.",
       "matchdays": "Matchdays could not be loaded.",
       "deadline": "The lineup deadline has passed. The formation is now read-only.",
       "invalid": "The lineup is invalid. Review the highlighted sections.",
@@ -704,6 +705,9 @@
     "createFormation": "Create formation",
     "editFormation": "Edit formation",
     "viewFormation": "View formation",
+    "viewOpponentFormation": "View opponent formation",
+    "scheduleNotInitialized": "This head-to-head schedule is not initialized. These matchdays are real-season context and are not yet playable fantasy rounds.",
+    "openScheduleSetup": "Open schedule setup",
     "notFound": "Matchday not found",
     "backToMatchday": "← Back to matchday"
   },

@@ -1,4 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import { formationsApi } from '../../api/formations';
+import { formationKeys } from '../../api/queryKeys';
 import type { HeadToHeadFixture } from '../../types/api';
 import { useTranslation } from '../../i18n';
 
@@ -7,13 +10,11 @@ export function HeadToHeadMatchCard({
   leagueId,
   matchdayId,
   currentTeamId,
-  formationsVisible,
 }: {
   fixture: HeadToHeadFixture;
   leagueId: string;
   matchdayId: number;
   currentTeamId?: number;
-  formationsVisible: boolean;
 }) {
   const { t } = useTranslation();
   const calculated = fixture.result?.status === 'calculated';
@@ -24,6 +25,19 @@ export function HeadToHeadMatchCard({
     side === 'home' ? fixture.home_fantasy_team : fixture.away_fantasy_team;
   const points = (side: 'home' | 'away') =>
     side === 'home' ? fixture.result?.home_points : fixture.result?.away_points;
+  const homeFormation = useQuery({
+    queryKey: formationKeys.detail(leagueId, matchdayId, String(fixture.home_fantasy_team.id)),
+    queryFn: () => formationsApi.show(leagueId, matchdayId, String(fixture.home_fantasy_team.id)),
+    retry: false,
+  });
+  const awayFormation = useQuery({
+    queryKey: formationKeys.detail(leagueId, matchdayId, String(fixture.away_fantasy_team.id)),
+    queryFn: () => formationsApi.show(leagueId, matchdayId, String(fixture.away_fantasy_team.id)),
+    retry: false,
+  });
+  const formationVisible = (side: 'home' | 'away') =>
+    team(side).id === currentTeamId ||
+    Boolean(side === 'home' ? homeFormation.data : awayFormation.data);
   return (
     <article
       className={`rounded-2xl border p-5 ${isCurrent ? 'border-emerald-400/50 bg-emerald-950/20' : 'border-slate-800 bg-slate-900/70'}`}
@@ -54,7 +68,7 @@ export function HeadToHeadMatchCard({
                 {t('results.fantasyPoints')}: {points(side)}
               </p>
             ) : null}
-            {formationsVisible || team(side).id === currentTeamId ? (
+            {formationVisible(side) ? (
               <Link
                 className="mt-4 inline-block text-sm font-semibold text-emerald-300 hover:text-emerald-200"
                 to={`/leagues/${leagueId}/matchdays/${matchdayId}/fantasy-teams/${team(side).id}/formation`}

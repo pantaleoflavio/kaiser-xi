@@ -16,10 +16,13 @@ use Illuminate\Validation\ValidationException;
 
 class SaveFormationService
 {
+    public function __construct(private AssertFormationEligibility $formationEligibility) {}
+
     /** @param array{formation_module_id: int, starters: list<int>, bench: list<array{fantasy_team_player_id: int, order: int}>} $data */
     public function save(League $league, Matchday $matchday, FantasyTeam $team, array $data): Formation
     {
         $this->assertContext($league, $matchday, $team);
+        $this->formationEligibility->assert($league, $matchday);
         $this->assertBeforeDeadline($matchday);
 
         return DB::transaction(function () use ($league, $matchday, $team, $data): Formation {

@@ -87,6 +87,26 @@ class League extends Model
         return $this->h2h_schedule_generated_at !== null;
     }
 
+    public function isHeadToHead(): bool
+    {
+        return $this->type()->where('key', 'head_to_head')->exists();
+    }
+
+    public function allowsFormationFor(Matchday $matchday): bool
+    {
+        if ($matchday->season_id !== $this->season_id) {
+            return false;
+        }
+
+        if (! $this->isHeadToHead()) {
+            return true;
+        }
+
+        return $this->hasInitializedHeadToHeadSchedule()
+            && $this->h2h_start_matchday_id !== null
+            && $matchday->starts_at->greaterThanOrEqualTo($this->h2hStartMatchday()->value('starts_at'))
+            && $this->fantasyMatches()->where('matchday_id', $matchday->id)->exists();
+    }
 
     public function settings(): HasMany
     {

@@ -2,12 +2,14 @@
 
 namespace Tests\Feature\Api\V1;
 
+use App\Models\FantasyMatch;
 use App\Models\FantasyTeam;
 use App\Models\FantasyTeamPlayer;
 use App\Models\Formation;
 use App\Models\FormationModule;
 use App\Models\League;
 use App\Models\LeagueRole;
+use App\Models\LeagueType;
 use App\Models\Matchday;
 use App\Models\Player;
 use App\Models\PlayerRole;
@@ -103,7 +105,7 @@ class FormationApiTest extends TestCase
         $this->putJson($this->url($league, $otherMatchday, $team), $payload)->assertNotFound();
     }
 
-    public function test_historical_formation_visibility_uses_deadline_not_submission_time(): void
+    public function test_formation_visibility_depends_on_membership_and_submission_not_matchday_clock(): void
     {
         [$league, $team, $matchday, $payload] = $this->context();
         $member = User::factory()->create();
@@ -114,12 +116,20 @@ class FormationApiTest extends TestCase
 
         Sanctum::actingAs($team->user);
         $this->putJson($this->url($league, $matchday, $team), $payload)->assertCreated();
-        $this->postJson($this->url($league, $matchday, $team) . '/submit')->assertOk();
 
-        // Submission is not a disclosure event: the owner can read it, another member cannot.
+        // The owner can read a draft, but its existence remains hidden from other members.
         $this->getJson($this->url($league, $matchday, $team))->assertOk();
         Sanctum::actingAs($member);
-        $this->getJson($this->url($league, $matchday, $team))->assertForbidden();
+        $this->getJson($this->url($league, $matchday, $team))->assertNotFound();
+
+        Sanctum::actingAs($team->user);
+        $this->postJson($this->url($league, $matchday, $team) . '/submit')->assertOk();
+
+        // Submission is immediately visible to another league member before the deadline.
+        Sanctum::actingAs($member);
+        $this->getJson($this->url($league, $matchday, $team))
+            ->assertOk()
+            ->assertJsonPath('data.submitted', true);
 
         Carbon::setTestNow($matchday->starts_at);
         $this->getJson($this->url($league, $matchday, $team))
@@ -136,6 +146,111 @@ class FormationApiTest extends TestCase
 
         $otherMatchday = Matchday::factory()->create(['starts_at' => now()->subHour()]);
         $this->getJson($this->url($league, $otherMatchday, $team))->assertNotFound();
+    }
+
+    public function test_uninitialized_head_to_head_schedule_rejects_all_formation_operations_without_creating_rows(): void
+    {
+        [$league, $team, $matchday, $payload] = $this->context();
+        $league->update([
+            'league_type_id' => LeagueType::query()->where('key', 'head_to_head')->value('id'),
+            'h2h_start_matchday_id' => null,
+            'h2h_schedule_generated_at' => null,
+        ]);
+        Sanctum::actingAs($team->user);
+        $url = $this->url($league->fresh(), $matchday, $team);
+
+        $this->getJson($url)->assertConflict()->assertJsonPath('code', 'league_schedule_not_initialized');
+        $this->putJson($url, $payload)->assertConflict()->assertJsonPath('code', 'league_schedule_not_initialized');
+        $this->assertDatabaseMissing('formations', [
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'matchday_id' => $matchday->id,
+        ]);
+
+        $formation = Formation::factory()->create([
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'matchday_id' => $matchday->id,
+        ]);
+        $this->postJson("{$url}/submit")
+            ->assertConflict()
+            ->assertJsonPath('code', 'league_schedule_not_initialized');
+        $this->assertNull($formation->fresh()->submitted_at);
+    }
+
+    public function test_initialized_head_to_head_only_allows_matchdays_persisted_in_its_schedule(): void
+    {
+        [$league, $team, $scheduled, $payload] = $this->context();
+
+        $league->update([
+            'league_type_id' => LeagueType::query()
+                ->where('key', 'head_to_head')
+                ->value('id'),
+            'h2h_start_matchday_id' => $scheduled->id,
+            'h2h_schedule_generated_at' => now(),
+        ]);
+
+        $opponent = FantasyTeam::factory()->create([
+            'league_id' => $league->id,
+        ]);
+
+        FantasyMatch::factory()->create([
+            'league_id' => $league->id,
+            'matchday_id' => $scheduled->id,
+            'home_fantasy_team_id' => $team->id,
+            'away_fantasy_team_id' => $opponent->id,
+        ]);
+
+        Sanctum::actingAs($team->user);
+
+        $url = $this->url($league->fresh(), $scheduled, $team);
+
+        $this->putJson($url, $payload)
+            ->assertCreated();
+
+        $this->postJson("{$url}/submit")
+            ->assertOk()
+            ->assertJsonPath('data.submitted', true);
+
+        $nextMatchdayNumber = (int) Matchday::query()
+            ->where('season_id', $league->season_id)
+            ->max('number') + 1;
+
+        $beforeStart = Matchday::factory()->create([
+            'season_id' => $league->season_id,
+            'number' => $nextMatchdayNumber,
+            'starts_at' => $scheduled->starts_at->copy()->subDay(),
+            'ends_at' => $scheduled->starts_at->copy()->subHour(),
+        ]);
+
+        $notScheduled = Matchday::factory()->create([
+            'season_id' => $league->season_id,
+            'number' => $nextMatchdayNumber + 1,
+            'starts_at' => $scheduled->starts_at->copy()->addDay(),
+            'ends_at' => $scheduled->starts_at->copy()->addDays(2),
+        ]);
+
+        $this->putJson(
+            $this->url($league, $beforeStart, $team),
+            $payload
+        )->assertConflict();
+
+        $this->putJson(
+            $this->url($league, $notScheduled, $team),
+            $payload
+        )->assertConflict();
+
+        $this->assertDatabaseMissing('formations', [
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'matchday_id' => $beforeStart->id,
+        ]);
+
+        $this->assertDatabaseMissing('formations', [
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'matchday_id' => $notScheduled->id,
+        ]);
     }
 
     public function test_database_requirements_roster_bench_rules_are_enforced_transactionally(): void

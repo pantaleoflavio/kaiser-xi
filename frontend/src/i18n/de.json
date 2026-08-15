@@ -671,6 +671,7 @@
     },
     "errors": {
       "load": "Die Aufstellung konnte nicht geladen werden.",
+      "scheduleNotInitialized": "Dieser Spieltag gehört zu keinem initialisierten Head-to-Head-Spielplan. Die Aufstellung kann nicht bearbeitet werden.",
       "matchdays": "Die Spieltage konnten nicht geladen werden.",
       "deadline": "Die Aufstellungsfrist ist abgelaufen. Die Ansicht ist schreibgeschützt.",
       "invalid": "Die Aufstellung ist ungültig. Prüfe die markierten Bereiche.",
@@ -704,6 +705,9 @@
     "createFormation": "Aufstellung erstellen",
     "editFormation": "Aufstellung bearbeiten",
     "viewFormation": "Aufstellung ansehen",
+    "viewOpponentFormation": "Gegnerische Aufstellung ansehen",
+    "scheduleNotInitialized": "Der Head-to-Head-Spielplan ist nicht initialisiert. Diese Spieltage dienen nur als Kontext der realen Saison und sind noch keine spielbaren Fantasy-Runden.",
+    "openScheduleSetup": "Spielplan-Einrichtung öffnen",
     "notFound": "Spieltag nicht gefunden",
     "backToMatchday": "← Zurück zum Spieltag"
   },

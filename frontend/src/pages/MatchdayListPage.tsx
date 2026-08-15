@@ -22,6 +22,7 @@ function MatchdayRow({
   opponent,
   fixture,
   scheduleInitialized,
+  formationAllowed,
 }: {
   item: Matchday;
   leagueId: string;
@@ -30,12 +31,13 @@ function MatchdayRow({
   opponent?: string;
   fixture?: HeadToHeadFixture;
   scheduleInitialized?: boolean;
+  formationAllowed: boolean;
 }) {
   const { language, t } = useTranslation();
   const formation = useQuery({
     queryKey: formationKeys.detail(leagueId, item.id, myTeam?.id ?? ''),
     queryFn: () => formationsApi.show(leagueId, item.id, String(myTeam!.id)),
-    enabled: state === 'current' && Boolean(myTeam),
+    enabled: formationAllowed && state === 'current' && Boolean(myTeam),
     retry: false,
   });
   const action = formation.data?.data.submitted
@@ -43,6 +45,17 @@ function MatchdayRow({
     : formation.data
       ? 'editFormation'
       : 'createFormation';
+  const opponentTeam = fixture
+    ? fixture.home_fantasy_team.id === myTeam?.id
+      ? fixture.away_fantasy_team
+      : fixture.home_fantasy_team
+    : undefined;
+  const opponentFormation = useQuery({
+    queryKey: formationKeys.detail(leagueId, item.id, String(opponentTeam?.id ?? '')),
+    queryFn: () => formationsApi.show(leagueId, item.id, String(opponentTeam!.id)),
+    enabled: formationAllowed && state === 'current' && Boolean(opponentTeam),
+    retry: false,
+  });
   return (
     <article
       className={`rounded-xl border p-5 ${state === 'current' ? 'border-emerald-400/60 bg-emerald-950/20' : 'border-slate-800 bg-slate-900/70'}`}
@@ -90,6 +103,7 @@ function MatchdayRow({
             </Link>
           ) : null}
           {state === 'current' &&
+          formationAllowed &&
           myTeam &&
           !formation.isLoading &&
           (!formation.error ||
@@ -99,6 +113,14 @@ function MatchdayRow({
               to={`/leagues/${leagueId}/matchdays/${item.id}/fantasy-teams/${myTeam.id}/formation`}
             >
               {t(`matchdays.${action}`)}
+            </Link>
+          ) : null}
+          {state === 'current' && opponentTeam && opponentFormation.data ? (
+            <Link
+              className="rounded-lg border border-emerald-500 px-3 py-2 text-sm font-semibold text-emerald-200"
+              to={`/leagues/${leagueId}/matchdays/${item.id}/fantasy-teams/${opponentTeam.id}/formation`}
+            >
+              {t('matchdays.viewOpponentFormation')}
             </Link>
           ) : null}
         </div>
@@ -147,6 +169,11 @@ export function MatchdayListPage() {
         ? ('current' as const)
         : ('upcoming' as const);
   const myTeam = teams.data?.data.find((team) => team.is_owned_by_current_user);
+  const isHeadToHead = league.data?.data.type.key === 'head_to_head';
+  const scheduleInitialized = Boolean(schedule.data?.data.initialized);
+  const scheduledMatchdayIds = new Set(
+    schedule.data?.data.matchdays.map((group) => group.matchday.id) ?? [],
+  );
   const opponentFor = (matchdayId: number) => {
     if (!myTeam || !schedule.data?.data.initialized) return undefined;
     const fixtures =
@@ -172,6 +199,17 @@ export function MatchdayListPage() {
         <h1 className="text-3xl font-bold text-white">{t('matchdays.title')}</h1>
         <p className="mt-2 text-slate-300">{t('matchdays.description')}</p>
       </div>
+      {isHeadToHead && !scheduleInitialized ? (
+        <div className="rounded-xl border border-amber-500/40 bg-amber-950/20 p-5 text-amber-100">
+          <p>{t('matchdays.scheduleNotInitialized')}</p>
+          <Link
+            className="mt-3 inline-block font-semibold text-amber-200 underline"
+            to={`/leagues/${leagueId}/head-to-head-schedule`}
+          >
+            {t('matchdays.openScheduleSetup')}
+          </Link>
+        </div>
+      ) : null}
       {items.length ? (
         <div className="space-y-3">
           {items.map((item) => (
@@ -197,6 +235,9 @@ export function MatchdayListPage() {
                 schedule.data?.data.initialized &&
                 schedule.data.data.matchdays.some((group) => group.matchday.id === item.id),
               )}
+              formationAllowed={
+                !isHeadToHead || (scheduleInitialized && scheduledMatchdayIds.has(item.id))
+              }
               state={stateFor(item)}
             />
           ))}

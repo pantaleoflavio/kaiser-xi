@@ -42,6 +42,12 @@ export function MatchdayDetailPage() {
     );
   const myTeam = teams.data?.data.find((team) => team.is_owned_by_current_user);
   const open = Date.now() < new Date(matchday.deadline).getTime();
+  const scheduled =
+    league.data?.data.type.key !== 'head_to_head' ||
+    Boolean(
+      schedule.data?.data.initialized &&
+      schedule.data.data.matchdays.some((group) => group.matchday.id === numericId),
+    );
   return (
     <section className="space-y-6">
       <LeagueNavigation
@@ -65,7 +71,7 @@ export function MatchdayDetailPage() {
             </dd>
           </div>
         </dl>
-        {open && myTeam ? (
+        {open && myTeam && scheduled ? (
           <Link
             className="mt-6 inline-block rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950"
             to={`/leagues/${leagueId}/matchdays/${matchday.id}/fantasy-teams/${myTeam.id}/formation`}
@@ -88,7 +94,6 @@ export function MatchdayDetailPage() {
               leagueId={leagueId}
               matchdayId={numericId}
               currentTeamId={myTeam?.id}
-              formationsVisible={!open}
               key={fixture.id}
             />
           ))}

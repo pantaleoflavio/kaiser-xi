@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { formationsApi } from '../api/formations';
 import { leaguesApi } from '../api/leagues';
 import { teamMatchdayResultsApi } from '../api/teamMatchdayResults';
+import { headToHeadScheduleApi } from '../api/headToHeadSchedule';
 import { formationKeys, leagueKeys, teamMatchdayResultKeys } from '../api/queryKeys';
 import { FormationEditor } from '../components/formation/FormationEditor';
 import { HistoricalFormationView } from '../components/results/HistoricalFormationView';
@@ -16,10 +17,12 @@ function OwnedFormationEditor({
   leagueId,
   teamId,
   matchdayId,
+  locked = false,
 }: {
   leagueId: string;
   teamId: string;
   matchdayId: number;
+  locked?: boolean;
 }) {
   const { t } = useTranslation();
   const detail = useFantasyTeamDetail(leagueId, teamId);
@@ -34,7 +37,7 @@ function OwnedFormationEditor({
     <FormationEditor
       fantasyTeamId={teamId}
       leagueId={leagueId}
-      locked={false}
+      locked={locked}
       matchdayId={matchdayId}
       roster={roster}
       settings={settings}
@@ -55,21 +58,58 @@ export function FormationPage() {
     queryKey: leagueKeys.fantasyTeams(leagueId),
     queryFn: () => leaguesApi.fantasyTeams(leagueId),
   });
+  const league = useQuery({
+    queryKey: leagueKeys.detail(leagueId),
+    queryFn: () => leaguesApi.show(leagueId),
+  });
+  const schedule = useQuery({
+    queryKey: leagueKeys.headToHeadSchedule(leagueId),
+    queryFn: () => headToHeadScheduleApi.getSchedule(leagueId),
+    enabled: league.data?.data.type.key === 'head_to_head',
+    retry: false,
+  });
   const matchday = matchdays.data?.data.find((item) => item.id === numericId);
   const team = teams.data?.data.find((item) => String(item.id) === fantasyTeamId);
   const historical = Boolean(matchday && Date.now() >= new Date(matchday.deadline).getTime());
+  const isHeadToHead = league.data?.data.type.key === 'head_to_head';
+  const formationAllowed =
+    !isHeadToHead ||
+    Boolean(
+      schedule.data?.data.initialized &&
+      schedule.data.data.matchdays.some((group) => group.matchday.id === numericId),
+    );
+  const visibleFormation = useQuery({
+    queryKey: formationKeys.detail(leagueId, numericId, fantasyTeamId),
+    queryFn: () => formationsApi.show(leagueId, numericId, fantasyTeamId),
+    enabled: formationAllowed && Boolean(team && !team.is_owned_by_current_user && !historical),
+    retry: false,
+  });
   const result = useQuery({
     queryKey: teamMatchdayResultKeys.detail(leagueId, numericId, fantasyTeamId),
     queryFn: () => teamMatchdayResultsApi.show(leagueId, numericId, fantasyTeamId),
     enabled: historical && Boolean(team),
   });
-  if (matchdays.isLoading || teams.isLoading || (historical && result.isLoading))
+  if (
+    matchdays.isLoading ||
+    teams.isLoading ||
+    league.isLoading ||
+    schedule.isLoading ||
+    (historical && result.isLoading) ||
+    visibleFormation.isLoading
+  )
     return <LoadingState message={t('common.loading')} />;
   if (!team || !matchday)
     return (
       <ContentErrorPanel message={t('common.errors.notFound')} title={t('formation.errors.load')} />
     );
-  if (!historical && !team.is_owned_by_current_user)
+  if (!formationAllowed)
+    return (
+      <ContentErrorPanel
+        message={t('formation.errors.scheduleNotInitialized')}
+        title={t('formation.errors.load')}
+      />
+    );
+  if (!historical && !team.is_owned_by_current_user && !visibleFormation.data)
     return (
       <ContentErrorPanel
         message={t('common.errors.forbidden')}
@@ -106,7 +146,12 @@ export function FormationPage() {
       {historical && result.data ? (
         <HistoricalFormationView data={result.data.data} />
       ) : (
-        <OwnedFormationEditor leagueId={leagueId} matchdayId={numericId} teamId={fantasyTeamId} />
+        <OwnedFormationEditor
+          leagueId={leagueId}
+          locked={!team.is_owned_by_current_user}
+          matchdayId={numericId}
+          teamId={fantasyTeamId}
+        />
       )}
     </section>
   );
