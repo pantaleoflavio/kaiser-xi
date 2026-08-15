@@ -72,19 +72,22 @@ class LeagueScoringSettingsApiTest extends TestCase
         ])->assertForbidden();
     }
 
-    public function test_real_captain_bonus_validation_accepts_decimals_and_rejects_invalid_values(): void
+    public function test_real_captain_bonus_validation_accepts_half_steps_and_rejects_invalid_values(): void
     {
         [$league, $commissioner] = $this->leagueWithMember('commissioner');
         Sanctum::actingAs($commissioner);
 
-        foreach ([-0.01, 5.01, 'invalid', true] as $invalid) {
+        foreach ([-0.5, 0.1, 0.6, 1.25, 2.75, 5.5] as $invalid) {
             $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
                 'real_captain_bonus_points' => $invalid,
             ])->assertUnprocessable()->assertJsonValidationErrors('real_captain_bonus_points');
         }
 
-        $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['real_captain_bonus_points' => 0.5])
-            ->assertOk()->assertJsonPath('data.real_captain_bonus_points', 0.5);
+        foreach ([0, 0.5, 1, 1.5, 5] as $valid) {
+            $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+                'real_captain_bonus_points' => $valid,
+            ])->assertOk()->assertJsonPath('data.real_captain_bonus_points', $valid);
+        }
 
         $this->patchJson("/api/v1/leagues/{$league->id}/settings", ['real_captain_bonus_enabled' => 'enabled'])
             ->assertUnprocessable()->assertJsonValidationErrors('real_captain_bonus_enabled');

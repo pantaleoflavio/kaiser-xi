@@ -168,7 +168,12 @@ export function validateLeagueSettingsForm(
     maximumSubstitutions > benchSize
   )
     errors.max_substitutions = [t('leagueSettings.validation.substitutionRange')];
-  if (realCaptainBonusPoints === null || realCaptainBonusPoints < 0 || realCaptainBonusPoints > 5)
+  if (
+    realCaptainBonusPoints === null ||
+    realCaptainBonusPoints < 0 ||
+    realCaptainBonusPoints > 5 ||
+    !Number.isInteger(realCaptainBonusPoints * 2)
+  )
     errors.real_captain_bonus_points = [t('leagueSettings.validation.realCaptainBonusRange')];
   if (
     Object.keys(errors).length > 0 ||

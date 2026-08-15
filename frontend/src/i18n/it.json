@@ -341,7 +341,7 @@
       "substitutionRange": "Le sostituzioni massime devono essere un numero intero tra zero e le dimensioni della panchina.",
       "positiveInteger": "Inserisci un numero intero positivo.",
       "percentage": "Inserisci una percentuale intera da 0 a 100.",
-      "realCaptainBonusRange": "Inserisci punti bonus da 0 a 5."
+      "realCaptainBonusRange": "Inserisci punti bonus da 0 a 5 in incrementi di 0,5."
     },
     "scoring": {
       "title": "Punteggio",

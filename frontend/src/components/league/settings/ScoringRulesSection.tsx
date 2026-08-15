@@ -50,10 +50,10 @@ export function ScoringRulesSection({
           aria-describedby={bonusError ? errorId('real_captain_bonus_points') : undefined}
           className={settingsInputClass}
           disabled={disabled || !realCaptainBonusEnabled}
-          max="5"
-          min="0"
+          max={5}
+          min={0}
           onChange={(event) => onRealCaptainBonusPointsChange(event.target.value)}
-          step="0.1"
+          step={0.5}
           type="number"
           value={realCaptainBonusPoints}
         />

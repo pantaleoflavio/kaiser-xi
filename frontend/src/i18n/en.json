@@ -393,7 +393,7 @@
       "substitutionRange": "Maximum substitutions must be a whole number between zero and the bench size.",
       "positiveInteger": "Enter a positive whole number.",
       "percentage": "Enter a whole-number percentage from 0 to 100.",
-      "realCaptainBonusRange": "Enter bonus points from 0 to 5."
+      "realCaptainBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5."
     },
     "scoring": {
       "title": "Scoring",

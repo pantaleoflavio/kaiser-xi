@@ -5,6 +5,7 @@ namespace App\Http\Requests\League;
 use App\Models\FormationModule;
 use App\Models\League;
 use App\Models\LeagueSetting;
+use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -125,11 +126,20 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'boolean',
             ],
 
-            LeagueSetting::REAL_CAPTAIN_BONUS_POINTS  => [
+            LeagueSetting::REAL_CAPTAIN_BONUS_POINTS => [
                 'sometimes',
                 'required',
                 'numeric',
                 'between:0,5',
+                function (string $attribute, mixed $value, Closure $fail): void {
+                    $doubledValue = (float) $value * 2;
+
+                    $tolerance = PHP_FLOAT_EPSILON * max(1, abs($doubledValue)) * 4;
+
+                    if (abs($doubledValue - round($doubledValue)) > $tolerance) {
+                        $fail("The {$attribute} field must be in increments of 0.5.");
+                    }
+                },
             ],
 
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => [

@@ -393,7 +393,7 @@
       "substitutionRange": "Die maximale Anzahl Auswechslungen muss eine ganze Zahl zwischen null und der Bankgröße sein.",
       "positiveInteger": "Gib eine positive ganze Zahl ein.",
       "percentage": "Gib einen ganzzahligen Prozentsatz von 0 bis 100 ein.",
-      "realCaptainBonusRange": "Bonuspunkte zwischen 0 und 5 eingeben."
+      "realCaptainBonusRange": "Bonuspunkte zwischen 0 und 5 in Schritten von 0,5 eingeben."
     },
     "scoring": {
       "title": "Punktewertung",
