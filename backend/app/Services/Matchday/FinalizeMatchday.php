@@ -6,6 +6,7 @@ use App\Models\FantasyMatch;
 use App\Models\Formation;
 use App\Models\League;
 use App\Models\Matchday;
+use App\Services\League\ChampionshipMatchdays;
 use App\Services\Scoring\CalculateFantasyMatchResult;
 use App\Services\Scoring\CalculateTeamMatchdayScore;
 use App\Services\Standings\CalculateClassicStandings;
@@ -21,6 +22,7 @@ final class FinalizeMatchday
         private readonly CalculateHeadToHeadStandings $standings,
         private readonly CalculateClassicStandings $classicStandings,
         private readonly CalculateFormulaOneStandings $formulaOneStandings,
+        private readonly ChampionshipMatchdays $championshipMatchdays,
     ) {}
 
     public function finalize(Matchday $matchday): void
@@ -39,6 +41,14 @@ final class FinalizeMatchday
                 ->with('type')
                 ->lockForUpdate()
                 ->findOrFail($leagueId);
+
+            if ($league->isFormulaOne() && (
+                ! $league->hasInitializedChampionship()
+                || $matchday->ends_at->isFuture()
+                || ! $this->championshipMatchdays->contains($league, $matchday)
+            )) {
+                return;
+            }
 
             Formation::query()
                 ->where('league_id', $league->id)

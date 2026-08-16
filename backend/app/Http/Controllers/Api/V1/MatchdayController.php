@@ -13,9 +13,11 @@ class MatchdayController extends Controller
 {
     public function index(League $league, ChampionshipMatchdays $championshipMatchdays): AnonymousResourceCollection
     {
-        $query = $league->isNonHeadToHeadChampionship() && $league->hasInitializedChampionship()
-            ? $championshipMatchdays->query($league)
-            : Matchday::query()->where('season_id', $league->season_id);
+        $query = match (true) {
+            $league->isNonHeadToHeadChampionship() && $league->hasInitializedChampionship() => $championshipMatchdays->query($league),
+            $league->isFormulaOne() => Matchday::query()->whereRaw('1 = 0'),
+            default => Matchday::query()->where('season_id', $league->season_id),
+        };
         $matchdays = $query->orderBy('number')->get();
         $currentId = $matchdays->first(fn(Matchday $matchday): bool => $matchday->ends_at->isFuture())?->id;
 

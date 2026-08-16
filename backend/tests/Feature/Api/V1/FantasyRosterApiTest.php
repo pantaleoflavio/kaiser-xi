@@ -12,6 +12,10 @@ use App\Models\PlayerRole;
 use App\Models\PlayerSeasonRegistration;
 use App\Models\SeasonClub;
 use App\Models\User;
+use Database\Seeders\FormationModuleSeeder;
+use Database\Seeders\LeagueRoleSeeder;
+use Database\Seeders\PlayerRoleSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -23,7 +27,13 @@ class FantasyRosterApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+
+        $this->seed([
+            RoleSeeder::class,
+            PlayerRoleSeeder::class,
+            LeagueRoleSeeder::class,
+            FormationModuleSeeder::class,
+        ]);
     }
 
     public function test_commissioner_can_assign_to_own_team_and_member_can_view_it(): void

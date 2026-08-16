@@ -5,6 +5,7 @@ namespace App\Http\Requests\League;
 use App\Models\FormationModule;
 use App\Models\League;
 use App\Models\LeagueSetting;
+use App\Rules\FormulaOnePositionPoints;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -156,29 +157,7 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'required',
                 'array',
                 'min:1',
-                function (string $attribute, mixed $value, Closure $fail): void {
-                    if (! is_array($value)) {
-                        return;
-                    }
-                    $expected = 1;
-                    $previous = null;
-                    foreach ($value as $position => $points) {
-                        if ((string) $position !== (string) $expected) {
-                            $fail("The {$attribute} positions must be contiguous starting at 1.");
-                            return;
-                        }
-                        if (! is_int($points) || $points < 0) {
-                            $fail("The {$attribute} points must be non-negative integers.");
-                            return;
-                        }
-                        if ($previous !== null && $points > $previous) {
-                            $fail("The {$attribute} points must be non-increasing by position.");
-                            return;
-                        }
-                        $previous = $points;
-                        $expected++;
-                    }
-                },
+                new FormulaOnePositionPoints,
             ],
 
             'remaining_budget' => ['prohibited'],
@@ -307,10 +286,5 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 }
             }
         }
-    }
-
-    private function booleanValue(string $key, bool $default): bool
-    {
-        return $this->exists($key) ? $this->boolean($key) : $default;
     }
 }
