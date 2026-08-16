@@ -22,7 +22,7 @@ class SaveFormationService
     public function save(League $league, Matchday $matchday, FantasyTeam $team, array $data): Formation
     {
         $this->assertContext($league, $matchday, $team);
-        $this->formationEligibility->assert($league, $matchday);
+        $this->assertEligibility($league, $matchday);
         $this->assertBeforeDeadline($matchday);
 
         return DB::transaction(function () use ($league, $matchday, $team, $data): Formation {
@@ -102,6 +102,11 @@ class SaveFormationService
         if (now()->greaterThanOrEqualTo($matchday->starts_at)) {
             throw new LineupDeadlinePassedException;
         }
+    }
+
+    public function assertEligibility(League $league, Matchday $matchday): void
+    {
+        $this->formationEligibility->assert($league, $matchday);
     }
 
     private function assertContext(League $league, Matchday $matchday, FantasyTeam $team): void
