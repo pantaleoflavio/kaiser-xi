@@ -170,7 +170,9 @@ class League extends Model
                 ->where('starts_at', '>=', $start->starts_at)
                 ->where('number', '>=', $start->number)
                 ->where('ends_at', '>', now())
+                ->orderBy('starts_at')
                 ->orderBy('number')
+                ->orderBy('id')
                 ->value('id') === $matchday->id;
         }
 
@@ -195,7 +197,9 @@ class League extends Model
                     ->whereColumn('fantasy_matches.matchday_id', 'matchdays.id')
                     ->where('fantasy_matches.league_id', $this->id);
             })
+            ->orderBy('matchdays.starts_at')
             ->orderBy('matchdays.number')
+            ->orderBy('matchdays.id')
             ->value('matchdays.id') === $matchday->id;
     }
 

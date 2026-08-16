@@ -20,7 +20,6 @@ class FormationController extends Controller
     public function show(Request $request, League $league, Matchday $matchday, FantasyTeam $fantasyTeam): FormationResource
     {
         $this->assertContext($league, $matchday, $fantasyTeam);
-        $this->saveService->assertScheduleContains($league, $matchday);
         $formation = Formation::query()
             ->where('league_id', $league->id)
             ->where('fantasy_team_id', $fantasyTeam->id)
@@ -42,6 +41,8 @@ class FormationController extends Controller
     public function submit(League $league, Matchday $matchday, FantasyTeam $fantasyTeam): FormationResource
     {
         $this->assertContext($league, $matchday, $fantasyTeam);
+        $this->saveService->assertEligibility($league, $matchday);
+        $this->saveService->assertBeforeDeadline($matchday);
         $formation = Formation::query()->where('league_id', $league->id)->where('fantasy_team_id', $fantasyTeam->id)->where('matchday_id', $matchday->id)->firstOrFail();
 
         return new FormationResource($this->submitService->submit($formation, $matchday));

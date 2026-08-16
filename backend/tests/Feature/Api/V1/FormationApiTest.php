@@ -139,6 +139,9 @@ class FormationApiTest extends TestCase
                 ->assertJsonPath('data.1.formation_allowed', false);
 
             $url = $this->url($league, $future, $team);
+            $this->getJson($url)
+                ->assertOk()
+                ->assertJsonPath('data.submitted', false);
             $this->putJson($url, $payload)
                 ->assertConflict()
                 ->assertJsonPath('code', 'formation_matchday_not_eligible');
@@ -191,7 +194,7 @@ class FormationApiTest extends TestCase
         $this->getJson($this->url($league, $otherMatchday, $team))->assertNotFound();
     }
 
-    public function test_uninitialized_head_to_head_schedule_rejects_all_formation_operations_without_creating_rows(): void
+    public function test_uninitialized_head_to_head_schedule_rejects_writes_without_blocking_resource_reads(): void
     {
         [$league, $team, $matchday, $payload] = $this->context();
         $league->update([
@@ -202,7 +205,7 @@ class FormationApiTest extends TestCase
         Sanctum::actingAs($team->user);
         $url = $this->url($league->fresh(), $matchday, $team);
 
-        $this->getJson($url)->assertConflict()->assertJsonPath('code', 'league_schedule_not_initialized');
+        $this->getJson($url)->assertNotFound();
         $this->putJson($url, $payload)->assertConflict()->assertJsonPath('code', 'league_schedule_not_initialized');
         $this->assertDatabaseMissing('formations', [
             'league_id' => $league->id,
@@ -215,6 +218,9 @@ class FormationApiTest extends TestCase
             'fantasy_team_id' => $team->id,
             'matchday_id' => $matchday->id,
         ]);
+        $this->getJson($url)
+            ->assertOk()
+            ->assertJsonPath('data.id', $formation->id);
         $this->postJson("{$url}/submit")
             ->assertConflict()
             ->assertJsonPath('code', 'league_schedule_not_initialized');

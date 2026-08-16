@@ -19,7 +19,9 @@ class MatchdayController extends Controller
             default => Matchday::query()->where('season_id', $league->season_id),
         };
         $matchdays = $query->orderBy('number')->get();
-        $currentId = $matchdays->first(fn(Matchday $matchday): bool => $matchday->ends_at->isFuture())?->id;
+        $currentId = $matchdays->first(
+            fn(Matchday $matchday): bool => $league->isCurrentFormationMatchday($matchday)
+        )?->id;
 
         $matchdays->each(function (Matchday $matchday) use ($league, $currentId): void {
             $matchday->setAttribute('championship_state', match (true) {

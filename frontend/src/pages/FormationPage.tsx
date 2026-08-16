@@ -137,18 +137,13 @@ export function FormationPage() {
           {formatDate(matchday.deadline, t('leagueDetail.notAvailable'), language)}
         </p>
       </header>
-      {showHistorical && result.data ? (
-        <HistoricalFormationView data={result.data.data} />
-      ) : !showSubmittedFormation && submittedFormation ? (
+      {showHistorical && result.data ? <HistoricalFormationView data={result.data.data} /> : null}
+      {showSubmittedFormation && submittedFormation ? (
         <SubmittedFormationView formation={submittedFormation} />
-      ) : showOwnerEditor ? (
+      ) : null}
+      {showOwnerEditor ? (
         <OwnedFormationEditor leagueId={leagueId} matchdayId={numericId} teamId={fantasyTeamId} />
-      ) : (
-        <ContentErrorPanel
-          message={t('common.errors.forbidden')}
-          title={t('formation.errors.load')}
-        />
-      )}
+      ) : null}
     </section>
   );
 }
