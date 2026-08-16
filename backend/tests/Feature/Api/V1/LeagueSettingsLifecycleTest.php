@@ -5,6 +5,7 @@ namespace Tests\Feature\Api\V1;
 use App\Models\FantasyTeam;
 use App\Models\FantasyTeamPlayer;
 use App\Models\League;
+use App\Models\LeagueRole;
 use App\Models\LeagueSetting;
 use App\Models\LeagueStatus;
 use App\Models\Player;
@@ -12,7 +13,7 @@ use App\Models\PlayerRole;
 use App\Models\PlayerSeasonRegistration;
 use App\Models\SeasonClub;
 use App\Models\User;
-use Database\Seeders\DemoLeagueSeeder;
+use App\Services\League\LeagueSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -29,7 +30,7 @@ class LeagueSettingsLifecycleTest extends TestCase
 
     public function test_refund_and_roster_increases_are_allowed(): void
     {
-        [$league, $commissioner] = $this->activeDemoLeague();
+        [$league, $commissioner] = $this->activeLeague();
 
         Sanctum::actingAs($commissioner);
 
@@ -59,7 +60,7 @@ class LeagueSettingsLifecycleTest extends TestCase
 
     public function test_initial_budget_is_not_changed_after_teams_exist(): void
     {
-        [$league, $commissioner] = $this->activeDemoLeague();
+        [$league, $commissioner] = $this->activeLeague();
 
         Sanctum::actingAs($commissioner);
 
@@ -89,7 +90,7 @@ class LeagueSettingsLifecycleTest extends TestCase
 
     public function test_roster_size_cannot_drop_below_largest_active_roster(): void
     {
-        [$league, $commissioner] = $this->activeDemoLeague();
+        [$league, $commissioner] = $this->activeLeague();
 
         Sanctum::actingAs($commissioner);
 
@@ -120,7 +121,7 @@ class LeagueSettingsLifecycleTest extends TestCase
 
     public function test_role_limit_cannot_drop_below_existing_composition(): void
     {
-        [$league, $commissioner] = $this->activeDemoLeague();
+        [$league, $commissioner] = $this->activeLeague();
 
         Sanctum::actingAs($commissioner);
 
@@ -177,7 +178,7 @@ class LeagueSettingsLifecycleTest extends TestCase
 
     public function test_completed_league_cannot_update_settings(): void
     {
-        [$league, $commissioner] = $this->activeDemoLeague();
+        [$league, $commissioner] = $this->activeLeague();
 
         $league->update([
             'league_status_id' => LeagueStatus::query()
@@ -197,7 +198,7 @@ class LeagueSettingsLifecycleTest extends TestCase
 
     public function test_archived_league_cannot_update_settings(): void
     {
-        [$league, $commissioner] = $this->activeDemoLeague();
+        [$league, $commissioner] = $this->activeLeague();
 
         $league->update([
             'league_status_id' => LeagueStatus::query()
@@ -215,15 +216,34 @@ class LeagueSettingsLifecycleTest extends TestCase
             ->assertJsonPath('code', 'league_rules_locked');
     }
 
-    private function activeDemoLeague(): array
+    private function activeLeague(): array
     {
-        $league = League::query()
-            ->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)
-            ->firstOrFail();
+        $commissioner = User::factory()->create();
 
-        $commissioner = User::query()
-            ->where('email', 'demo.commissioner@example.com')
-            ->firstOrFail();
+        $league = League::factory()->create([
+            'commissioner_user_id' => $commissioner->id,
+        ]);
+
+        $league->users()->attach($commissioner->id, [
+            'league_role_id' => LeagueRole::query()
+                ->where('key', 'commissioner')
+                ->firstOrFail()
+                ->id,
+            'joined_at' => now(),
+        ]);
+
+        app(LeagueSettingsService::class)->initializeDefaults($league);
+
+        FantasyTeam::factory()
+            ->forLeagueAndUser($league, $commissioner)
+            ->create([
+                'budget' => $league->initialFantasyBudget(),
+                'remaining_budget' => $league->initialFantasyBudget(),
+            ]);
+
+        SeasonClub::factory()->create([
+            'season_id' => $league->season_id,
+        ]);
 
         return [
             $league->refresh(),

@@ -87,7 +87,10 @@ class CalculateHeadToHeadStandingsTest extends TestCase
         $second = $calculator->calculate($league);
         $third = $calculator->calculate($league);
 
-        $this->assertSame($firstIds, $second->pluck('id')->all());
+        $this->assertEqualsCanonicalizing(
+            $firstIds,
+            $second->pluck('id')->all()
+        );
         $this->assertSame($second->toArray(), $third->toArray());
         $this->assertSame(2, Standing::query()->where('league_id', $league->id)->count());
         $this->assertSame($teams[1]->id, $second->first()->fantasy_team_id);

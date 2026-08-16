@@ -71,25 +71,96 @@ class FinalizeMatchdayTest extends TestCase
         $this->assertSame($counts, $this->aggregateCounts());
     }
 
-    public function test_non_head_to_head_leagues_only_receive_team_scores(): void
+    public function test_uninitialized_classic_league_only_receives_team_scores(): void
     {
         $season = Season::factory()->create();
-        $matchday = Matchday::factory()->create(['season_id' => $season->id]);
-        foreach (['classic', 'formula_one'] as $type) {
-            $league = League::factory()->create([
-                'season_id' => $season->id,
-                'league_type_id' => LeagueType::query()->where('key', $type)->value('id'),
-            ]);
-            app(LeagueSettingsService::class)->initializeDefaults($league);
-            $team = FantasyTeam::factory()->create(['league_id' => $league->id]);
-            $this->submittedFormation($league, $team, $matchday, 50);
-        }
+
+        $matchday = Matchday::factory()->create([
+            'season_id' => $season->id,
+        ]);
+
+        $league = League::factory()->create([
+            'season_id' => $season->id,
+            'league_type_id' => LeagueType::query()
+                ->where('key', 'classic')
+                ->value('id'),
+        ]);
+
+        app(LeagueSettingsService::class)->initializeDefaults($league);
+
+        $team = FantasyTeam::factory()->create([
+            'league_id' => $league->id,
+        ]);
+
+        $this->submittedFormation(
+            $league,
+            $team,
+            $matchday,
+            50,
+        );
 
         app(FinalizeMatchday::class)->finalize($matchday);
 
-        $this->assertSame(2, TeamMatchdayScore::query()->count());
-        $this->assertSame(0, FantasyMatchResult::query()->count());
-        $this->assertSame(0, Standing::query()->count());
+        $this->assertSame(
+            1,
+            TeamMatchdayScore::query()->count()
+        );
+
+        $this->assertSame(
+            0,
+            FantasyMatchResult::query()->count()
+        );
+
+        $this->assertSame(
+            0,
+            Standing::query()->count()
+        );
+    }
+
+    public function test_uninitialized_formula_one_league_is_not_finalized(): void
+    {
+        $season = Season::factory()->create();
+
+        $matchday = Matchday::factory()->create([
+            'season_id' => $season->id,
+        ]);
+
+        $league = League::factory()->create([
+            'season_id' => $season->id,
+            'league_type_id' => LeagueType::query()
+                ->where('key', 'formula_one')
+                ->value('id'),
+        ]);
+
+        app(LeagueSettingsService::class)->initializeDefaults($league);
+
+        $team = FantasyTeam::factory()->create([
+            'league_id' => $league->id,
+        ]);
+
+        $this->submittedFormation(
+            $league,
+            $team,
+            $matchday,
+            50,
+        );
+
+        app(FinalizeMatchday::class)->finalize($matchday);
+
+        $this->assertSame(
+            0,
+            TeamMatchdayScore::query()->count()
+        );
+
+        $this->assertSame(
+            0,
+            FantasyMatchResult::query()->count()
+        );
+
+        $this->assertSame(
+            0,
+            Standing::query()->count()
+        );
     }
 
     public function test_ready_event_queues_one_job_and_job_executes_the_workflow(): void

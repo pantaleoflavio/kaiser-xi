@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\GlobalAdminSeeder;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -75,10 +77,19 @@ class AuthTest extends TestCase
 
     public function test_global_admin_seed_exists(): void
     {
-        $this->seedReferenceData();
-        $admin = User::where('email', 'admin@example.com')->first();
+        $this->seed([
+            RoleSeeder::class,
+            GlobalAdminSeeder::class,
+        ]);
+
+        $admin = User::query()
+            ->where('email', 'admin@example.com')
+            ->first();
+
         $this->assertNotNull($admin);
-        $this->assertTrue($admin->roles->contains('name', 'global_admin'));
+        $this->assertTrue(
+            $admin->roles->contains('name', 'global_admin')
+        );
     }
 
     public function test_forgot_and_reset_password_flow(): void
