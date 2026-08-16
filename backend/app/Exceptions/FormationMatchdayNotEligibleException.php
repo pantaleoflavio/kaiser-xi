@@ -5,17 +5,17 @@ namespace App\Exceptions;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
-class LeagueScheduleNotInitializedException extends ConflictHttpException
+class FormationMatchdayNotEligibleException extends ConflictHttpException
 {
     public function __construct()
     {
-        parent::__construct('The league competition has not been initialized for this matchday.');
+        parent::__construct('Formations may only be changed for the current matchday.');
     }
 
     public function render(): JsonResponse
     {
         return response()->json([
-            'code' => 'league_schedule_not_initialized',
+            'code' => 'formation_matchday_not_eligible',
             'message' => $this->getMessage(),
         ], 409);
     }

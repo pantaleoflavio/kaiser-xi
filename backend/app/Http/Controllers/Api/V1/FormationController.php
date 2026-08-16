@@ -20,7 +20,7 @@ class FormationController extends Controller
     public function show(Request $request, League $league, Matchday $matchday, FantasyTeam $fantasyTeam): FormationResource
     {
         $this->assertContext($league, $matchday, $fantasyTeam);
-        $this->saveService->assertEligibility($league, $matchday);
+        $this->saveService->assertScheduleContains($league, $matchday);
         $formation = Formation::query()
             ->where('league_id', $league->id)
             ->where('fantasy_team_id', $fantasyTeam->id)

@@ -109,6 +109,11 @@ class SaveFormationService
         $this->formationEligibility->assert($league, $matchday);
     }
 
+    public function assertScheduleContains(League $league, Matchday $matchday): void
+    {
+        $this->formationEligibility->assertScheduleContains($league, $matchday);
+    }
+
     private function assertContext(League $league, Matchday $matchday, FantasyTeam $team): void
     {
         abort_unless($team->league_id === $league->id && $matchday->season_id === $league->season_id, 404);

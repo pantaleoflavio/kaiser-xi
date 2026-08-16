@@ -50,7 +50,6 @@ export function MatchdayListPage() {
     matchdays.data?.data ?? [],
     myTeam,
     schedule.data?.data,
-    isHeadToHead,
     Date.now(),
   );
 

@@ -148,24 +148,73 @@ class League extends Model
 
     public function allowsFormationFor(Matchday $matchday): bool
     {
+        return $this->isCurrentFormationMatchday($matchday)
+            && now()->lessThan($matchday->starts_at);
+    }
+
+    public function isCurrentFormationMatchday(Matchday $matchday): bool
+    {
         if ($matchday->season_id !== $this->season_id) {
             return false;
         }
 
         if ($this->isNonHeadToHeadChampionship()) {
-            return $this->hasInitializedChampionship()
-                && $this->championship_start_matchday_id !== null
-                && $matchday->starts_at->greaterThanOrEqualTo($this->championshipStartMatchday()->value('starts_at'));
+            if (! $this->hasInitializedChampionship() || $this->championship_start_matchday_id === null) {
+                return false;
+            }
+
+            $start = $this->championshipStartMatchday()->first();
+
+            return $start !== null && Matchday::query()
+                ->where('season_id', $this->season_id)
+                ->where('starts_at', '>=', $start->starts_at)
+                ->where('number', '>=', $start->number)
+                ->where('ends_at', '>', now())
+                ->orderBy('number')
+                ->value('id') === $matchday->id;
         }
 
         if (! $this->isHeadToHead()) {
             return true;
         }
 
-        return $this->hasInitializedHeadToHeadSchedule()
-            && $this->h2h_start_matchday_id !== null
-            && $matchday->starts_at->greaterThanOrEqualTo($this->h2hStartMatchday()->value('starts_at'))
-            && $this->fantasyMatches()->where('matchday_id', $matchday->id)->exists();
+        if (! $this->hasInitializedHeadToHeadSchedule() || $this->h2h_start_matchday_id === null) {
+            return false;
+        }
+
+        $start = $this->h2hStartMatchday()->first();
+
+        return $start !== null && Matchday::query()
+            ->where('matchdays.season_id', $this->season_id)
+            ->where('matchdays.starts_at', '>=', $start->starts_at)
+            ->where('matchdays.number', '>=', $start->number)
+            ->where('matchdays.ends_at', '>', now())
+            ->whereExists(function ($query): void {
+                $query->selectRaw('1')
+                    ->from('fantasy_matches')
+                    ->whereColumn('fantasy_matches.matchday_id', 'matchdays.id')
+                    ->where('fantasy_matches.league_id', $this->id);
+            })
+            ->orderBy('matchdays.number')
+            ->value('matchdays.id') === $matchday->id;
+    }
+
+    public function formationScheduleContains(Matchday $matchday): bool
+    {
+        if ($matchday->season_id !== $this->season_id) {
+            return false;
+        }
+
+        if ($this->isNonHeadToHeadChampionship()) {
+            $start = $this->championshipStartMatchday()->first();
+
+            return $this->hasInitializedChampionship() && $start !== null
+                && $matchday->starts_at->greaterThanOrEqualTo($start->starts_at)
+                && $matchday->number >= $start->number;
+        }
+
+        return ! $this->isHeadToHead() || ($this->hasInitializedHeadToHeadSchedule()
+            && $this->fantasyMatches()->where('matchday_id', $matchday->id)->exists());
     }
 
     public function settings(): HasMany

@@ -97,12 +97,55 @@ class FormationApiTest extends TestCase
     {
         [$league, $team, $matchday, $payload] = $this->context();
         $other = User::factory()->create();
+        $league->users()->attach($other, [
+            'league_role_id' => LeagueRole::query()->where('key', 'participant')->value('id'),
+            'joined_at' => now(),
+        ]);
+        Formation::factory()->create([
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'matchday_id' => $matchday->id,
+        ]);
         Sanctum::actingAs($other);
         $this->putJson($this->url($league, $matchday, $team), $payload)->assertForbidden();
+        $this->postJson($this->url($league, $matchday, $team) . '/submit')->assertForbidden();
 
         Sanctum::actingAs($team->user);
         $otherMatchday = Matchday::factory()->create(['season_id' => League::factory()->create()->season_id, 'starts_at' => now()->addDay()]);
         $this->putJson($this->url($league, $otherMatchday, $team), $payload)->assertNotFound();
+    }
+
+    public function test_classic_and_formula_one_reject_future_matchday_save_and_submit(): void
+    {
+        foreach (['classic', 'formula_one'] as $type) {
+            [$league, $team, $current, $payload] = $this->context($type);
+            $future = Matchday::factory()->create([
+                'season_id' => $league->season_id,
+                'number' => $current->number + 1,
+                'starts_at' => $current->starts_at->copy()->addWeek(),
+                'ends_at' => $current->ends_at->copy()->addWeek(),
+            ]);
+            Formation::factory()->create([
+                'league_id' => $league->id,
+                'fantasy_team_id' => $team->id,
+                'matchday_id' => $future->id,
+            ]);
+
+            Sanctum::actingAs($team->user);
+            $this->putJson($this->url($league, $current, $team), $payload)->assertCreated();
+            $this->getJson("/api/v1/leagues/{$league->id}/matchdays")
+                ->assertOk()
+                ->assertJsonPath('data.0.formation_allowed', true)
+                ->assertJsonPath('data.1.formation_allowed', false);
+
+            $url = $this->url($league, $future, $team);
+            $this->putJson($url, $payload)
+                ->assertConflict()
+                ->assertJsonPath('code', 'formation_matchday_not_eligible');
+            $this->postJson("{$url}/submit")
+                ->assertConflict()
+                ->assertJsonPath('code', 'formation_matchday_not_eligible');
+        }
     }
 
     public function test_formation_visibility_depends_on_membership_and_submission_not_matchday_clock(): void
@@ -230,6 +273,13 @@ class FormationApiTest extends TestCase
             'ends_at' => $scheduled->starts_at->copy()->addDays(2),
         ]);
 
+        FantasyMatch::factory()->create([
+            'league_id' => $league->id,
+            'matchday_id' => $notScheduled->id,
+            'home_fantasy_team_id' => $team->id,
+            'away_fantasy_team_id' => $opponent->id,
+        ]);
+
         $this->putJson(
             $this->url($league, $beforeStart, $team),
             $payload
@@ -238,18 +288,23 @@ class FormationApiTest extends TestCase
         $this->putJson(
             $this->url($league, $notScheduled, $team),
             $payload
-        )->assertConflict();
+        )->assertConflict()->assertJsonPath('code', 'formation_matchday_not_eligible');
+
+        $futureFormation = Formation::factory()->create([
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'matchday_id' => $notScheduled->id,
+        ]);
+
+        $this->postJson($this->url($league, $notScheduled, $team) . '/submit')
+            ->assertConflict()
+            ->assertJsonPath('code', 'formation_matchday_not_eligible');
+        $this->assertNull($futureFormation->fresh()->submitted_at);
 
         $this->assertDatabaseMissing('formations', [
             'league_id' => $league->id,
             'fantasy_team_id' => $team->id,
             'matchday_id' => $beforeStart->id,
-        ]);
-
-        $this->assertDatabaseMissing('formations', [
-            'league_id' => $league->id,
-            'fantasy_team_id' => $team->id,
-            'matchday_id' => $notScheduled->id,
         ]);
     }
 
@@ -279,14 +334,22 @@ class FormationApiTest extends TestCase
         $this->putJson($url, $payload)->assertUnprocessable()->assertJsonValidationErrors('players');
     }
 
-    private function context(): array
+    private function context(string $leagueType = 'classic'): array
     {
         $owner = User::factory()->create();
-        $league = League::factory()->create();
+        $league = League::factory()->create([
+            'league_type_id' => LeagueType::query()->where('key', $leagueType)->value('id'),
+        ]);
         app(LeagueSettingsService::class)->initializeDefaults($league);
         $league->users()->attach($owner, ['league_role_id' => LeagueRole::query()->where('key', 'participant')->firstOrFail()->id, 'joined_at' => now()]);
         $team = FantasyTeam::factory()->forLeagueAndUser($league, $owner)->create();
         $matchday = Matchday::factory()->create(['season_id' => $league->season_id, 'starts_at' => now()->addHour(), 'ends_at' => now()->addDays(2)]);
+        if ($league->isNonHeadToHeadChampionship()) {
+            $league->update([
+                'championship_start_matchday_id' => $matchday->id,
+                'championship_started_at' => now(),
+            ]);
+        }
         $module = FormationModule::query()->where('name', '4-3-3')->firstOrFail();
         $starters = [];
         foreach ($module->requirements()->with('playerRole')->get() as $requirement) {

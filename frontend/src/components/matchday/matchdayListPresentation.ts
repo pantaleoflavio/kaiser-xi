@@ -31,11 +31,9 @@ export function buildMatchdayListPresentation(
   matchdays: Matchday[],
   myTeam: FantasyTeam | undefined,
   schedule: HeadToHeadSchedule | undefined,
-  isHeadToHead: boolean,
   now: number,
 ): MatchdayListItemPresentation[] {
   const current = matchdays.find((item) => new Date(item.ends_at).getTime() > now);
-  const scheduleInitialized = Boolean(schedule?.initialized);
   const scheduledMatchdayIds = new Set(schedule?.matchdays.map((group) => group.matchday.id) ?? []);
 
   return matchdays.map((item) => ({
@@ -51,8 +49,6 @@ export function buildMatchdayListPresentation(
     scheduleInitialized: Boolean(
       myTeam && schedule?.initialized && scheduledMatchdayIds.has(item.id),
     ),
-    formationAllowed:
-      item.formation_allowed ??
-      (!isHeadToHead || (scheduleInitialized && scheduledMatchdayIds.has(item.id))),
+    formationAllowed: item.formation_allowed === true,
   }));
 }

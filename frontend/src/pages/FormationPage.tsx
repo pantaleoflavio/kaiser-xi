@@ -73,14 +73,7 @@ export function FormationPage() {
   const team = teams.data?.data.find((item) => String(item.id) === fantasyTeamId);
   const historical = Boolean(matchday && Date.now() >= new Date(matchday.deadline).getTime());
   const owned = Boolean(team?.is_owned_by_current_user);
-  const isHeadToHead = league.data?.data.type.key === 'head_to_head';
-  const formationAllowed =
-    matchday?.formation_allowed ??
-    (!isHeadToHead ||
-      Boolean(
-        schedule.data?.data.initialized &&
-        schedule.data.data.matchdays.some((group) => group.matchday.id === numericId),
-      ));
+  const formationAllowed = matchday?.formation_allowed === true;
   const visibleFormation = useQuery({
     queryKey: formationKeys.detail(leagueId, numericId, fantasyTeamId),
     queryFn: () => formationsApi.show(leagueId, numericId, fantasyTeamId),
@@ -106,14 +99,18 @@ export function FormationPage() {
     return (
       <ContentErrorPanel message={t('common.errors.notFound')} title={t('formation.errors.load')} />
     );
-  if (!formationAllowed)
+  const showHistorical = historical;
+  const showOwnerEditor = !historical && owned && formationAllowed;
+  const showSubmittedFormation = !historical && !owned && Boolean(submittedFormation);
+
+  if (!historical && !formationAllowed && !submittedFormation)
     return (
       <ContentErrorPanel
         message={t('formation.errors.scheduleNotInitialized')}
         title={t('formation.errors.load')}
       />
     );
-  if (!historical && !owned && !visibleFormation.data)
+  if (!historical && !owned && !submittedFormation)
     return (
       <ContentErrorPanel
         message={t('common.errors.forbidden')}
@@ -140,17 +137,12 @@ export function FormationPage() {
           {formatDate(matchday.deadline, t('leagueDetail.notAvailable'), language)}
         </p>
       </header>
-      {historical && result.data ? (
+      {showHistorical && result.data ? (
         <HistoricalFormationView data={result.data.data} />
-      ) : !owned && submittedFormation ? (
+      ) : !showSubmittedFormation && submittedFormation ? (
         <SubmittedFormationView formation={submittedFormation} />
-      ) : owned ? (
-        <OwnedFormationEditor
-          leagueId={leagueId}
-          locked={historical}
-          matchdayId={numericId}
-          teamId={fantasyTeamId}
-        />
+      ) : showOwnerEditor ? (
+        <OwnedFormationEditor leagueId={leagueId} matchdayId={numericId} teamId={fantasyTeamId} />
       ) : (
         <ContentErrorPanel
           message={t('common.errors.forbidden')}
