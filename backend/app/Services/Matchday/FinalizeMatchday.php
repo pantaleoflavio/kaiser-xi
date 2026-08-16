@@ -8,6 +8,7 @@ use App\Models\League;
 use App\Models\Matchday;
 use App\Services\Scoring\CalculateFantasyMatchResult;
 use App\Services\Scoring\CalculateTeamMatchdayScore;
+use App\Services\Standings\CalculateClassicStandings;
 use App\Services\Standings\CalculateHeadToHeadStandings;
 use Illuminate\Support\Facades\DB;
 
@@ -17,6 +18,7 @@ final class FinalizeMatchday
         private readonly CalculateTeamMatchdayScore $teamScores,
         private readonly CalculateFantasyMatchResult $matchResults,
         private readonly CalculateHeadToHeadStandings $standings,
+        private readonly CalculateClassicStandings $classicStandings,
     ) {}
 
     public function finalize(Matchday $matchday): void
@@ -46,6 +48,13 @@ final class FinalizeMatchday
                 ->each(function (Formation $formation) use ($matchday): void {
                     $this->teamScores->calculate($formation->fantasyTeam, $matchday);
                 });
+
+            if ($league->type?->key === 'classic' && $league->hasInitializedClassicChampionship()) {
+                $this->classicStandings->calculate($league);
+
+                return;
+            }
+
 
             if (
                 $league->type?->key !== 'head_to_head'

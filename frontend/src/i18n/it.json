@@ -701,7 +701,24 @@
       "invalidMatchday": "La giornata iniziale selezionata o la configurazione della lega non è valida."
     }
   },
+  "classic": {
+    "title": "Campionato Classic",
+    "start": "Avvia campionato",
+    "startingMatchday": "Giornata iniziale",
+    "started": "Campionato avviato",
+    "notStarted": "Campionato non avviato",
+    "participants": "Partecipanti: {{count}} / {{max}}",
+    "maxNotice": "Non è necessario raggiungere il numero massimo di partecipanti.",
+    "freezeWarning": "L'avvio è irreversibile e blocca i partecipanti.",
+    "missingZero": "Una formazione mancante vale zero punti."
+  },
   "standings": {
+    "totalPoints": "Punti totali",
+    "totalPointsShort": "Totale",
+    "averagePoints": "Media punti",
+    "averagePointsShort": "Media",
+    "bestMatchday": "Miglior giornata",
+    "bestMatchdayShort": "Migliore",
     "title": "Classifica",
     "description": "Classifica degli scontri diretti basata sui risultati calcolati.",
     "position": "Posizione",

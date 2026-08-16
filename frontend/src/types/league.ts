@@ -23,6 +23,8 @@ export type League = {
   type: LeagueReference;
   status: LeagueReference;
   my_role: LeagueRole | null;
+  competition_initialized: boolean;
+  competition_start_matchday_id: number | null;
 };
 
 export type LeagueResponse = ResourceResponse<League>;
@@ -130,7 +132,7 @@ export type FantasyTeamPayload = {
   name: string;
 };
 
-export type Standing = {
+export type HeadToHeadStanding = {
   position: number;
   fantasy_team: Pick<FantasyTeam, 'id' | 'name' | 'slug'>;
   played: number;
@@ -142,6 +144,17 @@ export type Standing = {
   goal_difference: number;
   points: number;
 };
+
+export type ClassicStanding = {
+  position: number;
+  fantasy_team: Pick<FantasyTeam, 'id' | 'name' | 'slug'>;
+  played: number;
+  total_points: string;
+  average_points: string;
+  best_matchday_score: string;
+};
+
+export type Standing = HeadToHeadStanding | ClassicStanding;
 
 export type StandingsResponse = CollectionResponse<Standing>;
 

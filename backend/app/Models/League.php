@@ -23,10 +23,13 @@ class League extends Model
         'max_participants',
         'h2h_start_matchday_id',
         'h2h_schedule_generated_at',
+        'classic_start_matchday_id',
+        'classic_started_at',
     ];
 
     protected $casts = [
         'h2h_schedule_generated_at' => 'datetime',
+        'classic_started_at' => 'datetime',
     ];
 
     public function season(): BelongsTo
@@ -87,6 +90,31 @@ class League extends Model
         return $this->h2h_schedule_generated_at !== null;
     }
 
+    public function classicStartMatchday(): BelongsTo
+    {
+        return $this->belongsTo(Matchday::class, 'classic_start_matchday_id');
+    }
+
+    public function classicParticipants(): BelongsToMany
+    {
+        return $this->belongsToMany(FantasyTeam::class, 'classic_league_participants')->withTimestamps();
+    }
+
+    public function isClassic(): bool
+    {
+        return $this->type()->where('key', 'classic')->exists();
+    }
+
+    public function hasInitializedClassicChampionship(): bool
+    {
+        return $this->classic_started_at !== null;
+    }
+
+    public function hasStartedFantasyCompetition(): bool
+    {
+        return $this->hasInitializedHeadToHeadSchedule() || $this->hasInitializedClassicChampionship();
+    }
+
     public function isHeadToHead(): bool
     {
         return $this->type()->where('key', 'head_to_head')->exists();
@@ -96,6 +124,12 @@ class League extends Model
     {
         if ($matchday->season_id !== $this->season_id) {
             return false;
+        }
+
+        if ($this->isClassic()) {
+            return $this->hasInitializedClassicChampionship()
+                && $this->classic_start_matchday_id !== null
+                && $matchday->starts_at->greaterThanOrEqualTo($this->classicStartMatchday()->value('starts_at'));
         }
 
         if (! $this->isHeadToHead()) {

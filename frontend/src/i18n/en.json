@@ -749,7 +749,24 @@
       "invalidMatchday": "The selected starting Matchday or league configuration is invalid."
     }
   },
+  "classic": {
+    "title": "Classic championship",
+    "start": "Start championship",
+    "startingMatchday": "Starting Matchday",
+    "started": "Championship started",
+    "notStarted": "Championship not started",
+    "participants": "Participants: {{count}} / {{max}}",
+    "maxNotice": "The maximum participant count does not need to be reached.",
+    "freezeWarning": "Starting is irreversible and freezes the participant set.",
+    "missingZero": "A missing formation counts as zero points."
+  },
   "standings": {
+    "totalPoints": "Total points",
+    "totalPointsShort": "Total",
+    "averagePoints": "Average points",
+    "averagePointsShort": "Avg",
+    "bestMatchday": "Best Matchday",
+    "bestMatchdayShort": "Best",
     "title": "Standings",
     "description": "Head-to-head league ranking from calculated results.",
     "position": "Position",

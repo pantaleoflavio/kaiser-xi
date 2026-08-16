@@ -15,6 +15,7 @@ export function LeagueStandingsPage() {
     queryKey: leagueKeys.detail(leagueId),
     queryFn: () => leaguesApi.show(leagueId),
   });
+  const leagueType = league.data?.data.type.key;
   const teams = useQuery({
     queryKey: leagueKeys.fantasyTeams(leagueId),
     queryFn: () => leaguesApi.fantasyTeams(leagueId),
@@ -22,11 +23,11 @@ export function LeagueStandingsPage() {
   const standings = useQuery({
     queryKey: leagueKeys.standings(leagueId),
     queryFn: () => leaguesApi.standings(leagueId),
-    enabled: league.data?.data.type.key === 'head_to_head',
+    enabled: ['head_to_head', 'classic'].includes(league.data?.data.type.key ?? ''),
   });
   if (league.isLoading || teams.isLoading || standings.isLoading)
     return <LoadingState message={t('common.loading')} />;
-  if (league.error || standings.error || league.data?.data.type.key !== 'head_to_head')
+  if (league.error || standings.error || !['head_to_head', 'classic'].includes(leagueType ?? ''))
     return (
       <ContentErrorPanel
         title={t('standings.errorTitle')}
@@ -36,13 +37,22 @@ export function LeagueStandingsPage() {
   const myTeam = teams.data?.data.find((team) => team.is_owned_by_current_user);
   return (
     <section className="space-y-6">
-      <LeagueNavigation leagueId={leagueId} myTeamId={myTeam?.id} showSchedule showStandings />
+      <LeagueNavigation
+        leagueId={leagueId}
+        myTeamId={myTeam?.id}
+        showSchedule={leagueType === 'head_to_head'}
+        showStandings
+      />
       <div>
         <h1 className="text-3xl font-bold text-white">{t('standings.title')}</h1>
         <p className="mt-2 text-slate-300">{t('standings.description')}</p>
       </div>
       {standings.data?.data.length ? (
-        <StandingsTable standings={standings.data.data} currentTeamId={myTeam?.id} />
+        <StandingsTable
+          standings={standings.data.data}
+          currentTeamId={myTeam?.id}
+          classic={leagueType === 'classic'}
+        />
       ) : (
         <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">{t('standings.empty')}</p>
       )}

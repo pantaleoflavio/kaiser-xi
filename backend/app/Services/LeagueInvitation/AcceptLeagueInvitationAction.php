@@ -28,7 +28,7 @@ class AcceptLeagueInvitationAction
 
                 $league = League::query()->whereKey($locked->league_id)->lockForUpdate()->firstOrFail();
 
-                if ($league->hasInitializedHeadToHeadSchedule()) {
+                if ($league->hasStartedFantasyCompetition()) {
                     throw new LeagueScheduleAlreadyInitializedException;
                 }
 

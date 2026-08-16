@@ -12,7 +12,7 @@ class StandingController extends Controller
     public function index(League $league): AnonymousResourceCollection
     {
         $standings = $league->standings()
-            ->with('fantasyTeam:id,name,slug')
+            ->with(['fantasyTeam:id,name,slug', 'league.type'])
             ->orderBy('position')
             ->orderBy('fantasy_team_id')
             ->get();

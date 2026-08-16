@@ -61,7 +61,7 @@ export function LeagueDetailPage() {
             leagueId={leagueId}
             myTeamId={myTeam?.id}
             showSchedule={league.type.key === 'head_to_head'}
-            showStandings={league.type.key === 'head_to_head'}
+            showStandings={['head_to_head', 'classic'].includes(league.type.key)}
           />
           <LeagueSummary league={league} />
           <div className="grid gap-4 md:grid-cols-2">
@@ -76,7 +76,7 @@ export function LeagueDetailPage() {
                 {t('leagueNavigation.matchdaysDescription')}
               </p>
             </Link>
-            {league.type.key === 'head_to_head' ? (
+            {['head_to_head', 'classic'].includes(league.type.key) ? (
               <Link
                 className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
                 to={`/leagues/${leagueId}/standings`}
@@ -107,6 +107,17 @@ export function LeagueDetailPage() {
                     ? t('h2h.viewSchedule')
                     : t('h2h.configureStart')}
                 </span>
+              </Link>
+            ) : null}
+            {league.type.key === 'classic' ? (
+              <Link
+                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5"
+                to={`/leagues/${leagueId}/classic-championship`}
+              >
+                <h2 className="text-xl font-semibold text-white">{t('classic.title')}</h2>
+                <p className="mt-2 text-sm text-slate-300">
+                  {league.competition_initialized ? t('classic.started') : t('classic.notStarted')}
+                </p>
               </Link>
             ) : null}
             <Link

@@ -749,7 +749,24 @@
       "invalidMatchday": "Der gewählte Startspieltag oder die Ligakonfiguration ist ungültig."
     }
   },
+  "classic": {
+    "title": "Classic-Meisterschaft",
+    "start": "Meisterschaft starten",
+    "startingMatchday": "Startspieltag",
+    "started": "Meisterschaft gestartet",
+    "notStarted": "Meisterschaft nicht gestartet",
+    "participants": "Teilnehmer: {{count}} / {{max}}",
+    "maxNotice": "Die maximale Teilnehmerzahl muss nicht erreicht sein.",
+    "freezeWarning": "Der Start ist endgültig und friert die Teilnehmer ein.",
+    "missingZero": "Eine fehlende Aufstellung zählt null Punkte."
+  },
   "standings": {
+    "totalPoints": "Gesamtpunkte",
+    "totalPointsShort": "Gesamt",
+    "averagePoints": "Durchschnittspunkte",
+    "averagePointsShort": "Ø",
+    "bestMatchday": "Bester Spieltag",
+    "bestMatchdayShort": "Best",
     "title": "Tabelle",
     "description": "Tabelle der direkten Duelle aus berechneten Ergebnissen.",
     "position": "Position",

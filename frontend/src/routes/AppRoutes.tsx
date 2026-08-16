@@ -20,6 +20,7 @@ import { MatchdayDetailPage } from '../pages/MatchdayDetailPage';
 import { FormationPage } from '../pages/FormationPage';
 import { HeadToHeadSchedulePage } from '../pages/HeadToHeadSchedulePage';
 import { LeagueStandingsPage } from '../pages/LeagueStandingsPage';
+import { ClassicChampionshipPage } from '../pages/ClassicChampionshipPage';
 
 export function AppRoutes() {
   return (
@@ -38,6 +39,10 @@ export function AppRoutes() {
           <Route path="leagues/:leagueId/fantasy-teams" element={<LeagueFantasyTeamsPage />} />
           <Route path="leagues/:leagueId/matchdays" element={<MatchdayListPage />} />
           <Route path="leagues/:leagueId/standings" element={<LeagueStandingsPage />} />
+          <Route
+            path="leagues/:leagueId/classic-championship"
+            element={<ClassicChampionshipPage />}
+          />
           <Route
             path="leagues/:leagueId/head-to-head-schedule"
             element={<HeadToHeadSchedulePage />}

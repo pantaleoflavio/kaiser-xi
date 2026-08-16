@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AcceptLeagueInvitationController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\ClassicChampionshipController;
 use App\Http\Controllers\Api\V1\EligiblePlayerController;
 use App\Http\Controllers\Api\V1\FantasyTeamController;
 use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
@@ -79,6 +80,11 @@ Route::prefix('v1')->group(function (): void {
             ->middleware('can:view,league');
         Route::post('/{league}/head-to-head-schedule', [HeadToHeadScheduleController::class, 'store'])
             ->name('api.v1.leagues.head-to-head-schedule.store')
+            ->middleware('can:manageSchedule,league');
+
+        Route::get('/{league}/classic-championship', [ClassicChampionshipController::class, 'show'])
+            ->middleware('can:view,league');
+        Route::post('/{league}/classic-championship', [ClassicChampionshipController::class, 'store'])
             ->middleware('can:manageSchedule,league');
 
         Route::get('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation', [FormationController::class, 'show'])

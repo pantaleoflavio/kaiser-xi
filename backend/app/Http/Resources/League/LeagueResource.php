@@ -33,6 +33,8 @@ class LeagueResource extends JsonResource
                 'label' => $this->status->label,
             ],
             'my_role' => $membership?->role?->key,
+            'competition_initialized' => $this->hasStartedFantasyCompetition(),
+            'competition_start_matchday_id' => $this->isClassic() ? $this->classic_start_matchday_id : $this->h2h_start_matchday_id,
         ];
     }
 }

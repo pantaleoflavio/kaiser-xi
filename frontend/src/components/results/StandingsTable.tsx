@@ -4,21 +4,48 @@ import { useTranslation } from '../../i18n';
 export function StandingsTable({
   standings,
   currentTeamId,
+  classic = false,
 }: {
   standings: Standing[];
   currentTeamId?: number;
+  classic?: boolean;
 }) {
   const { t } = useTranslation();
-  const labels = [
-    ['played', 'played'],
-    ['wins', 'wins'],
-    ['draws', 'draws'],
-    ['losses', 'losses'],
-    ['goalsFor', 'goals_for'],
-    ['goalsAgainst', 'goals_against'],
-    ['goalDifference', 'goal_difference'],
-    ['points', 'points'],
-  ] as const;
+  const value = (standing: Standing, field: string): string | number => {
+    if ('total_points' in standing) {
+      if (field === 'total_points') return standing.total_points;
+      if (field === 'average_points') return standing.average_points;
+      if (field === 'best_matchday_score') return standing.best_matchday_score;
+      return standing.played;
+    }
+    if (field === 'wins') return standing.wins;
+    if (field === 'draws') return standing.draws;
+    if (field === 'losses') return standing.losses;
+    if (field === 'goals_for') return standing.goals_for;
+    if (field === 'goals_against') return standing.goals_against;
+    if (field === 'goal_difference') return standing.goal_difference;
+    if (field === 'points') return standing.points;
+    return standing.played;
+  };
+  const labels = (
+    classic
+      ? [
+          ['played', 'played'],
+          ['totalPoints', 'total_points'],
+          ['averagePoints', 'average_points'],
+          ['bestMatchday', 'best_matchday_score'],
+        ]
+      : [
+          ['played', 'played'],
+          ['wins', 'wins'],
+          ['draws', 'draws'],
+          ['losses', 'losses'],
+          ['goalsFor', 'goals_for'],
+          ['goalsAgainst', 'goals_against'],
+          ['goalDifference', 'goal_difference'],
+          ['points', 'points'],
+        ]
+  ) as ReadonlyArray<readonly [string, string]>;
   return (
     <>
       <div className="space-y-3 md:hidden">
@@ -45,7 +72,7 @@ export function StandingsTable({
                 {labels.map(([label, field]) => (
                   <div key={field}>
                     <dt className="text-xs text-slate-400">{t(`standings.${label}Short`)}</dt>
-                    <dd className="font-semibold text-white">{standing[field]}</dd>
+                    <dd className="font-semibold text-white">{value(standing, field)}</dd>
                   </div>
                 ))}
               </dl>
@@ -97,7 +124,7 @@ export function StandingsTable({
                       className={`px-2 py-3 text-center ${field === 'points' ? 'font-bold text-white' : 'text-slate-200'}`}
                       key={field}
                     >
-                      {standing[field]}
+                      {value(standing, field)}
                     </td>
                   ))}
                 </tr>

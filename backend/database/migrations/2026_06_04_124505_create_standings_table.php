@@ -14,6 +14,8 @@ return new class extends Migration
             $table->foreignId('fantasy_team_id')->constrained()->cascadeOnDelete();
             $table->integer('points_total')->default(0);
             $table->decimal('fantasy_points_total', 10, 2)->default(0);
+            $table->decimal('average_points', 10, 4)->default(0);
+            $table->decimal('best_matchday_score', 10, 2)->default(0);
             $table->unsignedSmallInteger('played')->default(0);
             $table->unsignedSmallInteger('wins')->default(0);
             $table->unsignedSmallInteger('draws')->default(0);

@@ -70,7 +70,7 @@ export function MatchdayDetailPage() {
         leagueId={leagueId}
         myTeamId={myTeam?.id}
         showSchedule={league.data?.data.type.key === 'head_to_head'}
-        showStandings={league.data?.data.type.key === 'head_to_head'}
+        showStandings={['head_to_head', 'classic'].includes(league.data?.data.type.key ?? '')}
       />
       <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label={t('results.matchdayResults')}>
         <Link

@@ -20,7 +20,7 @@ class CreateLeagueInvitationAction
     {
         return DB::transaction(function () use ($league, $creator, $data): LeagueInvitation {
             $lockedLeague = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
-            if ($lockedLeague->hasInitializedHeadToHeadSchedule()) {
+            if ($lockedLeague->hasStartedFantasyCompetition()) {
                 throw new LeagueScheduleAlreadyInitializedException;
             }
             $recipient = User::query()->where('email', $data['email'])->firstOrFail();

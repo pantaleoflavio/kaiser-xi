@@ -16,7 +16,7 @@ class FantasyTeamService
     {
         return DB::transaction(function () use ($league, $user, $name): FantasyTeam {
             $lockedLeague = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
-            if ($lockedLeague->hasInitializedHeadToHeadSchedule()) {
+            if ($lockedLeague->hasStartedFantasyCompetition()) {
                 throw new LeagueScheduleAlreadyInitializedException;
             }
             if ($lockedLeague->fantasyTeams()->where('user_id', $user->id)->exists()) {

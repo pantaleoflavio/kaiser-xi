@@ -60,7 +60,7 @@ export function MatchdayListPage() {
         leagueId={leagueId}
         myTeamId={myTeam?.id}
         showSchedule={isHeadToHead}
-        showStandings={isHeadToHead}
+        showStandings={isHeadToHead || league.data?.data.type.key === 'classic'}
       />
       <div>
         <h1 className="text-3xl font-bold text-white">{t('matchdays.title')}</h1>
