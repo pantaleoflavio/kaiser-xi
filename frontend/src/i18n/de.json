@@ -823,6 +823,7 @@
     "viewTeamResult": "Teamergebnis ansehen",
     "matchdayResults": "Spieltagergebnisse",
     "noFixtures": "Für diesen Spieltag sind keine Begegnungen verfügbar",
+    "noClassicParticipants": "Für diesen Spieltag sind keine Classic-Teilnehmer verfügbar",
     "goals": "Tore",
     "assists": "Vorlagen",
     "yellowCards": "Gelbe Karten",

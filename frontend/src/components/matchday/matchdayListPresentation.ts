@@ -34,22 +34,25 @@ export function buildMatchdayListPresentation(
   isHeadToHead: boolean,
   now: number,
 ): MatchdayListItemPresentation[] {
-  const current = matchdays.find((item) => new Date(item.deadline).getTime() > now);
+  const current = matchdays.find((item) => new Date(item.ends_at).getTime() > now);
   const scheduleInitialized = Boolean(schedule?.initialized);
   const scheduledMatchdayIds = new Set(schedule?.matchdays.map((group) => group.matchday.id) ?? []);
 
   return matchdays.map((item) => ({
     item,
     state:
-      new Date(item.deadline).getTime() <= now
+      item.championship_state ??
+      (new Date(item.ends_at).getTime() <= now
         ? 'past'
         : item.id === current?.id
           ? 'current'
-          : 'upcoming',
+          : 'upcoming'),
     fixture: findTeamFixture(schedule, item.id, myTeam?.id),
     scheduleInitialized: Boolean(
       myTeam && schedule?.initialized && scheduledMatchdayIds.has(item.id),
     ),
-    formationAllowed: !isHeadToHead || (scheduleInitialized && scheduledMatchdayIds.has(item.id)),
+    formationAllowed:
+      item.formation_allowed ??
+      (!isHeadToHead || (scheduleInitialized && scheduledMatchdayIds.has(item.id))),
   }));
 }

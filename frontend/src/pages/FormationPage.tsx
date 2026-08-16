@@ -75,11 +75,12 @@ export function FormationPage() {
   const owned = Boolean(team?.is_owned_by_current_user);
   const isHeadToHead = league.data?.data.type.key === 'head_to_head';
   const formationAllowed =
-    !isHeadToHead ||
-    Boolean(
-      schedule.data?.data.initialized &&
-      schedule.data.data.matchdays.some((group) => group.matchday.id === numericId),
-    );
+    matchday?.formation_allowed ??
+    (!isHeadToHead ||
+      Boolean(
+        schedule.data?.data.initialized &&
+        schedule.data.data.matchdays.some((group) => group.matchday.id === numericId),
+      ));
   const visibleFormation = useQuery({
     queryKey: formationKeys.detail(leagueId, numericId, fantasyTeamId),
     queryFn: () => formationsApi.show(leagueId, numericId, fantasyTeamId),

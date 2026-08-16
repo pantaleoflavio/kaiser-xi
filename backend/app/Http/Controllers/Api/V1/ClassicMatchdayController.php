@@ -7,20 +7,14 @@ use App\Models\Formation;
 use App\Models\League;
 use App\Models\Matchday;
 use App\Models\TeamMatchdayScore;
+use App\Services\League\ClassicChampionshipMatchdays;
 use Illuminate\Http\JsonResponse;
 
 class ClassicMatchdayController extends Controller
 {
-    public function show(League $league, Matchday $matchday): JsonResponse
+    public function show(League $league, Matchday $matchday, ClassicChampionshipMatchdays $classicMatchdays): JsonResponse
     {
-        abort_unless(
-            $league->isClassic()
-                && $league->hasInitializedClassicChampionship()
-                && $matchday->season_id === $league->season_id
-                && $league->classic_start_matchday_id !== null
-                && $matchday->starts_at->greaterThanOrEqualTo($league->classicStartMatchday()->value('starts_at')),
-            404,
-        );
+        abort_unless($classicMatchdays->contains($league, $matchday), 404);
 
         $formations = Formation::query()
             ->where('league_id', $league->id)
@@ -38,7 +32,9 @@ class ClassicMatchdayController extends Controller
         $teams = $league->classicParticipants()->orderBy('fantasy_teams.id')->get()->map(
             function ($team) use ($formations, $scores, $counted): array {
                 $formation = $formations->get($team->id);
-                $score = $scores->get($team->id);
+                // Aggregate scores are historical output. Open/future matchdays
+                // must report submission state without previewing a result.
+                $score = $counted ? $scores->get($team->id) : null;
 
                 return [
                     'fantasy_team' => [

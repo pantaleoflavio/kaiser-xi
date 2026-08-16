@@ -26,7 +26,7 @@ export function MatchdayCard({
   const formation = useQuery({
     queryKey: formationKeys.detail(leagueId, item.id, myTeam?.id ?? ''),
     queryFn: () => formationsApi.show(leagueId, item.id, String(myTeam?.id ?? '')),
-    enabled: formationAllowed && state === 'current' && Boolean(myTeam),
+    enabled: formationAllowed && state !== 'past' && Boolean(myTeam),
     retry: false,
   });
   const action = formation.data?.data.submitted
@@ -84,15 +84,13 @@ export function MatchdayCard({
           ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
-          {state !== 'upcoming' ? (
-            <Link
-              className="rounded-lg border border-slate-600 px-3 py-2 text-sm font-semibold text-white"
-              to={`/leagues/${leagueId}/matchdays/${item.id}`}
-            >
-              {t('matchdays.open')}
-            </Link>
-          ) : null}
-          {state === 'current' &&
+          <Link
+            className="rounded-lg border border-slate-600 px-3 py-2 text-sm font-semibold text-white"
+            to={`/leagues/${leagueId}/matchdays/${item.id}`}
+          >
+            {t('matchdays.open')}
+          </Link>
+          {state !== 'past' &&
           formationAllowed &&
           myTeam &&
           !formation.isLoading &&

@@ -8,6 +8,8 @@ export type Matchday = {
   starts_at: string;
   ends_at: string;
   deadline: string;
+  championship_state?: 'past' | 'current' | 'upcoming';
+  formation_allowed?: boolean;
 };
 
 export type FormationPlayer = {

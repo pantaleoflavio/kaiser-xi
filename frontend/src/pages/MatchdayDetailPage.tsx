@@ -110,7 +110,7 @@ export function MatchdayDetailPage() {
       </nav>
       <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
         <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
-          {open ? t('matchdays.current') : t('matchdays.past')}
+          {t(`matchdays.${matchday.championship_state ?? (open ? 'current' : 'past')}`)}
         </p>
         <h1 className="mt-2 text-3xl font-bold text-white">
           {matchday.name || t('formation.matchdayNumber', { number: matchday.number })}
@@ -166,6 +166,11 @@ export function MatchdayDetailPage() {
               key={entry.fantasy_team.id}
             />
           ))}
+          {classicResults.data && !classicResults.data.data.teams.length ? (
+            <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">
+              {t('results.noClassicParticipants')}
+            </p>
+          ) : null}
         </section>
       ) : null}
     </section>

@@ -11,9 +11,12 @@ use App\Models\Matchday;
 use App\Models\PlayerScore;
 use App\Models\Standing;
 use App\Models\TeamMatchdayScore;
+use App\Models\User;
 use Database\Seeders\DemoClassicChampionshipSeeder;
 use Database\Seeders\DemoFantasyRostersSeeder;
+use Database\Seeders\DemoHeadToHeadLeagueSeeder;
 use Database\Seeders\DemoLeagueSeeder;
+use Database\Seeders\DemoMatchdaySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Seeders\Concerns\SeedsDemoFoundation;
 use Tests\TestCase;
@@ -83,6 +86,69 @@ class DemoClassicChampionshipSeederTest extends TestCase
         $counts = $this->scenarioCounts($league, $past->pluck('id')->all());
         $this->seed(DemoClassicChampionshipSeeder::class);
         $this->assertSame($counts, $this->scenarioCounts($league, $past->pluck('id')->all()));
+    }
+
+    public function test_classic_matchday_api_exposes_only_the_seeded_championship_sequence(): void
+    {
+        $this->seedDemoFoundation();
+        $this->seed(DemoFantasyRostersSeeder::class);
+        $this->seed(DemoClassicChampionshipSeeder::class);
+        $this->seed(DemoMatchdaySeeder::class);
+        $this->seed(DemoHeadToHeadLeagueSeeder::class);
+
+        $league = League::query()->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)->firstOrFail();
+        $expected = Matchday::query()->where('season_id', $league->season_id)
+            ->whereBetween('number', [
+                DemoClassicChampionshipSeeder::FIRST_MATCHDAY_NUMBER,
+                DemoClassicChampionshipSeeder::FIRST_MATCHDAY_NUMBER + DemoClassicChampionshipSeeder::MATCHDAY_COUNT - 1,
+            ])->orderBy('number')->pluck('id')->all();
+        $user = User::query()->where('email', 'demo.commissioner@example.com')->firstOrFail();
+
+        $response = $this->actingAs($user)->getJson("/api/v1/leagues/{$league->id}/matchdays")->assertOk();
+        $this->assertSame($expected, $response->json('data.*.id'));
+        $this->assertSame(
+            ['past', 'past', 'past', 'current', 'upcoming', 'upcoming', 'upcoming', 'upcoming'],
+            $response->json('data.*.championship_state'),
+        );
+        $this->assertNotContains(
+            Matchday::query()->where('season_id', $league->season_id)->where('number', DemoMatchdaySeeder::MATCHDAY_NUMBER)->value('id'),
+            $response->json('data.*.id'),
+        );
+        $this->assertEmpty(array_intersect(
+            Matchday::query()->where('season_id', $league->season_id)
+                ->whereBetween('number', [DemoHeadToHeadLeagueSeeder::FIRST_MATCHDAY_NUMBER, DemoHeadToHeadLeagueSeeder::FIRST_MATCHDAY_NUMBER + DemoHeadToHeadLeagueSeeder::FUTURE_MATCHDAY_COUNT - 1])
+                ->pluck('id')->all(),
+            $response->json('data.*.id'),
+        ));
+
+        $pastResponse = $this->getJson("/api/v1/leagues/{$league->id}/matchdays/{$expected[1]}/classic-results")
+            ->assertOk()->assertJsonCount(9, 'data.teams');
+        $this->assertContains('missing_formation', $pastResponse->json('data.teams.*.result_status'));
+        $this->assertContains('calculated', $pastResponse->json('data.teams.*.result_status'));
+
+        $currentResponse = $this->getJson("/api/v1/leagues/{$league->id}/matchdays/{$expected[3]}/classic-results")
+            ->assertOk()->assertJsonCount(9, 'data.teams');
+        $this->assertSame(1, collect($currentResponse->json('data.teams'))->where('formation_submitted', true)->count());
+        $this->assertSame([null], array_values(array_unique($currentResponse->json('data.teams.*.points'))));
+    }
+
+    public function test_exposed_past_classic_matchdays_match_the_standings_counted_boundary(): void
+    {
+        $this->seedDemoFoundation();
+        $this->seed(DemoFantasyRostersSeeder::class);
+        $this->seed(DemoClassicChampionshipSeeder::class);
+
+        $league = League::query()->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)->firstOrFail();
+        $user = User::query()->where('email', 'demo.commissioner@example.com')->firstOrFail();
+        $exposedPastIds = collect($this->actingAs($user)
+            ->getJson("/api/v1/leagues/{$league->id}/matchdays")->assertOk()->json('data'))
+            ->where('championship_state', 'past')->pluck('id')->all();
+        $standingsCountedIds = Matchday::query()->where('season_id', $league->season_id)
+            ->where('starts_at', '>=', $league->classicStartMatchday()->value('starts_at'))
+            ->where('ends_at', '<=', now())->orderBy('number')->pluck('id')->all();
+
+        $this->assertSame($standingsCountedIds, $exposedPastIds);
+        $this->assertSame(Standing::query()->whereBelongsTo($league)->firstOrFail()->played, count($exposedPastIds));
     }
 
     /** @return array<string, int> */

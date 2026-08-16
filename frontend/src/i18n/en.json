@@ -823,6 +823,7 @@
     "viewTeamResult": "View team result",
     "matchdayResults": "Matchday results",
     "noFixtures": "No fixtures are available for this matchday",
+    "noClassicParticipants": "No Classic participants are available for this matchday",
     "goals": "Goals",
     "assists": "Assists",
     "yellowCards": "Yellow cards",

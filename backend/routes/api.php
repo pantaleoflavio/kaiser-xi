@@ -88,6 +88,7 @@ Route::prefix('v1')->group(function (): void {
         Route::post('/{league}/classic-championship', [ClassicChampionshipController::class, 'store'])
             ->middleware('can:manageSchedule,league');
         Route::get('/{league}/matchdays/{matchday}/classic-results', [ClassicMatchdayController::class, 'show'])
+            ->withoutScopedBindings()
             ->middleware('can:view,league');
 
         Route::get('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation', [FormationController::class, 'show'])
