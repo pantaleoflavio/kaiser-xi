@@ -33,7 +33,7 @@ class ResolveFormationSubstitutionsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_all_playable_starters_are_unchanged(): void

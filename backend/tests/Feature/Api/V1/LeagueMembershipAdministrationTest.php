@@ -19,7 +19,7 @@ class LeagueMembershipAdministrationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_commissioner_can_remove_participant(): void
@@ -212,7 +212,7 @@ class LeagueMembershipAdministrationTest extends TestCase
 
     private function roleUrl(League $league, User $user): string
     {
-        return $this->memberUrl($league, $user).'/role';
+        return $this->memberUrl($league, $user) . '/role';
     }
 
     private function assertMembershipRole(League $league, User $user, string $role): void

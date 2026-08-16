@@ -19,7 +19,7 @@ class LeagueScoringSettingsApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_scoring_defaults_are_initialized_exposed_and_idempotent(): void

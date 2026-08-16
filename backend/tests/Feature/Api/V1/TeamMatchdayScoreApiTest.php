@@ -35,7 +35,7 @@ class TeamMatchdayScoreApiTest extends TestCase
     public function test_member_reads_authoritative_result_and_substitution_context_after_deadline(): void
     {
         Carbon::setTestNow('2026-08-08 12:00:00');
-        $this->seed();
+        $this->seedReferenceData();
         $league = League::factory()->create();
         $member = User::factory()->create();
         $league->users()->attach($member, ['league_role_id' => LeagueRole::where('key', 'participant')->firstOrFail()->id, 'joined_at' => now()]);

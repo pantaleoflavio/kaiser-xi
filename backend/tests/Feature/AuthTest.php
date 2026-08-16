@@ -18,7 +18,10 @@ class AuthTest extends TestCase
     {
         Role::create(['name' => 'user']);
         $response = $this->postJson('/api/v1/auth/register', [
-            'name' => 'Mario', 'email' => 'mario@example.com', 'password' => 'password123', 'password_confirmation' => 'password123',
+            'name' => 'Mario',
+            'email' => 'mario@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
         ]);
         $response->assertCreated()->assertJsonPath('user.email', 'mario@example.com');
     }
@@ -72,7 +75,7 @@ class AuthTest extends TestCase
 
     public function test_global_admin_seed_exists(): void
     {
-        $this->seed();
+        $this->seedReferenceData();
         $admin = User::where('email', 'admin@example.com')->first();
         $this->assertNotNull($admin);
         $this->assertTrue($admin->roles->contains('name', 'global_admin'));

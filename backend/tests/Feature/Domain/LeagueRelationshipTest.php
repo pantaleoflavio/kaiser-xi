@@ -14,7 +14,7 @@ class LeagueRelationshipTest extends TestCase
 
     public function test_league_can_be_created_with_season_type_status_and_commissioner(): void
     {
-        $this->seed();
+        $this->seedReferenceData();
 
         $commissioner = User::factory()->create();
         $league = League::factory()->create(['commissioner_user_id' => $commissioner->id]);
@@ -27,7 +27,7 @@ class LeagueRelationshipTest extends TestCase
 
     public function test_user_can_be_attached_to_league_with_league_role(): void
     {
-        $this->seed();
+        $this->seedReferenceData();
 
         $league = League::factory()->create();
         $member = User::factory()->create();

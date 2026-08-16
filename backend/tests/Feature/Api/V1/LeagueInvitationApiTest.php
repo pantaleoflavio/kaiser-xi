@@ -18,7 +18,7 @@ class LeagueInvitationApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_commissioner_and_co_commissioner_can_create_and_revoke_but_participant_cannot(): void

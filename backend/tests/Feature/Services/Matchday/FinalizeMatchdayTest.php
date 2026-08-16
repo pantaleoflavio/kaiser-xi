@@ -39,7 +39,7 @@ class FinalizeMatchdayTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_finalizes_multiple_leagues_idempotently_and_recalculates_corrected_scores(): void

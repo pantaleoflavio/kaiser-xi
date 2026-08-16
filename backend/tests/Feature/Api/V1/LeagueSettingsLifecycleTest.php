@@ -24,8 +24,7 @@ class LeagueSettingsLifecycleTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_refund_and_roster_increases_are_allowed(): void

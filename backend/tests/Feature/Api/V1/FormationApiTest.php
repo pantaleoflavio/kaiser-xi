@@ -29,7 +29,7 @@ class FormationApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
         Carbon::setTestNow('2026-08-08 12:00:00');
     }
 

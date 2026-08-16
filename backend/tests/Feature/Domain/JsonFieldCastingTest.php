@@ -18,7 +18,7 @@ class JsonFieldCastingTest extends TestCase
 
     public function test_json_fields_can_store_and_retrieve_arrays_and_objects(): void
     {
-        $this->seed();
+        $this->seedReferenceData();
 
         $league = League::factory()->create();
         $team = FantasyTeam::factory()->create(['league_id' => $league->id]);

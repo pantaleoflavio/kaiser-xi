@@ -18,10 +18,10 @@ class AdminLocaleSwitcherTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
         $this->withoutMiddleware(PreventRequestForgery::class);
 
-        Route::middleware(['web', SetLocale::class])->get('/_test/locale', fn () => response()->json([
+        Route::middleware(['web', SetLocale::class])->get('/_test/locale', fn() => response()->json([
             'locale' => app()->getLocale(),
             'label' => __('admin.locale_switcher.label'),
         ]));

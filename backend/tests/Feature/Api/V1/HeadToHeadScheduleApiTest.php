@@ -27,7 +27,7 @@ class HeadToHeadScheduleApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_manager_initializes_schedule_once_without_filling_capacity(): void

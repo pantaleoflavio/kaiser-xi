@@ -23,7 +23,7 @@ class CalculateFantasyMatchResultTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_calculates_and_idempotently_updates_a_result(): void

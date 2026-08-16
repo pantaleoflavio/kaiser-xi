@@ -21,7 +21,7 @@ class CalculateHeadToHeadStandingsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_calculates_the_table_from_calculated_results_only(): void

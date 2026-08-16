@@ -61,20 +61,17 @@ class FantasyTeamPolicy
         FantasyTeam $fantasyTeam,
         League $league,
         Matchday $matchday,
-    ): bool {
+    ): bool|Response {
+        if ($fantasyTeam->league_id !== $league->id || $matchday->season_id !== $league->season_id) {
+            return Response::denyAsNotFound();
+        }
+
         if ($fantasyTeam->user_id === $user->id) {
             return true;
         }
 
-        if (! $league->users()->whereKey($user->id)->exists()) {
-            return false;
-        }
-
-        return Formation::query()
-            ->where('league_id', $league->id)
-            ->where('matchday_id', $matchday->id)
-            ->where('fantasy_team_id', $fantasyTeam->id)
-            ->whereNotNull('submitted_at')
+        return $league->users()
+            ->whereKey($user->id)
             ->exists();
     }
 

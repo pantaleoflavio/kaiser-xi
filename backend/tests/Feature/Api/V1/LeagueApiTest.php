@@ -29,7 +29,7 @@ class LeagueApiTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed();
+        $this->seedReferenceData();
 
         $this->user = User::factory()->create();
         $this->season = Season::factory()->create([

@@ -20,7 +20,7 @@ class LeagueLineupSettingsApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_defaults_are_persisted_once_and_returned_with_deterministic_formations(): void

@@ -35,7 +35,7 @@ class CalculateTeamMatchdayScoreTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_scores_playable_starters_from_final_score_and_ignores_unused_bench(): void

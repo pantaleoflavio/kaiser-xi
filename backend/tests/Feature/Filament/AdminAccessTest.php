@@ -17,7 +17,7 @@ class AdminAccessTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_super_admin_can_access_admin_panel_and_system_resources(): void

@@ -21,7 +21,7 @@ class LeagueSettingsApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
     }
 
     public function test_commissioner_and_co_commissioner_can_view_and_update_budget_settings(): void

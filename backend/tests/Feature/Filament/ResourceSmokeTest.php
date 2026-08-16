@@ -18,7 +18,7 @@ class ResourceSmokeTest extends TestCase
 
     public function test_super_admin_can_open_key_resource_indexes(): void
     {
-        $this->seed();
+        $this->seedReferenceData();
         $this->actingAs($this->userWithRole('super_admin'));
 
         foreach ([RoleResource::class, RealCompetitionResource::class, MatchdayResource::class, PlayerScoreResource::class, FormationModuleRequirementResource::class] as $resource) {
@@ -28,7 +28,7 @@ class ResourceSmokeTest extends TestCase
 
     public function test_global_admin_can_open_domain_resource_indexes(): void
     {
-        $this->seed();
+        $this->seedReferenceData();
         $this->actingAs($this->userWithRole('global_admin'));
 
         foreach ([RealCompetitionResource::class, MatchdayResource::class, PlayerScoreResource::class, FormationModuleRequirementResource::class] as $resource) {
