@@ -18,6 +18,12 @@ class LeagueSettingsService
 {
     public function initializeDefaults(League $league): void
     {
+        if ($league->isFormulaOne()) {
+            $league->settings()->firstOrCreate(
+                ['key' => LeagueSetting::FORMULA_ONE_POSITION_POINTS],
+                ['value' => LeagueSetting::positionPointsPayload(LeagueSetting::DEFAULT_FORMULA_ONE_POSITION_POINTS)],
+            );
+        }
         foreach (
             [
                 LeagueSetting::INITIAL_BUDGET => LeagueSetting::DEFAULT_INITIAL_BUDGET,
@@ -88,6 +94,13 @@ class LeagueSettingsService
             $this->ensureLifecycleAllows($lockedLeague, $settings);
             $this->ensureCombinedRosterRulesAreValid($lockedLeague, $settings);
             $this->ensureRosterCompatibility($lockedLeague, $settings);
+
+            if (array_key_exists(LeagueSetting::FORMULA_ONE_POSITION_POINTS, $settings)) {
+                LeagueSetting::query()->updateOrCreate(
+                    ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::FORMULA_ONE_POSITION_POINTS],
+                    ['value' => LeagueSetting::positionPointsPayload($settings[LeagueSetting::FORMULA_ONE_POSITION_POINTS])],
+                );
+            }
 
             foreach (
                 [
@@ -178,6 +191,15 @@ class LeagueSettingsService
     {
         if (in_array($league->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true)) {
             throw new LeagueRulesLockedException('all');
+        }
+
+        if (array_key_exists(LeagueSetting::FORMULA_ONE_POSITION_POINTS, $settings)) {
+            if (! $league->isFormulaOne()) {
+                throw new InvalidLeagueConfigurationException('Formula One position points only apply to formula one leagues.');
+            }
+            if ($league->hasInitializedChampionship()) {
+                throw new LeagueRulesLockedException('formula_one_position_points');
+            }
         }
 
         if (

@@ -154,7 +154,19 @@ export type ClassicStanding = {
   best_matchday_score: string;
 };
 
-export type Standing = HeadToHeadStanding | ClassicStanding;
+export type FormulaOneStanding = {
+  position: number;
+  fantasy_team: Pick<FantasyTeam, 'id' | 'name' | 'slug'>;
+  played: number;
+  championship_points: number;
+  wins: number;
+  podiums: number;
+  best_finish: number | null;
+  fantasy_points_total: string;
+  average_fantasy_points: string;
+};
+
+export type Standing = HeadToHeadStanding | ClassicStanding | FormulaOneStanding;
 
 export type StandingsResponse = CollectionResponse<Standing>;
 
@@ -178,6 +190,7 @@ export type LeagueSettings = {
   status: string;
   can_update_settings: boolean;
   locked_rule_groups: string[];
+  formula_one_position_points?: Record<string, number>;
 };
 
 export type LeagueSettingsResponse = ResourceResponse<LeagueSettings>;
@@ -216,6 +229,7 @@ export type LeagueSettingsPayload = Partial<{
   defense_modifier_enabled: boolean;
   first_goal_threshold: number;
   goal_interval: number;
+  formula_one_position_points: Record<string, number>;
 }>;
 
 export type RosterPlayer = {

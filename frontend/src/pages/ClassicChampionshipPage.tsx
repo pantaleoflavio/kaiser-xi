@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { classicChampionshipApi } from '../api/classicChampionship';
+import { classicChampionshipApi, formulaOneChampionshipApi } from '../api/classicChampionship';
 import { formationsApi } from '../api/formations';
 import { leaguesApi } from '../api/leagues';
 import { formationKeys, leagueKeys } from '../api/queryKeys';
@@ -18,18 +18,21 @@ export function ClassicChampionshipPage() {
     queryKey: leagueKeys.detail(leagueId),
     queryFn: () => leaguesApi.show(leagueId),
   });
+  const formulaOne = league.data?.data.type.key === 'formula_one';
+  const championshipApi = formulaOne ? formulaOneChampionshipApi : classicChampionshipApi;
   const state = useQuery({
-    queryKey: [...leagueKeys.detail(leagueId), 'classic-championship'],
-    queryFn: () => classicChampionshipApi.get(leagueId),
+    queryKey: [...leagueKeys.detail(leagueId), 'championship'],
+    queryFn: () => championshipApi.get(leagueId),
+    enabled: Boolean(league.data),
   });
   const matchdays = useQuery({
     queryKey: formationKeys.matchdays(leagueId),
     queryFn: () => formationsApi.matchdays(leagueId),
   });
   const initialize = useMutation({
-    mutationFn: () => classicChampionshipApi.initialize(leagueId, Number(start)),
+    mutationFn: () => championshipApi.initialize(leagueId, Number(start)),
     onSuccess: (data) =>
-      client.setQueryData([...leagueKeys.detail(leagueId), 'classic-championship'], data),
+      client.setQueryData([...leagueKeys.detail(leagueId), 'championship'], data),
   });
   if (league.isLoading || state.isLoading || matchdays.isLoading)
     return <LoadingState message={t('common.loading')} />;
@@ -38,7 +41,9 @@ export function ClassicChampionshipPage() {
   return (
     <section className="space-y-6">
       <LeagueNavigation leagueId={leagueId} showStandings />
-      <h1 className="text-3xl font-bold text-white">{t('classic.title')}</h1>
+      <h1 className="text-3xl font-bold text-white">
+        {formulaOne ? 'Formula One Championship' : t('classic.title')}
+      </h1>
       <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-5 text-slate-200">
         <p>
           {t('classic.participants', {

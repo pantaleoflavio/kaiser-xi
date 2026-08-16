@@ -22,6 +22,6 @@ class ClassicChampionshipController extends Controller
 
     private function load(League $league): League
     {
-        return $league->load('classicStartMatchday')->loadCount(['fantasyTeams', 'classicParticipants']);
+        return $league->load('championshipStartMatchday')->loadCount(['fantasyTeams', 'championshipParticipants']);
     }
 }

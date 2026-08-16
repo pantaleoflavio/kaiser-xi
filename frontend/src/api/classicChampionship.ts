@@ -18,3 +18,18 @@ export const classicChampionshipApi = {
       body: JSON.stringify({ start_matchday_id: startMatchdayId }),
     }),
 };
+
+export const formulaOneChampionshipApi = {
+  get: (leagueId: string | number) =>
+    apiClient<ResourceResponse<ClassicChampionship>>(
+      `/leagues/${leagueId}/formula-one-championship`,
+    ),
+  initialize: (leagueId: string | number, startMatchdayId: number) =>
+    apiClient<ResourceResponse<ClassicChampionship>>(
+      `/leagues/${leagueId}/formula-one-championship`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ start_matchday_id: startMatchdayId }),
+      },
+    ),
+};

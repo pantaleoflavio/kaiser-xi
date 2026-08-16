@@ -23,11 +23,15 @@ export function LeagueStandingsPage() {
   const standings = useQuery({
     queryKey: leagueKeys.standings(leagueId),
     queryFn: () => leaguesApi.standings(leagueId),
-    enabled: ['head_to_head', 'classic'].includes(league.data?.data.type.key ?? ''),
+    enabled: ['head_to_head', 'classic', 'formula_one'].includes(league.data?.data.type.key ?? ''),
   });
   if (league.isLoading || teams.isLoading || standings.isLoading)
     return <LoadingState message={t('common.loading')} />;
-  if (league.error || standings.error || !['head_to_head', 'classic'].includes(leagueType ?? ''))
+  if (
+    league.error ||
+    standings.error ||
+    !['head_to_head', 'classic', 'formula_one'].includes(leagueType ?? '')
+  )
     return (
       <ContentErrorPanel
         title={t('standings.errorTitle')}
@@ -52,6 +56,7 @@ export function LeagueStandingsPage() {
           standings={standings.data.data}
           currentTeamId={myTeam?.id}
           classic={leagueType === 'classic'}
+          formulaOne={leagueType === 'formula_one'}
         />
       ) : (
         <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">{t('standings.empty')}</p>

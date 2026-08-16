@@ -32,6 +32,7 @@ export type LeagueSettingsFormState = {
   defenseModifierEnabled: boolean;
   firstGoalThreshold: string;
   goalInterval: string;
+  formulaOnePositionPoints: string[];
 };
 
 function roleStrings(limits: Record<PlayerRoleKey, number>): StringRoleLimits {
@@ -66,6 +67,20 @@ export function createLeagueSettingsFormState(
     defenseModifierEnabled: settings?.defense_modifier_enabled ?? false,
     firstGoalThreshold: String(settings?.first_goal_threshold ?? 66),
     goalInterval: String(settings?.goal_interval ?? 6),
+    formulaOnePositionPoints: Object.values(
+      settings?.formula_one_position_points ?? {
+        1: 25,
+        2: 18,
+        3: 15,
+        4: 12,
+        5: 10,
+        6: 8,
+        7: 6,
+        8: 4,
+        9: 2,
+        10: 1,
+      },
+    ).map(String),
   };
 }
 
@@ -129,6 +144,19 @@ export function validateLeagueSettingsForm(
   const firstGoalThreshold = requiredNumber(form.firstGoalThreshold);
   const goalInterval = requiredNumber(form.goalInterval);
   const errors: SettingsFieldErrors = {};
+  const positionPoints = form.formulaOnePositionPoints.map(requiredNumber);
+  if (
+    positionPoints.length < 1 ||
+    positionPoints.some((value) => value === null || !Number.isInteger(value) || value < 0) ||
+    positionPoints.some(
+      (value, index) =>
+        index > 0 &&
+        value !== null &&
+        positionPoints[index - 1] !== null &&
+        value > positionPoints[index - 1]!,
+    )
+  )
+    errors.formula_one_position_points = [t('leagueSettings.validation.nonNegativeInteger')];
 
   if (initialBudget === null || !Number.isInteger(initialBudget) || initialBudget < 0)
     errors.initial_budget = [t('leagueSettings.validation.nonNegativeInteger')];
@@ -228,6 +256,9 @@ export function validateLeagueSettingsForm(
       defense_modifier_enabled: form.defenseModifierEnabled,
       first_goal_threshold: firstGoalThreshold,
       goal_interval: goalInterval,
+      formula_one_position_points: Object.fromEntries(
+        positionPoints.map((points, index) => [String(index + 1), points ?? 0]),
+      ),
     },
   };
 }

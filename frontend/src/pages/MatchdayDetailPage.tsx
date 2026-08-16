@@ -37,8 +37,13 @@ export function MatchdayDetailPage() {
   });
   const classicResults = useQuery({
     queryKey: teamMatchdayResultKeys.classic(leagueId, numericId),
-    queryFn: () => teamMatchdayResultsApi.classic(leagueId, numericId),
-    enabled: league.data?.data.type.key === 'classic' && Number.isInteger(numericId),
+    queryFn: () =>
+      league.data?.data.type.key === 'formula_one'
+        ? teamMatchdayResultsApi.championship(leagueId, numericId)
+        : teamMatchdayResultsApi.classic(leagueId, numericId),
+    enabled:
+      ['classic', 'formula_one'].includes(league.data?.data.type.key ?? '') &&
+      Number.isInteger(numericId),
   });
   if (
     matchdays.isLoading ||
@@ -60,7 +65,7 @@ export function MatchdayDetailPage() {
         title={t('results.matchdayResults')}
       />
     );
-  if (league.data?.data.type.key === 'classic' && classicResults.error)
+  if (['classic', 'formula_one'].includes(league.data?.data.type.key ?? '') && classicResults.error)
     return (
       <ContentErrorPanel
         message={t('common.errors.unexpected')}
@@ -90,7 +95,9 @@ export function MatchdayDetailPage() {
         leagueId={leagueId}
         myTeamId={myTeam?.id}
         showSchedule={league.data?.data.type.key === 'head_to_head'}
-        showStandings={['head_to_head', 'classic'].includes(league.data?.data.type.key ?? '')}
+        showStandings={['head_to_head', 'classic', 'formula_one'].includes(
+          league.data?.data.type.key ?? '',
+        )}
       />
       <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label={t('results.matchdayResults')}>
         <Link
@@ -153,18 +160,20 @@ export function MatchdayDetailPage() {
           ) : null}
         </section>
       ) : null}
-      {league.data?.data.type.key === 'classic' ? (
+      {['classic', 'formula_one'].includes(league.data?.data.type.key ?? '') ? (
         <section className="space-y-4" aria-labelledby="classic-results-title">
           <h2 className="text-2xl font-semibold text-white" id="classic-results-title">
             {t('results.matchdayResults')}
           </h2>
           {classicResults.data?.data.teams.map((entry) => (
-            <ClassicTeamResultCard
-              entry={entry}
-              leagueId={leagueId}
-              matchdayId={numericId}
-              key={entry.fantasy_team.id}
-            />
+            <div key={entry.fantasy_team.id}>
+              {league.data?.data.type.key === 'formula_one' && entry.finishing_position !== null ? (
+                <p className="mb-1 font-semibold text-emerald-300">
+                  #{entry.finishing_position} · +{entry.championship_points} championship points
+                </p>
+              ) : null}
+              <ClassicTeamResultCard entry={entry} leagueId={leagueId} matchdayId={numericId} />
+            </div>
           ))}
           {classicResults.data && !classicResults.data.data.teams.length ? (
             <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">

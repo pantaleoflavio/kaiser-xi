@@ -55,6 +55,8 @@ export type ClassicMatchdayTeamResult = {
   formation_id: number | null;
   result_status: 'calculated' | 'missing_formation' | 'pending';
   points: string | null;
+  finishing_position: number | null;
+  championship_points: number | null;
 };
 
 export type ClassicMatchdayResultsResponse = ResourceResponse<{

@@ -9,6 +9,7 @@ use App\Models\Matchday;
 use App\Services\Scoring\CalculateFantasyMatchResult;
 use App\Services\Scoring\CalculateTeamMatchdayScore;
 use App\Services\Standings\CalculateClassicStandings;
+use App\Services\Standings\CalculateFormulaOneStandings;
 use App\Services\Standings\CalculateHeadToHeadStandings;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +20,7 @@ final class FinalizeMatchday
         private readonly CalculateFantasyMatchResult $matchResults,
         private readonly CalculateHeadToHeadStandings $standings,
         private readonly CalculateClassicStandings $classicStandings,
+        private readonly CalculateFormulaOneStandings $formulaOneStandings,
     ) {}
 
     public function finalize(Matchday $matchday): void
@@ -55,6 +57,11 @@ final class FinalizeMatchday
                 return;
             }
 
+            if ($league->type?->key === 'formula_one' && $league->hasInitializedChampionship()) {
+                $this->formulaOneStandings->calculate($league);
+
+                return;
+            }
 
             if (
                 $league->type?->key !== 'head_to_head'

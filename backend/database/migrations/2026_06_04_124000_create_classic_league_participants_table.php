@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('classic_league_participants', function (Blueprint $table): void {
+        Schema::create('championship_participants', function (Blueprint $table): void {
             $table->foreignId('league_id')->constrained()->cascadeOnDelete();
             $table->foreignId('fantasy_team_id')->constrained()->restrictOnDelete();
             $table->timestamps();
@@ -17,6 +17,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('classic_league_participants');
+        Schema::dropIfExists('championship_participants');
     }
 };

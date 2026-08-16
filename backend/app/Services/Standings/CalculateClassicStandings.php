@@ -3,15 +3,17 @@
 namespace App\Services\Standings;
 
 use App\Models\League;
-use App\Models\Matchday;
 use App\Models\Standing;
 use App\Models\TeamMatchdayScore;
+use App\Services\League\ChampionshipMatchdays;
 use DomainException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class CalculateClassicStandings
 {
+    public function __construct(private readonly ChampionshipMatchdays $matchdays) {}
+
     /** @return Collection<int, Standing> */
     public function calculate(League $league): Collection
     {
@@ -23,9 +25,7 @@ final class CalculateClassicStandings
             if (! $league->hasInitializedClassicChampionship()) {
                 throw new DomainException('The classic championship must be initialized first.');
             }
-            $matchdayIds = Matchday::query()->where('season_id', $league->season_id)
-                ->where('starts_at', '>=', $league->classicStartMatchday()->value('starts_at'))
-                ->where('ends_at', '<=', now())->orderBy('id')->pluck('id');
+            $matchdayIds = $this->matchdays->counted($league)->orderBy('number')->pluck('id');
             $teamIds = $league->classicParticipants()->orderBy('fantasy_teams.id')->pluck('fantasy_teams.id');
             $scores = TeamMatchdayScore::query()->where('league_id', $league->id)->whereIn('fantasy_team_id', $teamIds)
                 ->whereIn('matchday_id', $matchdayIds)->get()->keyBy(fn(TeamMatchdayScore $score): string => $score->fantasy_team_id . '-' . $score->matchday_id);

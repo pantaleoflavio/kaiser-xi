@@ -20,8 +20,8 @@ return new class extends Migration
             $table->unsignedInteger('max_participants')->default(10);
             $table->foreignId('h2h_start_matchday_id')->nullable()->constrained('matchdays')->restrictOnDelete();
             $table->timestamp('h2h_schedule_generated_at')->nullable();
-            $table->foreignId('classic_start_matchday_id')->nullable()->constrained('matchdays')->restrictOnDelete();
-            $table->timestamp('classic_started_at')->nullable();
+            $table->foreignId('championship_start_matchday_id')->nullable()->constrained('matchdays')->restrictOnDelete();
+            $table->timestamp('championship_started_at')->nullable();
             $table->timestamps();
             $table->unique(['season_id', 'slug']);
         });

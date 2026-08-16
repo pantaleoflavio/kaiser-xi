@@ -12,6 +12,8 @@ use App\Models\PlayerSeasonRegistration;
 use App\Models\RealClub;
 use App\Models\SeasonClub;
 use App\Models\User;
+use Database\Seeders\LeagueRoleSeeder;
+use Database\Seeders\PlayerRoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -23,7 +25,11 @@ class EligiblePlayerApiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+
+        $this->seed([
+            LeagueRoleSeeder::class,
+            PlayerRoleSeeder::class,
+        ]);
     }
 
     public function test_league_member_can_list_eligible_players(): void
@@ -204,7 +210,7 @@ class EligiblePlayerApiTest extends TestCase
     {
         $url = "/api/v1/leagues/{$league->id}/eligible-players";
 
-        return $query === [] ? $url : $url.'?'.http_build_query($query);
+        return $query === [] ? $url : $url . '?' . http_build_query($query);
     }
 
     private function leagueWithMember(string $role = 'participant'): array

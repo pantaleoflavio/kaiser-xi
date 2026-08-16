@@ -57,6 +57,10 @@ class LeagueSettingsResource extends JsonResource
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => $this->defenseModifierEnabled(),
             LeagueSetting::FIRST_GOAL_THRESHOLD => $this->firstGoalThreshold(),
             LeagueSetting::GOAL_INTERVAL => $this->goalInterval(),
+            LeagueSetting::FORMULA_ONE_POSITION_POINTS => $this->when(
+                $this->isFormulaOne(),
+                fn(): array => $this->formulaOnePositionPoints(),
+            ),
             'status' => $this->statusKey(),
             'can_update_settings' => $request->user()?->can('manageSettings', $this->resource)
                 && ! in_array($this->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true),
@@ -69,6 +73,10 @@ class LeagueSettingsResource extends JsonResource
     {
         if (in_array($this->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true)) {
             return ['budget', 'roster_size', 'roster_role_limits'];
+        }
+
+        if ($this->isFormulaOne() && $this->hasInitializedChampionship()) {
+            return ['formula_one_position_points'];
         }
 
         return [];

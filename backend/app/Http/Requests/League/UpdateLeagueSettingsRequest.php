@@ -151,6 +151,36 @@ class UpdateLeagueSettingsRequest extends FormRequest
             LeagueSetting::FIRST_GOAL_THRESHOLD => $this->halfPointRules(0, 200),
             LeagueSetting::GOAL_INTERVAL => $this->halfPointRules(0.5, 50),
 
+            LeagueSetting::FORMULA_ONE_POSITION_POINTS => [
+                'sometimes',
+                'required',
+                'array',
+                'min:1',
+                function (string $attribute, mixed $value, Closure $fail): void {
+                    if (! is_array($value)) {
+                        return;
+                    }
+                    $expected = 1;
+                    $previous = null;
+                    foreach ($value as $position => $points) {
+                        if ((string) $position !== (string) $expected) {
+                            $fail("The {$attribute} positions must be contiguous starting at 1.");
+                            return;
+                        }
+                        if (! is_int($points) || $points < 0) {
+                            $fail("The {$attribute} points must be non-negative integers.");
+                            return;
+                        }
+                        if ($previous !== null && $points > $previous) {
+                            $fail("The {$attribute} points must be non-increasing by position.");
+                            return;
+                        }
+                        $previous = $points;
+                        $expected++;
+                    }
+                },
+            ],
+
             'remaining_budget' => ['prohibited'],
             'league_id' => ['prohibited'],
         ];

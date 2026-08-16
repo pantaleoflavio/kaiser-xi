@@ -120,6 +120,17 @@ export function LeagueDetailPage() {
                 </p>
               </Link>
             ) : null}
+            {league.type.key === 'formula_one' ? (
+              <Link
+                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5"
+                to={`/leagues/${leagueId}/formula-one-championship`}
+              >
+                <h2 className="text-xl font-semibold text-white">Formula One Championship</h2>
+                <p className="mt-2 text-sm text-slate-300">
+                  {league.competition_initialized ? t('classic.started') : t('classic.notStarted')}
+                </p>
+              </Link>
+            ) : null}
             <Link
               className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
               to={`/leagues/${leagueId}/rules`}

@@ -44,6 +44,10 @@ export function AppRoutes() {
             element={<ClassicChampionshipPage />}
           />
           <Route
+            path="leagues/:leagueId/formula-one-championship"
+            element={<ClassicChampionshipPage />}
+          />
+          <Route
             path="leagues/:leagueId/head-to-head-schedule"
             element={<HeadToHeadSchedulePage />}
           />

@@ -26,6 +26,7 @@ import {
 import { RosterRulesSection } from './settings/RosterRulesSection';
 import { ScoringRulesSection } from './settings/ScoringRulesSection';
 import { SubstitutionRulesSection } from './settings/SubstitutionRulesSection';
+import { FormulaOnePointsSection } from './settings/FormulaOnePositionSection';
 
 type Props = {
   league: League;
@@ -105,7 +106,12 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
     setError(null);
     setFieldErrors({});
     setSuccess(null);
-    updateSettings.mutate(result.payload);
+    if (league.type.key === 'formula_one') updateSettings.mutate(result.payload);
+    else {
+      const sharedPayload = { ...result.payload };
+      delete sharedPayload.formula_one_position_points;
+      updateSettings.mutate(sharedPayload);
+    }
   }
 
   return (
@@ -185,6 +191,17 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
             onGoalIntervalChange={(value) => setField('goalInterval', value)}
             t={t}
           />
+          {league.type.key === 'formula_one' ? (
+            <FormulaOnePointsSection
+              disabled={
+                updateSettings.isPending ||
+                Boolean(settings?.locked_rule_groups.includes('formula_one_position_points'))
+              }
+              errors={fieldErrors}
+              values={form.formulaOnePositionPoints}
+              onChange={(value) => setField('formulaOnePositionPoints', value)}
+            />
+          ) : null}
           <button
             className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
             disabled={updateSettings.isPending}

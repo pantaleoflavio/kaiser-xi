@@ -7,14 +7,15 @@ use App\Models\Formation;
 use App\Models\League;
 use App\Models\Matchday;
 use App\Models\TeamMatchdayScore;
-use App\Services\League\ClassicChampionshipMatchdays;
+use App\Services\League\ChampionshipMatchdays;
+use App\Services\Standings\CalculateFormulaOneStandings;
 use Illuminate\Http\JsonResponse;
 
 class ClassicMatchdayController extends Controller
 {
-    public function show(League $league, Matchday $matchday, ClassicChampionshipMatchdays $classicMatchdays): JsonResponse
+    public function show(League $league, Matchday $matchday, ChampionshipMatchdays $matchdays, CalculateFormulaOneStandings $formulaOne): JsonResponse
     {
-        abort_unless($classicMatchdays->contains($league, $matchday), 404);
+        abort_unless($matchdays->contains($league, $matchday), 404);
 
         $formations = Formation::query()
             ->where('league_id', $league->id)
@@ -29,8 +30,11 @@ class ClassicMatchdayController extends Controller
             ->keyBy('fantasy_team_id');
         $counted = $matchday->ends_at->lessThanOrEqualTo(now());
 
-        $teams = $league->classicParticipants()->orderBy('fantasy_teams.id')->get()->map(
-            function ($team) use ($formations, $scores, $counted): array {
+        $placements = $counted && $league->isFormulaOne()
+            ? $formulaOne->placementsFor($league, $matchday->id)->keyBy('fantasyTeamId')
+            : collect();
+        $teams = $league->championshipParticipants()->orderBy('fantasy_teams.id')->get()->map(
+            function ($team) use ($formations, $scores, $counted, $placements): array {
                 $formation = $formations->get($team->id);
                 // Aggregate scores are historical output. Open/future matchdays
                 // must report submission state without previewing a result.
@@ -50,9 +54,11 @@ class ClassicMatchdayController extends Controller
                         default => 'pending',
                     },
                     'points' => $score?->points ?? ($counted && $formation === null ? '0.00' : null),
+                    'finishing_position' => $placements->get($team->id)?->position,
+                    'championship_points' => $placements->get($team->id)?->championshipPoints,
                 ];
             }
-        )->values();
+        )->when($league->isFormulaOne() && $counted, fn($teams) => $teams->sortBy('finishing_position'))->values();
 
         return response()->json([
             'data' => [

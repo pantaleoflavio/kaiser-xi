@@ -87,9 +87,15 @@ Route::prefix('v1')->group(function (): void {
             ->middleware('can:view,league');
         Route::post('/{league}/classic-championship', [ClassicChampionshipController::class, 'store'])
             ->middleware('can:manageSchedule,league');
+        Route::get('/{league}/formula-one-championship', [ClassicChampionshipController::class, 'show'])
+            ->middleware('can:view,league');
+        Route::post('/{league}/formula-one-championship', [ClassicChampionshipController::class, 'store'])
+            ->middleware('can:manageSchedule,league');
         Route::get('/{league}/matchdays/{matchday}/classic-results', [ClassicMatchdayController::class, 'show'])
             ->withoutScopedBindings()
             ->middleware('can:view,league');
+        Route::get('/{league}/matchdays/{matchday}/championship-results', [ClassicMatchdayController::class, 'show'])
+            ->withoutScopedBindings()->middleware('can:view,league');
 
         Route::get('/{league}/matchdays/{matchday}/fantasy-teams/{fantasyTeam}/formation', [FormationController::class, 'show'])
             ->name('api.v1.leagues.matchdays.formation.show')->withoutScopedBindings()

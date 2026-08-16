@@ -6,15 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Formation\MatchdayResource;
 use App\Models\League;
 use App\Models\Matchday;
-use App\Services\League\ClassicChampionshipMatchdays;
+use App\Services\League\ChampionshipMatchdays;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class MatchdayController extends Controller
 {
-    public function index(League $league, ClassicChampionshipMatchdays $classicMatchdays): AnonymousResourceCollection
+    public function index(League $league, ChampionshipMatchdays $championshipMatchdays): AnonymousResourceCollection
     {
-        $query = $league->isClassic() && $league->hasInitializedClassicChampionship()
-            ? $classicMatchdays->query($league)
+        $query = $league->isNonHeadToHeadChampionship() && $league->hasInitializedChampionship()
+            ? $championshipMatchdays->query($league)
             : Matchday::query()->where('season_id', $league->season_id);
         $matchdays = $query->orderBy('number')->get();
         $currentId = $matchdays->first(fn(Matchday $matchday): bool => $matchday->ends_at->isFuture())?->id;

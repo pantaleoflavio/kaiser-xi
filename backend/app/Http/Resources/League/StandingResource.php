@@ -9,6 +9,20 @@ class StandingResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        if ($this->league?->isFormulaOne()) {
+            return [
+                'position' => $this->position,
+                'fantasy_team' => ['id' => $this->fantasyTeam->id, 'name' => $this->fantasyTeam->name, 'slug' => $this->fantasyTeam->slug],
+                'played' => $this->played,
+                'championship_points' => $this->championship_points,
+                'wins' => $this->wins,
+                'podiums' => $this->podiums,
+                'best_finish' => $this->best_finish,
+                'fantasy_points_total' => $this->fantasy_points_total,
+                'average_fantasy_points' => $this->average_points,
+            ];
+        }
+
         if ($this->league?->isClassic()) {
             return [
                 'position' => $this->position,

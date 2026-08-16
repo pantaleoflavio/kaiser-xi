@@ -25,6 +25,7 @@ class LeagueSetting extends Model
     public const DEFENSE_MODIFIER_ENABLED = 'defense_modifier_enabled';
     public const FIRST_GOAL_THRESHOLD = 'first_goal_threshold';
     public const GOAL_INTERVAL = 'goal_interval';
+    public const FORMULA_ONE_POSITION_POINTS = 'formula_one_position_points';
     public const DEFAULT_INITIAL_BUDGET = 500;
     public const DEFAULT_RELEASE_REFUND_PERCENTAGE = 50;
     public const DEFAULT_MAX_ROSTER_PLAYERS = 25;
@@ -59,6 +60,7 @@ class LeagueSetting extends Model
     public const PLAYER_ROLE_KEYS = ['goalkeeper', 'defender', 'midfielder', 'forward'];
     public const DEFAULT_FIRST_GOAL_THRESHOLD = 66.0;
     public const DEFAULT_GOAL_INTERVAL = 6.0;
+    public const DEFAULT_FORMULA_ONE_POSITION_POINTS = [1 => 25, 2 => 18, 3 => 15, 4 => 12, 5 => 10, 6 => 8, 7 => 6, 8 => 4, 9 => 2, 10 => 1];
     public const DEFAULT_ROSTER_ROLE_LIMITS = [
         'goalkeeper' => 3,
         'defender' => 8,
@@ -115,6 +117,20 @@ class LeagueSetting extends Model
     public function stringValue(): string
     {
         return (string) ($this->value['value'] ?? '');
+    }
+
+    /** @return array<int, int> */
+    public function positionPointsValue(): array
+    {
+        return collect($this->value['positions'] ?? [])->mapWithKeys(
+            fn(mixed $points, string|int $position): array => [(int) $position => (int) $points]
+        )->all();
+    }
+
+    /** @param array<int|string, int> $positions */
+    public static function positionPointsPayload(array $positions): array
+    {
+        return ['positions' => $positions];
     }
 
     public static function integerPayload(string $key, int $value): array
