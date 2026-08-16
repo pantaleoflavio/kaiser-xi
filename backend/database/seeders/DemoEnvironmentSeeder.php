@@ -38,6 +38,8 @@ class DemoEnvironmentSeeder extends Seeder
             DemoMatchdaySeeder::class,
             DemoHeadToHeadLeagueSeeder::class,
             DemoClassicChampionshipSeeder::class,
+            // Formula One owns an isolated Season so championship matchday queries cannot cross demo scenarios.
+            DemoFormulaOneChampionshipSeeder::class,
         ]);
     }
 }
