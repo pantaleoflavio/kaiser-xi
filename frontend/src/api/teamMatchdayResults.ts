@@ -1,9 +1,13 @@
 import { apiClient } from './client';
-import type { ClassicMatchdayResultsResponse, TeamMatchdayResultResponse } from '../types/results';
+import type {
+  ClassicMatchdayResultsResponse,
+  FormulaOneMatchdayResultsResponse,
+  TeamMatchdayResultResponse,
+} from '../types/results';
 
 export const teamMatchdayResultsApi = {
   classic: (leagueId: string, matchdayId: number) =>
-    apiClient<ClassicMatchdayResultsResponse>(
+    apiClient<FormulaOneMatchdayResultsResponse>(
       `/leagues/${leagueId}/matchdays/${matchdayId}/classic-results`,
     ),
   championship: (leagueId: string, matchdayId: number) =>

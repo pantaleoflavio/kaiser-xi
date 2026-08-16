@@ -49,7 +49,7 @@ export type TeamMatchdayResult = {
 
 export type TeamMatchdayResultResponse = ResourceResponse<TeamMatchdayResult>;
 
-export type ClassicMatchdayTeamResult = {
+export type ChampionshipMatchdayTeamResult = {
   fantasy_team: { id: number; name: string; slug: string };
   formation_submitted: boolean;
   formation_id: number | null;
@@ -61,5 +61,10 @@ export type ClassicMatchdayTeamResult = {
 
 export type ClassicMatchdayResultsResponse = ResourceResponse<{
   matchday: { id: number; number: number; name: string | null; counted: boolean };
-  teams: ClassicMatchdayTeamResult[];
+  teams: ChampionshipMatchdayTeamResult[];
+}>;
+
+export type FormulaOneMatchdayResultsResponse = ResourceResponse<{
+  matchday: { id: number; number: number; name: string | null; counted: boolean };
+  teams: ChampionshipMatchdayTeamResult[];
 }>;

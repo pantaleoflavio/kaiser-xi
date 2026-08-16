@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import type { ClassicMatchdayTeamResult } from '../../types/results';
+import type { ChampionshipMatchdayTeamResult } from '../../types/results';
 import { useTranslation } from '../../i18n';
 
 export function ClassicTeamResultCard({
@@ -7,7 +7,7 @@ export function ClassicTeamResultCard({
   leagueId,
   matchdayId,
 }: {
-  entry: ClassicMatchdayTeamResult;
+  entry: ChampionshipMatchdayTeamResult;
   leagueId: string;
   matchdayId: number;
 }) {

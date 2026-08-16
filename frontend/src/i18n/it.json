@@ -710,7 +710,8 @@
     "participants": "Partecipanti: {{count}} / {{max}}",
     "maxNotice": "Non è necessario raggiungere il numero massimo di partecipanti.",
     "freezeWarning": "L'avvio è irreversibile e blocca i partecipanti.",
-    "missingZero": "Una formazione mancante vale zero punti."
+    "missingZero": "Una formazione mancante vale zero punti.",
+    "noFutureMatchdays": "Non sono disponibili giornate future."
   },
   "standings": {
     "totalPoints": "Punti totali",
@@ -743,7 +744,17 @@
     "you": "Tu",
     "currentTeam": "{{team}}, la tua fantasquadra",
     "empty": "Nessuna classifica ancora disponibile.",
-    "errorTitle": "Impossibile caricare la classifica"
+    "errorTitle": "Impossibile caricare la classifica",
+    "championshipPoints": "Punti campionato",
+    "championshipPointsShort": "PC",
+    "podiums": "Podi",
+    "podiumsShort": "Podi",
+    "bestFinish": "Miglior piazzamento",
+    "bestFinishShort": "Migliore",
+    "fantasyPointsTotal": "Punti fantasy totali",
+    "fantasyPointsTotalShort": "PF",
+    "averageFantasyPoints": "Media punti fantasy",
+    "averageFantasyPointsShort": "Media PF"
   },
   "results": {
     "matchResult": "Risultato partita",
@@ -781,5 +792,26 @@
     "yellowCards": "Cartellini gialli",
     "redCards": "Cartellini rossi",
     "cleanSheet": "Porta inviolata"
+  },
+  "formulaOne": {
+    "standingsTitle": "Classifica Formula Uno",
+    "initializationTitle": "Campionato Formula Uno",
+    "notInitialized": "Il campionato Formula Uno non è ancora stato inizializzato.",
+    "initializeAction": "Inizializza campionato",
+    "maxNotice": "Non è necessario raggiungere il numero massimo di partecipanti.",
+    "freezeWarning": "L'inizializzazione è irreversibile e blocca i partecipanti.",
+    "positionPoints": "Punti per posizione",
+    "positionPointsHelp": "I punti devono essere numeri interi non negativi e non possono aumentare per una posizione peggiore.",
+    "positionLabel": "Posizione {{position}}",
+    "addPosition": "Aggiungi posizione",
+    "removePosition": "Rimuovi posizione",
+    "matchdayPlacements": "Risultati Formula Uno",
+    "participantStatus": "Stato partecipanti",
+    "validation": {
+      "atLeastOne": "Aggiungi almeno una posizione di arrivo.",
+      "nonNegativeInteger": "Ogni posizione deve assegnare un numero intero non negativo di punti.",
+      "nonIncreasing": "I punti non possono aumentare al peggiorare della posizione."
+    },
+    "standingsDescription": "Classifica del campionato Formula Uno nell’ordine determinato dal backend."
   }
 }

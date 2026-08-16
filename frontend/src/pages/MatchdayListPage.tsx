@@ -60,7 +60,9 @@ export function MatchdayListPage() {
         leagueId={leagueId}
         myTeamId={myTeam?.id}
         showSchedule={isHeadToHead}
-        showStandings={isHeadToHead || league.data?.data.type.key === 'classic'}
+        showStandings={['head_to_head', 'classic', 'formula_one'].includes(
+          league.data?.data.type.key ?? '',
+        )}
       />
       <div>
         <h1 className="text-3xl font-bold text-white">{t('matchdays.title')}</h1>
@@ -75,6 +77,19 @@ export function MatchdayListPage() {
           >
             {t('matchdays.openScheduleSetup')}
           </Link>
+        </div>
+      ) : null}
+      {league.data?.data.type.key === 'formula_one' && !league.data.data.competition_initialized ? (
+        <div className="rounded-xl border border-amber-500/40 bg-amber-950/20 p-5 text-amber-100">
+          <p>{t('formulaOne.notInitialized')}</p>
+          {['commissioner', 'co_commissioner'].includes(league.data.data.my_role ?? '') ? (
+            <Link
+              className="mt-3 inline-block font-semibold text-amber-200 underline"
+              to={`/leagues/${leagueId}/formula-one-championship`}
+            >
+              {t('formulaOne.initializeAction')}
+            </Link>
+          ) : null}
         </div>
       ) : null}
       {items.length ? (

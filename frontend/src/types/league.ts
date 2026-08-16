@@ -166,9 +166,10 @@ export type FormulaOneStanding = {
   average_fantasy_points: string;
 };
 
-export type Standing = HeadToHeadStanding | ClassicStanding | FormulaOneStanding;
+export type Standing = HeadToHeadStanding | ClassicStanding;
 
 export type StandingsResponse = CollectionResponse<Standing>;
+export type FormulaOneStandingsResponse = CollectionResponse<FormulaOneStanding>;
 
 export type LeagueSettings = {
   initial_budget: string | number | null;

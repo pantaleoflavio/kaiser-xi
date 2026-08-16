@@ -5,24 +5,13 @@ export function StandingsTable({
   standings,
   currentTeamId,
   classic = false,
-  formulaOne = false,
 }: {
   standings: Standing[];
   currentTeamId?: number;
   classic?: boolean;
-  formulaOne?: boolean;
 }) {
   const { t } = useTranslation();
   const value = (standing: Standing, field: string): string | number => {
-    if ('championship_points' in standing) {
-      if (field === 'championship_points') return standing.championship_points;
-      if (field === 'wins') return standing.wins;
-      if (field === 'podiums') return standing.podiums;
-      if (field === 'best_finish') return standing.best_finish ?? '—';
-      if (field === 'fantasy_points_total') return standing.fantasy_points_total;
-      if (field === 'average_fantasy_points') return standing.average_fantasy_points;
-      return standing.played;
-    }
     if ('total_points' in standing) {
       if (field === 'total_points') return standing.total_points;
       if (field === 'average_points') return standing.average_points;
@@ -39,33 +28,23 @@ export function StandingsTable({
     return standing.played;
   };
   const labels = (
-    formulaOne
+    classic
       ? [
           ['played', 'played'],
-          ['championshipPoints', 'championship_points'],
-          ['wins', 'wins'],
-          ['podiums', 'podiums'],
-          ['bestFinish', 'best_finish'],
-          ['fantasyPointsTotal', 'fantasy_points_total'],
-          ['averageFantasyPoints', 'average_fantasy_points'],
+          ['totalPoints', 'total_points'],
+          ['averagePoints', 'average_points'],
+          ['bestMatchday', 'best_matchday_score'],
         ]
-      : classic
-        ? [
-            ['played', 'played'],
-            ['totalPoints', 'total_points'],
-            ['averagePoints', 'average_points'],
-            ['bestMatchday', 'best_matchday_score'],
-          ]
-        : [
-            ['played', 'played'],
-            ['wins', 'wins'],
-            ['draws', 'draws'],
-            ['losses', 'losses'],
-            ['goalsFor', 'goals_for'],
-            ['goalsAgainst', 'goals_against'],
-            ['goalDifference', 'goal_difference'],
-            ['points', 'points'],
-          ]
+      : [
+          ['played', 'played'],
+          ['wins', 'wins'],
+          ['draws', 'draws'],
+          ['losses', 'losses'],
+          ['goalsFor', 'goals_for'],
+          ['goalsAgainst', 'goals_against'],
+          ['goalDifference', 'goal_difference'],
+          ['points', 'points'],
+        ]
   ) as ReadonlyArray<readonly [string, string]>;
   return (
     <>

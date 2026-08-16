@@ -758,7 +758,8 @@
     "participants": "Teilnehmer: {{count}} / {{max}}",
     "maxNotice": "Die maximale Teilnehmerzahl muss nicht erreicht sein.",
     "freezeWarning": "Der Start ist endgültig und friert die Teilnehmer ein.",
-    "missingZero": "Eine fehlende Aufstellung zählt null Punkte."
+    "missingZero": "Eine fehlende Aufstellung zählt null Punkte.",
+    "noFutureMatchdays": "Keine zukünftigen Spieltage verfügbar."
   },
   "standings": {
     "totalPoints": "Gesamtpunkte",
@@ -791,7 +792,17 @@
     "you": "Du",
     "currentTeam": "{{team}}, dein Fantasy-Team",
     "empty": "Noch keine Tabelle verfügbar.",
-    "errorTitle": "Tabelle konnte nicht geladen werden"
+    "errorTitle": "Tabelle konnte nicht geladen werden",
+    "championshipPoints": "Meisterschaftspunkte",
+    "championshipPointsShort": "MP",
+    "podiums": "Podestplätze",
+    "podiumsShort": "Pod",
+    "bestFinish": "Beste Platzierung",
+    "bestFinishShort": "Best",
+    "fantasyPointsTotal": "Fantasy-Punkte gesamt",
+    "fantasyPointsTotalShort": "FP",
+    "averageFantasyPoints": "Fantasy-Punkte im Durchschnitt",
+    "averageFantasyPointsShort": "Ø FP"
   },
   "results": {
     "matchResult": "Spielergebnis",
@@ -829,5 +840,26 @@
     "yellowCards": "Gelbe Karten",
     "redCards": "Rote Karten",
     "cleanSheet": "Ohne Gegentor"
+  },
+  "formulaOne": {
+    "standingsTitle": "Formel-1-Tabelle",
+    "initializationTitle": "Formel-1-Meisterschaft",
+    "notInitialized": "Die Formel-1-Meisterschaft wurde noch nicht initialisiert.",
+    "initializeAction": "Meisterschaft initialisieren",
+    "maxNotice": "Die maximale Teilnehmerzahl muss nicht erreicht sein.",
+    "freezeWarning": "Die Initialisierung ist endgültig und friert die Teilnehmer ein.",
+    "positionPoints": "Platzierungspunkte",
+    "positionPointsHelp": "Punkte müssen nichtnegative ganze Zahlen sein und dürfen sich bei schlechterer Platzierung nicht erhöhen.",
+    "positionLabel": "Position {{position}}",
+    "addPosition": "Position hinzufügen",
+    "removePosition": "Position entfernen",
+    "matchdayPlacements": "Formel-1-Ergebnisse",
+    "participantStatus": "Teilnehmerstatus",
+    "validation": {
+      "atLeastOne": "Füge mindestens eine Platzierung hinzu.",
+      "nonNegativeInteger": "Jede Position muss eine nichtnegative ganze Punktzahl vergeben.",
+      "nonIncreasing": "Die Punkte dürfen bei schlechterer Platzierung nicht steigen."
+    },
+    "standingsDescription": "Formel-1-Meisterschaftstabelle in der vom Backend vorgegebenen Reihenfolge."
   }
 }

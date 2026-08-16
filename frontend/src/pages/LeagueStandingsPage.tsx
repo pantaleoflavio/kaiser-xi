@@ -6,6 +6,7 @@ import { LoadingState } from '../components/LoadingState';
 import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { LeagueNavigation } from '../components/league/LeagueNavigation';
 import { StandingsTable } from '../components/results/StandingsTable';
+import { FormulaOneStandingsTable } from '../components/results/FormulaOneStandingsTable';
 import { useTranslation } from '../i18n';
 
 export function LeagueStandingsPage() {
@@ -23,19 +24,25 @@ export function LeagueStandingsPage() {
   const standings = useQuery({
     queryKey: leagueKeys.standings(leagueId),
     queryFn: () => leaguesApi.standings(leagueId),
-    enabled: ['head_to_head', 'classic', 'formula_one'].includes(league.data?.data.type.key ?? ''),
+    enabled: ['head_to_head', 'classic'].includes(league.data?.data.type.key ?? ''),
   });
-  if (league.isLoading || teams.isLoading || standings.isLoading)
+  const formulaOneStandings = useQuery({
+    queryKey: leagueKeys.standings(leagueId),
+    queryFn: () => leaguesApi.formulaOneStandings(leagueId),
+    enabled: leagueType === 'formula_one' && Boolean(league.data?.data.competition_initialized),
+  });
+  if (league.isLoading || teams.isLoading || standings.isLoading || formulaOneStandings.isLoading)
     return <LoadingState message={t('common.loading')} />;
   if (
     league.error ||
     standings.error ||
+    formulaOneStandings.error ||
     !['head_to_head', 'classic', 'formula_one'].includes(leagueType ?? '')
   )
     return (
       <ContentErrorPanel
         title={t('standings.errorTitle')}
-        message={standings.error?.message ?? t('h2h.notAvailable')}
+        message={(standings.error ?? formulaOneStandings.error)?.message ?? t('h2h.notAvailable')}
       />
     );
   const myTeam = teams.data?.data.find((team) => team.is_owned_by_current_user);
@@ -48,15 +55,29 @@ export function LeagueStandingsPage() {
         showStandings
       />
       <div>
-        <h1 className="text-3xl font-bold text-white">{t('standings.title')}</h1>
-        <p className="mt-2 text-slate-300">{t('standings.description')}</p>
+        <h1 className="text-3xl font-bold text-white">
+          {leagueType === 'formula_one' ? t('formulaOne.standingsTitle') : t('standings.title')}
+        </h1>
+        <p className="mt-2 text-slate-300">
+          {leagueType === 'formula_one'
+            ? t('formulaOne.standingsDescription')
+            : t('standings.description')}
+        </p>
       </div>
-      {standings.data?.data.length ? (
+      {leagueType === 'formula_one' && !league.data?.data.competition_initialized ? (
+        <p className="rounded-xl border border-amber-500/40 bg-amber-950/20 p-5 text-amber-100">
+          {t('formulaOne.notInitialized')}
+        </p>
+      ) : leagueType === 'formula_one' && formulaOneStandings.data?.data.length ? (
+        <FormulaOneStandingsTable
+          standings={formulaOneStandings.data.data}
+          currentTeamId={myTeam?.id}
+        />
+      ) : standings.data?.data.length ? (
         <StandingsTable
           standings={standings.data.data}
           currentTeamId={myTeam?.id}
           classic={leagueType === 'classic'}
-          formulaOne={leagueType === 'formula_one'}
         />
       ) : (
         <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">{t('standings.empty')}</p>

@@ -61,7 +61,7 @@ export function LeagueDetailPage() {
             leagueId={leagueId}
             myTeamId={myTeam?.id}
             showSchedule={league.type.key === 'head_to_head'}
-            showStandings={['head_to_head', 'classic'].includes(league.type.key)}
+            showStandings={['head_to_head', 'classic', 'formula_one'].includes(league.type.key)}
           />
           <LeagueSummary league={league} />
           <div className="grid gap-4 md:grid-cols-2">
@@ -76,7 +76,7 @@ export function LeagueDetailPage() {
                 {t('leagueNavigation.matchdaysDescription')}
               </p>
             </Link>
-            {['head_to_head', 'classic'].includes(league.type.key) ? (
+            {['head_to_head', 'classic', 'formula_one'].includes(league.type.key) ? (
               <Link
                 className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
                 to={`/leagues/${leagueId}/standings`}
@@ -125,7 +125,9 @@ export function LeagueDetailPage() {
                 className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5"
                 to={`/leagues/${leagueId}/formula-one-championship`}
               >
-                <h2 className="text-xl font-semibold text-white">Formula One Championship</h2>
+                <h2 className="text-xl font-semibold text-white">
+                  {t('formulaOne.initializationTitle')}
+                </h2>
                 <p className="mt-2 text-sm text-slate-300">
                   {league.competition_initialized ? t('classic.started') : t('classic.notStarted')}
                 </p>

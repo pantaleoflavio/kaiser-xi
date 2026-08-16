@@ -1,6 +1,7 @@
 import { settingsInputClass, type SettingsFieldErrors } from './leagueSettingsForm';
+import { useTranslation } from '../../../i18n';
 
-export function FormulaOnePointsSection({
+export function FormulaOnePositionPointsEditor({
   values,
   disabled,
   errors,
@@ -11,19 +12,18 @@ export function FormulaOnePointsSection({
   errors: SettingsFieldErrors;
   onChange: (values: string[]) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <fieldset className="rounded-xl border border-slate-700 p-4">
-      <legend className="px-2 font-semibold text-white">Formula One placement points</legend>
-      <p className="mb-3 text-sm text-slate-400">
-        Points must be non-negative integers and cannot increase for a lower finish.
-      </p>
+      <legend className="px-2 font-semibold text-white">{t('formulaOne.positionPoints')}</legend>
+      <p className="mb-3 text-sm text-slate-400">{t('formulaOne.positionPointsHelp')}</p>
       <div className="space-y-2">
         {values.map((value, index) => (
           <label
             className="grid grid-cols-[8rem_1fr] items-center gap-3 text-slate-200"
             key={index}
           >
-            Position {index + 1}
+            <span>{t('formulaOne.positionLabel', { position: index + 1 })}</span>
             <input
               className={settingsInputClass}
               disabled={disabled}
@@ -52,7 +52,7 @@ export function FormulaOnePointsSection({
           type="button"
           onClick={() => onChange([...values, '0'])}
         >
-          Add next position
+          {t('formulaOne.addPosition')}
         </button>
         <button
           className="rounded bg-slate-700 px-3 py-2 text-white disabled:opacity-50"
@@ -60,7 +60,7 @@ export function FormulaOnePointsSection({
           type="button"
           onClick={() => onChange(values.slice(0, -1))}
         >
-          Remove last position
+          {t('formulaOne.removePosition')}
         </button>
       </div>
     </fieldset>

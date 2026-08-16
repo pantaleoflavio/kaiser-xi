@@ -2,9 +2,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { classicChampionshipApi, formulaOneChampionshipApi } from '../api/classicChampionship';
-import { formationsApi } from '../api/formations';
 import { leaguesApi } from '../api/leagues';
-import { formationKeys, leagueKeys } from '../api/queryKeys';
+import { leagueKeys } from '../api/queryKeys';
+import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { LoadingState } from '../components/LoadingState';
 import { LeagueNavigation } from '../components/league/LeagueNavigation';
 import { useTranslation } from '../i18n';
@@ -21,28 +21,38 @@ export function ClassicChampionshipPage() {
   const formulaOne = league.data?.data.type.key === 'formula_one';
   const championshipApi = formulaOne ? formulaOneChampionshipApi : classicChampionshipApi;
   const state = useQuery({
-    queryKey: [...leagueKeys.detail(leagueId), 'championship'],
+    queryKey: leagueKeys.championship(leagueId, formulaOne ? 'formula_one' : 'classic'),
     queryFn: () => championshipApi.get(leagueId),
     enabled: Boolean(league.data),
   });
-  const matchdays = useQuery({
-    queryKey: formationKeys.matchdays(leagueId),
-    queryFn: () => formationsApi.matchdays(leagueId),
-  });
   const initialize = useMutation({
     mutationFn: () => championshipApi.initialize(leagueId, Number(start)),
-    onSuccess: (data) =>
-      client.setQueryData([...leagueKeys.detail(leagueId), 'championship'], data),
+    onSuccess: async (data) => {
+      client.setQueryData(
+        leagueKeys.championship(leagueId, formulaOne ? 'formula_one' : 'classic'),
+        data,
+      );
+      await Promise.all([
+        client.invalidateQueries({ queryKey: leagueKeys.detail(leagueId) }),
+        client.invalidateQueries({ queryKey: leagueKeys.settings(leagueId) }),
+      ]);
+    },
   });
-  if (league.isLoading || state.isLoading || matchdays.isLoading)
-    return <LoadingState message={t('common.loading')} />;
+  if (league.isLoading || state.isLoading) return <LoadingState message={t('common.loading')} />;
+  if (league.error || state.error)
+    return (
+      <ContentErrorPanel
+        title={t('formulaOne.initializationTitle')}
+        message={(league.error ?? state.error)?.message ?? t('common.errors.unexpected')}
+      />
+    );
   const championship = state.data?.data;
   const canStart = ['commissioner', 'co_commissioner'].includes(league.data?.data.my_role ?? '');
   return (
     <section className="space-y-6">
       <LeagueNavigation leagueId={leagueId} showStandings />
       <h1 className="text-3xl font-bold text-white">
-        {formulaOne ? 'Formula One Championship' : t('classic.title')}
+        {formulaOne ? t('formulaOne.initializationTitle') : t('classic.title')}
       </h1>
       <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-5 text-slate-200">
         <p>
@@ -55,8 +65,12 @@ export function ClassicChampionshipPage() {
           <p className="mt-3 text-emerald-300">{t('classic.started')}</p>
         ) : (
           <>
-            <p className="mt-3">{t('classic.maxNotice')}</p>
-            <p className="mt-2 text-amber-200">{t('classic.freezeWarning')}</p>
+            <p className="mt-3">
+              {formulaOne ? t('formulaOne.maxNotice') : t('classic.maxNotice')}
+            </p>
+            <p className="mt-2 text-amber-200">
+              {formulaOne ? t('formulaOne.freezeWarning') : t('classic.freezeWarning')}
+            </p>
             <label className="mt-4 block">
               {t('classic.startingMatchday')}
               <select
@@ -65,13 +79,11 @@ export function ClassicChampionshipPage() {
                 onChange={(event) => setStart(event.target.value)}
               >
                 <option value="">—</option>
-                {matchdays.data?.data
-                  .filter((item) => new Date(item.starts_at) > new Date())
-                  .map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name ?? item.number}
-                    </option>
-                  ))}
+                {championship?.available_start_matchdays.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name ?? item.number}
+                  </option>
+                ))}
               </select>
             </label>
             <button
@@ -79,9 +91,11 @@ export function ClassicChampionshipPage() {
               disabled={!canStart || !start || initialize.isPending}
               onClick={() => initialize.mutate()}
             >
-              {t('classic.start')}
+              {formulaOne ? t('formulaOne.initializeAction') : t('classic.start')}
             </button>
-            <p className="mt-2 text-sm">{t('classic.missingZero')}</p>
+            {!championship?.available_start_matchdays.length ? (
+              <p className="mt-2 text-sm text-amber-200">{t('classic.noFutureMatchdays')}</p>
+            ) : null}
           </>
         )}
       </div>

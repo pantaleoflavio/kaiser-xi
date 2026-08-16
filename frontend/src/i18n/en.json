@@ -758,7 +758,8 @@
     "participants": "Participants: {{count}} / {{max}}",
     "maxNotice": "The maximum participant count does not need to be reached.",
     "freezeWarning": "Starting is irreversible and freezes the participant set.",
-    "missingZero": "A missing formation counts as zero points."
+    "missingZero": "A missing formation counts as zero points.",
+    "noFutureMatchdays": "No future Matchdays are available."
   },
   "standings": {
     "totalPoints": "Total points",
@@ -791,7 +792,17 @@
     "you": "You",
     "currentTeam": "{{team}}, your fantasy team",
     "empty": "No standings are available yet.",
-    "errorTitle": "Unable to load standings"
+    "errorTitle": "Unable to load standings",
+    "championshipPoints": "Championship points",
+    "championshipPointsShort": "CP",
+    "podiums": "Podiums",
+    "podiumsShort": "Pod",
+    "bestFinish": "Best finish",
+    "bestFinishShort": "Best",
+    "fantasyPointsTotal": "Fantasy points total",
+    "fantasyPointsTotalShort": "FP",
+    "averageFantasyPoints": "Average fantasy points",
+    "averageFantasyPointsShort": "Avg FP"
   },
   "results": {
     "matchResult": "Match result",
@@ -829,5 +840,26 @@
     "yellowCards": "Yellow cards",
     "redCards": "Red cards",
     "cleanSheet": "Clean sheet"
+  },
+  "formulaOne": {
+    "standingsTitle": "Formula One standings",
+    "initializationTitle": "Formula One championship",
+    "notInitialized": "The Formula One championship has not been initialized yet.",
+    "initializeAction": "Initialize championship",
+    "maxNotice": "The maximum participant count does not need to be reached.",
+    "freezeWarning": "Initialization is irreversible and freezes the participant set.",
+    "positionPoints": "Position points",
+    "positionPointsHelp": "Points must be non-negative integers and cannot increase for a lower finishing position.",
+    "positionLabel": "Position {{position}}",
+    "addPosition": "Add position",
+    "removePosition": "Remove position",
+    "matchdayPlacements": "Formula One results",
+    "participantStatus": "Participant status",
+    "validation": {
+      "atLeastOne": "Add at least one finishing position.",
+      "nonNegativeInteger": "Every position must award a non-negative whole number of points.",
+      "nonIncreasing": "Points cannot increase as the finishing position gets worse."
+    },
+    "standingsDescription": "Formula One championship ranking in backend-authoritative finishing order."
   }
 }

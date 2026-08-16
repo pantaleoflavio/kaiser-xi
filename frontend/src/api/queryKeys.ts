@@ -18,6 +18,8 @@ export const leagueKeys = {
   headToHeadSchedule: (leagueId: string | number) =>
     [...leagueKeys.detail(leagueId), 'head-to-head-schedule'] as const,
   standings: (leagueId: string | number) => [...leagueKeys.detail(leagueId), 'standings'] as const,
+  championship: (leagueId: string | number, type: 'classic' | 'formula_one') =>
+    [...leagueKeys.detail(leagueId), 'championship', type] as const,
 };
 
 export const invitationKeys = {
@@ -40,6 +42,8 @@ export const formationKeys = {
 export const teamMatchdayResultKeys = {
   classic: (leagueId: string | number, matchdayId: string | number) =>
     ['classic-matchday-results', String(leagueId), String(matchdayId)] as const,
+  formulaOne: (leagueId: string | number, matchdayId: string | number) =>
+    ['formula-one-matchday-results', String(leagueId), String(matchdayId)] as const,
   detail: (leagueId: string | number, matchdayId: string | number, teamId: string | number) =>
     ['team-matchday-result', String(leagueId), String(matchdayId), String(teamId)] as const,
 };

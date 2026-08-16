@@ -132,6 +132,7 @@ function completeRoleLimits(
 export function validateLeagueSettingsForm(
   form: LeagueSettingsFormState,
   t: Translate,
+  includeFormulaOne = false,
 ): ValidationResult {
   const initialBudget = requiredNumber(form.initialBudget);
   const refund = requiredNumber(form.refund);
@@ -145,18 +146,27 @@ export function validateLeagueSettingsForm(
   const goalInterval = requiredNumber(form.goalInterval);
   const errors: SettingsFieldErrors = {};
   const positionPoints = form.formulaOnePositionPoints.map(requiredNumber);
-  if (
-    positionPoints.length < 1 ||
-    positionPoints.some((value) => value === null || !Number.isInteger(value) || value < 0) ||
-    positionPoints.some(
-      (value, index) =>
+  if (includeFormulaOne && positionPoints.length < 1)
+    errors.formula_one_position_points = [t('formulaOne.validation.atLeastOne')];
+  else if (
+    includeFormulaOne &&
+    positionPoints.some((value) => value === null || !Number.isInteger(value) || value < 0)
+  )
+    errors.formula_one_position_points = [t('formulaOne.validation.nonNegativeInteger')];
+  else if (
+    includeFormulaOne &&
+    positionPoints.some((value, index) => {
+      const previous = positionPoints[index - 1];
+      return (
         index > 0 &&
         value !== null &&
-        positionPoints[index - 1] !== null &&
-        value > positionPoints[index - 1]!,
-    )
+        previous !== null &&
+        previous !== undefined &&
+        value > previous
+      );
+    })
   )
-    errors.formula_one_position_points = [t('leagueSettings.validation.nonNegativeInteger')];
+    errors.formula_one_position_points = [t('formulaOne.validation.nonIncreasing')];
 
   if (initialBudget === null || !Number.isInteger(initialBudget) || initialBudget < 0)
     errors.initial_budget = [t('leagueSettings.validation.nonNegativeInteger')];
@@ -256,9 +266,15 @@ export function validateLeagueSettingsForm(
       defense_modifier_enabled: form.defenseModifierEnabled,
       first_goal_threshold: firstGoalThreshold,
       goal_interval: goalInterval,
-      formula_one_position_points: Object.fromEntries(
-        positionPoints.map((points, index) => [String(index + 1), points ?? 0]),
-      ),
+      ...(includeFormulaOne
+        ? {
+            formula_one_position_points: Object.fromEntries(
+              positionPoints.flatMap((points, index) =>
+                points === null ? [] : [[String(index + 1), points]],
+              ),
+            ),
+          }
+        : {}),
     },
   };
 }

@@ -7,6 +7,12 @@ export type ClassicChampionship = {
   participant_count: number;
   max_participants: number | null;
   start_matchday: { id: number; number: number; name: string | null } | null;
+  available_start_matchdays: Array<{
+    id: number;
+    number: number;
+    name: string | null;
+    starts_at: string;
+  }>;
 };
 
 export const classicChampionshipApi = {

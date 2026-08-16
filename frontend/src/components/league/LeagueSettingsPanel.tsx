@@ -26,7 +26,7 @@ import {
 import { RosterRulesSection } from './settings/RosterRulesSection';
 import { ScoringRulesSection } from './settings/ScoringRulesSection';
 import { SubstitutionRulesSection } from './settings/SubstitutionRulesSection';
-import { FormulaOnePointsSection } from './settings/FormulaOnePositionSection';
+import { FormulaOnePositionPointsEditor } from './settings/FormulaOnePositionSection';
 
 type Props = {
   league: League;
@@ -96,7 +96,14 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
     event.preventDefault();
     if (!canEdit) return;
 
-    const result = validateLeagueSettingsForm(form, t);
+    const formulaOnePointsLocked = Boolean(
+      settings?.locked_rule_groups.includes('formula_one_position_points'),
+    );
+    const result = validateLeagueSettingsForm(
+      form,
+      t,
+      league.type.key === 'formula_one' && !formulaOnePointsLocked,
+    );
     if (!result.payload) {
       setError(t('common.errors.validation'));
       setFieldErrors(result.errors);
@@ -192,7 +199,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
             t={t}
           />
           {league.type.key === 'formula_one' ? (
-            <FormulaOnePointsSection
+            <FormulaOnePositionPointsEditor
               disabled={
                 updateSettings.isPending ||
                 Boolean(settings?.locked_rule_groups.includes('formula_one_position_points'))
