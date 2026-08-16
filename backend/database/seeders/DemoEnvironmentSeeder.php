@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Database\Seeders\DemoFantasyRostersSeeder;
 use Database\Seeders\DemoHeadToHeadLeagueSeeder;
-use Database\Seeders\DemoHeadToHeadPlayerPoolSeeder;
 use Database\Seeders\DemoHeadToHeadResultsSeeder;
 use Database\Seeders\DemoLeagueSeeder;
 use Database\Seeders\DemoMatchdaySeeder;
@@ -31,12 +30,14 @@ class DemoEnvironmentSeeder extends Seeder
             LeagueRoleSeeder::class,
             FormationModuleSeeder::class,
             DemoLeagueSeeder::class,
+            DemoPlayersSeeder::class,
+            DemoExtendedPlayerPoolSeeder::class,
+            DemoFantasyRostersSeeder::class,
+            // The results arena owns an isolated Season but still depends on the shared player pool.
+            DemoHeadToHeadResultsSeeder::class,
             DemoMatchdaySeeder::class,
             DemoHeadToHeadLeagueSeeder::class,
-            DemoPlayersSeeder::class,
-            DemoHeadToHeadPlayerPoolSeeder::class,
-            DemoFantasyRostersSeeder::class,
-            DemoHeadToHeadResultsSeeder::class,
+            DemoClassicChampionshipSeeder::class,
         ]);
     }
 }

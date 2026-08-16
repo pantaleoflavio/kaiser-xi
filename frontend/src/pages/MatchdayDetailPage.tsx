@@ -3,10 +3,12 @@ import { Link, useParams } from 'react-router-dom';
 import { formationsApi } from '../api/formations';
 import { leaguesApi } from '../api/leagues';
 import { headToHeadScheduleApi } from '../api/headToHeadSchedule';
-import { formationKeys, leagueKeys } from '../api/queryKeys';
+import { teamMatchdayResultsApi } from '../api/teamMatchdayResults';
+import { formationKeys, leagueKeys, teamMatchdayResultKeys } from '../api/queryKeys';
 import { LoadingState } from '../components/LoadingState';
 import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { LeagueNavigation } from '../components/league/LeagueNavigation';
+import { ClassicTeamResultCard } from '../components/results/ClassicTeamResultCard';
 import { HeadToHeadMatchCard } from '../components/results/HeadToHeadMatchCard';
 import { useTranslation } from '../i18n';
 import { formatDate } from '../utils/formatters';
@@ -33,7 +35,18 @@ export function MatchdayDetailPage() {
     queryFn: () => headToHeadScheduleApi.getSchedule(leagueId),
     enabled: league.data?.data.type.key === 'head_to_head',
   });
-  if (matchdays.isLoading || teams.isLoading || league.isLoading || schedule.isLoading)
+  const classicResults = useQuery({
+    queryKey: teamMatchdayResultKeys.classic(leagueId, numericId),
+    queryFn: () => teamMatchdayResultsApi.classic(leagueId, numericId),
+    enabled: league.data?.data.type.key === 'classic' && Number.isInteger(numericId),
+  });
+  if (
+    matchdays.isLoading ||
+    teams.isLoading ||
+    league.isLoading ||
+    schedule.isLoading ||
+    classicResults.isLoading
+  )
     return <LoadingState message={t('common.loading')} />;
   const matchday = matchdays.data?.data.find((item) => item.id === numericId);
   if (!matchday || matchdays.error)
@@ -41,6 +54,13 @@ export function MatchdayDetailPage() {
       <ContentErrorPanel message={t('common.errors.notFound')} title={t('matchdays.notFound')} />
     );
   if (league.data?.data.type.key === 'head_to_head' && schedule.error)
+    return (
+      <ContentErrorPanel
+        message={t('common.errors.unexpected')}
+        title={t('results.matchdayResults')}
+      />
+    );
+  if (league.data?.data.type.key === 'classic' && classicResults.error)
     return (
       <ContentErrorPanel
         message={t('common.errors.unexpected')}
@@ -131,6 +151,21 @@ export function MatchdayDetailPage() {
               {t('results.noFixtures')}
             </p>
           ) : null}
+        </section>
+      ) : null}
+      {league.data?.data.type.key === 'classic' ? (
+        <section className="space-y-4" aria-labelledby="classic-results-title">
+          <h2 className="text-2xl font-semibold text-white" id="classic-results-title">
+            {t('results.matchdayResults')}
+          </h2>
+          {classicResults.data?.data.teams.map((entry) => (
+            <ClassicTeamResultCard
+              entry={entry}
+              leagueId={leagueId}
+              matchdayId={numericId}
+              key={entry.fantasy_team.id}
+            />
+          ))}
         </section>
       ) : null}
     </section>

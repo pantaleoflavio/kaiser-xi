@@ -38,6 +38,8 @@ export const formationKeys = {
 };
 
 export const teamMatchdayResultKeys = {
+  classic: (leagueId: string | number, matchdayId: string | number) =>
+    ['classic-matchday-results', String(leagueId), String(matchdayId)] as const,
   detail: (leagueId: string | number, matchdayId: string | number, teamId: string | number) =>
     ['team-matchday-result', String(leagueId), String(matchdayId), String(teamId)] as const,
 };

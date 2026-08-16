@@ -48,3 +48,16 @@ export type TeamMatchdayResult = {
 };
 
 export type TeamMatchdayResultResponse = ResourceResponse<TeamMatchdayResult>;
+
+export type ClassicMatchdayTeamResult = {
+  fantasy_team: { id: number; name: string; slug: string };
+  formation_submitted: boolean;
+  formation_id: number | null;
+  result_status: 'calculated' | 'missing_formation' | 'pending';
+  points: string | null;
+};
+
+export type ClassicMatchdayResultsResponse = ResourceResponse<{
+  matchday: { id: number; number: number; name: string | null; counted: boolean };
+  teams: ClassicMatchdayTeamResult[];
+}>;

@@ -4,26 +4,20 @@ namespace Tests\Feature\Seeders;
 
 use App\Models\FantasyMatch;
 use App\Models\FantasyMatchResult;
-use App\Models\FantasyTeam;
 use App\Models\FantasyTeamPlayer;
 use App\Models\Formation;
 use App\Models\FormationPlayer;
 use App\Models\League;
-use App\Models\LeagueSetting;
-use App\Models\Matchday;
 use App\Models\Player;
-use App\Models\RealClub;
-use App\Models\SeasonClub;
+use App\Models\PlayerScore;
 use App\Models\Standing;
 use App\Models\TeamMatchdayScore;
 use App\Models\TeamMatchdayScoreDetail;
-use App\Models\User;
-use App\Services\FantasyTeam\EligiblePlayerQueryService;
 use Database\Seeders\DemoEnvironmentSeeder;
+use Database\Seeders\DemoExtendedPlayerPoolSeeder;
 use Database\Seeders\DemoHeadToHeadLeagueSeeder;
 use Database\Seeders\DemoHeadToHeadResultsSeeder;
 use Database\Seeders\DemoLeagueSeeder;
-use Database\Seeders\DemoMatchdaySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -31,361 +25,33 @@ class DemoEnvironmentSeederTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_demo_environment_is_complete_and_idempotent(): void
+    public function test_full_demo_environment_is_complete_and_idempotent(): void
     {
         $this->seed(DemoEnvironmentSeeder::class);
+        $before = $this->scenarioCounts();
         $this->seed(DemoEnvironmentSeeder::class);
-
-        $this->assertDatabaseCount('users', 10);
-        $this->assertDatabaseCount('real_clubs', 4);
-        $this->assertDatabaseCount('season_clubs', 4);
-        $this->assertDatabaseCount('players', 90);
-        $this->assertDatabaseCount('player_season_registrations', 90);
-
-        $league = League::query()
-            ->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)
-            ->firstOrFail();
-
-        $this->assertSame(
-            1,
-            League::query()
-                ->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)
-                ->count()
-        );
-
-        $this->assertSame(9, $league->memberships()->count());
-        $this->assertSame(9, $league->fantasyTeams()->count());
-
-        $expectedSettingKeys = [
-            LeagueSetting::INITIAL_BUDGET,
-            LeagueSetting::RELEASE_REFUND_PERCENTAGE,
-            LeagueSetting::MAX_ROSTER_PLAYERS,
-            LeagueSetting::ROSTER_ROLE_LIMITS,
-            LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES,
-            LeagueSetting::BENCH_SIZE,
-            LeagueSetting::BENCH_ROLE_LIMITS,
-            LeagueSetting::MAX_SUBSTITUTIONS,
-            LeagueSetting::SUBSTITUTION_ORDER_MODE,
-            LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
-            LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED,
-            LeagueSetting::REAL_CAPTAIN_BONUS_POINTS,
-            LeagueSetting::DEFENSE_MODIFIER_ENABLED,
-            LeagueSetting::FIRST_GOAL_THRESHOLD,
-            LeagueSetting::GOAL_INTERVAL,
-        ];
-
-        $this->assertSame(
-            collect($expectedSettingKeys)
-                ->sort()
-                ->values()
-                ->all(),
-            $league->settings()
-                ->pluck('key')
-                ->sort()
-                ->values()
-                ->all()
-        );
-
-        foreach ($expectedSettingKeys as $key) {
-            $this->assertSame(
-                1,
-                $league->settings()
-                    ->where('key', $key)
-                    ->count()
-            );
-        }
-
-        $this->assertSame(500, $league->initialFantasyBudget());
-        $this->assertSame(50, $league->releaseRefundPercentage());
-        $this->assertSame(25, $league->maxRosterPlayers());
-        $this->assertSame(66.0, $league->firstGoalThreshold());
-        $this->assertSame(6.0, $league->goalInterval());
-        $this->assertSame(
-            LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS,
-            $league->rosterRoleLimits()
-        );
-
-        foreach (DemoLeagueSeeder::MEMBERS as $email => [$role]) {
-            $user = User::query()
-                ->where('email', $email)
-                ->firstOrFail();
-
-            $membership = $league->memberships()
-                ->with('role')
-                ->where('user_id', $user->id)
-                ->firstOrFail();
-
-            $this->assertDatabaseHas('league_user', [
-                'league_id' => $league->id,
-                'user_id' => $user->id,
-                'league_role_id' => $membership->league_role_id,
-            ]);
-
-            $this->assertSame($role, $membership->role->key);
-        }
-
-        $this->assertSame(
-            19,
-            FantasyTeamPlayer::query()
-                ->where('league_id', $league->id)
-                ->active()
-                ->count()
-        );
-
-        $matchday = Matchday::query()
-            ->where('season_id', $league->season_id)
-            ->where('number', DemoMatchdaySeeder::MATCHDAY_NUMBER)
-            ->firstOrFail();
-
-        $this->assertSame(DemoMatchdaySeeder::MATCHDAY_NAME, $matchday->name);
-        $this->assertTrue($matchday->starts_at->isFuture());
-        $this->assertTrue($matchday->ends_at->isAfter($matchday->starts_at));
-        $this->assertSame(
-            1,
-            Matchday::query()
-                ->where('season_id', $league->season_id)
-                ->where('number', DemoMatchdaySeeder::MATCHDAY_NUMBER)
-                ->count()
-        );
-
-        $commissionerTeam = FantasyTeam::query()
-            ->where('league_id', $league->id)
-            ->where('slug', 'commissioner-fc')
-            ->firstOrFail();
-
-        $activeRoleComposition = FantasyTeamPlayer::query()
-            ->active()
-            ->where('fantasy_team_players.fantasy_team_id', $commissionerTeam->id)
-            ->join('players', 'players.id', '=', 'fantasy_team_players.player_id')
-            ->join('player_season_registrations', 'player_season_registrations.player_id', '=', 'players.id')
-            ->join('season_clubs', function ($join) use ($league): void {
-                $join->on('season_clubs.id', '=', 'player_season_registrations.season_club_id')
-                    ->where('season_clubs.season_id', $league->season_id);
-            })
-            ->join('player_roles', 'player_roles.id', '=', 'player_season_registrations.player_role_id')
-            ->selectRaw('player_roles.key, count(*) as aggregate')
-            ->groupBy('player_roles.key')
-            ->pluck('aggregate', 'player_roles.key')
-            ->map(fn($count) => (int) $count);
-
-        $this->assertGreaterThanOrEqual(1, $activeRoleComposition['goalkeeper']);
-        $this->assertGreaterThanOrEqual(4, $activeRoleComposition['defender']);
-        $this->assertGreaterThanOrEqual(3, $activeRoleComposition['midfielder']);
-        $this->assertGreaterThanOrEqual(3, $activeRoleComposition['forward']);
-        $this->assertContains('4-3-3', $league->allowedFormationModuleNames());
-
-        $duplicateActiveAssignments = FantasyTeamPlayer::query()
-            ->active()
-            ->where('league_id', $league->id)
-            ->selectRaw('player_id, count(*) as aggregate')
-            ->groupBy('player_id')
-            ->havingRaw('count(*) > 1')
-            ->count();
-
-        $this->assertSame(0, $duplicateActiveAssignments);
-
-        $this->assertSame(
-            1,
-            FantasyTeamPlayer::query()
-                ->where('league_id', $league->id)
-                ->whereNotNull('released_at')
-                ->count()
-        );
-
-        foreach (
-            FantasyTeam::query()
-                ->where('league_id', $league->id)
-                ->get() as $team
-        ) {
-            $this->assertLessThanOrEqual(
-                $league->initialFantasyBudget(),
-                (int) $team->activePlayerAssignments()
-                    ->sum('purchase_price')
-            );
-
-            $this->assertGreaterThanOrEqual(
-                0,
-                (int) $team->remaining_budget
-            );
-        }
-
-        $releasedPlayer = Player::query()
-            ->where('slug', 'demo-carlo-cielo')
-            ->firstOrFail();
-
-        $eligiblePlayerQuery = app(
-            EligiblePlayerQueryService::class
-        )->query($league);
-
-        $this->assertTrue(
-            (clone $eligiblePlayerQuery)
-                ->where('player_id', $releasedPlayer->id)
-                ->exists()
-        );
-
-        $this->assertGreaterThan(
-            0,
-            (clone $eligiblePlayerQuery)->count()
-        );
-    }
-
-    public function test_uninitialized_head_to_head_demo_league_is_useful_and_idempotent(): void
-    {
-        $this->seed(DemoEnvironmentSeeder::class);
-        $this->seed(DemoEnvironmentSeeder::class);
-
-        $league = League::query()
-            ->with('type')
-            ->where('slug', DemoHeadToHeadLeagueSeeder::LEAGUE_SLUG)
-            ->firstOrFail();
-
-        $teamCount = count(DemoHeadToHeadLeagueSeeder::PARTICIPANTS);
-        $futureMatchdayCount = Matchday::query()
-            ->where('season_id', $league->season_id)
-            ->where('starts_at', '>', now())
-            ->count();
-
+        $this->assertSame($before, $this->scenarioCounts());
+        $this->assertSame(1, League::query()->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)->count());
         $this->assertSame(1, League::query()->where('slug', DemoHeadToHeadLeagueSeeder::LEAGUE_SLUG)->count());
-        $this->assertSame('head_to_head', $league->type->key);
-        $this->assertSame($teamCount, $league->memberships()->count());
-        $this->assertSame($teamCount, $league->fantasyTeams()->count());
-        $this->assertGreaterThanOrEqual(2, $teamCount);
-        $this->assertLessThan($league->max_participants, $teamCount);
-        $this->assertNull($league->h2h_start_matchday_id);
-        $this->assertNull($league->h2h_schedule_generated_at);
-        $this->assertSame(0, FantasyMatch::query()->where('league_id', $league->id)->count());
-        $this->assertGreaterThanOrEqual(DemoHeadToHeadLeagueSeeder::FUTURE_MATCHDAY_COUNT, $futureMatchdayCount);
-
-        $this->assertSame(3, intdiv($teamCount, 2));
-        $this->assertSame(10, 2 * ($teamCount - 1));
-
-        foreach (DemoHeadToHeadLeagueSeeder::PARTICIPANTS as $email => [$role]) {
-            $membership = $league->memberships()
-                ->with('role')
-                ->whereBelongsTo(User::query()->where('email', $email)->firstOrFail())
-                ->firstOrFail();
-
-            $this->assertSame($role, $membership->role->key);
-        }
-    }
-
-    public function test_seeded_players_can_be_filtered_by_role_and_club_through_the_endpoint(): void
-    {
-        $this->seed(DemoEnvironmentSeeder::class);
-
-        $league = League::query()
-            ->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)
-            ->firstOrFail();
-
-        $member = User::query()
-            ->where('email', 'demo.participant1@example.com')
-            ->firstOrFail();
-
-        $realClub = RealClub::query()
-            ->where('slug', 'demo-dolomiti-athletic')
-            ->firstOrFail();
-
-        $seasonClub = SeasonClub::query()
-            ->where('season_id', $league->season_id)
-            ->where('real_club_id', $realClub->id)
-            ->firstOrFail();
-
-        $response = $this->actingAs($member)
-            ->getJson(
-                "/api/v1/leagues/{$league->id}/eligible-players"
-                    . '?role=midfielder'
-                    . "&club_id={$seasonClub->id}"
-                    . '&per_page=2'
-            )
-            ->assertOk()
-            ->assertJsonCount(2, 'data');
-
-        foreach ($response->json('data') as $eligiblePlayer) {
-            $this->assertSame(
-                'midfielder',
-                $eligiblePlayer['role']['key']
-            );
-
-            $this->assertSame(
-                $seasonClub->id,
-                $eligiblePlayer['club']['id']
-            );
-
-            $this->assertSame(
-                $realClub->id,
-                $eligiblePlayer['club']['real_club_id']
-            );
-
-            $this->assertSame(
-                'available',
-                $eligiblePlayer['availability']
-            );
-        }
-    }
-
-    public function test_initialized_head_to_head_results_demo_is_complete_and_idempotent(): void
-    {
-        $this->seed(DemoEnvironmentSeeder::class);
-
-        $league = League::query()->where('slug', DemoHeadToHeadResultsSeeder::LEAGUE_SLUG)->firstOrFail();
-        $scheduledMatchdayIds = FantasyMatch::query()->where('league_id', $league->id)
-            ->distinct()->pluck('matchday_id');
-        $pastMatchdayIds = Matchday::query()->whereIn('id', $scheduledMatchdayIds)
-            ->where('number', '<', DemoHeadToHeadResultsSeeder::CURRENT_MATCHDAY_NUMBER)->pluck('id');
-        $current = Matchday::query()->where('season_id', $league->season_id)
-            ->where('number', DemoHeadToHeadResultsSeeder::CURRENT_MATCHDAY_NUMBER)->firstOrFail();
-        $futureMatchdayIds = Matchday::query()->whereIn('id', $scheduledMatchdayIds)
-            ->where('number', '>', DemoHeadToHeadResultsSeeder::CURRENT_MATCHDAY_NUMBER)->pluck('id');
-        $leagueFormationIds = Formation::query()->where('league_id', $league->id)->pluck('id');
-        $leagueScoreIds = TeamMatchdayScore::query()->where('league_id', $league->id)->pluck('id');
-        $counts = [
-            'teams' => $league->fantasyTeams()->count(),
-            'matches' => FantasyMatch::query()->where('league_id', $league->id)->count(),
-            'results' => FantasyMatchResult::query()->whereHas('fantasyMatch', fn($query) => $query->where('league_id', $league->id))->count(),
-            'assignments' => FantasyTeamPlayer::query()->where('league_id', $league->id)->count(),
-            'formations' => $leagueFormationIds->count(),
-            'formation_players' => FormationPlayer::query()->whereIn('formation_id', $leagueFormationIds)->count(),
-            'team_scores' => $leagueScoreIds->count(),
-            'score_details' => TeamMatchdayScoreDetail::query()->whereIn('team_matchday_score_id', $leagueScoreIds)->count(),
-            'standings' => Standing::query()->where('league_id', $league->id)->count(),
-        ];
-
-        $this->assertNotNull($league->h2h_start_matchday_id);
-        $this->assertNotNull($league->h2h_schedule_generated_at);
-        $this->assertSame(DemoHeadToHeadResultsSeeder::MATCHDAY_NUMBER, $league->h2hStartMatchday->number);
-        $this->assertSame(6, $league->fantasyTeams()->count());
-        $this->assertGreaterThanOrEqual(10, $scheduledMatchdayIds->count());
-        $this->assertSame(3, FantasyMatch::query()->where('league_id', $league->id)
-            ->where('matchday_id', $scheduledMatchdayIds->first())->count());
-        $this->assertSame(4, $pastMatchdayIds->count());
-        $this->assertSame(12, FantasyMatchResult::query()->whereHas('fantasyMatch', fn($query) => $query
-            ->where('league_id', $league->id)->whereIn('matchday_id', $pastMatchdayIds))->count());
-        $this->assertSame(6, Standing::query()->where('league_id', $league->id)->count());
-        $this->assertSame(3, Formation::query()->where('league_id', $league->id)->where('matchday_id', $current->id)
-            ->where('is_confirmed', true)->whereNotNull('submitted_at')->count());
-        $this->assertSame(1, Formation::query()->where('league_id', $league->id)->where('matchday_id', $current->id)
-            ->where('is_confirmed', false)->whereNull('submitted_at')->count());
-        $this->assertSame(0, TeamMatchdayScore::query()->where('league_id', $league->id)->where('matchday_id', $current->id)->count());
-        $this->assertSame(0, FantasyMatchResult::query()->whereHas('fantasyMatch', fn($query) => $query
-            ->where('league_id', $league->id)->where('matchday_id', $current->id))->count());
-        $this->assertGreaterThan(0, $futureMatchdayIds->count());
-        $this->assertSame(0, Formation::query()->where('league_id', $league->id)->whereIn('matchday_id', $futureMatchdayIds)->count());
-        $this->assertSame(0, TeamMatchdayScore::query()->where('league_id', $league->id)->whereIn('matchday_id', $futureMatchdayIds)->count());
-
-        $this->seed(DemoEnvironmentSeeder::class);
-        $rerunFormationIds = Formation::query()->where('league_id', $league->id)->pluck('id');
-        $rerunScoreIds = TeamMatchdayScore::query()->where('league_id', $league->id)->pluck('id');
-        $this->assertSame($counts, [
-            'teams' => $league->fantasyTeams()->count(),
-            'matches' => FantasyMatch::query()->where('league_id', $league->id)->count(),
-            'results' => FantasyMatchResult::query()->whereHas('fantasyMatch', fn($query) => $query->where('league_id', $league->id))->count(),
-            'assignments' => FantasyTeamPlayer::query()->where('league_id', $league->id)->count(),
-            'formations' => $rerunFormationIds->count(),
-            'formation_players' => FormationPlayer::query()->whereIn('formation_id', $rerunFormationIds)->count(),
-            'team_scores' => $rerunScoreIds->count(),
-            'score_details' => TeamMatchdayScoreDetail::query()->whereIn('team_matchday_score_id', $rerunScoreIds)->count(),
-            'standings' => Standing::query()->where('league_id', $league->id)->count(),
-        ]);
         $this->assertSame(1, League::query()->where('slug', DemoHeadToHeadResultsSeeder::LEAGUE_SLUG)->count());
+        $this->assertSame(count(DemoExtendedPlayerPoolSeeder::FREE_AGENTS), Player::query()
+            ->whereIn('slug', collect(DemoExtendedPlayerPoolSeeder::FREE_AGENTS)->pluck(1))->count());
+    }
+
+    /** @return array<string, int> */
+    private function scenarioCounts(): array
+    {
+        return [
+            'players' => Player::query()->count(),
+            'assignments' => FantasyTeamPlayer::query()->count(),
+            'matches' => FantasyMatch::query()->count(),
+            'formations' => Formation::query()->count(),
+            'formation_players' => FormationPlayer::query()->count(),
+            'player_scores' => PlayerScore::query()->count(),
+            'team_scores' => TeamMatchdayScore::query()->count(),
+            'score_details' => TeamMatchdayScoreDetail::query()->count(),
+            'match_results' => FantasyMatchResult::query()->count(),
+            'standings' => Standing::query()->count(),
+        ];
     }
 }

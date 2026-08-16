@@ -8,6 +8,8 @@ use App\Models\League;
 use App\Models\Player;
 use App\Models\User;
 use App\Services\FantasyTeam\FantasyRosterService;
+use Carbon\Carbon;
+use Database\Seeders\DemoLeagueSeeder;
 use Illuminate\Database\Seeder;
 
 class DemoFantasyRostersSeeder extends Seeder
@@ -44,33 +46,40 @@ class DemoFantasyRostersSeeder extends Seeder
 
     public function run(): void
     {
-        $league = League::query()->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)->firstOrFail();
-        $commissioner = User::query()->where('email', 'demo.commissioner@example.com')->firstOrFail();
+        $previousTestNow = Carbon::getTestNow();
 
-        foreach (self::ACTIVE_ASSIGNMENTS as $teamSlug => $assignments) {
-            $team = FantasyTeam::query()->where('league_id', $league->id)->where('slug', $teamSlug)->firstOrFail();
-            foreach ($assignments as $playerSlug => $price) {
-                $player = Player::query()->where('slug', $playerSlug)->firstOrFail();
-                if (! FantasyTeamPlayer::query()->active()->where('league_id', $league->id)->where('player_id', $player->id)->exists()) {
-                    $this->rosters->assign($league, $team, $player, $commissioner, $price);
+        try {
+            Carbon::setTestNow('2025-06-01 12:00:00');
+            $league = League::query()->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)->firstOrFail();
+            $commissioner = User::query()->where('email', 'demo.commissioner@example.com')->firstOrFail();
+
+            foreach (self::ACTIVE_ASSIGNMENTS as $teamSlug => $assignments) {
+                $team = FantasyTeam::query()->where('league_id', $league->id)->where('slug', $teamSlug)->firstOrFail();
+                foreach ($assignments as $playerSlug => $price) {
+                    $player = Player::query()->where('slug', $playerSlug)->firstOrFail();
+                    if (! FantasyTeamPlayer::query()->active()->where('league_id', $league->id)->where('player_id', $player->id)->exists()) {
+                        $this->rosters->assign($league, $team, $player, $commissioner, $price);
+                    }
                 }
             }
-        }
+            $releasedPlayer = Player::query()->where('slug', 'demo-carlo-cielo')->firstOrFail();
+            $team = FantasyTeam::query()->where('league_id', $league->id)->where('slug', 'commissioner-fc')->firstOrFail();
+            $historical = FantasyTeamPlayer::query()
+                ->where('league_id', $league->id)
+                ->where('fantasy_team_id', $team->id)
+                ->where('player_id', $releasedPlayer->id)
+                ->whereNotNull('released_at')
+                ->exists();
 
-        $releasedPlayer = Player::query()->where('slug', 'demo-carlo-cielo')->firstOrFail();
-        $team = FantasyTeam::query()->where('league_id', $league->id)->where('slug', 'commissioner-fc')->firstOrFail();
-        $historical = FantasyTeamPlayer::query()
-            ->where('league_id', $league->id)
-            ->where('fantasy_team_id', $team->id)
-            ->where('player_id', $releasedPlayer->id)
-            ->whereNotNull('released_at')
-            ->exists();
-
-        if (! $historical) {
-            if (! FantasyTeamPlayer::query()->active()->where('league_id', $league->id)->where('player_id', $releasedPlayer->id)->exists()) {
-                $this->rosters->assign($league, $team, $releasedPlayer, $commissioner, 16);
+            if (! $historical) {
+                if (! FantasyTeamPlayer::query()->active()->where('league_id', $league->id)->where('player_id', $releasedPlayer->id)->exists()) {
+                    $this->rosters->assign($league, $team, $releasedPlayer, $commissioner, 16);
+                }
+                Carbon::setTestNow('2025-06-02 12:00:00');
+                $this->rosters->release($league, $team, $releasedPlayer, $commissioner);
             }
-            $this->rosters->release($league, $team, $releasedPlayer, $commissioner);
+        } finally {
+            Carbon::setTestNow($previousTestNow);
         }
     }
 }
