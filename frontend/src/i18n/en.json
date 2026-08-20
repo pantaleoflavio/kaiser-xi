@@ -333,7 +333,8 @@
   "leagueSettings": {
     "title": "League settings",
     "description": "Budget, roster, lineup, bench, substitution, and scoring rules for every fantasy team in this league.",
-    "maxRosterPlayers": "Maximum active roster players",
+    "maxRosterPlayers": "Maximum roster size",
+    "maxRosterPlayersDescription": "Maximum number of football players that each fantasy team may have on its roster at the same time.",
     "rosterRuleHelp": "Role limits are independent upper bounds. Their sum must be at least the overall roster maximum.",
     "roles": {
       "goalkeeper": "Goalkeeper limit",

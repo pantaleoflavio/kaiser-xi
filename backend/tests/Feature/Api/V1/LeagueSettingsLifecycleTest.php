@@ -8,6 +8,7 @@ use App\Models\League;
 use App\Models\LeagueRole;
 use App\Models\LeagueSetting;
 use App\Models\LeagueStatus;
+use App\Models\LeagueType;
 use App\Models\Player;
 use App\Models\PlayerRole;
 use App\Models\PlayerSeasonRegistration;
@@ -86,6 +87,33 @@ class LeagueSettingsLifecycleTest extends TestCase
                 ->where('league_id', $league->id)
                 ->pluck('remaining_budget', 'id')
         );
+    }
+
+    public function test_unchanged_initial_budget_is_idempotent_after_teams_exist(): void
+    {
+        [$league, $commissioner] = $this->activeLeague('formula_one');
+        Sanctum::actingAs($commissioner);
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+            'initial_budget' => 500,
+        ])->assertOk()->assertJsonPath('data.initial_budget', 500);
+    }
+
+    public function test_formula_one_position_points_lock_distinguishes_no_op_from_change(): void
+    {
+        [$league, $commissioner] = $this->activeLeague('formula_one');
+        $league->update(['championship_started_at' => now()]);
+        Sanctum::actingAs($commissioner);
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+            'formula_one_position_points' => LeagueSetting::DEFAULT_FORMULA_ONE_POSITION_POINTS,
+        ])->assertOk();
+
+        $changed = LeagueSetting::DEFAULT_FORMULA_ONE_POSITION_POINTS;
+        $changed[1] = 26;
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+            'formula_one_position_points' => $changed,
+        ])->assertConflict()->assertJsonPath('code', 'league_rules_locked');
     }
 
     public function test_roster_size_cannot_drop_below_largest_active_roster(): void
@@ -216,12 +244,13 @@ class LeagueSettingsLifecycleTest extends TestCase
             ->assertJsonPath('code', 'league_rules_locked');
     }
 
-    private function activeLeague(): array
+    private function activeLeague(string $type = 'classic'): array
     {
         $commissioner = User::factory()->create();
 
         $league = League::factory()->create([
             'commissioner_user_id' => $commissioner->id,
+            'league_type_id' => LeagueType::query()->where('key', $type)->value('id'),
         ]);
 
         $league->users()->attach($commissioner->id, [

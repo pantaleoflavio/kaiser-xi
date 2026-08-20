@@ -333,7 +333,8 @@
   "leagueSettings": {
     "title": "Liga-Einstellungen",
     "description": "Budget-, Kader-, Aufstellungs-, Bank-, Auswechslungs- und Wertungsregeln für jedes Fantasy-Team dieser Liga.",
-    "maxRosterPlayers": "Maximale aktive Kadergröße",
+    "maxRosterPlayers": "Maximale Kadergröße",
+    "maxRosterPlayersDescription": "Maximale Anzahl an Fußballspielern, die jede Fantasy-Mannschaft gleichzeitig in ihrem Kader haben darf.",
     "rosterRuleHelp": "Rollenlimits sind unabhängige Obergrenzen. Ihre Summe muss mindestens der maximalen Kadergröße entsprechen.",
     "roles": {
       "goalkeeper": "Torwartlimit",

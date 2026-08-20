@@ -68,6 +68,15 @@ class LeagueSetting extends Model
         'forward' => 6,
     ];
 
+    public const HEAD_TO_HEAD_KEYS = [
+        self::FIRST_GOAL_THRESHOLD,
+        self::GOAL_INTERVAL,
+    ];
+
+    public const FORMULA_ONE_KEYS = [
+        self::FORMULA_ONE_POSITION_POINTS,
+    ];
+
     protected $fillable = [
         'league_id',
         'key',

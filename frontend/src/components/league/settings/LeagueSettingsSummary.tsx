@@ -1,9 +1,14 @@
 import type { LeagueSettings } from '../../../types/league';
+import {
+  hasFormulaOnePositionPoints,
+  hasHeadToHeadGoalSettings,
+} from './leagueSettingsApplicability';
 
 type Props = {
   settings: LeagueSettings | null;
   locale: string;
   t: (key: string) => string;
+  leagueType: string;
 };
 
 function formatNumber(value: string | number | null | undefined, fallback: string, locale: string) {
@@ -11,7 +16,7 @@ function formatNumber(value: string | number | null | undefined, fallback: strin
   return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(Number(value));
 }
 
-export function LeagueSettingsSummary({ settings, locale, t }: Props) {
+export function LeagueSettingsSummary({ settings, locale, t, leagueType }: Props) {
   const notAvailable = t('leagueDetail.notAvailable');
   return (
     <dl className="mt-4 grid gap-3 text-sm text-slate-300 md:grid-cols-3">
@@ -19,6 +24,32 @@ export function LeagueSettingsSummary({ settings, locale, t }: Props) {
         <dt className="text-slate-500">{t('budget.initialBudget')}</dt>
         <dd>{formatNumber(settings?.initial_budget, notAvailable, locale)}</dd>
       </div>
+      {hasHeadToHeadGoalSettings(leagueType) ? (
+        <>
+          <div>
+            <dt className="text-slate-500">{t('leagueSettings.scoring.firstGoalThreshold')}</dt>
+            <dd>{formatNumber(settings?.first_goal_threshold, notAvailable, locale)}</dd>
+          </div>
+          <div>
+            <dt className="text-slate-500">{t('leagueSettings.scoring.goalInterval')}</dt>
+            <dd>{formatNumber(settings?.goal_interval, notAvailable, locale)}</dd>
+          </div>
+        </>
+      ) : null}
+      {hasFormulaOnePositionPoints(leagueType) ? (
+        <div className="md:col-span-3">
+          <dt className="text-slate-500">{t('formulaOne.positionPoints')}</dt>
+          <dd className="mt-1 flex flex-wrap gap-2">
+            {Object.entries(settings?.formula_one_position_points ?? {}).map(
+              ([position, points]) => (
+                <span className="rounded bg-slate-800 px-2 py-1" key={position}>
+                  {position}: {points}
+                </span>
+              ),
+            )}
+          </dd>
+        </div>
+      ) : null}
       <div>
         <dt className="text-slate-500">{t('budget.releaseRefundPercentage')}</dt>
         <dd>{formatNumber(settings?.release_refund_percentage, notAvailable, locale)}%</dd>

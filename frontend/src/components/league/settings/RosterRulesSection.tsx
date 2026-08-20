@@ -98,6 +98,9 @@ export function RosterRulesSection({
           type="number"
           value={maxRosterPlayers}
         />
+        <span className="mt-1 block text-slate-400">
+          {t('leagueSettings.maxRosterPlayersDescription')}
+        </span>
         <FieldError errors={errors} field="max_roster_players" />
       </label>
       {playerRoleKeys.map((role) => {

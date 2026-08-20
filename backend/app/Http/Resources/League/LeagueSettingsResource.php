@@ -55,8 +55,14 @@ class LeagueSettingsResource extends JsonResource
             LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => $this->realCaptainBonusEnabled(),
             LeagueSetting::REAL_CAPTAIN_BONUS_POINTS => $this->realCaptainBonusPoints(),
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => $this->defenseModifierEnabled(),
-            LeagueSetting::FIRST_GOAL_THRESHOLD => $this->firstGoalThreshold(),
-            LeagueSetting::GOAL_INTERVAL => $this->goalInterval(),
+            LeagueSetting::FIRST_GOAL_THRESHOLD => $this->when(
+                $this->isHeadToHead(),
+                fn(): float => $this->firstGoalThreshold(),
+            ),
+            LeagueSetting::GOAL_INTERVAL => $this->when(
+                $this->isHeadToHead(),
+                fn(): float => $this->goalInterval(),
+            ),
             LeagueSetting::FORMULA_ONE_POSITION_POINTS => $this->when(
                 $this->isFormulaOne(),
                 fn(): array => $this->formulaOnePositionPoints(),

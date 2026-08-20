@@ -13,6 +13,7 @@ type Props = {
   firstGoalThreshold: string;
   goalInterval: string;
   disabled: boolean;
+  showGoalSettings: boolean;
   t: (key: string) => string;
   onRealCaptainBonusEnabledChange: (enabled: boolean) => void;
   onRealCaptainBonusPointsChange: (value: string) => void;
@@ -29,6 +30,7 @@ export function ScoringRulesSection({
   goalInterval,
   errors,
   disabled,
+  showGoalSettings,
   t,
   onRealCaptainBonusEnabledChange,
   onRealCaptainBonusPointsChange,
@@ -52,46 +54,50 @@ export function ScoringRulesSection({
         />
         <span>{t('leagueSettings.scoring.enableRealCaptainBonus')}</span>
       </label>
-      <label className="block text-sm text-slate-200">
-        {t('leagueSettings.scoring.firstGoalThreshold')}
-        <input
-          className={settingsInputClass}
-          disabled={disabled}
-          max={200}
-          min={0}
-          onChange={(event) => onFirstGoalThresholdChange(event.target.value)}
-          step={0.5}
-          type="number"
-          value={firstGoalThreshold}
-        />
-        <span className="mt-1 block text-slate-400">
-          {t('leagueSettings.scoring.firstGoalThresholdDescription')}
-        </span>
-        {exactError(errors, 'first_goal_threshold') ? (
-          <span className="mt-1 block text-red-300">
-            {exactError(errors, 'first_goal_threshold')}
+      {showGoalSettings ? (
+        <label className="block text-sm text-slate-200">
+          {t('leagueSettings.scoring.firstGoalThreshold')}
+          <input
+            className={settingsInputClass}
+            disabled={disabled}
+            max={200}
+            min={0}
+            onChange={(event) => onFirstGoalThresholdChange(event.target.value)}
+            step={0.5}
+            type="number"
+            value={firstGoalThreshold}
+          />
+          <span className="mt-1 block text-slate-400">
+            {t('leagueSettings.scoring.firstGoalThresholdDescription')}
           </span>
-        ) : null}
-      </label>
-      <label className="block text-sm text-slate-200">
-        {t('leagueSettings.scoring.goalInterval')}
-        <input
-          className={settingsInputClass}
-          disabled={disabled}
-          max={50}
-          min={0.5}
-          onChange={(event) => onGoalIntervalChange(event.target.value)}
-          step={0.5}
-          type="number"
-          value={goalInterval}
-        />
-        <span className="mt-1 block text-slate-400">
-          {t('leagueSettings.scoring.goalIntervalDescription')}
-        </span>
-        {exactError(errors, 'goal_interval') ? (
-          <span className="mt-1 block text-red-300">{exactError(errors, 'goal_interval')}</span>
-        ) : null}
-      </label>
+          {exactError(errors, 'first_goal_threshold') ? (
+            <span className="mt-1 block text-red-300">
+              {exactError(errors, 'first_goal_threshold')}
+            </span>
+          ) : null}
+        </label>
+      ) : null}
+      {showGoalSettings ? (
+        <label className="block text-sm text-slate-200">
+          {t('leagueSettings.scoring.goalInterval')}
+          <input
+            className={settingsInputClass}
+            disabled={disabled}
+            max={50}
+            min={0.5}
+            onChange={(event) => onGoalIntervalChange(event.target.value)}
+            step={0.5}
+            type="number"
+            value={goalInterval}
+          />
+          <span className="mt-1 block text-slate-400">
+            {t('leagueSettings.scoring.goalIntervalDescription')}
+          </span>
+          {exactError(errors, 'goal_interval') ? (
+            <span className="mt-1 block text-red-300">{exactError(errors, 'goal_interval')}</span>
+          ) : null}
+        </label>
+      ) : null}
       <label className="block text-sm text-slate-200">
         {t('leagueSettings.scoring.realCaptainBonusPoints')}
         <input

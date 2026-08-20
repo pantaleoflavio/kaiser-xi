@@ -6,6 +6,7 @@ use App\Models\League;
 use App\Models\LeagueRole;
 use App\Models\LeagueSetting;
 use App\Models\LeagueStatus;
+use App\Models\LeagueType;
 use App\Models\User;
 use App\Services\League\LeagueSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -110,9 +111,62 @@ class LeagueScoringSettingsApiTest extends TestCase
         ])->assertConflict()->assertJsonPath('code', 'league_rules_locked');
     }
 
-    private function leagueWithMember(string $role): array
+    public function test_goal_conversion_settings_only_apply_to_head_to_head_leagues(): void
     {
-        $league = League::factory()->create();
+        foreach (['classic', 'formula_one'] as $type) {
+            [$league, $commissioner] = $this->leagueWithMember('commissioner', $type);
+            Sanctum::actingAs($commissioner);
+
+            $this->getJson("/api/v1/leagues/{$league->id}/settings")
+                ->assertOk()
+                ->assertJsonMissingPath('data.first_goal_threshold')
+                ->assertJsonMissingPath('data.goal_interval');
+
+            $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+                'first_goal_threshold' => 70,
+                'goal_interval' => 7,
+            ])->assertUnprocessable();
+
+            $this->assertDatabaseMissing('league_settings', [
+                'league_id' => $league->id,
+                'key' => LeagueSetting::FIRST_GOAL_THRESHOLD,
+            ]);
+        }
+    }
+
+    public function test_head_to_head_goal_conversion_settings_remain_editable(): void
+    {
+        [$league, $commissioner] = $this->leagueWithMember('commissioner', 'head_to_head');
+        Sanctum::actingAs($commissioner);
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+            'first_goal_threshold' => 70,
+            'goal_interval' => 7,
+        ])->assertOk()
+            ->assertJsonPath('data.first_goal_threshold', 70)
+            ->assertJsonPath('data.goal_interval', 7);
+    }
+
+    public function test_formula_one_position_points_do_not_apply_to_classic_leagues(): void
+    {
+        [$league, $commissioner] = $this->leagueWithMember('commissioner', 'classic');
+        Sanctum::actingAs($commissioner);
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+            'formula_one_position_points' => LeagueSetting::DEFAULT_FORMULA_ONE_POSITION_POINTS,
+        ])->assertUnprocessable();
+
+        $this->assertDatabaseMissing('league_settings', [
+            'league_id' => $league->id,
+            'key' => LeagueSetting::FORMULA_ONE_POSITION_POINTS,
+        ]);
+    }
+
+    private function leagueWithMember(string $role, string $type = 'head_to_head'): array
+    {
+        $league = League::factory()->create([
+            'league_type_id' => LeagueType::query()->where('key', $type)->value('id'),
+        ]);
         $user = User::factory()->create();
         $league->users()->attach($user->id, [
             'league_role_id' => LeagueRole::query()->where('key', $role)->firstOrFail()->id,

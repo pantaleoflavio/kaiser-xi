@@ -60,16 +60,18 @@ class LeagueSettingsService
             ['key' => LeagueSetting::REAL_CAPTAIN_BONUS_POINTS],
             ['value' => LeagueSetting::decimalPayload(LeagueSetting::DEFAULT_REAL_CAPTAIN_BONUS_POINTS)],
         );
-        foreach (
-            [
-                LeagueSetting::FIRST_GOAL_THRESHOLD => LeagueSetting::DEFAULT_FIRST_GOAL_THRESHOLD,
-                LeagueSetting::GOAL_INTERVAL => LeagueSetting::DEFAULT_GOAL_INTERVAL,
-            ] as $key => $value
-        ) {
-            $league->settings()->firstOrCreate(
-                ['key' => $key],
-                ['value' => LeagueSetting::decimalPayload($value)],
-            );
+        if ($league->isHeadToHead()) {
+            foreach (
+                [
+                    LeagueSetting::FIRST_GOAL_THRESHOLD => LeagueSetting::DEFAULT_FIRST_GOAL_THRESHOLD,
+                    LeagueSetting::GOAL_INTERVAL => LeagueSetting::DEFAULT_GOAL_INTERVAL,
+                ] as $key => $value
+            ) {
+                $league->settings()->firstOrCreate(
+                    ['key' => $key],
+                    ['value' => LeagueSetting::decimalPayload($value)],
+                );
+            }
         }
         foreach (
             [
@@ -91,6 +93,7 @@ class LeagueSettingsService
     {
         DB::transaction(function () use ($league, $settings): void {
             $lockedLeague = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
+            $this->ensureSettingsApplyToLeagueType($lockedLeague, $settings);
             $this->ensureLifecycleAllows($lockedLeague, $settings);
             $this->ensureCombinedRosterRulesAreValid($lockedLeague, $settings);
             $this->ensureRosterCompatibility($lockedLeague, $settings);
@@ -189,26 +192,102 @@ class LeagueSettingsService
     /** @param array<string, mixed> $settings */
     private function ensureLifecycleAllows(League $league, array $settings): void
     {
-        if (in_array($league->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true)) {
+        $changedSettings = array_filter(
+            $settings,
+            fn(mixed $value, string $key): bool => $this->settingHasChanged($league, $key, $value),
+            ARRAY_FILTER_USE_BOTH,
+        );
+
+        if ($changedSettings !== [] && in_array($league->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true)) {
             throw new LeagueRulesLockedException('all');
         }
 
-        if (array_key_exists(LeagueSetting::FORMULA_ONE_POSITION_POINTS, $settings)) {
-            if (! $league->isFormulaOne()) {
-                throw new InvalidLeagueConfigurationException('Formula One position points only apply to formula one leagues.');
-            }
-            if ($league->hasInitializedChampionship()) {
-                throw new LeagueRulesLockedException('formula_one_position_points');
-            }
+        if (
+            array_key_exists(LeagueSetting::FORMULA_ONE_POSITION_POINTS, $changedSettings)
+            && $league->hasInitializedChampionship()
+        ) {
+            throw new LeagueRulesLockedException('formula_one_position_points');
         }
 
         if (
-            array_key_exists(LeagueSetting::INITIAL_BUDGET, $settings)
+            array_key_exists(LeagueSetting::INITIAL_BUDGET, $changedSettings)
             && FantasyTeam::query()->where('league_id', $league->id)->exists()
         ) {
             throw new UnsupportedInitialBudgetChangeException;
         }
     }
+
+    /** @param array<string, mixed> $settings */
+    private function ensureSettingsApplyToLeagueType(League $league, array $settings): void
+    {
+        if (! $league->isHeadToHead() && array_intersect(array_keys($settings), LeagueSetting::HEAD_TO_HEAD_KEYS) !== []) {
+            throw new InvalidLeagueConfigurationException('Goal conversion settings only apply to head-to-head leagues.');
+        }
+
+        if (! $league->isFormulaOne() && array_intersect(array_keys($settings), LeagueSetting::FORMULA_ONE_KEYS) !== []) {
+            throw new InvalidLeagueConfigurationException('Formula One position points only apply to formula one leagues.');
+        }
+    }
+
+    private function settingHasChanged(League $league, string $key, mixed $incoming): bool
+    {
+        return match ($key) {
+            LeagueSetting::INITIAL_BUDGET => (int) $incoming !== $league->initialFantasyBudget(),
+            LeagueSetting::RELEASE_REFUND_PERCENTAGE => (int) $incoming !== $league->releaseRefundPercentage(),
+            LeagueSetting::MAX_ROSTER_PLAYERS => (int) $incoming !== $league->maxRosterPlayers(),
+            LeagueSetting::ROSTER_ROLE_LIMITS => $this->normalizeIntegerMap($incoming)
+                !== $this->normalizeIntegerMap($league->rosterRoleLimits()),
+            LeagueSetting::ALLOWED_FORMATION_MODULE_NAMES => $this->normalizeStringList($incoming)
+                !== $league->allowedFormationModuleNames(),
+            LeagueSetting::BENCH_SIZE => (int) $incoming !== $league->benchSize(),
+            LeagueSetting::BENCH_ROLE_LIMITS => $this->normalizeIntegerMap($incoming)
+                !== $this->normalizeIntegerMap($league->benchRoleLimits()),
+            LeagueSetting::MAX_SUBSTITUTIONS => (int) $incoming !== $league->maxSubstitutions(),
+            LeagueSetting::SUBSTITUTION_ORDER_MODE => (string) $incoming !== $league->substitutionOrderMode(),
+            LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => (bool) $incoming
+                !== $league->allowsFormationChangeOnSubstitution(),
+            LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => (bool) $incoming !== $league->realCaptainBonusEnabled(),
+            LeagueSetting::REAL_CAPTAIN_BONUS_POINTS => (float) $incoming !== $league->realCaptainBonusPoints(),
+            LeagueSetting::DEFENSE_MODIFIER_ENABLED => (bool) $incoming !== $league->defenseModifierEnabled(),
+            LeagueSetting::FIRST_GOAL_THRESHOLD => (float) $incoming !== $league->firstGoalThreshold(),
+            LeagueSetting::GOAL_INTERVAL => (float) $incoming !== $league->goalInterval(),
+            LeagueSetting::FORMULA_ONE_POSITION_POINTS => $this->normalizePositionPoints($incoming)
+                !== $this->normalizePositionPoints($league->formulaOnePositionPoints()),
+            default => true,
+        };
+    }
+
+    /** @return array<string, int> */
+    private function normalizeIntegerMap(mixed $values): array
+    {
+        $normalized = collect(is_array($values) ? $values : [])->mapWithKeys(
+            fn(mixed $value, string $key): array => [$key => (int) $value],
+        )->all();
+        ksort($normalized);
+
+        return $normalized;
+    }
+
+    /** @return list<string> */
+    private function normalizeStringList(mixed $values): array
+    {
+        $normalized = array_values(array_unique(array_map('strval', is_array($values) ? $values : [])));
+        sort($normalized);
+
+        return $normalized;
+    }
+
+    /** @return array<int, int> */
+    private function normalizePositionPoints(mixed $points): array
+    {
+        $normalized = collect(is_array($points) ? $points : [])->mapWithKeys(
+            fn(mixed $value, string|int $position): array => [(int) $position => (int) $value],
+        )->all();
+        ksort($normalized);
+
+        return $normalized;
+    }
+
 
     /** @param array<string, mixed> $settings */
     private function ensureCombinedRosterRulesAreValid(League $league, array $settings): void

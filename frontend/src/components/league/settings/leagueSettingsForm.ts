@@ -6,6 +6,10 @@ import type {
   RosterRoleLimits,
   SubstitutionOrderMode,
 } from '../../../types/league';
+import {
+  hasFormulaOnePositionPoints,
+  hasHeadToHeadGoalSettings,
+} from './leagueSettingsApplicability';
 
 export const playerRoleKeys: PlayerRoleKey[] = ['goalkeeper', 'defender', 'midfielder', 'forward'];
 
@@ -132,8 +136,10 @@ function completeRoleLimits(
 export function validateLeagueSettingsForm(
   form: LeagueSettingsFormState,
   t: Translate,
-  includeFormulaOne = false,
+  leagueType: string,
 ): ValidationResult {
+  const includeHeadToHead = hasHeadToHeadGoalSettings(leagueType);
+  const includeFormulaOne = hasFormulaOnePositionPoints(leagueType);
   const initialBudget = requiredNumber(form.initialBudget);
   const refund = requiredNumber(form.refund);
   const maximum = requiredNumber(form.maxRosterPlayers);
@@ -220,17 +226,19 @@ export function validateLeagueSettingsForm(
   )
     errors.real_captain_bonus_points = [t('leagueSettings.validation.realCaptainBonusRange')];
   if (
-    firstGoalThreshold === null ||
-    firstGoalThreshold < 0 ||
-    firstGoalThreshold > 200 ||
-    !Number.isInteger(firstGoalThreshold * 2)
+    includeHeadToHead &&
+    (firstGoalThreshold === null ||
+      firstGoalThreshold < 0 ||
+      firstGoalThreshold > 200 ||
+      !Number.isInteger(firstGoalThreshold * 2))
   )
     errors.first_goal_threshold = [t('leagueSettings.validation.halfPoint')];
   if (
-    goalInterval === null ||
-    goalInterval <= 0 ||
-    goalInterval > 50 ||
-    !Number.isInteger(goalInterval * 2)
+    includeHeadToHead &&
+    (goalInterval === null ||
+      goalInterval <= 0 ||
+      goalInterval > 50 ||
+      !Number.isInteger(goalInterval * 2))
   )
     errors.goal_interval = [t('leagueSettings.validation.halfPoint')];
   if (
@@ -241,8 +249,8 @@ export function validateLeagueSettingsForm(
     benchSize === null ||
     maximumSubstitutions === null ||
     realCaptainBonusPoints === null ||
-    firstGoalThreshold === null ||
-    goalInterval === null ||
+    (includeHeadToHead && firstGoalThreshold === null) ||
+    (includeHeadToHead && goalInterval === null) ||
     !completeRoleLimits(rosterLimits) ||
     !completeRoleLimits(benchLimits)
   )
@@ -264,8 +272,9 @@ export function validateLeagueSettingsForm(
       real_captain_bonus_enabled: form.realCaptainBonusEnabled,
       real_captain_bonus_points: realCaptainBonusPoints,
       defense_modifier_enabled: form.defenseModifierEnabled,
-      first_goal_threshold: firstGoalThreshold,
-      goal_interval: goalInterval,
+      ...(includeHeadToHead
+        ? { first_goal_threshold: firstGoalThreshold!, goal_interval: goalInterval! }
+        : {}),
       ...(includeFormulaOne
         ? {
             formula_one_position_points: Object.fromEntries(

@@ -27,6 +27,10 @@ import { RosterRulesSection } from './settings/RosterRulesSection';
 import { ScoringRulesSection } from './settings/ScoringRulesSection';
 import { SubstitutionRulesSection } from './settings/SubstitutionRulesSection';
 import { FormulaOnePositionPointsEditor } from './settings/FormulaOnePositionSection';
+import {
+  hasFormulaOnePositionPoints,
+  hasHeadToHeadGoalSettings,
+} from './settings/leagueSettingsApplicability';
 
 type Props = {
   league: League;
@@ -96,14 +100,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
     event.preventDefault();
     if (!canEdit) return;
 
-    const formulaOnePointsLocked = Boolean(
-      settings?.locked_rule_groups.includes('formula_one_position_points'),
-    );
-    const result = validateLeagueSettingsForm(
-      form,
-      t,
-      league.type.key === 'formula_one' && !formulaOnePointsLocked,
-    );
+    const result = validateLeagueSettingsForm(form, t, league.type.key);
     if (!result.payload) {
       setError(t('common.errors.validation'));
       setFieldErrors(result.errors);
@@ -113,12 +110,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
     setError(null);
     setFieldErrors({});
     setSuccess(null);
-    if (league.type.key === 'formula_one') updateSettings.mutate(result.payload);
-    else {
-      const sharedPayload = { ...result.payload };
-      delete sharedPayload.formula_one_position_points;
-      updateSettings.mutate(sharedPayload);
-    }
+    updateSettings.mutate(result.payload);
   }
 
   return (
@@ -138,7 +130,12 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
           {success}
         </div>
       ) : null}
-      <LeagueSettingsSummary locale={language} settings={settings} t={t} />
+      <LeagueSettingsSummary
+        leagueType={league.type.key}
+        locale={language}
+        settings={settings}
+        t={t}
+      />
       {canEdit ? (
         <form className="mt-6 grid gap-6" noValidate onSubmit={handleSubmit}>
           <RosterRulesSection
@@ -196,9 +193,10 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
             onDefenseModifierChange={(value) => setField('defenseModifierEnabled', value)}
             onFirstGoalThresholdChange={(value) => setField('firstGoalThreshold', value)}
             onGoalIntervalChange={(value) => setField('goalInterval', value)}
+            showGoalSettings={hasHeadToHeadGoalSettings(league.type.key)}
             t={t}
           />
-          {league.type.key === 'formula_one' ? (
+          {hasFormulaOnePositionPoints(league.type.key) ? (
             <FormulaOnePositionPointsEditor
               disabled={
                 updateSettings.isPending ||

@@ -281,7 +281,8 @@
   "leagueSettings": {
     "title": "Impostazioni lega",
     "description": "Regole di budget, rosa, formazione, panchina, sostituzioni e punteggio per ogni squadra fantasy della lega.",
-    "maxRosterPlayers": "Numero massimo di giocatori attivi",
+    "maxRosterPlayers": "Dimensione massima della rosa",
+    "maxRosterPlayersDescription": "Numero massimo di calciatori che ogni fantasy squadra può avere contemporaneamente in rosa.",
     "rosterRuleHelp": "I limiti per ruolo sono massimi indipendenti. La loro somma deve essere almeno pari al limite totale della rosa.",
     "roles": {
       "goalkeeper": "Limite portieri",
