@@ -55,6 +55,7 @@ class LeagueSettingsResource extends JsonResource
             LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => $this->realCaptainBonusEnabled(),
             LeagueSetting::REAL_CAPTAIN_BONUS_POINTS => $this->realCaptainBonusPoints(),
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => $this->defenseModifierEnabled(),
+            LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS => $this->defenseModifierThresholds(),
             LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED => $this->goalkeeperCleanSheetBonusEnabled(),
             LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS => $this->goalkeeperCleanSheetBonusPoints(),
             LeagueSetting::FIRST_GOAL_THRESHOLD => $this->when(

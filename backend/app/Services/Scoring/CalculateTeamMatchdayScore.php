@@ -48,6 +48,7 @@ final class CalculateTeamMatchdayScore
                 fn($player): array => [(int) $player->player_id => $player->playerRole?->key],
             );
             $goalkeeperBonusCents = 0;
+            $defenseModifierCents = 0;
             $baseCents = 0;
             $bonusCents = 0;
 
@@ -66,6 +67,25 @@ final class CalculateTeamMatchdayScore
                 }
             }
 
+            if ($formation->league->defenseModifierEnabled()) {
+                $effective = $resolved->effectiveStarters->filter(
+                    fn($player): bool => $scores->get($player->player_id)?->isPlayable() ?? false,
+                );
+                $defenders = $effective->filter(fn($player): bool => $player->playerRole?->key === 'defender');
+                $goalkeeper = $effective->first(fn($player): bool => $player->playerRole?->key === 'goalkeeper');
+                if ($defenders->count() >= 4 && $goalkeeper !== null) {
+                    $votes = $defenders->map(fn($player): float => (float) $scores->get($player->player_id)->base_rating)
+                        ->sortDesc()->take(3)->values();
+                    $votes->push((float) $scores->get($goalkeeper->player_id)->base_rating);
+                    $average = $votes->sum() / 4;
+                    foreach ($formation->league->defenseModifierThresholds() as $threshold) {
+                        if ($average >= $threshold['threshold']) {
+                            $defenseModifierCents = $this->cents($threshold['bonus']);
+                        }
+                    }
+                }
+            }
+
             $aggregate = TeamMatchdayScore::query()
                 ->where('fantasy_team_id', $fantasyTeam->getKey())
                 ->where('matchday_id', $matchday->getKey())
@@ -78,9 +98,9 @@ final class CalculateTeamMatchdayScore
                 'matchday_id' => $matchday->getKey(),
                 'formation_id' => $formation->getKey(),
                 'base_points' => $this->decimal($baseCents),
-                'points' => $this->decimal($baseCents + $bonusCents + $goalkeeperBonusCents),
+                'points' => $this->decimal($baseCents + $bonusCents + $goalkeeperBonusCents + $defenseModifierCents),
                 'substitution_points' => '0.00',
-                'defense_modifier_points' => '0.00',
+                'defense_modifier_points' => $this->decimal($defenseModifierCents),
                 'goalkeeper_clean_sheet_bonus_points' => $this->decimal($goalkeeperBonusCents),
                 'status' => 'calculated',
                 'calculated_at' => now(),

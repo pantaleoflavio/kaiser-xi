@@ -397,6 +397,16 @@ class League extends Model
         );
     }
 
+    /** @return list<array{id: string, threshold: float, bonus: float}> */
+    public function defenseModifierThresholds(): array
+    {
+        $setting = $this->settings()->where('key', LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS)->first();
+
+        return $setting instanceof LeagueSetting
+            ? $setting->defenseModifierThresholdsValue()
+            : LeagueSetting::DEFAULT_DEFENSE_MODIFIER_THRESHOLDS;
+    }
+
     public function firstGoalThreshold(): float
     {
         return $this->decimalSettingValue(

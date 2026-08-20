@@ -398,12 +398,13 @@
       "percentage": "Enter a whole-number percentage from 0 to 100.",
       "realCaptainBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5.",
       "halfPoint": "Enter a value within the allowed range in increments of 0.5.",
-      "cleanSheetBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5."
+      "cleanSheetBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5.",
+      "defenseThresholds": "Thresholds must be unique and increasing in 0.25 increments; bonuses must be non-negative in 0.5 increments."
     },
     "scoring": {
       "title": "Scoring",
       "defenseModifier": "Enable defense modifier",
-      "defenseModifierDescription": "Stores whether the league uses a defense modifier; calculation will be added in a future scoring milestone.",
+      "defenseModifierDescription": "Uses the goalkeeper and the 3 defenders with the highest raw votes when the effective formation has at least 4 defenders. The matching bonus is added once to the final team matchday score.",
       "enableRealCaptainBonus": "Enable real captain bonus",
       "realCaptainBonusPoints": "Real captain bonus points",
       "realCaptainBonusDescription": "Awards the configured bonus when a contributing player was the real captain of his club in that match.",
@@ -412,7 +413,12 @@
       "goalInterval": "Goal interval",
       "goalIntervalDescription": "Each additional interval of team points adds one more goal.",
       "goalkeeperCleanSheetBonus": "Goalkeeper clean-sheet bonus",
-      "cleanSheetBonusPoints": "Clean-sheet bonus points"
+      "cleanSheetBonusPoints": "Clean-sheet bonus points",
+      "defenseThresholds": "Defense average → team bonus",
+      "defenseAverage": "Defense average threshold",
+      "defenseBonus": "Team bonus",
+      "addDefenseThreshold": "Add threshold",
+      "removeDefenseThreshold": "Remove"
     }
   },
   "budget": {

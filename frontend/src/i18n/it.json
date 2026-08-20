@@ -346,12 +346,13 @@
       "percentage": "Inserisci una percentuale intera da 0 a 100.",
       "realCaptainBonusRange": "Inserisci punti bonus da 0 a 5 in incrementi di 0,5.",
       "halfPoint": "Inserisci un valore nell’intervallo consentito con incrementi di 0,5.",
-      "cleanSheetBonusRange": "Inserisci punti bonus da 0 a 5 con incrementi di 0,5."
+      "cleanSheetBonusRange": "Inserisci punti bonus da 0 a 5 con incrementi di 0,5.",
+      "defenseThresholds": "Le soglie devono essere uniche e crescenti con incrementi di 0,25; i bonus non negativi con incrementi di 0,5."
     },
     "scoring": {
       "title": "Punteggio",
       "defenseModifier": "Abilita modificatore difesa",
-      "defenseModifierDescription": "Memorizza se la lega usa un modificatore difesa; il calcolo verrà aggiunto in un futuro milestone del punteggio.",
+      "defenseModifierDescription": "Usa il portiere e i 3 difensori con i voti base più alti quando la formazione effettiva ha almeno 4 difensori. Il bonus corrispondente viene aggiunto una volta al punteggio finale della squadra.",
       "enableRealCaptainBonus": "Abilita bonus capitano reale",
       "realCaptainBonusPoints": "Punti bonus capitano reale",
       "realCaptainBonusDescription": "Assegna il bonus configurato quando un giocatore che contribuisce era il vero capitano del suo club in quella partita.",
@@ -360,7 +361,12 @@
       "goalInterval": "Intervallo gol",
       "goalIntervalDescription": "Ogni ulteriore intervallo di punti aggiunge un altro gol.",
       "goalkeeperCleanSheetBonus": "Bonus porta inviolata",
-      "cleanSheetBonusPoints": "Punti bonus porta inviolata"
+      "cleanSheetBonusPoints": "Punti bonus porta inviolata",
+      "defenseThresholds": "Media difesa → bonus squadra",
+      "defenseAverage": "Soglia media difesa",
+      "defenseBonus": "Bonus squadra",
+      "addDefenseThreshold": "Aggiungi soglia",
+      "removeDefenseThreshold": "Rimuovi"
     }
   },
   "budget": {

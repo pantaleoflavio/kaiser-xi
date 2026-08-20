@@ -148,6 +148,52 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'required',
                 'boolean',
             ],
+            LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS => [
+                'sometimes',
+                'required',
+                'array',
+                'min:1',
+                function (string $attribute, mixed $rows, Closure $fail): void {
+                    if (! is_array($rows)) return;
+                    $ids = [];
+                    $thresholds = [];
+                    $previous = null;
+                    foreach ($rows as $row) {
+                        if (! is_array($row) || count($row) !== 3 || array_diff(['id', 'threshold', 'bonus'], array_keys($row)) !== []) {
+                            $fail("The {$attribute} rows must contain exactly id, threshold, and bonus.");
+                            return;
+                        }
+                        $id = $row['id'];
+                        $threshold = $row['threshold'];
+                        $bonus = $row['bonus'];
+                        if (! is_string($id) || trim($id) === '' || isset($ids[$id])) {
+                            $fail("The {$attribute} row ids must be unique non-empty strings.");
+                            return;
+                        }
+                        if (! is_numeric($threshold) || ! is_numeric($bonus)) {
+                            $fail("The {$attribute} values must be numeric.");
+                            return;
+                        }
+                        $threshold = (float) $threshold;
+                        $bonus = (float) $bonus;
+                        if ($threshold < 0 || abs($threshold * 4 - round($threshold * 4)) > 1e-8) {
+                            $fail("The {$attribute} thresholds must be non-negative and in increments of 0.25.");
+                            return;
+                        }
+                        if ($bonus < 0 || abs($bonus * 2 - round($bonus * 2)) > 1e-8) {
+                            $fail("The {$attribute} bonuses must be non-negative and in increments of 0.5.");
+                            return;
+                        }
+                        if (isset($thresholds[(string) $threshold]) || ($previous !== null && $threshold <= $previous)) {
+                            $fail("The {$attribute} thresholds must be unique and strictly increasing.");
+                            return;
+                        }
+                        $ids[$id] = true;
+                        $thresholds[(string) $threshold] = true;
+                        $previous = $threshold;
+                    }
+                },
+            ],
 
             LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED => [
                 'sometimes',

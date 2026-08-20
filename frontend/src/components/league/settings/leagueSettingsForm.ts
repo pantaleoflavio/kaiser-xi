@@ -60,6 +60,29 @@ export function validateLeagueSettingsForm(
   const goalInterval = requiredNumber(form.goalInterval);
   const errors: SettingsFieldErrors = {};
   const positionPoints = form.formulaOnePositionPoints.map(requiredNumber);
+  const defenseThresholds = form.defenseModifierThresholds.map((row) => ({
+    id: row.id,
+    threshold: requiredNumber(row.threshold),
+    bonus: requiredNumber(row.bonus),
+  }));
+  if (
+    defenseThresholds.length < 1 ||
+    defenseThresholds.some(
+      (row) =>
+        row.threshold === null ||
+        row.threshold < 0 ||
+        !Number.isInteger(row.threshold * 4) ||
+        row.bonus === null ||
+        row.bonus < 0 ||
+        !Number.isInteger(row.bonus * 2),
+    ) ||
+    new Set(defenseThresholds.map((row) => row.id)).size !== defenseThresholds.length ||
+    new Set(defenseThresholds.map((row) => row.threshold)).size !== defenseThresholds.length ||
+    defenseThresholds.some(
+      (row, index) => index > 0 && row.threshold! <= defenseThresholds[index - 1].threshold!,
+    )
+  )
+    errors.defense_modifier_thresholds = [t('leagueSettings.validation.defenseThresholds')];
   if (includeFormulaOne && positionPoints.length < 1)
     errors.formula_one_position_points = [t('formulaOne.validation.atLeastOne')];
   else if (
@@ -192,6 +215,11 @@ export function validateLeagueSettingsForm(
       goalkeeper_clean_sheet_bonus_enabled: form.goalkeeperCleanSheetBonusEnabled,
       goalkeeper_clean_sheet_bonus_points: goalkeeperCleanSheetBonusPoints,
       defense_modifier_enabled: form.defenseModifierEnabled,
+      defense_modifier_thresholds: defenseThresholds.map((row) => ({
+        id: row.id,
+        threshold: row.threshold!,
+        bonus: row.bonus!,
+      })),
       ...(includeHeadToHead
         ? { first_goal_threshold: firstGoalThreshold!, goal_interval: goalInterval! }
         : {}),

@@ -185,6 +185,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
           realCaptainBonusEnabled={form.realCaptainBonusEnabled}
           realCaptainBonusPoints={form.realCaptainBonusPoints}
           defenseModifierEnabled={form.defenseModifierEnabled}
+          defenseModifierThresholds={form.defenseModifierThresholds}
           firstGoalThreshold={form.firstGoalThreshold}
           goalInterval={form.goalInterval}
           disabled={updateSettings.isPending || !canEdit}
@@ -198,6 +199,9 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
             setField('goalkeeperCleanSheetBonusPoints', value)
           }
           onDefenseModifierChange={(value) => setField('defenseModifierEnabled', value)}
+          onDefenseModifierThresholdsChange={(value) =>
+            setField('defenseModifierThresholds', value)
+          }
           onFirstGoalThresholdChange={(value) => setField('firstGoalThreshold', value)}
           onGoalIntervalChange={(value) => setField('goalInterval', value)}
           showGoalSettings={hasHeadToHeadGoalSettings(league.type.key)}

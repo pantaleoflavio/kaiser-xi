@@ -22,6 +22,20 @@ export function LeagueSettingsSummary({ settings, locale, t, leagueType }: Props
   return (
     <dl className="mt-4 grid gap-3 text-sm text-slate-300 md:grid-cols-3">
       <div>
+        <dt className="text-slate-500">{t('leagueSettings.scoring.defenseModifier')}</dt>
+        <dd>{settings?.defense_modifier_enabled ? t('common.enabled') : t('common.disabled')}</dd>
+        {settings?.defense_modifier_enabled ? (
+          <dd className="mt-1">
+            {settings.defense_modifier_thresholds
+              .map(
+                (row) =>
+                  `${formatNumber(row.threshold, notAvailable, locale)} → +${formatNumber(row.bonus, notAvailable, locale)}`,
+              )
+              .join(', ')}
+          </dd>
+        ) : null}
+      </div>
+      <div>
         <dt className="text-slate-500">{t('budget.initialBudget')}</dt>
         <dd>{formatNumber(settings?.initial_budget, notAvailable, locale)}</dd>
       </div>

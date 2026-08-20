@@ -9,6 +9,7 @@ type Props = {
   realCaptainBonusEnabled: boolean;
   realCaptainBonusPoints: string;
   defenseModifierEnabled: boolean;
+  defenseModifierThresholds: { id: string; threshold: string; bonus: string }[];
   goalkeeperCleanSheetBonusEnabled: boolean;
   goalkeeperCleanSheetBonusPoints: string;
   errors: SettingsFieldErrors;
@@ -22,6 +23,9 @@ type Props = {
   onGoalkeeperCleanSheetBonusEnabledChange: (enabled: boolean) => void;
   onGoalkeeperCleanSheetBonusPointsChange: (value: string) => void;
   onDefenseModifierChange: (enabled: boolean) => void;
+  onDefenseModifierThresholdsChange: (
+    rows: { id: string; threshold: string; bonus: string }[],
+  ) => void;
   onFirstGoalThresholdChange: (value: string) => void;
   onGoalIntervalChange: (value: string) => void;
 };
@@ -31,6 +35,7 @@ export function ScoringRulesSection({
   realCaptainBonusPoints,
   goalkeeperCleanSheetBonusEnabled,
   goalkeeperCleanSheetBonusPoints,
+  defenseModifierThresholds,
   defenseModifierEnabled,
   firstGoalThreshold,
   goalInterval,
@@ -43,6 +48,7 @@ export function ScoringRulesSection({
   onGoalkeeperCleanSheetBonusEnabledChange,
   onGoalkeeperCleanSheetBonusPointsChange,
   onDefenseModifierChange,
+  onDefenseModifierThresholdsChange,
   onFirstGoalThresholdChange,
   onGoalIntervalChange,
 }: Props) {
@@ -168,6 +174,75 @@ export function ScoringRulesSection({
           </span>
         </span>
       </label>
+      <div className="grid gap-2 text-sm text-slate-200">
+        <span className="font-medium">{t('leagueSettings.scoring.defenseThresholds')}</span>
+        {defenseModifierThresholds.map((row) => (
+          <div className="grid grid-cols-[1fr_1fr_auto] gap-2" key={row.id}>
+            <input
+              aria-label={t('leagueSettings.scoring.defenseAverage')}
+              className={settingsInputClass}
+              disabled={disabled || !defenseModifierEnabled}
+              min={0}
+              step={0.25}
+              type="number"
+              value={row.threshold}
+              onChange={(event) =>
+                onDefenseModifierThresholdsChange(
+                  defenseModifierThresholds.map((item) =>
+                    item.id === row.id ? { ...item, threshold: event.target.value } : item,
+                  ),
+                )
+              }
+            />
+            <input
+              aria-label={t('leagueSettings.scoring.defenseBonus')}
+              className={settingsInputClass}
+              disabled={disabled || !defenseModifierEnabled}
+              min={0}
+              step={0.5}
+              type="number"
+              value={row.bonus}
+              onChange={(event) =>
+                onDefenseModifierThresholdsChange(
+                  defenseModifierThresholds.map((item) =>
+                    item.id === row.id ? { ...item, bonus: event.target.value } : item,
+                  ),
+                )
+              }
+            />
+            <button
+              className="mt-1 rounded border border-slate-700 px-3"
+              disabled={
+                disabled || !defenseModifierEnabled || defenseModifierThresholds.length === 1
+              }
+              onClick={() =>
+                onDefenseModifierThresholdsChange(
+                  defenseModifierThresholds.filter((item) => item.id !== row.id),
+                )
+              }
+              type="button"
+            >
+              {t('leagueSettings.scoring.removeDefenseThreshold')}
+            </button>
+          </div>
+        ))}
+        {exactError(errors, 'defense_modifier_thresholds') ? (
+          <span className="text-red-300">{exactError(errors, 'defense_modifier_thresholds')}</span>
+        ) : null}
+        <button
+          className="w-fit rounded border border-emerald-500 px-3 py-1"
+          disabled={disabled || !defenseModifierEnabled}
+          onClick={() =>
+            onDefenseModifierThresholdsChange([
+              ...defenseModifierThresholds,
+              { id: crypto.randomUUID(), threshold: '', bonus: '' },
+            ])
+          }
+          type="button"
+        >
+          {t('leagueSettings.scoring.addDefenseThreshold')}
+        </button>
+      </div>
     </fieldset>
   );
 }

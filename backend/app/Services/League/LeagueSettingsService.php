@@ -64,6 +64,10 @@ class LeagueSettingsService
             ['key' => LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS],
             ['value' => LeagueSetting::decimalPayload(LeagueSetting::DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_POINTS)],
         );
+        $league->settings()->firstOrCreate(
+            ['key' => LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS],
+            ['value' => LeagueSetting::defenseModifierThresholdsPayload(LeagueSetting::DEFAULT_DEFENSE_MODIFIER_THRESHOLDS)],
+        );
         if ($league->isHeadToHead()) {
             foreach (
                 [
@@ -99,6 +103,7 @@ class LeagueSettingsService
         DB::transaction(function () use ($league, $settings): void {
             $lockedLeague = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
             $this->ensureSettingsApplyToLeagueType($lockedLeague, $settings);
+            $this->ensureDefenseModifierThresholdsAreValid($settings);
             $this->ensureLifecycleAllows($lockedLeague, $settings);
             $this->ensureCombinedRosterRulesAreValid($lockedLeague, $settings);
             $this->ensureRosterCompatibility($lockedLeague, $settings);
@@ -172,6 +177,12 @@ class LeagueSettingsService
                     ['value' => LeagueSetting::decimalPayload((float) $settings[LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS])],
                 );
             }
+            if (array_key_exists(LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS, $settings)) {
+                LeagueSetting::query()->updateOrCreate(
+                    ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS],
+                    ['value' => LeagueSetting::defenseModifierThresholdsPayload($settings[LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS])],
+                );
+            }
 
             foreach ([LeagueSetting::FIRST_GOAL_THRESHOLD, LeagueSetting::GOAL_INTERVAL] as $key) {
                 if (array_key_exists($key, $settings)) {
@@ -242,6 +253,41 @@ class LeagueSettingsService
         }
     }
 
+    /** @param array<string, mixed> $settings */
+    private function ensureDefenseModifierThresholdsAreValid(array $settings): void
+    {
+        if (! array_key_exists(LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS, $settings)) {
+            return;
+        }
+
+        $rows = $settings[LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS];
+        $ids = [];
+        $thresholds = [];
+        $previous = null;
+        if (! is_array($rows) || $rows === []) {
+            throw new InvalidLeagueConfigurationException('At least one defense modifier threshold is required.');
+        }
+        foreach ($rows as $row) {
+            if (! is_array($row) || count($row) !== 3 || array_diff(['id', 'threshold', 'bonus'], array_keys($row)) !== []) {
+                throw new InvalidLeagueConfigurationException('Defense modifier thresholds have an invalid structure.');
+            }
+            $id = $row['id'];
+            $threshold = $row['threshold'];
+            $bonus = $row['bonus'];
+            if (! is_string($id) || trim($id) === '' || isset($ids[$id]) || ! is_numeric($threshold) || ! is_numeric($bonus)) {
+                throw new InvalidLeagueConfigurationException('Defense modifier thresholds must have unique ids and numeric values.');
+            }
+            $threshold = (float) $threshold;
+            $bonus = (float) $bonus;
+            if ($threshold < 0 || $bonus < 0 || abs($threshold * 4 - round($threshold * 4)) > 1e-8 || abs($bonus * 2 - round($bonus * 2)) > 1e-8 || isset($thresholds[(string) $threshold]) || ($previous !== null && $threshold <= $previous)) {
+                throw new InvalidLeagueConfigurationException('Defense modifier thresholds must be unique, increasing, and use valid increments.');
+            }
+            $ids[$id] = true;
+            $thresholds[(string) $threshold] = true;
+            $previous = $threshold;
+        }
+    }
+
     private function settingHasChanged(League $league, string $key, mixed $incoming): bool
     {
         return match ($key) {
@@ -265,6 +311,7 @@ class LeagueSettingsService
             LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS => (float) $incoming !== $league->goalkeeperCleanSheetBonusPoints(),
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => (bool) $incoming !== $league->defenseModifierEnabled(),
             LeagueSetting::FIRST_GOAL_THRESHOLD => (float) $incoming !== $league->firstGoalThreshold(),
+            LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS => $incoming !== $league->defenseModifierThresholds(),
             LeagueSetting::GOAL_INTERVAL => (float) $incoming !== $league->goalInterval(),
             LeagueSetting::FORMULA_ONE_POSITION_POINTS => $this->normalizePositionPoints($incoming)
                 !== $this->normalizePositionPoints($league->formulaOnePositionPoints()),

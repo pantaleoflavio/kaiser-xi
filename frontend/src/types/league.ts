@@ -188,6 +188,7 @@ export type LeagueSettings = {
   goalkeeper_clean_sheet_bonus_enabled: boolean;
   goalkeeper_clean_sheet_bonus_points: number;
   defense_modifier_enabled: boolean;
+  defense_modifier_thresholds: DefenseModifierThreshold[];
   first_goal_threshold?: number;
   goal_interval?: number;
   status: string;
@@ -215,6 +216,7 @@ export type FormationModule = {
 export type BenchRoleLimits = Record<PlayerRoleKey, number>;
 
 export type SubstitutionOrderMode = 'bench_order' | 'role_priority';
+export type DefenseModifierThreshold = { id: string; threshold: number; bonus: number };
 
 export type LeagueSettingsPayload = Partial<{
   initial_budget: number;
@@ -230,6 +232,7 @@ export type LeagueSettingsPayload = Partial<{
   real_captain_bonus_enabled: boolean;
   real_captain_bonus_points: number;
   defense_modifier_enabled: boolean;
+  defense_modifier_thresholds: DefenseModifierThreshold[];
   goalkeeper_clean_sheet_bonus_enabled: boolean;
   goalkeeper_clean_sheet_bonus_points: number;
   first_goal_threshold: number;

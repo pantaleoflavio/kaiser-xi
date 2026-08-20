@@ -145,6 +145,26 @@ class CalculateTeamMatchdayScoreTest extends TestCase
         $this->assertSame(1, TeamMatchdayScore::query()->count());
     }
 
+    public function test_defense_modifier_uses_goalkeeper_and_best_three_raw_defender_votes_idempotently(): void
+    {
+        [$formation, $starters] = $this->formation([]);
+        $this->setting($formation->league, LeagueSetting::DEFENSE_MODIFIER_ENABLED, LeagueSetting::booleanPayload(true));
+        $defenderVotes = [7.0, 6.5, 6.0, 4.0];
+        foreach ($starters as $assignment) {
+            $role = $this->registrations[$assignment]->playerRole->key;
+            $raw = $role === 'goalkeeper' ? 6.5 : ($role === 'defender' ? array_shift($defenderVotes) : 5.0);
+            $this->score($formation, $assignment, 10.0, rawVote: $raw);
+        }
+
+        $first = $this->calculator()->calculate($formation->fantasyTeam->fresh(), $formation->matchday);
+        $second = $this->calculator()->calculate($formation->fantasyTeam->fresh(), $formation->matchday);
+
+        $this->assertSame('2.00', $first->defense_modifier_points); // (6.5 + 7 + 6.5 + 6) / 4 = 6.5
+        $this->assertSame('112.00', $first->points);
+        $this->assertSame('112.00', $second->points);
+        $this->assertSame(1, TeamMatchdayScore::query()->count());
+    }
+
     public function test_recalculation_updates_one_aggregate_replaces_details_and_uses_historical_assignment(): void
     {
         [$formation, $starters] = $this->formation([]);
@@ -278,11 +298,11 @@ class CalculateTeamMatchdayScoreTest extends TestCase
         return $assignment;
     }
 
-    private function score(Formation $formation, int $assignment, float $points, bool $captain = false, bool $cleanSheet = false): void
+    private function score(Formation $formation, int $assignment, float $points, bool $captain = false, bool $cleanSheet = false, ?float $rawVote = null): void
     {
         PlayerScore::query()->updateOrCreate(
             ['player_season_registration_id' => $this->registrations[$assignment]->id, 'matchday_id' => $formation->matchday_id],
-            ['status' => PlayerScoreStatus::Confirmed, 'final_score' => $points, 'is_captain' => $captain, 'clean_sheet' => $cleanSheet],
+            ['status' => PlayerScoreStatus::Confirmed, 'base_rating' => $rawVote ?? $points, 'final_score' => $points, 'is_captain' => $captain, 'clean_sheet' => $cleanSheet],
         );
     }
 

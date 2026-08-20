@@ -28,6 +28,7 @@ export type LeagueSettingsFormState = {
   goalkeeperCleanSheetBonusEnabled: boolean;
   goalkeeperCleanSheetBonusPoints: string;
   defenseModifierEnabled: boolean;
+  defenseModifierThresholds: { id: string; threshold: string; bonus: string }[];
   firstGoalThreshold: string;
   goalInterval: string;
   formulaOnePositionPoints: string[];
@@ -68,6 +69,11 @@ export function createLeagueSettingsFormState(
     goalkeeperCleanSheetBonusEnabled: settings?.goalkeeper_clean_sheet_bonus_enabled ?? false,
     goalkeeperCleanSheetBonusPoints: String(settings?.goalkeeper_clean_sheet_bonus_points ?? 1),
     defenseModifierEnabled: settings?.defense_modifier_enabled ?? false,
+    defenseModifierThresholds: (settings?.defense_modifier_thresholds ?? []).map((row) => ({
+      id: row.id,
+      threshold: String(row.threshold),
+      bonus: String(row.bonus),
+    })),
     firstGoalThreshold: String(settings?.first_goal_threshold ?? 66),
     goalInterval: String(settings?.goal_interval ?? 6),
     formulaOnePositionPoints: positionPointsToRows(

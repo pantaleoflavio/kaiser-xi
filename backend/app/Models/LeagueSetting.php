@@ -25,6 +25,7 @@ class LeagueSetting extends Model
     public const GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED = 'goalkeeper_clean_sheet_bonus_enabled';
     public const GOALKEEPER_CLEAN_SHEET_BONUS_POINTS = 'goalkeeper_clean_sheet_bonus_points';
     public const DEFENSE_MODIFIER_ENABLED = 'defense_modifier_enabled';
+    public const DEFENSE_MODIFIER_THRESHOLDS = 'defense_modifier_thresholds';
     public const FIRST_GOAL_THRESHOLD = 'first_goal_threshold';
     public const GOAL_INTERVAL = 'goal_interval';
     public const FORMULA_ONE_POSITION_POINTS = 'formula_one_position_points';
@@ -61,6 +62,13 @@ class LeagueSetting extends Model
     public const DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED = false;
     public const DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_POINTS = 1.0;
     public const DEFAULT_DEFENSE_MODIFIER_ENABLED = false;
+    public const DEFAULT_DEFENSE_MODIFIER_THRESHOLDS = [
+        ['id' => 'default-600', 'threshold' => 6.0, 'bonus' => 1.0],
+        ['id' => 'default-625', 'threshold' => 6.25, 'bonus' => 1.5],
+        ['id' => 'default-650', 'threshold' => 6.5, 'bonus' => 2.0],
+        ['id' => 'default-675', 'threshold' => 6.75, 'bonus' => 2.5],
+        ['id' => 'default-700', 'threshold' => 7.0, 'bonus' => 3.0],
+    ];
     public const PLAYER_ROLE_KEYS = ['goalkeeper', 'defender', 'midfielder', 'forward'];
     public const DEFAULT_FIRST_GOAL_THRESHOLD = 66.0;
     public const DEFAULT_GOAL_INTERVAL = 6.0;
@@ -138,6 +146,31 @@ class LeagueSetting extends Model
         return collect($this->value['positions'] ?? [])->mapWithKeys(
             fn(mixed $points, string|int $position): array => [(int) $position => (int) $points]
         )->all();
+    }
+
+    /** @return list<array{id: string, threshold: float, bonus: float}> */
+    public function defenseModifierThresholdsValue(): array
+    {
+        return self::normalizeDefenseModifierThresholds($this->value['thresholds'] ?? []);
+    }
+
+    /** @param array<int, array{id: string, threshold: float|int, bonus: float|int}> $thresholds */
+    public static function defenseModifierThresholdsPayload(array $thresholds): array
+    {
+        return ['thresholds' => self::normalizeDefenseModifierThresholds($thresholds)];
+    }
+
+    /** @return list<array{id: string, threshold: float, bonus: float}> */
+    private static function normalizeDefenseModifierThresholds(array $thresholds): array
+    {
+        $normalized = array_map(fn(array $row): array => [
+            'id' => (string) $row['id'],
+            'threshold' => (float) $row['threshold'],
+            'bonus' => (float) $row['bonus'],
+        ], array_values($thresholds));
+        usort($normalized, fn(array $a, array $b): int => $a['threshold'] <=> $b['threshold']);
+
+        return $normalized;
     }
 
     /** @param array<int|string, int> $positions */

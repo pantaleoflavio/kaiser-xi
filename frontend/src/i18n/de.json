@@ -398,12 +398,13 @@
       "percentage": "Gib einen ganzzahligen Prozentsatz von 0 bis 100 ein.",
       "realCaptainBonusRange": "Bonuspunkte zwischen 0 und 5 in Schritten von 0,5 eingeben.",
       "halfPoint": "Gib einen Wert im zulässigen Bereich in Schritten von 0,5 ein.",
-      "cleanSheetBonusRange": "Gib Bonuspunkte von 0 bis 5 in Schritten von 0,5 ein."
+      "cleanSheetBonusRange": "Gib Bonuspunkte von 0 bis 5 in Schritten von 0,5 ein.",
+      "defenseThresholds": "Schwellen müssen eindeutig und steigend in 0,25-Schritten sein; Boni nicht negativ in 0,5-Schritten."
     },
     "scoring": {
       "title": "Punktewertung",
       "defenseModifier": "Abwehrmodifikator aktivieren",
-      "defenseModifierDescription": "Legt fest, ob die Liga einen Abwehrmodifikator verwendet; die Berechnung folgt in einem späteren Wertungs-Meilenstein.",
+      "defenseModifierDescription": "Verwendet den Torwart und die 3 Verteidiger mit den höchsten Rohnoten, wenn die effektive Formation mindestens 4 Verteidiger hat. Der passende Bonus wird einmal zur endgültigen Mannschaftspunktzahl addiert.",
       "enableRealCaptainBonus": "Bonus für echten Kapitän aktivieren",
       "realCaptainBonusPoints": "Bonuspunkte für echten Kapitän",
       "realCaptainBonusDescription": "Vergibt den festgelegten Bonus, wenn ein beitragender Spieler in diesem Spiel der echte Kapitän seines Vereins war.",
@@ -412,7 +413,12 @@
       "goalInterval": "Torintervall",
       "goalIntervalDescription": "Jedes zusätzliche Punkteintervall ergibt ein weiteres Tor.",
       "goalkeeperCleanSheetBonus": "Zu-Null-Bonus für Torhüter",
-      "cleanSheetBonusPoints": "Punkte für Zu-Null-Bonus"
+      "cleanSheetBonusPoints": "Punkte für Zu-Null-Bonus",
+      "defenseThresholds": "Abwehrdurchschnitt → Teambonus",
+      "defenseAverage": "Schwelle des Abwehrdurchschnitts",
+      "defenseBonus": "Teambonus",
+      "addDefenseThreshold": "Schwelle hinzufügen",
+      "removeDefenseThreshold": "Entfernen"
     }
   },
   "budget": {
