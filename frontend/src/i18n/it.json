@@ -378,8 +378,11 @@
     "emptyDescription": "Questo fantasy team non ha ancora giocatori attivi o storici nel roster.",
     "unknownPlayer": "Giocatore sconosciuto",
     "purchasePrice": "Prezzo di acquisto",
-    "assignedAt": "Assegnato",
-    "releasedAt": "Svincolato",
+    "assignedAt": "Assegnato il",
+    "releasedAt": "Svincolato il",
+    "availability": "Disponibilità",
+    "available": "Disponibile",
+    "notAvailable": "Non disponibile",
     "managementReadOnly": "Solo  commissioner e co-commissioner della lega possono gestire le rose.",
     "assign": {
       "title": "Assegna giocatore",

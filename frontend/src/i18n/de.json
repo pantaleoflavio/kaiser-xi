@@ -430,8 +430,11 @@
     "emptyDescription": "Dieses Fantasy-Team hat noch keine aktiven oder historischen Roster-Spieler.",
     "unknownPlayer": "Unbekannter Spieler",
     "purchasePrice": "Kaufpreis",
-    "assignedAt": "Zugeordnet",
-    "releasedAt": "Entlassen",
+    "assignedAt": "Zugeordnet am",
+    "releasedAt": "Freigegeben am",
+    "availability": "Verfügbarkeit",
+    "available": "Verfügbar",
+    "notAvailable": "Nicht verfügbar",
     "managementReadOnly": "Nur Liga-Commissioner und Co-Commissioner können Roster-Spieler verwalten.",
     "assign": {
       "title": "Spieler zuordnen",

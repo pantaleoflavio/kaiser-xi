@@ -57,10 +57,18 @@ export function FantasyRosterList({
               <dt className="text-slate-500">{t('roster.assignedAt')}</dt>
               <dd>{formatDate(rosterPlayer.assigned_at, fallback, language)}</dd>
             </div>
-            <div>
-              <dt className="text-slate-500">{t('roster.releasedAt')}</dt>
-              <dd>{formatDate(rosterPlayer.released_at, fallback, language)}</dd>
-            </div>
+            {rosterPlayer.released_at ? (
+              <div>
+                <dt className="text-slate-500">{t('roster.releasedAt')}</dt>
+                <dd>{formatDate(rosterPlayer.released_at, fallback, language)}</dd>
+              </div>
+            ) : null}
+            {!rosterPlayer.released_at ? (
+              <div>
+                <dt className="text-slate-500">{t('roster.availability')}</dt>
+                <dd>{t('roster.notAvailable')}</dd>
+              </div>
+            ) : null}
           </dl>
         </div>
       ))}

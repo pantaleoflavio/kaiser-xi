@@ -430,8 +430,11 @@
     "emptyDescription": "This fantasy team does not have active or historical roster players yet.",
     "unknownPlayer": "Unknown player",
     "purchasePrice": "Purchase price",
-    "assignedAt": "Assigned",
-    "releasedAt": "Released",
+    "assignedAt": "Assigned at",
+    "releasedAt": "Released at",
+    "availability": "Availability",
+    "available": "Available",
+    "notAvailable": "Not available",
     "managementReadOnly": "Only league commissioners and co-commissioners can manage roster players.",
     "assign": {
       "title": "Assign player",

@@ -8,9 +8,11 @@ import { formationKeys, leagueKeys, teamMatchdayResultKeys } from '../api/queryK
 import { LoadingState } from '../components/LoadingState';
 import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { LeagueNavigation } from '../components/league/LeagueNavigation';
-import { ClassicTeamResultCard } from '../components/results/ClassicTeamResultCard';
-import { HeadToHeadMatchCard } from '../components/results/HeadToHeadMatchCard';
-import { FormulaOneMatchdayResults } from '../components/results/FormulaOneMatchdayResults';
+import {
+  ClassicMatchdayDetail,
+  FormulaOneMatchdayDetail,
+  HeadToHeadMatchdayDetail,
+} from '../components/results/MatchdayResultsSections';
 import { useTranslation } from '../i18n';
 import { formatDate } from '../utils/formatters';
 
@@ -147,66 +149,27 @@ export function MatchdayDetailPage() {
         ) : null}
       </article>
       {league.data?.data.type.key === 'head_to_head' ? (
-        <section className="space-y-4" aria-labelledby="fixtures-title">
-          <h2 className="text-2xl font-semibold text-white" id="fixtures-title">
-            {t('results.matchdayResults')}
-          </h2>
-          {orderedFixtures.map((fixture) => (
-            <HeadToHeadMatchCard
-              fixture={fixture}
-              leagueId={leagueId}
-              matchdayId={numericId}
-              currentTeamId={myTeam?.id}
-              key={fixture.id}
-            />
-          ))}
-          {!fixtures.length ? (
-            <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">
-              {t('results.noFixtures')}
-            </p>
-          ) : null}
-        </section>
+        <HeadToHeadMatchdayDetail
+          currentTeamId={myTeam?.id}
+          fixtures={orderedFixtures}
+          leagueId={leagueId}
+          matchdayId={numericId}
+        />
       ) : null}
       {league.data?.data.type.key === 'classic' ? (
-        <section className="space-y-4" aria-labelledby="classic-results-title">
-          <h2 className="text-2xl font-semibold text-white" id="classic-results-title">
-            {t('results.matchdayResults')}
-          </h2>
-          {championshipResults.data?.data.teams.map((entry) => (
-            <ClassicTeamResultCard
-              entry={entry}
-              leagueId={leagueId}
-              matchdayId={numericId}
-              key={entry.fantasy_team.id}
-            />
-          ))}
-          {championshipResults.data && !championshipResults.data.data.teams.length ? (
-            <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">
-              {t('results.noClassicParticipants')}
-            </p>
-          ) : null}
-        </section>
+        <ClassicMatchdayDetail
+          leagueId={leagueId}
+          matchdayId={numericId}
+          teams={championshipResults.data?.data.teams ?? []}
+        />
       ) : null}
       {league.data?.data.type.key === 'formula_one' ? (
-        <section className="space-y-4" aria-labelledby="formula-one-results-title">
-          <h2 className="text-2xl font-semibold text-white" id="formula-one-results-title">
-            {championshipResults.data?.data.matchday.counted
-              ? t('formulaOne.matchdayPlacements')
-              : t('formulaOne.participantStatus')}
-          </h2>
-          {championshipResults.data?.data.teams.length ? (
-            <FormulaOneMatchdayResults
-              counted={championshipResults.data.data.matchday.counted}
-              leagueId={leagueId}
-              matchdayId={numericId}
-              teams={championshipResults.data.data.teams}
-            />
-          ) : (
-            <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">
-              {t('results.noClassicParticipants')}
-            </p>
-          )}
-        </section>
+        <FormulaOneMatchdayDetail
+          counted={championshipResults.data?.data.matchday.counted ?? false}
+          leagueId={leagueId}
+          matchdayId={numericId}
+          teams={championshipResults.data?.data.teams ?? []}
+        />
       ) : null}
     </section>
   );
