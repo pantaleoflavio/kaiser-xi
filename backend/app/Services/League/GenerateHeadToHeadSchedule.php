@@ -12,7 +12,10 @@ use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class GenerateHeadToHeadSchedule
 {
-    public function __construct(private readonly HeadToHeadRoundRobinGenerator $generator) {}
+    public function __construct(
+        private readonly HeadToHeadRoundRobinGenerator $generator,
+        private readonly AssertChampionshipParticipantsReady $participantsReady,
+    ) {}
 
     public function handle(League $league, int $startMatchdayId): League
     {
@@ -28,6 +31,7 @@ class GenerateHeadToHeadSchedule
                 throw new ConflictHttpException('Schedules can only be initialized for head-to-head leagues.');
             }
 
+            $this->participantsReady->handle($lockedLeague);
             $teamIds = $lockedLeague->fantasyTeams()->lockForUpdate()->orderBy('id')->pluck('id')->all();
             if (count($teamIds) < 2) {
                 throw new ConflictHttpException('At least two fantasy teams are required.');

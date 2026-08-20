@@ -871,5 +871,14 @@
   "playerMarket": {
     "available": "Available",
     "alreadyAssigned": "Already assigned"
+  },
+  "championshipInitialization": {
+    "errors": {
+      "missingTeam": "The championship cannot be initialized: 1 participant has not created a fantasy team yet.",
+      "missingTeams": "The championship cannot be initialized: {{count}} participants have not created their fantasy teams yet.",
+      "unauthorized": "Only the commissioner or a co-commissioner can initialize the championship.",
+      "invalidMatchday": "The selected starting Matchday or league configuration is invalid.",
+      "generic": "The championship could not be initialized."
+    }
   }
 }

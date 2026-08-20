@@ -823,5 +823,14 @@
   "playerMarket": {
     "available": "Disponibile",
     "alreadyAssigned": "Già assegnato"
+  },
+  "championshipInitialization": {
+    "errors": {
+      "missingTeam": "Impossibile inizializzare il campionato: 1 partecipante non ha ancora creato la propria squadra.",
+      "missingTeams": "Impossibile inizializzare il campionato: {{count}} partecipanti non hanno ancora creato la propria squadra.",
+      "unauthorized": "Solo il commissioner o un co-commissioner può inizializzare il campionato.",
+      "invalidMatchday": "La giornata iniziale selezionata o la configurazione della lega non è valida.",
+      "generic": "Impossibile inizializzare il campionato."
+    }
   }
 }

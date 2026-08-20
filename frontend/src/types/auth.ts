@@ -27,5 +27,6 @@ export type RegisterPayload = {
 export type ApiErrorResponse = {
   message?: string;
   code?: string;
+  missing_team_count?: number;
   errors?: Record<string, string[]>;
 };

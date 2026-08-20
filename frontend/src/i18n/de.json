@@ -871,5 +871,14 @@
   "playerMarket": {
     "available": "Verfügbar",
     "alreadyAssigned": "Bereits vergeben"
+  },
+  "championshipInitialization": {
+    "errors": {
+      "missingTeam": "Die Meisterschaft kann nicht initialisiert werden: 1 Teilnehmer hat noch kein Fantasy-Team erstellt.",
+      "missingTeams": "Die Meisterschaft kann nicht initialisiert werden: {{count}} Teilnehmer haben noch kein Fantasy-Team erstellt.",
+      "unauthorized": "Nur der Commissioner oder ein Co-Commissioner kann die Meisterschaft initialisieren.",
+      "invalidMatchday": "Der gewählte Startspieltag oder die Ligakonfiguration ist ungültig.",
+      "generic": "Die Meisterschaft konnte nicht initialisiert werden."
+    }
   }
 }

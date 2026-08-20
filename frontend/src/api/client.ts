@@ -11,14 +11,22 @@ export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? fallbackApiUrl
 export class ApiError extends Error {
   status: number;
   code?: string;
+  missingTeamCount?: number;
   errors?: Record<string, string[]>;
 
-  constructor(message: string, status: number, errors?: Record<string, string[]>, code?: string) {
+  constructor(
+    message: string,
+    status: number,
+    errors?: Record<string, string[]>,
+    code?: string,
+    missingTeamCount?: number,
+  ) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
     this.errors = errors;
     this.code = code;
+    this.missingTeamCount = missingTeamCount;
   }
 }
 
@@ -55,6 +63,7 @@ export async function apiClient<T>(path: string, options: ApiRequestOptions = {}
       response.status,
       errorBody?.errors,
       errorBody?.code,
+      errorBody?.missing_team_count,
     );
   }
 

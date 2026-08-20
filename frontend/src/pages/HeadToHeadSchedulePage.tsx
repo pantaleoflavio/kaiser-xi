@@ -11,6 +11,7 @@ import { HeadToHeadScheduleSetup } from '../components/league/HeadToHeadSchedule
 import { HeadToHeadScheduleSummary } from '../components/league/HeadToHeadScheduleSummary';
 import { LeagueNavigation } from '../components/league/LeagueNavigation';
 import { useTranslation } from '../i18n';
+import { championshipInitializationError } from '../utils/championshipInitializationError';
 
 export function HeadToHeadSchedulePage() {
   const { leagueId = '' } = useParams();
@@ -64,19 +65,9 @@ export function HeadToHeadSchedulePage() {
   const futureMatchdays = (matchdays.data?.data ?? []).filter(
     (matchday) => new Date(matchday.starts_at).getTime() > Date.now(),
   );
-  const mutationError = initialize.error;
-  const errorMessage =
-    mutationError instanceof ApiError
-      ? mutationError.status === 403
-        ? t('h2h.unauthorized')
-        : mutationError.status === 409
-          ? t('h2h.errors.alreadyInitialized')
-          : mutationError.status === 422
-            ? t('h2h.errors.invalidMatchday')
-            : t('h2h.errors.initialize')
-      : mutationError
-        ? t('h2h.errors.initialize')
-        : null;
+  const errorMessage = championshipInitializationError(initialize.error, t, {
+    alreadyInitializedKey: 'h2h.errors.alreadyInitialized',
+  });
 
   return (
     <section className="space-y-6">

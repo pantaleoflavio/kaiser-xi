@@ -8,6 +8,7 @@ import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { LoadingState } from '../components/LoadingState';
 import { LeagueNavigation } from '../components/league/LeagueNavigation';
 import { useTranslation } from '../i18n';
+import { championshipInitializationError } from '../utils/championshipInitializationError';
 
 export function ClassicChampionshipPage() {
   const { leagueId = '' } = useParams();
@@ -48,6 +49,7 @@ export function ClassicChampionshipPage() {
     );
   const championship = state.data?.data;
   const canStart = ['commissioner', 'co_commissioner'].includes(league.data?.data.my_role ?? '');
+  const initializationError = championshipInitializationError(initialize.error, t);
   return (
     <section className="space-y-6">
       <LeagueNavigation leagueId={leagueId} showStandings />
@@ -93,6 +95,11 @@ export function ClassicChampionshipPage() {
             >
               {formulaOne ? t('formulaOne.initializeAction') : t('classic.start')}
             </button>
+            {initializationError ? (
+              <p className="mt-3 rounded border border-red-500/30 bg-red-950/40 p-3 text-sm text-red-100">
+                {initializationError}
+              </p>
+            ) : null}
             {!championship?.available_start_matchdays.length ? (
               <p className="mt-2 text-sm text-amber-200">{t('classic.noFutureMatchdays')}</p>
             ) : null}
