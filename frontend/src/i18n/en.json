@@ -17,7 +17,9 @@
       "validation": "Please correct the following errors.",
       "unexpected": "An unexpected error occurred."
     },
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "enabled": "Enabled",
+    "disabled": "Disabled"
   },
   "auth": {
     "login": {
@@ -395,7 +397,8 @@
       "positiveInteger": "Enter a positive whole number.",
       "percentage": "Enter a whole-number percentage from 0 to 100.",
       "realCaptainBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5.",
-      "halfPoint": "Enter a value within the allowed range in increments of 0.5."
+      "halfPoint": "Enter a value within the allowed range in increments of 0.5.",
+      "cleanSheetBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5."
     },
     "scoring": {
       "title": "Scoring",
@@ -407,7 +410,9 @@
       "firstGoalThreshold": "First goal threshold",
       "firstGoalThresholdDescription": "The minimum team points required to score the first goal.",
       "goalInterval": "Goal interval",
-      "goalIntervalDescription": "Each additional interval of team points adds one more goal."
+      "goalIntervalDescription": "Each additional interval of team points adds one more goal.",
+      "goalkeeperCleanSheetBonus": "Goalkeeper clean-sheet bonus",
+      "cleanSheetBonusPoints": "Clean-sheet bonus points"
     }
   },
   "budget": {
@@ -851,7 +856,7 @@
     "freezeWarning": "Initialization is irreversible and freezes the participant set.",
     "positionPoints": "Position points",
     "positionPointsHelp": "Points must be non-negative integers and cannot increase for a lower finishing position.",
-    "positionLabel": "Position {{position}}",
+    "positionLabel": "Finishing position {{position}}",
     "addPosition": "Add position",
     "removePosition": "Remove position",
     "matchdayPlacements": "Formula One results",
@@ -862,5 +867,9 @@
       "nonIncreasing": "Points cannot increase as the finishing position gets worse."
     },
     "standingsDescription": "Formula One championship ranking in backend-authoritative finishing order."
+  },
+  "playerMarket": {
+    "available": "Available",
+    "alreadyAssigned": "Already assigned"
   }
 }

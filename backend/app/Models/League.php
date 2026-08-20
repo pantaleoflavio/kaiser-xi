@@ -373,6 +373,22 @@ class League extends Model
         );
     }
 
+    public function goalkeeperCleanSheetBonusEnabled(): bool
+    {
+        return $this->booleanSettingValue(
+            LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED,
+            LeagueSetting::DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED,
+        );
+    }
+
+    public function goalkeeperCleanSheetBonusPoints(): float
+    {
+        return $this->decimalSettingValue(
+            LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS,
+            LeagueSetting::DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_POINTS,
+        );
+    }
+
     public function defenseModifierEnabled(): bool
     {
         return $this->booleanSettingValue(

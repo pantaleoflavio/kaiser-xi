@@ -18,7 +18,6 @@ use App\Models\PlayerSeasonRegistration;
 use App\Models\SeasonClub;
 use App\Models\TeamMatchdayScore;
 use App\Models\TeamMatchdayScoreDetail;
-use App\Services\Formation\SaveFormationService;
 use App\Services\League\LeagueSettingsService;
 use App\Services\Scoring\CalculateTeamMatchdayScore;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -122,6 +121,30 @@ class CalculateTeamMatchdayScoreTest extends TestCase
         $this->assertSame('11.00', $nonCaptain->points);
     }
 
+    public function test_goalkeeper_clean_sheet_bonus_is_configurable_and_idempotent(): void
+    {
+        [$formation, $starters] = $this->formation([]);
+        $goalkeeper = collect($starters)->first(function (int $assignment): bool {
+            return $this->registrations[$assignment]->playerRole->key === 'goalkeeper';
+        });
+        foreach ($starters as $assignment) {
+            $this->score($formation, $assignment, 1.0, false, $assignment === $goalkeeper);
+        }
+
+        $disabled = $this->calculator()->calculate($formation->fantasyTeam, $formation->matchday);
+        $this->assertSame('11.00', $disabled->points);
+
+        $this->setting($formation->league, LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED, LeagueSetting::booleanPayload(true));
+        $this->setting($formation->league, LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS, LeagueSetting::decimalPayload(1.5));
+        $enabled = $this->calculator()->calculate($formation->fantasyTeam->fresh(), $formation->matchday);
+        $recalculated = $this->calculator()->calculate($formation->fantasyTeam->fresh(), $formation->matchday);
+
+        $this->assertSame('12.50', $enabled->points);
+        $this->assertSame('1.50', $enabled->goalkeeper_clean_sheet_bonus_points);
+        $this->assertSame('12.50', $recalculated->points);
+        $this->assertSame(1, TeamMatchdayScore::query()->count());
+    }
+
     public function test_recalculation_updates_one_aggregate_replaces_details_and_uses_historical_assignment(): void
     {
         [$formation, $starters] = $this->formation([]);
@@ -199,12 +222,40 @@ class CalculateTeamMatchdayScoreTest extends TestCase
             ->pluck('id')
             ->all();
         $bench = array_map(fn(string $role): int => $this->assignment($league, $team, $role)->id, $benchRoles);
-        $formation = app(SaveFormationService::class)->save($league, $matchday, $team, [
+        $formation = Formation::factory()->create([
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'matchday_id' => $matchday->id,
             'formation_module_id' => $module->id,
-            'starters' => $starters,
-            'bench' => collect($bench)->map(fn(int $id, int $index): array => ['fantasy_team_player_id' => $id, 'order' => $index + 1])->all(),
+            'is_confirmed' => true,
+            'submitted_at' => now(),
         ]);
-        $formation->update(['is_confirmed' => true, 'submitted_at' => now()]);
+
+        foreach ($starters as $index => $assignmentId) {
+            $assignment = FantasyTeamPlayer::query()->findOrFail($assignmentId);
+            $registration = $this->registrations[$assignmentId];
+
+            $formation->players()->create([
+                'fantasy_team_player_id' => $assignment->id,
+                'player_id' => $assignment->player_id,
+                'player_role_id' => $registration->player_role_id,
+                'slot_type' => 'starter',
+                'position_index' => $index + 1,
+            ]);
+        }
+
+        foreach ($bench as $index => $assignmentId) {
+            $assignment = FantasyTeamPlayer::query()->findOrFail($assignmentId);
+            $registration = $this->registrations[$assignmentId];
+
+            $formation->players()->create([
+                'fantasy_team_player_id' => $assignment->id,
+                'player_id' => $assignment->player_id,
+                'player_role_id' => $registration->player_role_id,
+                'slot_type' => 'bench',
+                'position_index' => $index + 1,
+            ]);
+        }
 
         return [$formation->fresh(), $starters, $bench];
     }
@@ -227,11 +278,11 @@ class CalculateTeamMatchdayScoreTest extends TestCase
         return $assignment;
     }
 
-    private function score(Formation $formation, int $assignment, float $points, bool $captain = false): void
+    private function score(Formation $formation, int $assignment, float $points, bool $captain = false, bool $cleanSheet = false): void
     {
         PlayerScore::query()->updateOrCreate(
             ['player_season_registration_id' => $this->registrations[$assignment]->id, 'matchday_id' => $formation->matchday_id],
-            ['status' => PlayerScoreStatus::Confirmed, 'final_score' => $points, 'is_captain' => $captain],
+            ['status' => PlayerScoreStatus::Confirmed, 'final_score' => $points, 'is_captain' => $captain, 'clean_sheet' => $cleanSheet],
         );
     }
 

@@ -41,6 +41,13 @@ final class CalculateTeamMatchdayScore
             $captainBonusCents = $formation->league->realCaptainBonusEnabled()
                 ? $this->cents($formation->league->realCaptainBonusPoints())
                 : 0;
+            $cleanSheetBonusCents = $formation->league->goalkeeperCleanSheetBonusEnabled()
+                ? $this->cents($formation->league->goalkeeperCleanSheetBonusPoints())
+                : 0;
+            $roles = $formation->players->mapWithKeys(
+                fn($player): array => [(int) $player->player_id => $player->playerRole?->key],
+            );
+            $goalkeeperBonusCents = 0;
             $baseCents = 0;
             $bonusCents = 0;
 
@@ -53,6 +60,9 @@ final class CalculateTeamMatchdayScore
                 $baseCents += $this->cents($score->{PlayerScore::FANTASY_SCORE_INPUT_FIELD});
                 if ($score->is_captain) {
                     $bonusCents += $captainBonusCents;
+                }
+                if ($roles->get($playerId) === 'goalkeeper' && $score->clean_sheet) {
+                    $goalkeeperBonusCents += $cleanSheetBonusCents;
                 }
             }
 
@@ -68,10 +78,10 @@ final class CalculateTeamMatchdayScore
                 'matchday_id' => $matchday->getKey(),
                 'formation_id' => $formation->getKey(),
                 'base_points' => $this->decimal($baseCents),
-                'points' => $this->decimal($baseCents + $bonusCents),
+                'points' => $this->decimal($baseCents + $bonusCents + $goalkeeperBonusCents),
                 'substitution_points' => '0.00',
                 'defense_modifier_points' => '0.00',
-                'goalkeeper_clean_sheet_bonus_points' => '0.00',
+                'goalkeeper_clean_sheet_bonus_points' => $this->decimal($goalkeeperBonusCents),
                 'status' => 'calculated',
                 'calculated_at' => now(),
             ])->save();
@@ -85,6 +95,9 @@ final class CalculateTeamMatchdayScore
                 $pointsCents = $isContributing ? $this->cents($score->{PlayerScore::FANTASY_SCORE_INPUT_FIELD}) : 0;
                 if ($isContributing && $score->is_captain) {
                     $pointsCents += $captainBonusCents;
+                }
+                if ($isContributing && $formationPlayer->playerRole?->key === 'goalkeeper' && $score->clean_sheet) {
+                    $pointsCents += $cleanSheetBonusCents;
                 }
                 $substitution = $substitutionsByIncoming->get($formationPlayer->id);
 

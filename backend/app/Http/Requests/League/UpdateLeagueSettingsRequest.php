@@ -149,6 +149,13 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'boolean',
             ],
 
+            LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED => [
+                'sometimes',
+                'required',
+                'boolean',
+            ],
+            LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS => $this->halfPointRules(0, 5),
+
             LeagueSetting::FIRST_GOAL_THRESHOLD => $this->halfPointRules(0, 200),
             LeagueSetting::GOAL_INTERVAL => $this->halfPointRules(0.5, 50),
 

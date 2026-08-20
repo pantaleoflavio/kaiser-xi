@@ -17,7 +17,9 @@
       "validation": "Correggi i seguenti errori.",
       "unexpected": "Si è verificato un errore imprevisto."
     },
-    "cancel": "Annulla"
+    "cancel": "Annulla",
+    "enabled": "Abilitato",
+    "disabled": "Disabilitato"
   },
   "auth": {
     "login": {
@@ -343,7 +345,8 @@
       "positiveInteger": "Inserisci un numero intero positivo.",
       "percentage": "Inserisci una percentuale intera da 0 a 100.",
       "realCaptainBonusRange": "Inserisci punti bonus da 0 a 5 in incrementi di 0,5.",
-      "halfPoint": "Inserisci un valore nell’intervallo consentito con incrementi di 0,5."
+      "halfPoint": "Inserisci un valore nell’intervallo consentito con incrementi di 0,5.",
+      "cleanSheetBonusRange": "Inserisci punti bonus da 0 a 5 con incrementi di 0,5."
     },
     "scoring": {
       "title": "Punteggio",
@@ -355,7 +358,9 @@
       "firstGoalThreshold": "Soglia del primo gol",
       "firstGoalThresholdDescription": "Il punteggio minimo della squadra necessario per segnare il primo gol.",
       "goalInterval": "Intervallo gol",
-      "goalIntervalDescription": "Ogni ulteriore intervallo di punti aggiunge un altro gol."
+      "goalIntervalDescription": "Ogni ulteriore intervallo di punti aggiunge un altro gol.",
+      "goalkeeperCleanSheetBonus": "Bonus porta inviolata",
+      "cleanSheetBonusPoints": "Punti bonus porta inviolata"
     }
   },
   "budget": {
@@ -803,7 +808,7 @@
     "freezeWarning": "L'inizializzazione è irreversibile e blocca i partecipanti.",
     "positionPoints": "Punti per posizione",
     "positionPointsHelp": "I punti devono essere numeri interi non negativi e non possono aumentare per una posizione peggiore.",
-    "positionLabel": "Posizione {{position}}",
+    "positionLabel": "{{position}}° posto",
     "addPosition": "Aggiungi posizione",
     "removePosition": "Rimuovi posizione",
     "matchdayPlacements": "Risultati Formula Uno",
@@ -814,5 +819,9 @@
       "nonIncreasing": "I punti non possono aumentare al peggiorare della posizione."
     },
     "standingsDescription": "Classifica del campionato Formula Uno nell’ordine determinato dal backend."
+  },
+  "playerMarket": {
+    "available": "Disponibile",
+    "alreadyAssigned": "Già assegnato"
   }
 }

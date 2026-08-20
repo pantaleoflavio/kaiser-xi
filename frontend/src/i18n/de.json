@@ -17,7 +17,9 @@
       "validation": "Bitte korrigiere die folgende Fehler.",
       "unexpected": "Ein unerwarteter Fehler ist aufgetreten."
     },
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "enabled": "Aktiviert",
+    "disabled": "Deaktiviert"
   },
   "auth": {
     "login": {
@@ -395,7 +397,8 @@
       "positiveInteger": "Gib eine positive ganze Zahl ein.",
       "percentage": "Gib einen ganzzahligen Prozentsatz von 0 bis 100 ein.",
       "realCaptainBonusRange": "Bonuspunkte zwischen 0 und 5 in Schritten von 0,5 eingeben.",
-      "halfPoint": "Gib einen Wert im zulässigen Bereich in Schritten von 0,5 ein."
+      "halfPoint": "Gib einen Wert im zulässigen Bereich in Schritten von 0,5 ein.",
+      "cleanSheetBonusRange": "Gib Bonuspunkte von 0 bis 5 in Schritten von 0,5 ein."
     },
     "scoring": {
       "title": "Punktewertung",
@@ -407,7 +410,9 @@
       "firstGoalThreshold": "Schwelle für das erste Tor",
       "firstGoalThresholdDescription": "Die Mindestpunktzahl eines Teams für das erste Tor.",
       "goalInterval": "Torintervall",
-      "goalIntervalDescription": "Jedes zusätzliche Punkteintervall ergibt ein weiteres Tor."
+      "goalIntervalDescription": "Jedes zusätzliche Punkteintervall ergibt ein weiteres Tor.",
+      "goalkeeperCleanSheetBonus": "Zu-Null-Bonus für Torhüter",
+      "cleanSheetBonusPoints": "Punkte für Zu-Null-Bonus"
     }
   },
   "budget": {
@@ -851,7 +856,7 @@
     "freezeWarning": "Die Initialisierung ist endgültig und friert die Teilnehmer ein.",
     "positionPoints": "Platzierungspunkte",
     "positionPointsHelp": "Punkte müssen nichtnegative ganze Zahlen sein und dürfen sich bei schlechterer Platzierung nicht erhöhen.",
-    "positionLabel": "Position {{position}}",
+    "positionLabel": "{{position}}. Platz",
     "addPosition": "Position hinzufügen",
     "removePosition": "Position entfernen",
     "matchdayPlacements": "Formel-1-Ergebnisse",
@@ -862,5 +867,9 @@
       "nonIncreasing": "Die Punkte dürfen bei schlechterer Platzierung nicht steigen."
     },
     "standingsDescription": "Formel-1-Meisterschaftstabelle in der vom Backend vorgegebenen Reihenfolge."
+  },
+  "playerMarket": {
+    "available": "Verfügbar",
+    "alreadyAssigned": "Bereits vergeben"
   }
 }

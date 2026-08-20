@@ -66,6 +66,11 @@ export function EligiblePlayerList({
                 {player.club?.name ?? t('roster.eligible.unknownClub')} ·{' '}
                 {t('roster.eligible.quotation', { value: player.quotation ?? '—' })}
               </span>
+              <span className="ml-2 rounded bg-emerald-950 px-2 py-0.5 text-xs text-emerald-300">
+                {player.availability === 'available'
+                  ? t('playerMarket.available')
+                  : t('playerMarket.alreadyAssigned')}
+              </span>
             </button>
           ))}
         </div>

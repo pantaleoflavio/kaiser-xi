@@ -185,6 +185,8 @@ export type LeagueSettings = {
   allow_formation_change_on_substitution: boolean;
   real_captain_bonus_enabled: boolean;
   real_captain_bonus_points: number;
+  goalkeeper_clean_sheet_bonus_enabled: boolean;
+  goalkeeper_clean_sheet_bonus_points: number;
   defense_modifier_enabled: boolean;
   first_goal_threshold?: number;
   goal_interval?: number;
@@ -228,6 +230,8 @@ export type LeagueSettingsPayload = Partial<{
   real_captain_bonus_enabled: boolean;
   real_captain_bonus_points: number;
   defense_modifier_enabled: boolean;
+  goalkeeper_clean_sheet_bonus_enabled: boolean;
+  goalkeeper_clean_sheet_bonus_points: number;
   first_goal_threshold: number;
   goal_interval: number;
   formula_one_position_points: Record<string, number>;

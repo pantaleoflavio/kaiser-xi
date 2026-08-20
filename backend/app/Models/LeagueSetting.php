@@ -22,6 +22,8 @@ class LeagueSetting extends Model
     public const ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION = 'allow_formation_change_on_substitution';
     public const REAL_CAPTAIN_BONUS_ENABLED = 'real_captain_bonus_enabled';
     public const REAL_CAPTAIN_BONUS_POINTS = 'real_captain_bonus_points';
+    public const GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED = 'goalkeeper_clean_sheet_bonus_enabled';
+    public const GOALKEEPER_CLEAN_SHEET_BONUS_POINTS = 'goalkeeper_clean_sheet_bonus_points';
     public const DEFENSE_MODIFIER_ENABLED = 'defense_modifier_enabled';
     public const FIRST_GOAL_THRESHOLD = 'first_goal_threshold';
     public const GOAL_INTERVAL = 'goal_interval';
@@ -56,6 +58,8 @@ class LeagueSetting extends Model
     public const DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION = false;
     public const DEFAULT_REAL_CAPTAIN_BONUS_ENABLED = false;
     public const DEFAULT_REAL_CAPTAIN_BONUS_POINTS = 0.5;
+    public const DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED = false;
+    public const DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_POINTS = 1.0;
     public const DEFAULT_DEFENSE_MODIFIER_ENABLED = false;
     public const PLAYER_ROLE_KEYS = ['goalkeeper', 'defender', 'midfielder', 'forward'];
     public const DEFAULT_FIRST_GOAL_THRESHOLD = 66.0;

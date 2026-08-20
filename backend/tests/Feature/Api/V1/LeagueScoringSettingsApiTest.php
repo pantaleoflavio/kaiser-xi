@@ -35,6 +35,8 @@ class LeagueScoringSettingsApiTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.real_captain_bonus_enabled', false)
             ->assertJsonPath('data.real_captain_bonus_points', 0.5)
+            ->assertJsonPath('data.goalkeeper_clean_sheet_bonus_enabled', false)
+            ->assertJsonPath('data.goalkeeper_clean_sheet_bonus_points', 1)
             ->assertJsonPath('data.defense_modifier_enabled', false)
             ->assertJsonPath('data.first_goal_threshold', 66)
             ->assertJsonPath('data.goal_interval', 6);

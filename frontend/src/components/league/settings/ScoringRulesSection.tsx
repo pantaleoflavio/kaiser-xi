@@ -9,6 +9,8 @@ type Props = {
   realCaptainBonusEnabled: boolean;
   realCaptainBonusPoints: string;
   defenseModifierEnabled: boolean;
+  goalkeeperCleanSheetBonusEnabled: boolean;
+  goalkeeperCleanSheetBonusPoints: string;
   errors: SettingsFieldErrors;
   firstGoalThreshold: string;
   goalInterval: string;
@@ -17,6 +19,8 @@ type Props = {
   t: (key: string) => string;
   onRealCaptainBonusEnabledChange: (enabled: boolean) => void;
   onRealCaptainBonusPointsChange: (value: string) => void;
+  onGoalkeeperCleanSheetBonusEnabledChange: (enabled: boolean) => void;
+  onGoalkeeperCleanSheetBonusPointsChange: (value: string) => void;
   onDefenseModifierChange: (enabled: boolean) => void;
   onFirstGoalThresholdChange: (value: string) => void;
   onGoalIntervalChange: (value: string) => void;
@@ -25,6 +29,8 @@ type Props = {
 export function ScoringRulesSection({
   realCaptainBonusEnabled,
   realCaptainBonusPoints,
+  goalkeeperCleanSheetBonusEnabled,
+  goalkeeperCleanSheetBonusPoints,
   defenseModifierEnabled,
   firstGoalThreshold,
   goalInterval,
@@ -34,11 +40,14 @@ export function ScoringRulesSection({
   t,
   onRealCaptainBonusEnabledChange,
   onRealCaptainBonusPointsChange,
+  onGoalkeeperCleanSheetBonusEnabledChange,
+  onGoalkeeperCleanSheetBonusPointsChange,
   onDefenseModifierChange,
   onFirstGoalThresholdChange,
   onGoalIntervalChange,
 }: Props) {
   const bonusError = exactError(errors, 'real_captain_bonus_points');
+  const cleanSheetError = exactError(errors, 'goalkeeper_clean_sheet_bonus_points');
 
   return (
     <fieldset className="grid gap-4">
@@ -53,6 +62,31 @@ export function ScoringRulesSection({
           type="checkbox"
         />
         <span>{t('leagueSettings.scoring.enableRealCaptainBonus')}</span>
+      </label>
+      <label className="flex items-center gap-2 text-sm text-slate-200">
+        <input
+          checked={goalkeeperCleanSheetBonusEnabled}
+          disabled={disabled}
+          onChange={(event) => onGoalkeeperCleanSheetBonusEnabledChange(event.target.checked)}
+          type="checkbox"
+        />
+        <span>{t('leagueSettings.scoring.goalkeeperCleanSheetBonus')}</span>
+      </label>
+      <label className="block text-sm text-slate-200">
+        {t('leagueSettings.scoring.cleanSheetBonusPoints')}
+        <input
+          className={settingsInputClass}
+          disabled={disabled || !goalkeeperCleanSheetBonusEnabled}
+          max={5}
+          min={0}
+          onChange={(event) => onGoalkeeperCleanSheetBonusPointsChange(event.target.value)}
+          step={0.5}
+          type="number"
+          value={goalkeeperCleanSheetBonusPoints}
+        />
+        {cleanSheetError ? (
+          <span className="mt-1 block text-red-300">{cleanSheetError}</span>
+        ) : null}
       </label>
       {showGoalSettings ? (
         <label className="block text-sm text-slate-200">

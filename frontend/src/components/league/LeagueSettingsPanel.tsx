@@ -136,88 +136,97 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
         settings={settings}
         t={t}
       />
-      {canEdit ? (
-        <form className="mt-6 grid gap-6" noValidate onSubmit={handleSubmit}>
-          <RosterRulesSection
-            disabled={updateSettings.isPending}
+      <form className="mt-6 grid gap-6" noValidate onSubmit={handleSubmit}>
+        <RosterRulesSection
+          disabled={updateSettings.isPending || !canEdit}
+          errors={fieldErrors}
+          initialBudget={form.initialBudget}
+          maxRosterPlayers={form.maxRosterPlayers}
+          onInitialBudgetChange={(value) => setField('initialBudget', value)}
+          onMaxRosterPlayersChange={(value) => setField('maxRosterPlayers', value)}
+          onRefundChange={(value) => setField('refund', value)}
+          onRoleLimitChange={(role, value) => setRoleLimit('rosterRoleLimits', role, value)}
+          refund={form.refund}
+          roleLimits={form.rosterRoleLimits}
+          t={t}
+        />
+        <FormationRulesSection
+          availableNames={settings?.allowed_formation_module_names ?? []}
+          disabled={updateSettings.isPending || !canEdit}
+          errors={fieldErrors}
+          modules={settings?.allowed_formation_modules ?? []}
+          onToggle={toggleFormation}
+          selectedNames={form.formationNames}
+          t={t}
+        />
+        <BenchRulesSection
+          benchSize={form.benchSize}
+          disabled={updateSettings.isPending || !canEdit}
+          errors={fieldErrors}
+          onBenchSizeChange={(value) => setField('benchSize', value)}
+          onRoleLimitChange={(role, value) => setRoleLimit('benchRoleLimits', role, value)}
+          roleLimits={form.benchRoleLimits}
+          t={t}
+        />
+        <SubstitutionRulesSection
+          allowFormationChange={form.allowFormationChange}
+          disabled={updateSettings.isPending || !canEdit}
+          errors={fieldErrors}
+          maxSubstitutions={form.maxSubstitutions}
+          mode={form.substitutionMode}
+          onAllowFormationChange={(value) => setField('allowFormationChange', value)}
+          onMaximumChange={(value) => setField('maxSubstitutions', value)}
+          onModeChange={(value) => setField('substitutionMode', value)}
+          t={t}
+        />
+        <ScoringRulesSection
+          goalkeeperCleanSheetBonusEnabled={form.goalkeeperCleanSheetBonusEnabled}
+          goalkeeperCleanSheetBonusPoints={form.goalkeeperCleanSheetBonusPoints}
+          realCaptainBonusEnabled={form.realCaptainBonusEnabled}
+          realCaptainBonusPoints={form.realCaptainBonusPoints}
+          defenseModifierEnabled={form.defenseModifierEnabled}
+          firstGoalThreshold={form.firstGoalThreshold}
+          goalInterval={form.goalInterval}
+          disabled={updateSettings.isPending || !canEdit}
+          errors={fieldErrors}
+          onRealCaptainBonusEnabledChange={(value) => setField('realCaptainBonusEnabled', value)}
+          onRealCaptainBonusPointsChange={(value) => setField('realCaptainBonusPoints', value)}
+          onGoalkeeperCleanSheetBonusEnabledChange={(value) =>
+            setField('goalkeeperCleanSheetBonusEnabled', value)
+          }
+          onGoalkeeperCleanSheetBonusPointsChange={(value) =>
+            setField('goalkeeperCleanSheetBonusPoints', value)
+          }
+          onDefenseModifierChange={(value) => setField('defenseModifierEnabled', value)}
+          onFirstGoalThresholdChange={(value) => setField('firstGoalThreshold', value)}
+          onGoalIntervalChange={(value) => setField('goalInterval', value)}
+          showGoalSettings={hasHeadToHeadGoalSettings(league.type.key)}
+          t={t}
+        />
+        {hasFormulaOnePositionPoints(league.type.key) ? (
+          <FormulaOnePositionPointsEditor
+            disabled={
+              updateSettings.isPending ||
+              !canEdit ||
+              Boolean(settings?.locked_rule_groups.includes('formula_one_position_points'))
+            }
             errors={fieldErrors}
-            initialBudget={form.initialBudget}
-            maxRosterPlayers={form.maxRosterPlayers}
-            onInitialBudgetChange={(value) => setField('initialBudget', value)}
-            onMaxRosterPlayersChange={(value) => setField('maxRosterPlayers', value)}
-            onRefundChange={(value) => setField('refund', value)}
-            onRoleLimitChange={(role, value) => setRoleLimit('rosterRoleLimits', role, value)}
-            refund={form.refund}
-            roleLimits={form.rosterRoleLimits}
-            t={t}
+            values={form.formulaOnePositionPoints}
+            onChange={(value) => setField('formulaOnePositionPoints', value)}
           />
-          <FormationRulesSection
-            availableNames={settings?.allowed_formation_module_names ?? []}
-            disabled={updateSettings.isPending}
-            errors={fieldErrors}
-            modules={settings?.allowed_formation_modules ?? []}
-            onToggle={toggleFormation}
-            selectedNames={form.formationNames}
-            t={t}
-          />
-          <BenchRulesSection
-            benchSize={form.benchSize}
-            disabled={updateSettings.isPending}
-            errors={fieldErrors}
-            onBenchSizeChange={(value) => setField('benchSize', value)}
-            onRoleLimitChange={(role, value) => setRoleLimit('benchRoleLimits', role, value)}
-            roleLimits={form.benchRoleLimits}
-            t={t}
-          />
-          <SubstitutionRulesSection
-            allowFormationChange={form.allowFormationChange}
-            disabled={updateSettings.isPending}
-            errors={fieldErrors}
-            maxSubstitutions={form.maxSubstitutions}
-            mode={form.substitutionMode}
-            onAllowFormationChange={(value) => setField('allowFormationChange', value)}
-            onMaximumChange={(value) => setField('maxSubstitutions', value)}
-            onModeChange={(value) => setField('substitutionMode', value)}
-            t={t}
-          />
-          <ScoringRulesSection
-            realCaptainBonusEnabled={form.realCaptainBonusEnabled}
-            realCaptainBonusPoints={form.realCaptainBonusPoints}
-            defenseModifierEnabled={form.defenseModifierEnabled}
-            firstGoalThreshold={form.firstGoalThreshold}
-            goalInterval={form.goalInterval}
-            disabled={updateSettings.isPending}
-            errors={fieldErrors}
-            onRealCaptainBonusEnabledChange={(value) => setField('realCaptainBonusEnabled', value)}
-            onRealCaptainBonusPointsChange={(value) => setField('realCaptainBonusPoints', value)}
-            onDefenseModifierChange={(value) => setField('defenseModifierEnabled', value)}
-            onFirstGoalThresholdChange={(value) => setField('firstGoalThreshold', value)}
-            onGoalIntervalChange={(value) => setField('goalInterval', value)}
-            showGoalSettings={hasHeadToHeadGoalSettings(league.type.key)}
-            t={t}
-          />
-          {hasFormulaOnePositionPoints(league.type.key) ? (
-            <FormulaOnePositionPointsEditor
-              disabled={
-                updateSettings.isPending ||
-                Boolean(settings?.locked_rule_groups.includes('formula_one_position_points'))
-              }
-              errors={fieldErrors}
-              values={form.formulaOnePositionPoints}
-              onChange={(value) => setField('formulaOnePositionPoints', value)}
-            />
-          ) : null}
+        ) : null}
+        {canEdit ? (
           <button
             className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
-            disabled={updateSettings.isPending}
+            disabled={updateSettings.isPending || !canEdit}
             type="submit"
           >
             {updateSettings.isPending ? t('leagueSettings.saving') : t('leagueSettings.save')}
           </button>
-        </form>
-      ) : (
-        <p className="mt-4 text-sm text-slate-400">{t('leagueSettings.readOnly')}</p>
-      )}
+        ) : (
+          <p className="text-sm text-slate-400">{t('leagueSettings.readOnly')}</p>
+        )}
+      </form>
     </section>
   );
 }

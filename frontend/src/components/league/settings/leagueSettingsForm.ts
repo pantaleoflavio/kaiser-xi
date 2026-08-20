@@ -33,10 +33,12 @@ export type LeagueSettingsFormState = {
   allowFormationChange: boolean;
   realCaptainBonusEnabled: boolean;
   realCaptainBonusPoints: string;
+  goalkeeperCleanSheetBonusEnabled: boolean;
+  goalkeeperCleanSheetBonusPoints: string;
   defenseModifierEnabled: boolean;
   firstGoalThreshold: string;
   goalInterval: string;
-  formulaOnePositionPoints: string[];
+  formulaOnePositionPoints: Record<string, string>;
 };
 
 function roleStrings(limits: Record<PlayerRoleKey, number>): StringRoleLimits {
@@ -68,23 +70,27 @@ export function createLeagueSettingsFormState(
     allowFormationChange: settings?.allow_formation_change_on_substitution ?? false,
     realCaptainBonusEnabled: settings?.real_captain_bonus_enabled ?? false,
     realCaptainBonusPoints: String(settings?.real_captain_bonus_points ?? ''),
+    goalkeeperCleanSheetBonusEnabled: settings?.goalkeeper_clean_sheet_bonus_enabled ?? false,
+    goalkeeperCleanSheetBonusPoints: String(settings?.goalkeeper_clean_sheet_bonus_points ?? 1),
     defenseModifierEnabled: settings?.defense_modifier_enabled ?? false,
     firstGoalThreshold: String(settings?.first_goal_threshold ?? 66),
     goalInterval: String(settings?.goal_interval ?? 6),
-    formulaOnePositionPoints: Object.values(
-      settings?.formula_one_position_points ?? {
-        1: 25,
-        2: 18,
-        3: 15,
-        4: 12,
-        5: 10,
-        6: 8,
-        7: 6,
-        8: 4,
-        9: 2,
-        10: 1,
-      },
-    ).map(String),
+    formulaOnePositionPoints: Object.fromEntries(
+      Object.entries(
+        settings?.formula_one_position_points ?? {
+          1: 25,
+          2: 18,
+          3: 15,
+          4: 12,
+          5: 10,
+          6: 8,
+          7: 6,
+          8: 4,
+          9: 2,
+          10: 1,
+        },
+      ).map(([position, points]) => [position, String(points)]),
+    ),
   };
 }
 
@@ -148,10 +154,14 @@ export function validateLeagueSettingsForm(
   const benchLimits = parsedRoleLimits(form.benchRoleLimits);
   const maximumSubstitutions = requiredNumber(form.maxSubstitutions);
   const realCaptainBonusPoints = requiredNumber(form.realCaptainBonusPoints);
+  const goalkeeperCleanSheetBonusPoints = requiredNumber(form.goalkeeperCleanSheetBonusPoints);
   const firstGoalThreshold = requiredNumber(form.firstGoalThreshold);
   const goalInterval = requiredNumber(form.goalInterval);
   const errors: SettingsFieldErrors = {};
-  const positionPoints = form.formulaOnePositionPoints.map(requiredNumber);
+  const positionPointEntries = Object.entries(form.formulaOnePositionPoints).sort(
+    ([left], [right]) => Number(left) - Number(right),
+  );
+  const positionPoints = positionPointEntries.map(([, points]) => requiredNumber(points));
   if (includeFormulaOne && positionPoints.length < 1)
     errors.formula_one_position_points = [t('formulaOne.validation.atLeastOne')];
   else if (
@@ -226,6 +236,15 @@ export function validateLeagueSettingsForm(
   )
     errors.real_captain_bonus_points = [t('leagueSettings.validation.realCaptainBonusRange')];
   if (
+    goalkeeperCleanSheetBonusPoints === null ||
+    goalkeeperCleanSheetBonusPoints < 0 ||
+    goalkeeperCleanSheetBonusPoints > 5 ||
+    !Number.isInteger(goalkeeperCleanSheetBonusPoints * 2)
+  )
+    errors.goalkeeper_clean_sheet_bonus_points = [
+      t('leagueSettings.validation.cleanSheetBonusRange'),
+    ];
+  if (
     includeHeadToHead &&
     (firstGoalThreshold === null ||
       firstGoalThreshold < 0 ||
@@ -249,6 +268,7 @@ export function validateLeagueSettingsForm(
     benchSize === null ||
     maximumSubstitutions === null ||
     realCaptainBonusPoints === null ||
+    goalkeeperCleanSheetBonusPoints === null ||
     (includeHeadToHead && firstGoalThreshold === null) ||
     (includeHeadToHead && goalInterval === null) ||
     !completeRoleLimits(rosterLimits) ||
@@ -271,6 +291,8 @@ export function validateLeagueSettingsForm(
       allow_formation_change_on_substitution: form.allowFormationChange,
       real_captain_bonus_enabled: form.realCaptainBonusEnabled,
       real_captain_bonus_points: realCaptainBonusPoints,
+      goalkeeper_clean_sheet_bonus_enabled: form.goalkeeperCleanSheetBonusEnabled,
+      goalkeeper_clean_sheet_bonus_points: goalkeeperCleanSheetBonusPoints,
       defense_modifier_enabled: form.defenseModifierEnabled,
       ...(includeHeadToHead
         ? { first_goal_threshold: firstGoalThreshold!, goal_interval: goalInterval! }
@@ -278,8 +300,8 @@ export function validateLeagueSettingsForm(
       ...(includeFormulaOne
         ? {
             formula_one_position_points: Object.fromEntries(
-              positionPoints.flatMap((points, index) =>
-                points === null ? [] : [[String(index + 1), points]],
+              positionPointEntries.flatMap(([position], index) =>
+                positionPoints[index] === null ? [] : [[position, positionPoints[index]!]],
               ),
             ),
           }

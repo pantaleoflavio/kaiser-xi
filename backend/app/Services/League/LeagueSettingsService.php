@@ -60,6 +60,10 @@ class LeagueSettingsService
             ['key' => LeagueSetting::REAL_CAPTAIN_BONUS_POINTS],
             ['value' => LeagueSetting::decimalPayload(LeagueSetting::DEFAULT_REAL_CAPTAIN_BONUS_POINTS)],
         );
+        $league->settings()->firstOrCreate(
+            ['key' => LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS],
+            ['value' => LeagueSetting::decimalPayload(LeagueSetting::DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_POINTS)],
+        );
         if ($league->isHeadToHead()) {
             foreach (
                 [
@@ -77,6 +81,7 @@ class LeagueSettingsService
             [
                 LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION => LeagueSetting::DEFAULT_ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
                 LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => LeagueSetting::DEFAULT_REAL_CAPTAIN_BONUS_ENABLED,
+                LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED => LeagueSetting::DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED,
                 LeagueSetting::DEFENSE_MODIFIER_ENABLED =>
                 LeagueSetting::DEFAULT_DEFENSE_MODIFIER_ENABLED,
             ] as $key => $enabled
@@ -161,6 +166,13 @@ class LeagueSettingsService
                 );
             }
 
+            if (array_key_exists(LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS, $settings)) {
+                LeagueSetting::query()->updateOrCreate(
+                    ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS],
+                    ['value' => LeagueSetting::decimalPayload((float) $settings[LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS])],
+                );
+            }
+
             foreach ([LeagueSetting::FIRST_GOAL_THRESHOLD, LeagueSetting::GOAL_INTERVAL] as $key) {
                 if (array_key_exists($key, $settings)) {
                     LeagueSetting::query()->updateOrCreate(
@@ -174,6 +186,7 @@ class LeagueSettingsService
                 [
                     LeagueSetting::ALLOW_FORMATION_CHANGE_ON_SUBSTITUTION,
                     LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED,
+                    LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED,
                     LeagueSetting::DEFENSE_MODIFIER_ENABLED,
                 ] as $key
             ) {
@@ -248,6 +261,8 @@ class LeagueSettingsService
                 !== $league->allowsFormationChangeOnSubstitution(),
             LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED => (bool) $incoming !== $league->realCaptainBonusEnabled(),
             LeagueSetting::REAL_CAPTAIN_BONUS_POINTS => (float) $incoming !== $league->realCaptainBonusPoints(),
+            LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED => (bool) $incoming !== $league->goalkeeperCleanSheetBonusEnabled(),
+            LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS => (float) $incoming !== $league->goalkeeperCleanSheetBonusPoints(),
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => (bool) $incoming !== $league->defenseModifierEnabled(),
             LeagueSetting::FIRST_GOAL_THRESHOLD => (float) $incoming !== $league->firstGoalThreshold(),
             LeagueSetting::GOAL_INTERVAL => (float) $incoming !== $league->goalInterval(),

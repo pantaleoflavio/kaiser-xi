@@ -7,7 +7,7 @@ import {
 type Props = {
   settings: LeagueSettings | null;
   locale: string;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number | undefined>) => string;
   leagueType: string;
 };
 
@@ -43,13 +43,27 @@ export function LeagueSettingsSummary({ settings, locale, t, leagueType }: Props
             {Object.entries(settings?.formula_one_position_points ?? {}).map(
               ([position, points]) => (
                 <span className="rounded bg-slate-800 px-2 py-1" key={position}>
-                  {position}: {points}
+                  {t('formulaOne.positionLabel', { position })}: {points}
                 </span>
               ),
             )}
           </dd>
         </div>
       ) : null}
+      <div>
+        <dt className="text-slate-500">{t('leagueSettings.scoring.goalkeeperCleanSheetBonus')}</dt>
+        <dd>
+          {settings?.goalkeeper_clean_sheet_bonus_enabled
+            ? t('common.enabled')
+            : t('common.disabled')}
+        </dd>
+      </div>
+      <div>
+        <dt className="text-slate-500">{t('leagueSettings.scoring.cleanSheetBonusPoints')}</dt>
+        <dd>
+          +{formatNumber(settings?.goalkeeper_clean_sheet_bonus_points, notAvailable, locale)}
+        </dd>
+      </div>
       <div>
         <dt className="text-slate-500">{t('budget.releaseRefundPercentage')}</dt>
         <dd>{formatNumber(settings?.release_refund_percentage, notAvailable, locale)}%</dd>
