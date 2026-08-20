@@ -8,10 +8,12 @@ use App\Models\FantasyTeam;
 use App\Models\Formation;
 use App\Models\League;
 use App\Models\LeagueRole;
+use App\Models\LeagueSetting;
 use App\Models\LeagueType;
 use App\Models\Matchday;
 use App\Models\TeamMatchdayScore;
 use App\Models\User;
+use App\Services\League\LeagueSettingsService;
 use App\Services\Scoring\CalculateFantasyMatchResult;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -68,6 +70,68 @@ class CalculateFantasyMatchResultTest extends TestCase
         $this->assertSame('0.00', $result->home_points);
         $this->assertSame(0, $result->home_goals);
         $this->assertSame(1, $result->away_goals);
+    }
+
+    public function test_settings_update_does_not_recalculate_a_result_and_explicit_recalculation_uses_current_goal_rules(): void
+    {
+        [$match] = $this->fixture(77, 69.5);
+
+        $calculator = app(CalculateFantasyMatchResult::class);
+
+        $historical = $calculator->calculate($match);
+
+        $this->assertSame(
+            [2, 1],
+            [$historical->home_goals, $historical->away_goals]
+        );
+
+        app(LeagueSettingsService::class)->update($match->league, [
+            LeagueSetting::FIRST_GOAL_THRESHOLD => 68,
+            LeagueSetting::GOAL_INTERVAL => 7,
+        ]);
+
+        // Updating the settings must not mutate an already persisted result.
+        $this->assertSame(
+            [2, 1],
+            [
+                $historical->fresh()->home_goals,
+                $historical->fresh()->away_goals,
+            ]
+        );
+
+        // Explicit recalculation uses the current rules.
+        $recalculated = $calculator->calculate($match->fresh());
+
+        $this->assertSame(
+            [2, 1],
+            [$recalculated->home_goals, $recalculated->away_goals]
+        );
+
+        app(LeagueSettingsService::class)->update(
+            $match->league->refresh(),
+            [
+                LeagueSetting::FIRST_GOAL_THRESHOLD => 78,
+                LeagueSetting::GOAL_INTERVAL => 10,
+            ]
+        );
+
+        // Changing the rules still does not automatically mutate
+        // the previously calculated result.
+        $this->assertSame(
+            [2, 1],
+            [
+                $recalculated->fresh()->home_goals,
+                $recalculated->fresh()->away_goals,
+            ]
+        );
+
+        // A new explicit recalculation uses the latest rules.
+        $usingLatestRules = $calculator->calculate($match->fresh());
+
+        $this->assertSame(
+            [0, 0],
+            [$usingLatestRules->home_goals, $usingLatestRules->away_goals]
+        );
     }
 
     /** @return array{FantasyMatch, TeamMatchdayScore, TeamMatchdayScore} */

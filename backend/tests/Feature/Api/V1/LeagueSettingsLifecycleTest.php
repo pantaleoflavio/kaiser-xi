@@ -99,7 +99,7 @@ class LeagueSettingsLifecycleTest extends TestCase
         ])->assertOk()->assertJsonPath('data.initial_budget', 500);
     }
 
-    public function test_formula_one_position_points_lock_distinguishes_no_op_from_change(): void
+    public function test_formula_one_position_points_remain_editable_after_initialization(): void
     {
         [$league, $commissioner] = $this->activeLeague('formula_one');
         $league->update(['championship_started_at' => now()]);
@@ -107,13 +107,61 @@ class LeagueSettingsLifecycleTest extends TestCase
 
         $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
             'formula_one_position_points' => LeagueSetting::DEFAULT_FORMULA_ONE_POSITION_POINTS,
-        ])->assertOk();
+        ])
+            ->assertOk()
+            ->assertJsonPath('data.locked_rule_groups', []);
 
         $changed = LeagueSetting::DEFAULT_FORMULA_ONE_POSITION_POINTS;
         $changed[1] = 26;
+
         $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
             'formula_one_position_points' => $changed,
-        ])->assertConflict()->assertJsonPath('code', 'league_rules_locked');
+        ])
+            ->assertOk()
+            ->assertJsonPath('data.formula_one_position_points.0', 26)
+            ->assertJsonPath('data.locked_rule_groups', []);
+    }
+
+    public function test_head_to_head_goal_rules_remain_editable_after_schedule_initialization(): void
+    {
+        [$league, $commissioner] = $this->activeLeague('head_to_head');
+        $league->update(['h2h_schedule_generated_at' => now()]);
+        Sanctum::actingAs($commissioner);
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+            'first_goal_threshold' => 68,
+            'goal_interval' => 7,
+        ])->assertOk()
+            ->assertJsonPath('data.first_goal_threshold', 68)
+            ->assertJsonPath('data.goal_interval', 7)
+            ->assertJsonPath('data.locked_rule_groups', []);
+    }
+
+    public function test_common_scoring_rules_remain_editable_after_championship_initialization(): void
+    {
+        [$league, $commissioner] = $this->activeLeague();
+        $league->update(['championship_started_at' => now()]);
+        Sanctum::actingAs($commissioner);
+
+        $thresholds = [
+            ['id' => 'six', 'threshold' => 6, 'bonus' => 1.5],
+            ['id' => 'seven', 'threshold' => 7, 'bonus' => 2.5],
+        ];
+
+        $this->patchJson("/api/v1/leagues/{$league->id}/settings", [
+            'real_captain_bonus_enabled' => true,
+            'real_captain_bonus_points' => 1,
+            'goalkeeper_clean_sheet_bonus_enabled' => true,
+            'goalkeeper_clean_sheet_bonus_points' => 2,
+            'defense_modifier_enabled' => true,
+            'defense_modifier_thresholds' => $thresholds,
+        ])->assertOk()
+            ->assertJsonPath('data.real_captain_bonus_enabled', true)
+            ->assertJsonPath('data.real_captain_bonus_points', 1)
+            ->assertJsonPath('data.goalkeeper_clean_sheet_bonus_enabled', true)
+            ->assertJsonPath('data.goalkeeper_clean_sheet_bonus_points', 2)
+            ->assertJsonPath('data.defense_modifier_enabled', true)
+            ->assertJsonPath('data.defense_modifier_thresholds', $thresholds);
     }
 
     public function test_roster_size_cannot_drop_below_largest_active_roster(): void

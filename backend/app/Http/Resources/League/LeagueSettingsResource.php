@@ -84,10 +84,6 @@ class LeagueSettingsResource extends JsonResource
             return ['budget', 'roster_size', 'roster_role_limits'];
         }
 
-        if ($this->isFormulaOne() && $this->hasInitializedChampionship()) {
-            return ['formula_one_position_points'];
-        }
-
         return [];
     }
 }

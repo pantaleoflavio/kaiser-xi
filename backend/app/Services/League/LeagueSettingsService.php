@@ -227,13 +227,6 @@ class LeagueSettingsService
         }
 
         if (
-            array_key_exists(LeagueSetting::FORMULA_ONE_POSITION_POINTS, $changedSettings)
-            && $league->hasInitializedChampionship()
-        ) {
-            throw new LeagueRulesLockedException('formula_one_position_points');
-        }
-
-        if (
             array_key_exists(LeagueSetting::INITIAL_BUDGET, $changedSettings)
             && FantasyTeam::query()->where('league_id', $league->id)->exists()
         ) {

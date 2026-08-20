@@ -10,6 +10,7 @@ use App\Models\LeagueType;
 use App\Models\Matchday;
 use App\Models\Standing;
 use App\Models\TeamMatchdayScore;
+use App\Services\League\LeagueSettingsService;
 use App\Services\Standings\CalculateFormulaOneStandings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -46,6 +47,14 @@ class CalculateFormulaOneStandingsTest extends TestCase
         $this->assertSame([10, 5, 2, 0], $rows->pluck('championship_points')->all());
         $this->assertSame(['72.00', '72.00', '50.00', '0.00'], $rows->pluck('fantasy_points_total')->all());
         $this->assertSame(4, $league->standings()->count());
+
+        app(LeagueSettingsService::class)->update($league, [
+            'formula_one_position_points' => [1 => 20, 2 => 10, 3 => 4],
+        ]);
+        $this->assertSame([10, 5, 2, 0], $league->standings()->orderBy('position')->pluck('championship_points')->all());
+
+        $currentRules = $service->calculate($league->refresh());
+        $this->assertSame([20, 10, 4, 0], $currentRules->pluck('championship_points')->all());
 
         $league->standings()->where('fantasy_team_id', $teams[0]->id)->firstOrFail();
         TeamMatchdayScore::query()->where('fantasy_team_id', $teams[0]->id)->update(['points' => 40]);
