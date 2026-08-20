@@ -3,6 +3,7 @@ import {
   hasFormulaOnePositionPoints,
   hasHeadToHeadGoalSettings,
 } from './leagueSettingsApplicability';
+import { positionPointsToRows } from './formulaOnePositionPoints';
 
 type Props = {
   settings: LeagueSettings | null;
@@ -40,12 +41,16 @@ export function LeagueSettingsSummary({ settings, locale, t, leagueType }: Props
         <div className="md:col-span-3">
           <dt className="text-slate-500">{t('formulaOne.positionPoints')}</dt>
           <dd className="mt-1 flex flex-wrap gap-2">
-            {Object.entries(settings?.formula_one_position_points ?? {}).map(
-              ([position, points]) => (
-                <span className="rounded bg-slate-800 px-2 py-1" key={position}>
-                  {t('formulaOne.positionLabel', { position })}: {points}
-                </span>
-              ),
+            {positionPointsToRows(settings?.formula_one_position_points ?? {}).map(
+              (points, index) => {
+                const position = index + 1;
+
+                return (
+                  <span className="rounded bg-slate-800 px-2 py-1" key={position}>
+                    {t('formulaOne.positionLabel', { position })}: {points}
+                  </span>
+                );
+              },
             )}
           </dd>
         </div>

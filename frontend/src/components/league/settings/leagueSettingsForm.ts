@@ -10,6 +10,7 @@ import {
   hasFormulaOnePositionPoints,
   hasHeadToHeadGoalSettings,
 } from './leagueSettingsApplicability';
+import { positionPointsToRows, positionPointRowsToMap } from './formulaOnePositionPoints';
 
 export const playerRoleKeys: PlayerRoleKey[] = ['goalkeeper', 'defender', 'midfielder', 'forward'];
 
@@ -38,7 +39,7 @@ export type LeagueSettingsFormState = {
   defenseModifierEnabled: boolean;
   firstGoalThreshold: string;
   goalInterval: string;
-  formulaOnePositionPoints: Record<string, string>;
+  formulaOnePositionPoints: string[];
 };
 
 function roleStrings(limits: Record<PlayerRoleKey, number>): StringRoleLimits {
@@ -75,22 +76,20 @@ export function createLeagueSettingsFormState(
     defenseModifierEnabled: settings?.defense_modifier_enabled ?? false,
     firstGoalThreshold: String(settings?.first_goal_threshold ?? 66),
     goalInterval: String(settings?.goal_interval ?? 6),
-    formulaOnePositionPoints: Object.fromEntries(
-      Object.entries(
-        settings?.formula_one_position_points ?? {
-          1: 25,
-          2: 18,
-          3: 15,
-          4: 12,
-          5: 10,
-          6: 8,
-          7: 6,
-          8: 4,
-          9: 2,
-          10: 1,
-        },
-      ).map(([position, points]) => [position, String(points)]),
-    ),
+    formulaOnePositionPoints: positionPointsToRows(
+      settings?.formula_one_position_points ?? {
+        1: 25,
+        2: 18,
+        3: 15,
+        4: 12,
+        5: 10,
+        6: 8,
+        7: 6,
+        8: 4,
+        9: 2,
+        10: 1,
+      },
+    ).map(String),
   };
 }
 
@@ -158,10 +157,7 @@ export function validateLeagueSettingsForm(
   const firstGoalThreshold = requiredNumber(form.firstGoalThreshold);
   const goalInterval = requiredNumber(form.goalInterval);
   const errors: SettingsFieldErrors = {};
-  const positionPointEntries = Object.entries(form.formulaOnePositionPoints).sort(
-    ([left], [right]) => Number(left) - Number(right),
-  );
-  const positionPoints = positionPointEntries.map(([, points]) => requiredNumber(points));
+  const positionPoints = form.formulaOnePositionPoints.map(requiredNumber);
   if (includeFormulaOne && positionPoints.length < 1)
     errors.formula_one_position_points = [t('formulaOne.validation.atLeastOne')];
   else if (
@@ -299,10 +295,8 @@ export function validateLeagueSettingsForm(
         : {}),
       ...(includeFormulaOne
         ? {
-            formula_one_position_points: Object.fromEntries(
-              positionPointEntries.flatMap(([position], index) =>
-                positionPoints[index] === null ? [] : [[position, positionPoints[index]!]],
-              ),
+            formula_one_position_points: positionPointRowsToMap(
+              positionPoints.filter((points): points is number => points !== null),
             ),
           }
         : {}),

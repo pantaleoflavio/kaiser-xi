@@ -7,10 +7,10 @@ export function FormulaOnePositionPointsEditor({
   errors,
   onChange,
 }: {
-  values: Record<string, string>;
+  values: string[];
   disabled: boolean;
   errors: SettingsFieldErrors;
-  onChange: (values: Record<string, string>) => void;
+  onChange: (values: string[]) => void;
 }) {
   const { t } = useTranslation();
   return (
@@ -18,9 +18,10 @@ export function FormulaOnePositionPointsEditor({
       <legend className="px-2 font-semibold text-white">{t('formulaOne.positionPoints')}</legend>
       <p className="mb-3 text-sm text-slate-400">{t('formulaOne.positionPointsHelp')}</p>
       <div className="space-y-2">
-        {Object.entries(values)
-          .sort(([a], [b]) => Number(a) - Number(b))
-          .map(([position, value]) => (
+        {values.map((value, index) => {
+          const position = index + 1;
+
+          return (
             <label
               className="grid grid-cols-[8rem_1fr] items-center gap-3 text-slate-200"
               key={position}
@@ -33,10 +34,17 @@ export function FormulaOnePositionPointsEditor({
                 step="1"
                 type="number"
                 value={value}
-                onChange={(event) => onChange({ ...values, [position]: event.target.value })}
+                onChange={(event) =>
+                  onChange(
+                    values.map((points, rowIndex) =>
+                      rowIndex === index ? event.target.value : points,
+                    ),
+                  )
+                }
               />
             </label>
-          ))}
+          );
+        })}
       </div>
       {errors.formula_one_position_points ? (
         <p className="mt-2 text-sm text-red-300">{errors.formula_one_position_points[0]}</p>
@@ -46,19 +54,15 @@ export function FormulaOnePositionPointsEditor({
           className="rounded bg-slate-700 px-3 py-2 text-white"
           disabled={disabled}
           type="button"
-          onClick={() => onChange({ ...values, [String(Object.keys(values).length + 1)]: '0' })}
+          onClick={() => onChange([...values, '0'])}
         >
           {t('formulaOne.addPosition')}
         </button>
         <button
           className="rounded bg-slate-700 px-3 py-2 text-white disabled:opacity-50"
-          disabled={disabled || Object.keys(values).length <= 1}
+          disabled={disabled || values.length <= 1}
           type="button"
-          onClick={() => {
-            const next = { ...values };
-            delete next[String(Object.keys(values).length)];
-            onChange(next);
-          }}
+          onClick={() => onChange(values.slice(0, -1))}
         >
           {t('formulaOne.removePosition')}
         </button>
