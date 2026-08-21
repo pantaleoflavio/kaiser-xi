@@ -70,6 +70,11 @@ class League extends Model
         return $this->hasMany(FantasyTeam::class);
     }
 
+    public function tradeProposals(): HasMany
+    {
+        return $this->hasMany(TradeProposal::class);
+    }
+
     public function fantasyMatches(): HasMany
     {
         return $this->hasMany(FantasyMatch::class);

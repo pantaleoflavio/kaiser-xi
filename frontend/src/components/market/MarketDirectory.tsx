@@ -1,7 +1,15 @@
 import type { MarketPlayer } from '../../types/league';
 import { useTranslation } from '../../i18n';
 
-export function MarketDirectory({ players }: { players: MarketPlayer[] }) {
+export function MarketDirectory({
+  players,
+  canTrade,
+  propose,
+}: {
+  players: MarketPlayer[];
+  canTrade: boolean;
+  propose: (player: MarketPlayer) => void;
+}) {
   const { t } = useTranslation();
   if (!players.length)
     return (
@@ -17,6 +25,7 @@ export function MarketDirectory({ players }: { players: MarketPlayer[] }) {
                 {t(`market.${k}`)}
               </th>
             ))}
+            <th className="p-3"></th>
           </tr>
         </thead>
         <tbody>
@@ -32,6 +41,11 @@ export function MarketDirectory({ players }: { players: MarketPlayer[] }) {
                     ? t('market.yourTeam')
                     : player.fantasy_team.name
                   : t('market.unassigned')}
+              </td>
+              <td className="p-3">
+                {canTrade && player.assignment_id && !player.fantasy_team?.is_own ? (
+                  <button onClick={() => propose(player)}>{t('market.trades.propose')}</button>
+                ) : null}
               </td>
             </tr>
           ))}

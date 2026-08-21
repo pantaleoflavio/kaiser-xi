@@ -935,6 +935,20 @@
       "invalidWindow": "Wähle Öffnung und Schließung; die Schließung muss nach der Öffnung liegen.",
       "updateError": "Die Markteinstellungen konnten nicht aktualisiert werden.",
       "errorTitle": "Marktregeln konnten nicht aktualisiert werden"
+    },
+    "trades": {
+      "title": "Meine Tauschangebote",
+      "incoming": "Eingehende Angebote",
+      "outgoing": "Ausgehende Angebote",
+      "history": "Abgeschlossen / Verlauf",
+      "empty": "Keine Tauschangebote.",
+      "accept": "Annehmen",
+      "reject": "Ablehnen",
+      "propose": "Tausch anbieten",
+      "proposeFor": "{{name}} anfragen",
+      "choosePlayer": "Anzubietenden Spieler wählen",
+      "noCash": "Kein Geldausgleich",
+      "acceptConfirmation": "Durch die Annahme werden die Spieler sofort zwischen den beiden Fantasy-Teams getauscht und der festgelegte Geldausgleich angewendet."
     }
   }
 }

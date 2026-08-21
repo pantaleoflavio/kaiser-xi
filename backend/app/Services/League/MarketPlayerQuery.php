@@ -14,7 +14,7 @@ class MarketPlayerQuery
         $assignments = DB::table('fantasy_team_players as ftp')
             ->join('fantasy_teams as ft', 'ft.id', '=', 'ftp.fantasy_team_id')
             ->where('ftp.league_id', $league->id)->whereNull('ftp.released_at')
-            ->select(['ftp.player_id', 'ft.id as market_team_id', 'ft.name as market_team_name', 'ft.user_id as market_team_user_id']);
+            ->select(['ftp.id as market_assignment_id', 'ftp.player_id', 'ft.id as market_team_id', 'ft.name as market_team_name', 'ft.user_id as market_team_user_id']);
 
         return PlayerSeasonRegistration::query()
             ->with(['player', 'playerRole', 'seasonClub.realClub'])
@@ -28,6 +28,6 @@ class MarketPlayerQuery
             ->when(($filters['assignment_state'] ?? null) === 'assigned', fn(Builder $q) => $q->whereNotNull('market_assignment.market_team_id'))
             ->when(($filters['assignment_state'] ?? null) === 'unassigned', fn(Builder $q) => $q->whereNull('market_assignment.market_team_id'))
             ->orderBy('players.display_name')->orderBy('players.id')
-            ->select('player_season_registrations.*', 'market_assignment.market_team_id', 'market_assignment.market_team_name', 'market_assignment.market_team_user_id');
+            ->select('player_season_registrations.*', 'market_assignment.market_team_id', 'market_assignment.market_team_name', 'market_assignment.market_team_user_id', 'market_assignment.market_assignment_id');
     }
 }

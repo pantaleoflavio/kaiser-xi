@@ -24,6 +24,9 @@ import type {
   MarketPlayerFilters,
   MarketPlayerResponse,
   MarketResponse,
+  TradeProposalCollectionResponse,
+  TradeProposalResponse,
+  CreateTradePayload,
 } from '../types/league';
 import { apiClient } from './client';
 
@@ -41,6 +44,21 @@ function eligiblePlayerQuery(filters: EligiblePlayerFilters) {
 }
 
 export const leaguesApi = {
+  marketTrades: (leagueId: string | number) =>
+    apiClient<TradeProposalCollectionResponse>(`/leagues/${leagueId}/market/trades`),
+  createTrade: (leagueId: string | number, payload: CreateTradePayload) =>
+    apiClient<TradeProposalResponse>(`/leagues/${leagueId}/market/trades`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  transitionTrade: (
+    leagueId: string | number,
+    tradeId: number,
+    action: 'accept' | 'reject' | 'cancel',
+  ) =>
+    apiClient<TradeProposalResponse>(`/leagues/${leagueId}/market/trades/${tradeId}/${action}`, {
+      method: 'POST',
+    }),
   market: (leagueId: string | number) => apiClient<MarketResponse>(`/leagues/${leagueId}/market`),
   marketPlayers: (leagueId: string | number, filters: MarketPlayerFilters = {}) => {
     const query = new URLSearchParams();

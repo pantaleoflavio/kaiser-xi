@@ -275,6 +275,7 @@ export type MarketPlayer = {
   role: LeagueReference;
   club: { id: number; name: string };
   quotation: number | null;
+  assignment_id: number | null;
   assignment_state: 'assigned' | 'unassigned';
   fantasy_team: { id: number; name: string; is_own: boolean } | null;
 };
@@ -323,4 +324,29 @@ export type EligiblePlayerFilters = {
   club_id?: number;
   page?: number;
   per_page?: number;
+};
+
+export type TradeProposal = {
+  id: number;
+  status: 'pending' | 'accepted' | 'rejected' | 'cancelled';
+  proposing_fantasy_team: { id: number; name: string };
+  receiving_fantasy_team: { id: number; name: string };
+  offered_player: { assignment_id: number; id: number; name: string };
+  requested_player: { assignment_id: number; id: number; name: string };
+  cash_from_fantasy_team: { id: number; name: string } | null;
+  cash_amount: number;
+  created_at: string;
+  accepted_at: string | null;
+  rejected_at: string | null;
+  cancelled_at: string | null;
+  capabilities: { can_accept: boolean; can_reject: boolean; can_cancel: boolean };
+};
+export type TradeProposalResponse = ResourceResponse<TradeProposal>;
+export type TradeProposalCollectionResponse = CollectionResponse<TradeProposal>;
+export type CreateTradePayload = {
+  receiving_fantasy_team_id: number;
+  offered_fantasy_team_player_id: number;
+  requested_fantasy_team_player_id: number;
+  cash_from_fantasy_team_id?: number | null;
+  cash_amount?: number;
 };

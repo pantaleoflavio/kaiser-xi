@@ -10,6 +10,7 @@ export const leagueKeys = {
   settings: (leagueId: string | number) =>
     [...leagueKeys.all, 'settings', String(leagueId)] as const,
   market: (leagueId: string | number) => [...leagueKeys.detail(leagueId), 'market'] as const,
+  marketTrades: (leagueId: string | number) => [...leagueKeys.market(leagueId), 'trades'] as const,
   marketPlayers: (leagueId: string | number, filters: object) =>
     [...leagueKeys.market(leagueId), 'players', filters] as const,
   seasons: (active: boolean) => ['league-create', 'seasons', { active }] as const,

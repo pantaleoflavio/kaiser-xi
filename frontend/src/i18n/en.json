@@ -935,6 +935,20 @@
       "invalidWindow": "Choose an opening and closing time; closing must be after opening.",
       "updateError": "The Market settings could not be updated.",
       "errorTitle": "Unable to update Market rules"
+    },
+    "trades": {
+      "title": "My trade proposals",
+      "incoming": "Incoming proposals",
+      "outgoing": "Outgoing proposals",
+      "history": "Completed / history",
+      "empty": "No trade proposals.",
+      "accept": "Accept",
+      "reject": "Reject",
+      "propose": "Propose trade",
+      "proposeFor": "Request {{name}}",
+      "choosePlayer": "Choose a player to offer",
+      "noCash": "No cash adjustment",
+      "acceptConfirmation": "Accepting this trade will immediately exchange the players between the two fantasy teams and apply the configured cash adjustment."
     }
   }
 }

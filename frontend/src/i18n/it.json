@@ -887,6 +887,20 @@
       "invalidWindow": "Scegli apertura e chiusura; la chiusura deve essere successiva all’apertura.",
       "updateError": "Impossibile aggiornare le impostazioni del mercato.",
       "errorTitle": "Impossibile aggiornare le regole del mercato"
+    },
+    "trades": {
+      "title": "Le mie proposte di scambio",
+      "incoming": "Proposte ricevute",
+      "outgoing": "Proposte inviate",
+      "history": "Completate / cronologia",
+      "empty": "Nessuna proposta di scambio.",
+      "accept": "Accetta",
+      "reject": "Rifiuta",
+      "propose": "Proponi scambio",
+      "proposeFor": "Richiedi {{name}}",
+      "choosePlayer": "Scegli un giocatore da offrire",
+      "noCash": "Nessun conguaglio",
+      "acceptConfirmation": "Accettando, i giocatori verranno scambiati immediatamente tra le due fantasquadre e verrà applicato il conguaglio configurato."
     }
   }
 }

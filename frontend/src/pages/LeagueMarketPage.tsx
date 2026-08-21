@@ -9,6 +9,9 @@ import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { MarketStatus } from '../components/market/MarketStatus';
 import { MarketDirectory } from '../components/market/MarketDirectory';
 import { MarketSettingsEditor } from '../components/market/MarketSettingsEditor';
+import { TradeProposalPanel } from '../components/market/TradeProposalPanel';
+import { CreateTradeForm } from '../components/market/CreateTradeForm';
+import type { MarketPlayer } from '../types/league';
 import { useTranslation } from '../i18n';
 
 export function LeagueMarketPage() {
@@ -18,11 +21,22 @@ export function LeagueMarketPage() {
   const [role, setRole] = useState('');
   const [state, setState] = useState('');
   const [page, setPage] = useState(1);
+  const [target, setTarget] = useState<MarketPlayer | null>(null);
   const market = useQuery({
     queryKey: leagueKeys.market(leagueId),
     queryFn: () => leaguesApi.market(leagueId),
   });
   const filters = { search, role, assignment_state: state, page, per_page: 25 };
+  const teams = useQuery({
+    queryKey: leagueKeys.fantasyTeams(leagueId),
+    queryFn: () => leaguesApi.fantasyTeams(leagueId),
+  });
+  const ownTeam = teams.data?.data.find((team) => team.is_owned_by_current_user);
+  const roster = useQuery({
+    queryKey: [...leagueKeys.fantasyTeams(leagueId), ownTeam?.id, 'players'],
+    queryFn: () => leaguesApi.rosterPlayers(leagueId, ownTeam!.id),
+    enabled: Boolean(ownTeam),
+  });
   const players = useQuery({
     queryKey: leagueKeys.marketPlayers(leagueId, filters),
     queryFn: () => leaguesApi.marketPlayers(leagueId, filters),
@@ -87,7 +101,11 @@ export function LeagueMarketPage() {
         ) : players.error ? (
           <ContentErrorPanel title={t('market.directory')} message={players.error.message} />
         ) : (
-          <MarketDirectory players={players.data?.data ?? []} />
+          <MarketDirectory
+            players={players.data?.data ?? []}
+            canTrade={market.data.data.can_trade}
+            propose={setTarget}
+          />
         )}
         <div className="flex justify-end gap-2">
           <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
@@ -98,6 +116,17 @@ export function LeagueMarketPage() {
           </button>
         </div>
       </section>
+      <TradeProposalPanel leagueId={leagueId} />
+      {target && ownTeam ? (
+        <CreateTradeForm
+          leagueId={leagueId}
+          market={market.data.data}
+          target={target}
+          roster={roster.data?.data ?? []}
+          ownTeam={ownTeam!}
+          close={() => setTarget(null)}
+        />
+      ) : null}
     </section>
   );
 }
