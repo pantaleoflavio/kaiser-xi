@@ -29,7 +29,7 @@ class TradeProposal extends Model
     ];
 
     protected $casts = [
-        'cash_amount' => 'decimal:2',
+        'cash_amount' => 'integer',
         'expires_at' => 'datetime',
         'status' => TradeProposalStatus::class,
         'accepted_at' => 'datetime',

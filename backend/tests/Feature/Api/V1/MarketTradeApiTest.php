@@ -95,6 +95,43 @@ class MarketTradeApiTest extends TestCase
         $this->postJson($this->url($f['league']), $this->payload($f, ['cash_amount' => -1]))->assertUnprocessable()->assertJsonValidationErrors('cash_amount');
     }
 
+    public function test_store_accepts_integer_cash_and_rejects_decimal_cash(): void
+    {
+        $f = $this->fixture();
+        Sanctum::actingAs($f['fromUser']);
+
+        $this->postJson($this->url($f['league']), $this->payload($f, ['cash_amount' => 5, 'cash_from_fantasy_team_id' => $f['from']->id]))
+            ->assertCreated()->assertJsonPath('data.cash_amount', 5);
+
+        foreach ([0.5, 10.50, -1] as $invalid) {
+            $this->postJson($this->url($f['league']), $this->payload($f, ['cash_amount' => $invalid]))
+                ->assertUnprocessable()->assertJsonValidationErrors('cash_amount');
+        }
+    }
+
+    public function test_repeated_identical_pending_proposal_returns_stable_conflict(): void
+    {
+        $f = $this->fixture();
+        Sanctum::actingAs($f['fromUser']);
+
+        $this->postJson($this->url($f['league']), $this->payload($f))->assertCreated();
+        $this->postJson($this->url($f['league']), $this->payload($f))
+            ->assertConflict()->assertJsonPath('code', 'duplicate_trade_proposal');
+
+        $this->assertSame(1, TradeProposal::query()->where('status', TradeProposalStatus::Pending)->count());
+    }
+
+    public function test_terminal_proposal_does_not_block_recreating_identical_proposal(): void
+    {
+        $f = $this->fixture();
+        Sanctum::actingAs($f['fromUser']);
+        $first = $this->postJson($this->url($f['league']), $this->payload($f))->assertCreated()->json('data.id');
+        $this->postJson($this->url($f['league']) . "/{$first}/cancel")->assertOk();
+
+        $this->postJson($this->url($f['league']), $this->payload($f))->assertCreated();
+        $this->assertSame(2, TradeProposal::query()->count());
+    }
+
     public function test_store_rejects_teamless_same_team_wrong_owner_and_cross_league_inputs(): void
     {
         $f = $this->fixture();

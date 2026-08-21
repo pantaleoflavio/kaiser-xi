@@ -22,6 +22,7 @@ export function LeagueMarketPage() {
   const [state, setState] = useState('');
   const [page, setPage] = useState(1);
   const [target, setTarget] = useState<MarketPlayer | null>(null);
+  const [tradeSent, setTradeSent] = useState(false);
   const market = useQuery({
     queryKey: leagueKeys.market(leagueId),
     queryFn: () => leaguesApi.market(leagueId),
@@ -53,6 +54,14 @@ export function LeagueMarketPage() {
     <section className="space-y-6">
       <LeagueNavigation leagueId={leagueId} />
       <h1 className="text-3xl font-bold text-white">{t('market.title')}</h1>
+      {tradeSent ? (
+        <p
+          role="status"
+          className="rounded-lg border border-emerald-500/30 bg-emerald-950/30 p-3 text-emerald-100"
+        >
+          {t('market.trades.sent')}
+        </p>
+      ) : null}
       <MarketStatus market={market.data.data} />
       {market.data.data.can_manage ? (
         <MarketSettingsEditor leagueId={leagueId} market={market.data.data} />
@@ -78,10 +87,10 @@ export function LeagueMarketPage() {
             }}
           >
             <option value="">{t('market.allRoles')}</option>
-            <option value="goalkeeper">{t('roles.goalkeeper')}</option>
-            <option value="defender">{t('roles.defender')}</option>
-            <option value="midfielder">{t('roles.midfielder')}</option>
-            <option value="forward">{t('roles.forward')}</option>
+            <option value="goalkeeper">{t('formation.roles.goalkeeper')}</option>
+            <option value="defender">{t('formation.roles.defender')}</option>
+            <option value="midfielder">{t('formation.roles.midfielder')}</option>
+            <option value="forward">{t('formation.roles.forward')}</option>
           </select>
           <select
             className="rounded-lg border border-slate-700 bg-slate-900 p-2"
@@ -104,7 +113,10 @@ export function LeagueMarketPage() {
           <MarketDirectory
             players={players.data?.data ?? []}
             canTrade={market.data.data.can_trade}
-            propose={setTarget}
+            propose={(player) => {
+              setTradeSent(false);
+              setTarget(player);
+            }}
           />
         )}
         <div className="flex justify-end gap-2">
@@ -125,6 +137,10 @@ export function LeagueMarketPage() {
           roster={roster.data?.data ?? []}
           ownTeam={ownTeam!}
           close={() => setTarget(null)}
+          sent={() => {
+            setTarget(null);
+            setTradeSent(true);
+          }}
         />
       ) : null}
     </section>

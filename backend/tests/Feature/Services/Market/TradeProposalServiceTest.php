@@ -84,6 +84,8 @@ class TradeProposalServiceTest extends TestCase
     public function test_accept_preserves_assignment_history_and_swaps_players_at_one_timestamp(): void
     {
         $f = $this->fixture();
+        $f['offered']->update(['purchase_price' => 40]);
+        $f['requested']->update(['purchase_price' => 10]);
         $trade = $this->proposal($f);
         $accepted = $this->service()->accept($f['league'], $trade, $f['toUser']);
 
@@ -97,8 +99,39 @@ class TradeProposalServiceTest extends TestCase
         $this->assertCount(2, $new);
         $this->assertSame($f['to']->id, $new->firstWhere('player_id', $f['offered']->player_id)->fantasy_team_id);
         $this->assertSame($f['from']->id, $new->firstWhere('player_id', $f['requested']->player_id)->fantasy_team_id);
+        $this->assertSame('40.00', $f['offered']->purchase_price);
+        $this->assertSame('10.00', $f['requested']->purchase_price);
+        $this->assertSame('40.00', $new->firstWhere('player_id', $f['offered']->player_id)->purchase_price);
+        $this->assertSame('10.00', $new->firstWhere('player_id', $f['requested']->player_id)->purchase_price);
         $this->assertTrue($new[0]->assigned_at->equalTo($new[1]->assigned_at));
     }
+
+    public function test_historical_purchase_prices_may_exceed_initial_budget_after_trade(): void
+    {
+        $f = $this->fixture();
+        $f['league']->settings()->updateOrCreate(
+            ['key' => LeagueSetting::INITIAL_BUDGET],
+            ['value' => LeagueSetting::integerPayload(LeagueSetting::INITIAL_BUDGET, 50)],
+        );
+        $f['requested']->update(['purchase_price' => 75]);
+
+        $this->service()->accept($f['league'], $this->proposal($f), $f['toUser']);
+
+        $this->assertSame('75.00', FantasyTeamPlayer::query()->active()->where('fantasy_team_id', $f['from']->id)->sole()->purchase_price);
+    }
+
+    public function test_service_rejects_decimal_cash_without_rounding(): void
+    {
+        $f = $this->fixture();
+
+        $this->expectConflict('invalid_cash_amount', fn() => $this->service()->propose(
+            $f['league'],
+            $f['fromUser'],
+            $this->payload($f, ['cash_amount' => 1.25, 'cash_from_fantasy_team_id' => $f['from']->id]),
+        ));
+        $this->assertDatabaseCount('trade_proposals', 0);
+    }
+
 
     public function test_cash_moves_between_budgets_without_changing_player_registration_or_quotation(): void
     {
@@ -137,14 +170,49 @@ class TradeProposalServiceTest extends TestCase
     public function test_stale_and_competing_proposals_fail_cleanly(): void
     {
         $f = $this->fixture();
-        $first = $this->proposal($f);
-        $second = $this->proposal($f);
-        $this->service()->accept($f['league'], $first, $f['toUser']);
 
-        $this->expectConflict('player_not_owned', fn() => $this->service()->accept($f['league'], $second, $f['toUser']));
-        $this->assertSame(TradeProposalStatus::Pending, $second->refresh()->status);
-        $this->assertCount(2, FantasyTeamPlayer::query()->active()->get());
-        $this->assertCount(4, FantasyTeamPlayer::query()->get());
+        $alternativeRequested = $this->assignment(
+            $f['league'],
+            $f['to'],
+            $f['toUser'],
+            'forward',
+        );
+
+        $first = $this->proposal($f);
+
+        $second = $this->proposal($f, [
+            'requested_fantasy_team_player_id' => $alternativeRequested->id,
+        ]);
+
+        $this->service()->accept(
+            $f['league'],
+            $first,
+            $f['toUser'],
+        );
+
+        $this->expectConflict(
+            'player_not_owned',
+            fn() => $this->service()->accept(
+                $f['league'],
+                $second,
+                $f['toUser'],
+            ),
+        );
+
+        $this->assertSame(
+            TradeProposalStatus::Pending,
+            $second->refresh()->status,
+        );
+
+        $this->assertCount(
+            3,
+            FantasyTeamPlayer::query()->active()->get(),
+        );
+
+        $this->assertCount(
+            5,
+            FantasyTeamPlayer::query()->get(),
+        );
     }
 
     public function test_double_accept_does_not_repeat_assignments_or_cash(): void

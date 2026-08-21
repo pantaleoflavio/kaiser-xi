@@ -21,7 +21,7 @@ class TradeProposalResource extends JsonResource
             'offered_player' => $player($this->offeredAssignment),
             'requested_player' => $player($this->requestedAssignment),
             'cash_from_fantasy_team' => $this->cashPaidByTeam ? ['id' => $this->cashPaidByTeam->id, 'name' => $this->cashPaidByTeam->name] : null,
-            'cash_amount' => (float) $this->cash_amount,
+            'cash_amount' => (int) $this->cash_amount,
             'created_at' => $this->created_at,
             'accepted_at' => $this->accepted_at,
             'rejected_at' => $this->rejected_at,

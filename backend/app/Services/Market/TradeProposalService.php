@@ -20,27 +20,44 @@ class TradeProposalService
 
     public function propose(League $league, User $user, array $data): TradeProposal
     {
-        $this->open($league);
-        $from = FantasyTeam::query()->where('league_id', $league->id)->where('user_id', $user->id)->first();
-        $to = FantasyTeam::query()->whereKey($data['receiving_fantasy_team_id'])->where('league_id', $league->id)->first();
-        if (! $from || ! $to) $this->conflict('invalid_teams', 'Both fantasy teams must be current teams in this league.');
-        if ($from->is($to)) $this->conflict('same_team', 'A team cannot trade with itself.');
-        $offered = $this->activeAssignment($league, $from, (int) $data['offered_fantasy_team_player_id']);
-        $requested = $this->activeAssignment($league, $to, (int) $data['requested_fantasy_team_player_id']);
-        $cash = (float) ($data['cash_amount'] ?? 0);
-        $payer = $data['cash_from_fantasy_team_id'] ?? null;
-        $this->cash($league, $from, $to, $cash, $payer);
+        return DB::transaction(function () use ($league, $user, $data): TradeProposal {
+            // MariaDB has no portable partial unique index. Serializing proposals per
+            // league makes the pending duplicate check and insert one atomic operation.
+            $league = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
+            $this->open($league);
+            $from = FantasyTeam::query()->where('league_id', $league->id)->where('user_id', $user->id)->first();
+            $to = FantasyTeam::query()->whereKey($data['receiving_fantasy_team_id'])->where('league_id', $league->id)->first();
+            if (! $from || ! $to) $this->conflict('invalid_teams', 'Both fantasy teams must be current teams in this league.');
+            if ($from->is($to)) $this->conflict('same_team', 'A team cannot trade with itself.');
+            $offered = $this->activeAssignment($league, $from, (int) $data['offered_fantasy_team_player_id']);
+            $requested = $this->activeAssignment($league, $to, (int) $data['requested_fantasy_team_player_id']);
+            $cash = $this->integerCash($data['cash_amount'] ?? 0);
+            $payer = $data['cash_from_fantasy_team_id'] ?? null;
+            $this->cash($league, $from, $to, $cash, $payer);
 
-        return TradeProposal::query()->create([
-            'league_id' => $league->id,
-            'from_team_id' => $from->id,
-            'to_team_id' => $to->id,
-            'offered_fantasy_team_player_id' => $offered->id,
-            'requested_fantasy_team_player_id' => $requested->id,
-            'cash_paid_by_team_id' => $cash > 0 ? $payer : null,
-            'cash_amount' => $cash,
-            'status' => TradeProposalStatus::Pending,
-        ]);
+            $duplicate = TradeProposal::query()
+                ->where('league_id', $league->id)
+                ->where('from_team_id', $from->id)
+                ->where('to_team_id', $to->id)
+                ->where('offered_fantasy_team_player_id', $offered->id)
+                ->where('requested_fantasy_team_player_id', $requested->id)
+                ->where('cash_amount', $cash)
+                ->where('status', TradeProposalStatus::Pending)
+                ->when($cash > 0, fn($query) => $query->where('cash_paid_by_team_id', $payer), fn($query) => $query->whereNull('cash_paid_by_team_id'))
+                ->exists();
+            if ($duplicate) $this->conflict('duplicate_trade_proposal', 'An identical pending trade proposal already exists.');
+
+            return TradeProposal::query()->create([
+                'league_id' => $league->id,
+                'from_team_id' => $from->id,
+                'to_team_id' => $to->id,
+                'offered_fantasy_team_player_id' => $offered->id,
+                'requested_fantasy_team_player_id' => $requested->id,
+                'cash_paid_by_team_id' => $cash > 0 ? $payer : null,
+                'cash_amount' => $cash,
+                'status' => TradeProposalStatus::Pending,
+            ]);
+        });
     }
 
     public function accept(League $league, TradeProposal $trade, User $user): TradeProposal
@@ -59,11 +76,11 @@ class TradeProposalService
             $requested = $assignments->get($trade->requested_fantasy_team_player_id);
             $this->stillOwned($offered, $league, $from);
             $this->stillOwned($requested, $league, $to);
-            $this->cash($league, $from, $to, (float) $trade->cash_amount, $trade->cash_paid_by_team_id);
+            $this->cash($league, $from, $to, $trade->cash_amount, $trade->cash_paid_by_team_id);;
             $this->rosterAfterSwap($league, $from, $offered, $requested);
             $this->rosterAfterSwap($league, $to, $requested, $offered);
             $payer = $trade->cash_paid_by_team_id ? $teams->get($trade->cash_paid_by_team_id) : null;
-            if ($payer && (float) $payer->remaining_budget < (float) $trade->cash_amount) $this->conflict('insufficient_budget', 'The paying team has insufficient remaining budget.');
+            if ($payer && (int) $payer->remaining_budget < $trade->cash_amount) $this->conflict('insufficient_budget', 'The paying team has insufficient remaining budget.');
             $at = now();
             $offered->update(['released_at' => $at, 'released_by_user_id' => $user->id]);
             $requested->update(['released_at' => $at, 'released_by_user_id' => $user->id]);
@@ -83,6 +100,7 @@ class TradeProposalService
     {
         return $this->terminal($trade, $user, false);
     }
+
     public function cancel(TradeProposal $trade, User $user): TradeProposal
     {
         return $this->terminal($trade, $user, true);
@@ -119,33 +137,47 @@ class TradeProposalService
         $this->registration($league, $a);
         return $a;
     }
+
     private function stillOwned(?FantasyTeamPlayer $a, League $l, FantasyTeam $t): void
     {
         if (! $a || $a->released_at || $a->league_id !== $l->id || $a->fantasy_team_id !== $t->id) $this->conflict('player_not_owned', 'The player is no longer actively assigned to the expected team.');
         $this->registration($l, $a);
     }
+
     private function registration(League $l, FantasyTeamPlayer $a): void
     {
         if (! PlayerSeasonRegistration::query()->activeForSeason($l->season_id)->where('player_id', $a->player_id)->exists()) $this->conflict('invalid_player_registration', 'The player has no valid league-season registration.');
     }
-    private function cash(League $l, FantasyTeam $a, FantasyTeam $b, float $amount, mixed $payer): void
+
+    private function integerCash(mixed $amount): int
+    {
+        if (filter_var($amount, FILTER_VALIDATE_INT) === false) $this->conflict('invalid_cash_amount', 'Cash adjustment must be a whole number of credits.');
+
+        return (int) $amount;
+    }
+
+    private function cash(League $l, FantasyTeam $a, FantasyTeam $b, int $amount, mixed $payer): void
     {
         if ($amount < 0 || (! $l->tradeCashAdjustmentEnabled() && ($amount > 0 || $payer !== null))) $this->conflict('cash_adjustment_disabled', 'Cash adjustment is disabled.');
         if ($amount > 0 && ! in_array((int) $payer, [$a->id, $b->id], true)) $this->conflict('invalid_cash_payer', 'Cash payer must be one of the trading teams.');
-        if ($amount === 0.0 && $payer !== null) $this->conflict('invalid_cash_payer', 'Zero cash must not specify a payer.');
+        if ($amount === 0 && $payer !== null) $this->conflict('invalid_cash_payer', 'Zero cash must not specify a payer.');
     }
+
     private function pending(TradeProposal $t): void
     {
         if ($t->status !== TradeProposalStatus::Pending) $this->conflict('trade_not_pending', 'The trade is no longer pending.');
     }
+
     private function open(League $l): void
     {
         if (! $this->availability->isOpen($l)) $this->conflict('market_closed', 'The League Market is closed.');
     }
+
     private function forbidden(): never
     {
         abort(403, 'You cannot perform this trade action.');
     }
+
     private function conflict(string $code, string $message): never
     {
         throw new TradeConflictException($code, $message);

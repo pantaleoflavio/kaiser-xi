@@ -18,7 +18,7 @@ class StoreTradeProposalRequest extends FormRequest
             'offered_fantasy_team_player_id' => ['required', 'integer'],
             'requested_fantasy_team_player_id' => ['required', 'integer'],
             'cash_from_fantasy_team_id' => ['nullable', 'integer'],
-            'cash_amount' => ['nullable', 'numeric', 'min:0', 'decimal:0,2'],
+            'cash_amount' => ['nullable', 'integer', 'min:0'],
         ];
     }
 }
