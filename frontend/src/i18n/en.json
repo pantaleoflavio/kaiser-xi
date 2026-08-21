@@ -725,7 +725,14 @@
     "openScheduleSetup": "Open schedule setup",
     "notFound": "Matchday not found",
     "backToMatchday": "← Back to matchday",
-    "backToMatchdays": "← Back to matchdays"
+    "backToMatchdays": "← Back to matchdays",
+    "calculate": "Calculate Matchday",
+    "recalculate": "Recalculate Matchday",
+    "calculating": "Calculating…",
+    "calculationSuccess": "Matchday calculated successfully.",
+    "recalculationSuccess": "Matchday recalculated successfully.",
+    "calculationError": "The Matchday could not be calculated. Check that it has ended and try again.",
+    "recalculationWarning": "Recalculating this Matchday will replace its calculated scores and results using the current League rules and will recalculate the standings."
   },
   "h2h": {
     "title": "Head-to-head championship",

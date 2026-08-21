@@ -677,7 +677,14 @@
     "openScheduleSetup": "Apri configurazione calendario",
     "notFound": "Giornata non trovata",
     "backToMatchday": "← Torna alla giornata",
-    "backToMatchdays": "← Torna alle giornate"
+    "backToMatchdays": "← Torna alle giornate",
+    "calculate": "Calcola giornata",
+    "recalculate": "Ricalcola giornata",
+    "calculating": "Calcolo in corso…",
+    "calculationSuccess": "Giornata calcolata correttamente.",
+    "recalculationSuccess": "Giornata ricalcolata correttamente.",
+    "calculationError": "Non è stato possibile calcolare la giornata. Verifica che sia terminata e riprova.",
+    "recalculationWarning": "Il ricalcolo sostituirà i punteggi e i risultati calcolati di questa giornata usando le regole attuali della lega e ricalcolerà la classifica."
   },
   "h2h": {
     "title": "Campionato testa a testa",

@@ -16,7 +16,6 @@ use App\Models\PlayerScore;
 use App\Models\PlayerSeasonRegistration;
 use App\Models\SeasonClub;
 use App\Services\Formation\ResolveFormationSubstitutions;
-use App\Services\Formation\SaveFormationService;
 use App\Services\League\LeagueSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use LogicException;
@@ -233,12 +232,40 @@ class ResolveFormationSubstitutionsTest extends TestCase
             ->pluck('id')
             ->all();
         $bench = array_map(fn(string $role): int => $this->assignment($league, $team, $role)->id, $benchRoles);
-        $formation = app(SaveFormationService::class)->save($league, $matchday, $team, [
+        $formation = Formation::factory()->create([
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'matchday_id' => $matchday->id,
             'formation_module_id' => $module->id,
-            'starters' => $starters,
-            'bench' => collect($bench)->map(fn(int $id, int $index): array => ['fantasy_team_player_id' => $id, 'order' => $index + 1])->all(),
+            'is_confirmed' => true,
+            'submitted_at' => now(),
         ]);
-        $formation->update(['is_confirmed' => true, 'submitted_at' => now()]);
+
+        foreach ($starters as $index => $assignmentId) {
+            $assignment = FantasyTeamPlayer::query()->findOrFail($assignmentId);
+            $registration = $this->registrations[$assignmentId];
+
+            $formation->players()->create([
+                'fantasy_team_player_id' => $assignment->id,
+                'player_id' => $assignment->player_id,
+                'player_role_id' => $registration->player_role_id,
+                'slot_type' => 'starter',
+                'position_index' => $index + 1,
+            ]);
+        }
+
+        foreach ($bench as $index => $assignmentId) {
+            $assignment = FantasyTeamPlayer::query()->findOrFail($assignmentId);
+            $registration = $this->registrations[$assignmentId];
+
+            $formation->players()->create([
+                'fantasy_team_player_id' => $assignment->id,
+                'player_id' => $assignment->player_id,
+                'player_role_id' => $registration->player_role_id,
+                'slot_type' => 'bench',
+                'position_index' => $index + 1,
+            ]);
+        }
 
         return [$formation->fresh(), $starters, $bench];
     }

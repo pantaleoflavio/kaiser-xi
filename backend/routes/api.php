@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AcceptLeagueInvitationController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CalculateMatchdayController;
 use App\Http\Controllers\Api\V1\ClassicChampionshipController;
 use App\Http\Controllers\Api\V1\ClassicMatchdayController;
 use App\Http\Controllers\Api\V1\EligiblePlayerController;
@@ -72,6 +73,9 @@ Route::prefix('v1')->group(function (): void {
 
         Route::get('/{league}/matchdays', [MatchdayController::class, 'index'])
             ->name('api.v1.leagues.matchdays.index')->middleware('can:view,league');
+        Route::post('/{league}/matchdays/{matchday}/calculate', CalculateMatchdayController::class)
+            ->name('api.v1.leagues.matchdays.calculate')->withoutScopedBindings()
+            ->middleware('can:calculateMatchday,league');
 
         Route::get('/{league}/standings', [StandingController::class, 'index'])
             ->name('api.v1.leagues.standings.index')->middleware('can:view,league');

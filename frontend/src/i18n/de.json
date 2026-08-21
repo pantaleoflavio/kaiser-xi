@@ -725,7 +725,14 @@
     "openScheduleSetup": "Spielplan-Einrichtung öffnen",
     "notFound": "Spieltag nicht gefunden",
     "backToMatchday": "← Zurück zum Spieltag",
-    "backToMatchdays": "← Zurück zu den Spieltagen"
+    "backToMatchdays": "← Zurück zu den Spieltagen",
+    "calculate": "Spieltag berechnen",
+    "recalculate": "Spieltag neu berechnen",
+    "calculating": "Wird berechnet…",
+    "calculationSuccess": "Der Spieltag wurde erfolgreich berechnet.",
+    "recalculationSuccess": "Der Spieltag wurde erfolgreich neu berechnet.",
+    "calculationError": "Der Spieltag konnte nicht berechnet werden. Prüfe, ob er beendet ist, und versuche es erneut.",
+    "recalculationWarning": "Bei einer Neuberechnung werden die berechneten Punkte und Ergebnisse dieses Spieltags durch Werte nach den aktuellen Ligaregeln ersetzt und die Tabelle wird neu berechnet."
   },
   "h2h": {
     "title": "Head-to-Head-Meisterschaft",
