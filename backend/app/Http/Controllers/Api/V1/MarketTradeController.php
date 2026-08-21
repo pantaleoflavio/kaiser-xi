@@ -29,20 +29,20 @@ class MarketTradeController extends Controller
         return $this->respond(fn() => $service->propose($league, $request->user(), $request->validated()), 201);
     }
 
-    public function accept(Request $request, League $league, TradeProposal $trade, TradeProposalService $service): JsonResponse
+    public function accept(Request $request, League $league, TradeProposal $tradeProposal, TradeProposalService $service): JsonResponse
     {
-        abort_unless($trade->league_id === $league->id, 404);
-        return $this->respond(fn() => $service->accept($league, $trade, $request->user()));
+        abort_unless($tradeProposal->league_id === $league->id, 404);
+        return $this->respond(fn() => $service->accept($league, $tradeProposal, $request->user()));
     }
-    public function reject(Request $request, League $league, TradeProposal $trade, TradeProposalService $service): JsonResponse
+    public function reject(Request $request, League $league, TradeProposal $tradeProposal, TradeProposalService $service): JsonResponse
     {
-        abort_unless($trade->league_id === $league->id, 404);
-        return $this->respond(fn() => $service->reject($trade, $request->user()));
+        abort_unless($tradeProposal->league_id === $league->id, 404);
+        return $this->respond(fn() => $service->reject($tradeProposal, $request->user()));
     }
-    public function cancel(Request $request, League $league, TradeProposal $trade, TradeProposalService $service): JsonResponse
+    public function cancel(Request $request, League $league, TradeProposal $tradeProposal, TradeProposalService $service): JsonResponse
     {
-        abort_unless($trade->league_id === $league->id, 404);
-        return $this->respond(fn() => $service->cancel($trade, $request->user()));
+        abort_unless($tradeProposal->league_id === $league->id, 404);
+        return $this->respond(fn() => $service->cancel($tradeProposal, $request->user()));
     }
 
     private function respond(callable $action, int $status = 200): JsonResponse

@@ -77,9 +77,9 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/{league}/market/players', MarketPlayerController::class)->middleware('can:view,league');
         Route::get('/{league}/market/trades', [MarketTradeController::class, 'index'])->middleware('can:view,league');
         Route::post('/{league}/market/trades', [MarketTradeController::class, 'store'])->middleware('can:view,league');
-        Route::post('/{league}/market/trades/{trade}/accept', [MarketTradeController::class, 'accept'])->scopeBindings()->middleware('can:view,league');
-        Route::post('/{league}/market/trades/{trade}/reject', [MarketTradeController::class, 'reject'])->scopeBindings()->middleware('can:view,league');
-        Route::post('/{league}/market/trades/{trade}/cancel', [MarketTradeController::class, 'cancel'])->scopeBindings()->middleware('can:view,league');
+        Route::post('/{league}/market/trades/{tradeProposal}/accept', [MarketTradeController::class, 'accept'])->scopeBindings()->middleware('can:view,league');
+        Route::post('/{league}/market/trades/{tradeProposal}/reject', [MarketTradeController::class, 'reject'])->scopeBindings()->middleware('can:view,league');
+        Route::post('/{league}/market/trades/{tradeProposal}/cancel', [MarketTradeController::class, 'cancel'])->scopeBindings()->middleware('can:view,league');
 
         Route::get('/{league}/matchdays', [MatchdayController::class, 'index'])
             ->name('api.v1.leagues.matchdays.index')->middleware('can:view,league');
