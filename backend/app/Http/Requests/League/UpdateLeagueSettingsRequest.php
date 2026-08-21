@@ -212,6 +212,15 @@ class UpdateLeagueSettingsRequest extends FormRequest
                 'min:1',
                 new FormulaOnePositionPoints,
             ],
+            LeagueSetting::TRADE_MARKET_ENABLED => ['sometimes', 'required', 'boolean'],
+            LeagueSetting::TRADE_MARKET_OPENS_AT => ['sometimes', 'required', 'date'],
+            LeagueSetting::TRADE_MARKET_CLOSES_AT => [
+                'sometimes',
+                'required',
+                'date',
+                'after:' . LeagueSetting::TRADE_MARKET_OPENS_AT,
+            ],
+            LeagueSetting::TRADE_CASH_ADJUSTMENT_ENABLED => ['sometimes', 'required', 'boolean'],
 
             'remaining_budget' => ['prohibited'],
             'league_id' => ['prohibited'],

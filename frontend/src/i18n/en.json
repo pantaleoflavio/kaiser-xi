@@ -19,7 +19,9 @@
     },
     "cancel": "Cancel",
     "enabled": "Enabled",
-    "disabled": "Disabled"
+    "disabled": "Disabled",
+    "previous": "Previous",
+    "next": "Next"
   },
   "auth": {
     "login": {
@@ -896,5 +898,31 @@
       "invalidMatchday": "The selected starting Matchday or league configuration is invalid.",
       "generic": "The championship could not be initialized."
     }
+  },
+  "market": {
+    "title": "Market",
+    "status": "Market status",
+    "open": "Open",
+    "closed": "Closed",
+    "opens": "Opens",
+    "closes": "Closes",
+    "cash": "Cash adjustments",
+    "allowed": "Allowed",
+    "notAllowed": "Not allowed",
+    "notConfigured": "Not configured",
+    "directory": "Player directory",
+    "search": "Search players",
+    "allRoles": "All roles",
+    "allAssignments": "All assignments",
+    "assigned": "Current roster",
+    "unassigned": "Unassigned",
+    "empty": "No players match these filters.",
+    "error": "Unable to load the Market.",
+    "player": "Player",
+    "role": "Role",
+    "club": "Real club",
+    "quotation": "Quotation",
+    "roster": "Current roster",
+    "yourTeam": "Your team"
   }
 }

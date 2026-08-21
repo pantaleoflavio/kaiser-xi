@@ -29,6 +29,12 @@ class LeagueSetting extends Model
     public const FIRST_GOAL_THRESHOLD = 'first_goal_threshold';
     public const GOAL_INTERVAL = 'goal_interval';
     public const FORMULA_ONE_POSITION_POINTS = 'formula_one_position_points';
+    public const TRADE_MARKET_ENABLED = 'trade_market_enabled';
+    public const TRADE_MARKET_OPENS_AT = 'trade_market_opens_at';
+    public const TRADE_MARKET_CLOSES_AT = 'trade_market_closes_at';
+    public const TRADE_CASH_ADJUSTMENT_ENABLED = 'trade_cash_adjustment_enabled';
+    public const DEFAULT_TRADE_MARKET_ENABLED = false;
+    public const DEFAULT_TRADE_CASH_ADJUSTMENT_ENABLED = true;
     public const DEFAULT_INITIAL_BUDGET = 500;
     public const DEFAULT_RELEASE_REFUND_PERCENTAGE = 50;
     public const DEFAULT_MAX_ROSTER_PLAYERS = 25;

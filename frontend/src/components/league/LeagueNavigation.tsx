@@ -45,6 +45,9 @@ export function LeagueNavigation({
       <NavLink className={linkClass} to={`${base}/rules`}>
         {t('leagueNavigation.rules')}
       </NavLink>
+      <NavLink className={linkClass} to={`${base}/market`}>
+        {t('market.title')}
+      </NavLink>
       <NavLink className={linkClass} to={`${base}/fantasy-teams`}>
         {t('leagueNavigation.fantasyTeams')}
       </NavLink>

@@ -19,7 +19,9 @@
     },
     "cancel": "Abbrechen",
     "enabled": "Aktiviert",
-    "disabled": "Deaktiviert"
+    "disabled": "Deaktiviert",
+    "previous": "Zurück",
+    "next": "Weiter"
   },
   "auth": {
     "login": {
@@ -896,5 +898,31 @@
       "invalidMatchday": "Der gewählte Startspieltag oder die Ligakonfiguration ist ungültig.",
       "generic": "Die Meisterschaft konnte nicht initialisiert werden."
     }
+  },
+  "market": {
+    "title": "Markt",
+    "status": "Marktstatus",
+    "open": "Geöffnet",
+    "closed": "Geschlossen",
+    "opens": "Öffnet",
+    "closes": "Schließt",
+    "cash": "Barausgleich",
+    "allowed": "Erlaubt",
+    "notAllowed": "Nicht erlaubt",
+    "notConfigured": "Nicht konfiguriert",
+    "directory": "Spielerverzeichnis",
+    "search": "Spieler suchen",
+    "allRoles": "Alle Rollen",
+    "allAssignments": "Alle Zuordnungen",
+    "assigned": "Aktueller Kader",
+    "unassigned": "Nicht zugeordnet",
+    "empty": "Keine Spieler entsprechen den Filtern.",
+    "error": "Der Markt konnte nicht geladen werden.",
+    "player": "Spieler",
+    "role": "Rolle",
+    "club": "Verein",
+    "quotation": "Bewertung",
+    "roster": "Aktueller Kader",
+    "yourTeam": "Dein Team"
   }
 }

@@ -21,6 +21,9 @@ import type {
   CreateLeagueInvitationPayload,
   StandingsResponse,
   FormulaOneStandingsResponse,
+  MarketPlayerFilters,
+  MarketPlayerResponse,
+  MarketResponse,
 } from '../types/league';
 import { apiClient } from './client';
 
@@ -38,6 +41,16 @@ function eligiblePlayerQuery(filters: EligiblePlayerFilters) {
 }
 
 export const leaguesApi = {
+  market: (leagueId: string | number) => apiClient<MarketResponse>(`/leagues/${leagueId}/market`),
+  marketPlayers: (leagueId: string | number, filters: MarketPlayerFilters = {}) => {
+    const query = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== '') query.set(key, String(value));
+    });
+    return apiClient<MarketPlayerResponse>(
+      `/leagues/${leagueId}/market/players${query.size ? `?${query}` : ''}`,
+    );
+  },
   list: () => apiClient<LeagueCollectionResponse>('/leagues'),
   create: (payload: CreateLeaguePayload) =>
     apiClient<CreatedLeagueResponse>('/leagues', {

@@ -9,6 +9,9 @@ export const leagueKeys = {
   detail: (leagueId: string | number) => [...leagueKeys.all, 'detail', String(leagueId)] as const,
   settings: (leagueId: string | number) =>
     [...leagueKeys.all, 'settings', String(leagueId)] as const,
+  market: (leagueId: string | number) => [...leagueKeys.detail(leagueId), 'market'] as const,
+  marketPlayers: (leagueId: string | number, filters: object) =>
+    [...leagueKeys.market(leagueId), 'players', filters] as const,
   seasons: (active: boolean) => ['league-create', 'seasons', { active }] as const,
   types: () => ['league-create', 'league-types'] as const,
   invitations: (leagueId: string | number) =>

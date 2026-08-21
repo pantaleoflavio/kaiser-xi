@@ -88,6 +88,8 @@ class LeagueSettingsService
                 LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED => LeagueSetting::DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED,
                 LeagueSetting::DEFENSE_MODIFIER_ENABLED =>
                 LeagueSetting::DEFAULT_DEFENSE_MODIFIER_ENABLED,
+                LeagueSetting::TRADE_MARKET_ENABLED => LeagueSetting::DEFAULT_TRADE_MARKET_ENABLED,
+                LeagueSetting::TRADE_CASH_ADJUSTMENT_ENABLED => LeagueSetting::DEFAULT_TRADE_CASH_ADJUSTMENT_ENABLED,
             ] as $key => $enabled
         ) {
             $league->settings()->firstOrCreate(
@@ -199,12 +201,23 @@ class LeagueSettingsService
                     LeagueSetting::REAL_CAPTAIN_BONUS_ENABLED,
                     LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED,
                     LeagueSetting::DEFENSE_MODIFIER_ENABLED,
+                    LeagueSetting::TRADE_MARKET_ENABLED,
+                    LeagueSetting::TRADE_CASH_ADJUSTMENT_ENABLED,
                 ] as $key
             ) {
                 if (array_key_exists($key, $settings)) {
                     LeagueSetting::query()->updateOrCreate(
                         ['league_id' => $lockedLeague->id, 'key' => $key],
                         ['value' => LeagueSetting::booleanPayload((bool) $settings[$key])],
+                    );
+                }
+            }
+
+            foreach ([LeagueSetting::TRADE_MARKET_OPENS_AT, LeagueSetting::TRADE_MARKET_CLOSES_AT] as $key) {
+                if (array_key_exists($key, $settings)) {
+                    LeagueSetting::query()->updateOrCreate(
+                        ['league_id' => $lockedLeague->id, 'key' => $key],
+                        ['value' => LeagueSetting::stringPayload((string) $settings[$key])],
                     );
                 }
             }
@@ -308,6 +321,10 @@ class LeagueSettingsService
             LeagueSetting::GOAL_INTERVAL => (float) $incoming !== $league->goalInterval(),
             LeagueSetting::FORMULA_ONE_POSITION_POINTS => $this->normalizePositionPoints($incoming)
                 !== $this->normalizePositionPoints($league->formulaOnePositionPoints()),
+            LeagueSetting::TRADE_MARKET_ENABLED => (bool) $incoming !== $league->tradeMarketEnabled(),
+            LeagueSetting::TRADE_MARKET_OPENS_AT => (string) $incoming !== (string) $league->tradeMarketOpensAt(),
+            LeagueSetting::TRADE_MARKET_CLOSES_AT => (string) $incoming !== (string) $league->tradeMarketClosesAt(),
+            LeagueSetting::TRADE_CASH_ADJUSTMENT_ENABLED => (bool) $incoming !== $league->tradeCashAdjustmentEnabled(),
             default => true,
         };
     }

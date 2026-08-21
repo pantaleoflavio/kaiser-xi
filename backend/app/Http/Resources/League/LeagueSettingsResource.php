@@ -70,6 +70,10 @@ class LeagueSettingsResource extends JsonResource
                 $this->isFormulaOne(),
                 fn(): array => $this->formulaOnePositionPoints(),
             ),
+            LeagueSetting::TRADE_MARKET_ENABLED => $this->tradeMarketEnabled(),
+            LeagueSetting::TRADE_MARKET_OPENS_AT => $this->tradeMarketOpensAt(),
+            LeagueSetting::TRADE_MARKET_CLOSES_AT => $this->tradeMarketClosesAt(),
+            LeagueSetting::TRADE_CASH_ADJUSTMENT_ENABLED => $this->tradeCashAdjustmentEnabled(),
             'status' => $this->statusKey(),
             'can_update_settings' => $request->user()?->can('manageSettings', $this->resource)
                 && ! in_array($this->statusKey(), [LeagueStatus::COMPLETED, LeagueStatus::ARCHIVED], true),

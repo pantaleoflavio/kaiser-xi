@@ -1,0 +1,99 @@
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import { leaguesApi } from '../api/leagues';
+import { leagueKeys } from '../api/queryKeys';
+import { LeagueNavigation } from '../components/league/LeagueNavigation';
+import { LoadingState } from '../components/LoadingState';
+import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
+import { MarketStatus } from '../components/market/MarketStatus';
+import { MarketDirectory } from '../components/market/MarketDirectory';
+import { useTranslation } from '../i18n';
+
+export function LeagueMarketPage() {
+  const { leagueId = '' } = useParams();
+  const { t } = useTranslation();
+  const [search, setSearch] = useState('');
+  const [role, setRole] = useState('');
+  const [state, setState] = useState('');
+  const [page, setPage] = useState(1);
+  const market = useQuery({
+    queryKey: leagueKeys.market(leagueId),
+    queryFn: () => leaguesApi.market(leagueId),
+  });
+  const filters = { search, role, assignment_state: state, page, per_page: 25 };
+  const players = useQuery({
+    queryKey: leagueKeys.marketPlayers(leagueId, filters),
+    queryFn: () => leaguesApi.marketPlayers(leagueId, filters),
+  });
+  if (market.isLoading) return <LoadingState message={t('common.loading')} />;
+  if (!market.data?.data)
+    return (
+      <ContentErrorPanel
+        title={t('market.title')}
+        message={market.error?.message ?? t('market.error')}
+      />
+    );
+  return (
+    <section className="space-y-6">
+      <LeagueNavigation leagueId={leagueId} />
+      <h1 className="text-3xl font-bold text-white">{t('market.title')}</h1>
+      <MarketStatus market={market.data.data} />
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold">{t('market.directory')}</h2>
+        <div className="flex flex-wrap gap-3">
+          <input
+            className="rounded-lg border border-slate-700 bg-slate-900 p-2"
+            placeholder={t('market.search')}
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+          />
+          <select
+            className="rounded-lg border border-slate-700 bg-slate-900 p-2"
+            value={role}
+            onChange={(e) => {
+              setRole(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="">{t('market.allRoles')}</option>
+            <option value="goalkeeper">{t('roles.goalkeeper')}</option>
+            <option value="defender">{t('roles.defender')}</option>
+            <option value="midfielder">{t('roles.midfielder')}</option>
+            <option value="forward">{t('roles.forward')}</option>
+          </select>
+          <select
+            className="rounded-lg border border-slate-700 bg-slate-900 p-2"
+            value={state}
+            onChange={(e) => {
+              setState(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="">{t('market.allAssignments')}</option>
+            <option value="assigned">{t('market.assigned')}</option>
+            <option value="unassigned">{t('market.unassigned')}</option>
+          </select>
+        </div>
+        {players.isLoading ? (
+          <LoadingState message={t('common.loading')} />
+        ) : players.error ? (
+          <ContentErrorPanel title={t('market.directory')} message={players.error.message} />
+        ) : (
+          <MarketDirectory players={players.data?.data ?? []} />
+        )}
+        <div className="flex justify-end gap-2">
+          <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+            {t('common.previous')}
+          </button>
+          <button disabled={!players.data?.links.next} onClick={() => setPage((p) => p + 1)}>
+            {t('common.next')}
+          </button>
+        </div>
+      </section>
+    </section>
+  );
+}

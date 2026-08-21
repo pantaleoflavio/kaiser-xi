@@ -172,6 +172,10 @@ export type StandingsResponse = CollectionResponse<Standing>;
 export type FormulaOneStandingsResponse = CollectionResponse<FormulaOneStanding>;
 
 export type LeagueSettings = {
+  trade_market_enabled: boolean;
+  trade_market_opens_at: string | null;
+  trade_market_closes_at: string | null;
+  trade_cash_adjustment_enabled: boolean;
   initial_budget: string | number | null;
   release_refund_percentage: string | number | null;
   max_roster_players: number;
@@ -219,6 +223,10 @@ export type SubstitutionOrderMode = 'bench_order' | 'role_priority';
 export type DefenseModifierThreshold = { id: string; threshold: number; bonus: number };
 
 export type LeagueSettingsPayload = Partial<{
+  trade_market_enabled: boolean;
+  trade_market_opens_at: string;
+  trade_market_closes_at: string;
+  trade_cash_adjustment_enabled: boolean;
   initial_budget: number;
   release_refund_percentage: number;
   max_roster_players: number;
@@ -250,6 +258,36 @@ export type RosterPlayer = {
     name: string | null;
     role: PlayerRoleKey | null;
   };
+};
+
+export type Market = {
+  enabled: boolean;
+  is_open: boolean;
+  opens_at: string | null;
+  closes_at: string | null;
+  cash_adjustment_enabled: boolean;
+  can_manage: boolean;
+  can_trade: boolean;
+};
+export type MarketPlayer = {
+  id: number;
+  name: string;
+  role: LeagueReference;
+  club: { id: number; name: string };
+  quotation: number | null;
+  assignment_state: 'assigned' | 'unassigned';
+  fantasy_team: { id: number; name: string; is_own: boolean } | null;
+};
+export type MarketResponse = ResourceResponse<Market>;
+export type MarketPlayerResponse = PaginatedResponse<MarketPlayer>;
+export type MarketPlayerFilters = {
+  search?: string;
+  role?: string;
+  club_id?: number;
+  fantasy_team_id?: number;
+  assignment_state?: string;
+  page?: number;
+  per_page?: number;
 };
 
 export type RosterPlayerResponse = ResourceResponse<RosterPlayer>;

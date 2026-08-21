@@ -19,7 +19,9 @@
     },
     "cancel": "Annulla",
     "enabled": "Abilitato",
-    "disabled": "Disabilitato"
+    "disabled": "Disabilitato",
+    "previous": "Precedente",
+    "next": "Successivo"
   },
   "auth": {
     "login": {
@@ -848,5 +850,31 @@
       "invalidMatchday": "La giornata iniziale selezionata o la configurazione della lega non è valida.",
       "generic": "Impossibile inizializzare il campionato."
     }
+  },
+  "market": {
+    "title": "Mercato",
+    "status": "Stato del mercato",
+    "open": "Aperto",
+    "closed": "Chiuso",
+    "opens": "Apre",
+    "closes": "Chiude",
+    "cash": "Conguagli in denaro",
+    "allowed": "Consentiti",
+    "notAllowed": "Non consentiti",
+    "notConfigured": "Non configurato",
+    "directory": "Elenco giocatori",
+    "search": "Cerca giocatori",
+    "allRoles": "Tutti i ruoli",
+    "allAssignments": "Tutte le rose",
+    "assigned": "Rosa attuale",
+    "unassigned": "Non assegnato",
+    "empty": "Nessun giocatore corrisponde ai filtri.",
+    "error": "Impossibile caricare il Mercato.",
+    "player": "Giocatore",
+    "role": "Ruolo",
+    "club": "Club reale",
+    "quotation": "Quotazione",
+    "roster": "Rosa attuale",
+    "yourTeam": "La tua squadra"
   }
 }

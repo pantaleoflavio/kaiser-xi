@@ -264,6 +264,27 @@ class League extends Model
         return $setting instanceof LeagueSetting ? $setting->stringValue() : $default;
     }
 
+    public function tradeMarketEnabled(): bool
+    {
+        return $this->booleanSettingValue(LeagueSetting::TRADE_MARKET_ENABLED, LeagueSetting::DEFAULT_TRADE_MARKET_ENABLED);
+    }
+
+    public function tradeMarketOpensAt(): ?string
+    {
+        return $this->stringSettingValue(LeagueSetting::TRADE_MARKET_OPENS_AT, '') ?: null;
+    }
+
+    public function tradeMarketClosesAt(): ?string
+    {
+        return $this->stringSettingValue(LeagueSetting::TRADE_MARKET_CLOSES_AT, '') ?: null;
+    }
+
+    public function tradeCashAdjustmentEnabled(): bool
+    {
+        return $this->booleanSettingValue(LeagueSetting::TRADE_CASH_ADJUSTMENT_ENABLED, LeagueSetting::DEFAULT_TRADE_CASH_ADJUSTMENT_ENABLED);
+    }
+
+
     /** @return array<int, int> */
     public function formulaOnePositionPoints(): array
     {

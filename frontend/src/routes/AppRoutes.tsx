@@ -21,6 +21,7 @@ import { FormationPage } from '../pages/FormationPage';
 import { HeadToHeadSchedulePage } from '../pages/HeadToHeadSchedulePage';
 import { LeagueStandingsPage } from '../pages/LeagueStandingsPage';
 import { ClassicChampionshipPage } from '../pages/ClassicChampionshipPage';
+import { LeagueMarketPage } from '../pages/LeagueMarketPage';
 
 export function AppRoutes() {
   return (
@@ -36,6 +37,7 @@ export function AppRoutes() {
           <Route path="leagues/create" element={<CreateLeaguePage />} />
           <Route path="leagues/:leagueId" element={<LeagueDetailPage />} />
           <Route path="leagues/:leagueId/rules" element={<LeagueRulesPage />} />
+          <Route path="leagues/:leagueId/market" element={<LeagueMarketPage />} />
           <Route path="leagues/:leagueId/fantasy-teams" element={<LeagueFantasyTeamsPage />} />
           <Route path="leagues/:leagueId/matchdays" element={<MatchdayListPage />} />
           <Route path="leagues/:leagueId/standings" element={<LeagueStandingsPage />} />

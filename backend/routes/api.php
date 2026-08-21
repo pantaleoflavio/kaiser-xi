@@ -15,6 +15,8 @@ use App\Http\Controllers\Api\V1\LeagueInvitationController;
 use App\Http\Controllers\Api\V1\LeagueMemberController;
 use App\Http\Controllers\Api\V1\LeagueSettingController;
 use App\Http\Controllers\Api\V1\LeagueTypeController;
+use App\Http\Controllers\Api\V1\MarketController;
+use App\Http\Controllers\Api\V1\MarketPlayerController;
 use App\Http\Controllers\Api\V1\MatchdayController;
 use App\Http\Controllers\Api\V1\SeasonController;
 use App\Http\Controllers\Api\V1\StandingController;
@@ -70,6 +72,8 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/{league}/eligible-players', [EligiblePlayerController::class, 'index'])
             ->name('api.v1.leagues.eligible-players.index')
             ->middleware('can:view,league');
+        Route::get('/{league}/market', MarketController::class)->middleware('can:view,league');
+        Route::get('/{league}/market/players', MarketPlayerController::class)->middleware('can:view,league');
 
         Route::get('/{league}/matchdays', [MatchdayController::class, 'index'])
             ->name('api.v1.leagues.matchdays.index')->middleware('can:view,league');
