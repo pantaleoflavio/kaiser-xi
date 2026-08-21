@@ -875,6 +875,18 @@
     "club": "Club reale",
     "quotation": "Quotazione",
     "roster": "Rosa attuale",
-    "yourTeam": "La tua squadra"
+    "yourTeam": "La tua squadra",
+    "enabledLabel": "Abilitato",
+    "disabledLabel": "Disabilitato",
+    "settings": {
+      "title": "Regole del mercato",
+      "description": "Configura quando il mercato è disponibile e se sono consentiti conguagli in denaro.",
+      "enabled": "Mercato abilitato",
+      "cashEnabled": "Conguagli in denaro abilitati",
+      "success": "Impostazioni del mercato aggiornate.",
+      "invalidWindow": "Scegli apertura e chiusura; la chiusura deve essere successiva all’apertura.",
+      "updateError": "Impossibile aggiornare le impostazioni del mercato.",
+      "errorTitle": "Impossibile aggiornare le regole del mercato"
+    }
   }
 }

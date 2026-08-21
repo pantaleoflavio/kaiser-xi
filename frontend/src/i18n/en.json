@@ -923,6 +923,18 @@
     "club": "Real club",
     "quotation": "Quotation",
     "roster": "Current roster",
-    "yourTeam": "Your team"
+    "yourTeam": "Your team",
+    "enabledLabel": "Enabled",
+    "disabledLabel": "Disabled",
+    "settings": {
+      "title": "Market rules",
+      "description": "Configure when the Market is available and whether cash adjustments are allowed.",
+      "enabled": "Market enabled",
+      "cashEnabled": "Cash adjustments enabled",
+      "success": "Market settings updated.",
+      "invalidWindow": "Choose an opening and closing time; closing must be after opening.",
+      "updateError": "The Market settings could not be updated.",
+      "errorTitle": "Unable to update Market rules"
+    }
   }
 }

@@ -19,6 +19,10 @@ export function MarketStatus({ market }: { market: Market }) {
       </p>
       <dl className="mt-4 grid gap-3 sm:grid-cols-3">
         <div>
+          <dt className="text-slate-400">{t('market.settings.enabled')}</dt>
+          <dd>{market.enabled ? t('market.enabledLabel') : t('market.disabledLabel')}</dd>
+        </div>
+        <div>
           <dt className="text-slate-400">{t('market.opens')}</dt>
           <dd>{date(market.opens_at)}</dd>
         </div>

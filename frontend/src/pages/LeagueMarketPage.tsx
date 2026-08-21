@@ -8,6 +8,7 @@ import { LoadingState } from '../components/LoadingState';
 import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { MarketStatus } from '../components/market/MarketStatus';
 import { MarketDirectory } from '../components/market/MarketDirectory';
+import { MarketSettingsEditor } from '../components/market/MarketSettingsEditor';
 import { useTranslation } from '../i18n';
 
 export function LeagueMarketPage() {
@@ -39,6 +40,9 @@ export function LeagueMarketPage() {
       <LeagueNavigation leagueId={leagueId} />
       <h1 className="text-3xl font-bold text-white">{t('market.title')}</h1>
       <MarketStatus market={market.data.data} />
+      {market.data.data.can_manage ? (
+        <MarketSettingsEditor leagueId={leagueId} market={market.data.data} />
+      ) : null}
       <section className="space-y-4">
         <h2 className="text-xl font-bold">{t('market.directory')}</h2>
         <div className="flex flex-wrap gap-3">
