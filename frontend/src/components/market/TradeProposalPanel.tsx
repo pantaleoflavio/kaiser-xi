@@ -67,15 +67,16 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
                   <p className="text-sm text-slate-400">
                     {trade.status} · {new Date(trade.created_at).toLocaleDateString()}
                   </p>
-                  <div className="flex gap-2">
+                  <div className="mt-3 flex flex-wrap gap-2">
                     {trade.capabilities.can_accept ? (
                       <button
-                        className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={isTransitionPending}
                         onClick={() => {
                           if (window.confirm(t('market.trades.acceptConfirmation')))
                             transitionTrade(trade, 'accept');
                         }}
+                        type="button"
                       >
                         {isTransitionPending &&
                         pendingTradeId === trade.id &&
@@ -86,9 +87,10 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
                     ) : null}
                     {trade.capabilities.can_reject ? (
                       <button
-                        className="rounded-lg border border-red-400/40 px-4 py-2 font-semibold text-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={isTransitionPending}
                         onClick={() => transitionTrade(trade, 'reject')}
+                        type="button"
                       >
                         {isTransitionPending &&
                         pendingTradeId === trade.id &&
@@ -99,9 +101,10 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
                     ) : null}
                     {trade.capabilities.can_cancel ? (
                       <button
-                        className="rounded-lg border border-red-400/40 px-4 py-2 font-semibold text-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-lg border border-red-400/50 bg-red-950/30 px-4 py-2 text-sm font-semibold text-red-100 transition hover:border-red-300/70 hover:bg-red-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={isTransitionPending}
                         onClick={() => transitionTrade(trade, 'cancel')}
+                        type="button"
                       >
                         {isTransitionPending &&
                         pendingTradeId === trade.id &&

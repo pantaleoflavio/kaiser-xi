@@ -120,10 +120,20 @@ export function LeagueMarketPage() {
           />
         )}
         <div className="flex justify-end gap-2">
-          <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
+          <button
+            className="rounded-lg border border-slate-600 bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:border-slate-800 disabled:text-slate-500 disabled:opacity-60"
+            disabled={page === 1}
+            onClick={() => setPage((p) => p - 1)}
+            type="button"
+          >
             {t('common.previous')}
           </button>
-          <button disabled={!players.data?.links.next} onClick={() => setPage((p) => p + 1)}>
+          <button
+            className="rounded-lg border border-slate-600 bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:border-slate-800 disabled:text-slate-500 disabled:opacity-60"
+            disabled={!players.data?.links.next}
+            onClick={() => setPage((p) => p + 1)}
+            type="button"
+          >
             {t('common.next')}
           </button>
         </div>

@@ -42,9 +42,15 @@ export function MarketDirectory({
                     : player.fantasy_team.name
                   : t('market.unassigned')}
               </td>
-              <td className="p-3">
+              <td className="p-3 text-right">
                 {canTrade && player.assignment_id && !player.fantasy_team?.is_own ? (
-                  <button onClick={() => propose(player)}>{t('market.trades.propose')}</button>
+                  <button
+                    className="whitespace-nowrap rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
+                    onClick={() => propose(player)}
+                    type="button"
+                  >
+                    {t('market.trades.propose')}
+                  </button>
                 ) : null}
               </td>
             </tr>
