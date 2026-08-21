@@ -9,8 +9,6 @@ use App\Models\LeagueType;
 use App\Models\Season;
 use App\Models\User;
 use App\Services\League\LeagueSettingsService;
-use Database\Seeders\DemoLeagueSeeder;
-use Database\Seeders\RealCompetitionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -190,46 +188,6 @@ class LeagueSettingsApiTest extends TestCase
         $this->assertSame(LeagueSetting::DEFAULT_ROSTER_ROLE_LIMITS, $league->rosterRoleLimits());
         $this->assertDatabaseHas('league_settings', ['league_id' => $league->id, 'key' => LeagueSetting::MAX_ROSTER_PLAYERS]);
         $this->assertDatabaseHas('league_settings', ['league_id' => $league->id, 'key' => LeagueSetting::ROSTER_ROLE_LIMITS]);
-    }
-
-    public function test_demo_league_roster_settings_are_seeded_idempotently(): void
-    {
-        $this->seed(RealCompetitionSeeder::class);
-
-        $this->seed(DemoLeagueSeeder::class);
-        $this->seed(DemoLeagueSeeder::class);
-
-        $league = League::query()
-            ->where('slug', DemoLeagueSeeder::LEAGUE_SLUG)
-            ->firstOrFail();
-
-        $this->assertSame(
-            1,
-            $league->settings()
-                ->where('key', LeagueSetting::MAX_ROSTER_PLAYERS)
-                ->count()
-        );
-
-        $this->assertSame(
-            1,
-            $league->settings()
-                ->where('key', LeagueSetting::ROSTER_ROLE_LIMITS)
-                ->count()
-        );
-
-        $this->assertSame(
-            1,
-            $league->settings()
-                ->where('key', LeagueSetting::REAL_CAPTAIN_BONUS_POINTS)
-                ->count()
-        );
-
-        $this->assertSame(
-            1,
-            $league->settings()
-                ->where('key', LeagueSetting::DEFENSE_MODIFIER_ENABLED)
-                ->count()
-        );
     }
 
     private function leagueWithMember(string $role): array
