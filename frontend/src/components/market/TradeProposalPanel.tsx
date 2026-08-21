@@ -29,6 +29,14 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
       ]);
     },
   });
+  const isTransitionPending = transition.isPending;
+  const pendingTradeId = transition.variables?.trade.id;
+  const pendingAction = transition.variables?.action;
+
+  function transitionTrade(trade: TradeProposal, action: 'accept' | 'reject' | 'cancel') {
+    if (isTransitionPending) return;
+    transition.mutate({ trade, action });
+  }
   if (trades.error)
     return <ContentErrorPanel title={t('market.trades.title')} message={trades.error.message} />;
   const all = trades.data?.data ?? [];
@@ -62,22 +70,44 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
                   <div className="flex gap-2">
                     {trade.capabilities.can_accept ? (
                       <button
+                        className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
+                        disabled={isTransitionPending}
                         onClick={() => {
                           if (window.confirm(t('market.trades.acceptConfirmation')))
-                            transition.mutate({ trade, action: 'accept' });
+                            transitionTrade(trade, 'accept');
                         }}
                       >
-                        {t('market.trades.accept')}
+                        {isTransitionPending &&
+                        pendingTradeId === trade.id &&
+                        pendingAction === 'accept'
+                          ? t('market.trades.accepting')
+                          : t('market.trades.accept')}
                       </button>
                     ) : null}
                     {trade.capabilities.can_reject ? (
-                      <button onClick={() => transition.mutate({ trade, action: 'reject' })}>
-                        {t('market.trades.reject')}
+                      <button
+                        className="rounded-lg border border-red-400/40 px-4 py-2 font-semibold text-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        disabled={isTransitionPending}
+                        onClick={() => transitionTrade(trade, 'reject')}
+                      >
+                        {isTransitionPending &&
+                        pendingTradeId === trade.id &&
+                        pendingAction === 'reject'
+                          ? t('market.trades.rejecting')
+                          : t('market.trades.reject')}
                       </button>
                     ) : null}
                     {trade.capabilities.can_cancel ? (
-                      <button onClick={() => transition.mutate({ trade, action: 'cancel' })}>
-                        {t('common.cancel')}
+                      <button
+                        className="rounded-lg border border-red-400/40 px-4 py-2 font-semibold text-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                        disabled={isTransitionPending}
+                        onClick={() => transitionTrade(trade, 'cancel')}
+                      >
+                        {isTransitionPending &&
+                        pendingTradeId === trade.id &&
+                        pendingAction === 'cancel'
+                          ? t('market.trades.cancelling')
+                          : t('common.cancel')}
                       </button>
                     ) : null}
                   </div>

@@ -75,57 +75,59 @@ export function CreateTradeForm({
         <h2 className="text-xl font-bold">
           {t('market.trades.proposeFor', { name: target.name })}
         </h2>
-        <select
-          required
-          value={offered}
-          onChange={(e) => setOffered(e.target.value)}
-          className="w-full rounded border border-slate-700 bg-slate-950 p-2"
-        >
-          <option value="">{t('market.trades.choosePlayer')}</option>
-          {roster.map((v) => (
-            <option key={v.id} value={v.id}>
-              {v.player.name}
-            </option>
-          ))}
-        </select>
-        {market.cash_adjustment_enabled ? (
-          <>
-            <select
-              value={payer}
-              onChange={(e) => setPayer(e.target.value)}
-              className="w-full rounded border border-slate-700 bg-slate-950 p-2"
-            >
-              <option value="">{t('market.trades.noCash')}</option>
-              <option value={ownTeam.id}>{ownTeam.name}</option>
-              <option value={target.fantasy_team!.id}>{target.fantasy_team!.name}</option>
-            </select>
-            <input
-              type="number"
-              min="0"
-              step="1"
-              value={cash}
-              onChange={(e) => setCash(e.target.value)}
-              className="w-full rounded border border-slate-700 bg-slate-950 p-2"
-            />
-          </>
-        ) : null}
-        {error ? (
-          <p role="alert" className="text-red-400">
-            {error}
-          </p>
-        ) : null}
-        <div className="flex gap-2">
-          <button
-            className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
-            disabled={mutation.isPending || !formIsValid || !market.can_trade}
-            type="submit"
+        <fieldset className="space-y-4" disabled={mutation.isPending}>
+          <select
+            required
+            value={offered}
+            onChange={(e) => setOffered(e.target.value)}
+            className="w-full rounded border border-slate-700 bg-slate-950 p-2"
           >
-            {mutation.isPending ? t('market.trades.sending') : t('market.trades.propose')}
-          </button>
-          <button type="button" disabled={mutation.isPending} onClick={close}>
-            {t('common.cancel')}
-          </button>
-        </div>
+            <option value="">{t('market.trades.choosePlayer')}</option>
+            {roster.map((v) => (
+              <option key={v.id} value={v.id}>
+                {v.player.name}
+              </option>
+            ))}
+          </select>
+          {market.cash_adjustment_enabled ? (
+            <>
+              <select
+                value={payer}
+                onChange={(e) => setPayer(e.target.value)}
+                className="w-full rounded border border-slate-700 bg-slate-950 p-2"
+              >
+                <option value="">{t('market.trades.noCash')}</option>
+                <option value={ownTeam.id}>{ownTeam.name}</option>
+                <option value={target.fantasy_team!.id}>{target.fantasy_team!.name}</option>
+              </select>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                value={cash}
+                onChange={(e) => setCash(e.target.value)}
+                className="w-full rounded border border-slate-700 bg-slate-950 p-2"
+              />
+            </>
+          ) : null}
+          {error ? (
+            <p role="alert" className="text-red-400">
+              {error}
+            </p>
+          ) : null}
+          <div className="flex gap-2">
+            <button
+              className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={!formIsValid || !market.can_trade}
+              type="submit"
+            >
+              {mutation.isPending ? t('market.trades.sendingProposal') : t('market.trades.propose')}
+            </button>
+            <button type="button" onClick={close}>
+              {t('common.cancel')}
+            </button>
+          </div>
+        </fieldset>
       </form>
     </div>
   );
