@@ -22,6 +22,7 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
     }) => leaguesApi.transitionTrade(leagueId, trade.id, action),
     onSuccess: async () => {
       await Promise.all([
+        client.invalidateQueries({ queryKey: leagueKeys.detail(leagueId) }),
         client.invalidateQueries({ queryKey: leagueKeys.marketTrades(leagueId) }),
         client.invalidateQueries({ queryKey: leagueKeys.market(leagueId) }),
         client.invalidateQueries({ queryKey: leagueKeys.fantasyTeams(leagueId) }),

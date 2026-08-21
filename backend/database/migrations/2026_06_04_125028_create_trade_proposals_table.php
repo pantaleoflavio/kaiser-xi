@@ -13,8 +13,8 @@ return new class extends Migration
             $table->foreignId('league_id')->constrained()->cascadeOnDelete();
             $table->foreignId('from_team_id')->constrained('fantasy_teams')->restrictOnDelete();
             $table->foreignId('to_team_id')->constrained('fantasy_teams')->restrictOnDelete();
-            $table->foreignId('offered_fantasy_team_player_id')->nullable()->constrained('fantasy_team_players')->restrictOnDelete();
-            $table->foreignId('requested_fantasy_team_player_id')->nullable()->constrained('fantasy_team_players')->restrictOnDelete();
+            $table->foreignId('offered_fantasy_team_player_id')->constrained('fantasy_team_players')->restrictOnDelete();
+            $table->foreignId('requested_fantasy_team_player_id')->constrained('fantasy_team_players')->restrictOnDelete();
             $table->foreignId('cash_paid_by_team_id')->nullable()->constrained('fantasy_teams')->nullOnDelete();
             $table->decimal('cash_amount', 10, 2)->default(0);
             $table->string('status')->default('pending');
