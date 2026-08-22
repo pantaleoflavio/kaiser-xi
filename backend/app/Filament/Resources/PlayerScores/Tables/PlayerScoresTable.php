@@ -2,12 +2,16 @@
 
 namespace App\Filament\Resources\PlayerScores\Tables;
 
+use App\Enums\PlayerScoreStatus;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class PlayerScoresTable
 {
@@ -15,65 +19,46 @@ class PlayerScoresTable
     {
         return $table
             ->columns([
-                TextColumn::make('playerSeasonRegistration.id')
-                    ->searchable(),
-                TextColumn::make('matchday.name')
-                    ->searchable(),
-                TextColumn::make('base_rating')
-                    ->numeric()
+                TextColumn::make('matchday.number')
+                    ->label(__('admin.labels.matchday'))
+                    ->formatStateUsing(fn($record): string => $record->matchday->displayLabel())
+                    ->searchable(query: fn(Builder $query, string $search): Builder => $query->whereHas(
+                        'matchday',
+                        fn(Builder $query): Builder => $query
+                            ->where('name', 'like', "%{$search}%")
+                            ->when(
+                                ctype_digit($search),
+                                fn(Builder $query): Builder => $query->orWhere('number', (int) $search),
+                            ),
+                    ))
                     ->sortable(),
-                TextColumn::make('goals')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('assists')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('yellow_cards')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('red_cards')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('own_goals')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('penalties_scored')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('penalties_missed')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('penalties_saved')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('goals_conceded')
-                    ->numeric()
-                    ->sortable(),
-                IconColumn::make('clean_sheet')
-                    ->boolean(),
-                TextColumn::make('final_score')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('status')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('playerSeasonRegistration.player.display_name')->label(__('admin.labels.display_name'))->searchable()->sortable(),
+                TextColumn::make('playerSeasonRegistration.seasonClub.realClub.name')->label(__('admin.labels.real_club'))->searchable()->sortable(),
+                TextColumn::make('playerSeasonRegistration.playerRole.label')->label(__('admin.labels.player_role'))->sortable(),
+                TextColumn::make('base_rating')->label(__('admin.labels.base_rating'))->numeric(2)->sortable(),
+                TextColumn::make('final_score')->label(__('admin.labels.final_score'))->numeric(2)->sortable(),
+                TextColumn::make('status')->label(__('admin.labels.status'))->formatStateUsing(fn(PlayerScoreStatus $state): string => $state->label())->badge()->sortable(),
+                IconColumn::make('is_captain')->label(__('admin.player_scores.captain'))->boolean(),
+                IconColumn::make('clean_sheet')->label(__('admin.labels.clean_sheet'))->boolean(),
             ])
             ->filters([
-                //
+                SelectFilter::make('season')->relationship('matchday.season', 'name')->searchable(),
+                SelectFilter::make('matchday')->relationship('matchday', 'name')->searchable(),
+                SelectFilter::make('status')->options(PlayerScoreStatus::options()),
+                SelectFilter::make('player_role')->relationship('playerSeasonRegistration.playerRole', 'label')->searchable(),
+                TernaryFilter::make('missing_final_score')
+                    ->label(__('admin.player_scores.missing_final_score'))
+                    ->queries(
+                        true: fn(Builder $query): Builder => $query->whereNull('final_score'),
+                        false: fn(Builder $query): Builder => $query->whereNotNull('final_score'),
+                    ),
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
+            ->recordActions([EditAction::make()])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->modalDescription(__('admin.player_scores.bulk_delete_warning')),
                 ]),
             ]);
     }

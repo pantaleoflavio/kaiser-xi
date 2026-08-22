@@ -6,6 +6,27 @@ return [
         'locales' => ['en' => 'Inglese', 'de' => 'Tedesco', 'it' => 'Italiano'],
     ],
     'panel' => ['title' => 'FantaMeister Admin'],
+    'player_scores' => [
+        'bulk_delete_warning' => 'L’eliminazione dei punteggi può ridurre la tracciabilità storica. I risultati di Lega esistenti non vengono ricalcolati.',
+        'captain' => 'Capitano',
+        'confirmed_warning_body' => 'Le modifiche a questo punteggio confermato non ricalcolano automaticamente le giornate di Lega già calcolate.',
+        'confirmed_warning_title' => 'Punteggio confermato',
+        'delete_warning' => 'L’eliminazione di questo punteggio può ridurre la tracciabilità storica. I risultati di Lega esistenti non vengono ricalcolati.',
+        'missing_final_score' => 'Punteggio finale mancante',
+        'real_club_captain' => 'Capitano del club reale',
+        'real_club_captain_help' => 'Il giocatore è stato capitano del club reale.',
+        'sections' => [
+            'identity' => 'Identità',
+            'match_events' => 'Eventi partita',
+            'raw_performance' => 'Prestazione grezza',
+            'status_scoring' => 'Stato / punteggio',
+        ],
+    ],
+    'validation' => ['player_scores' => [
+        'confirmed_final_score_required' => 'Un punteggio finale è obbligatorio quando lo stato è confermato.',
+        'duplicate' => 'Esiste già un punteggio per questa registrazione giocatore e giornata.',
+        'season_mismatch' => 'La registrazione del giocatore deve appartenere alla stagione della giornata.',
+    ]],
     'navigation' => ['groups' => [
         'system' => 'Sistema',
         'competitions' => 'Competizioni',

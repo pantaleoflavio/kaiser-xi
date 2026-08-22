@@ -6,6 +6,27 @@ return [
         'locales' => ['en' => 'English', 'de' => 'German', 'it' => 'Italian'],
     ],
     'panel' => ['title' => 'FantaMeister Admin'],
+    'player_scores' => [
+        'bulk_delete_warning' => 'Deleting scores can weaken historical traceability. Existing calculated league results are not recalculated.',
+        'captain' => 'Captain',
+        'confirmed_warning_body' => 'Changes to this confirmed PlayerScore do not automatically recalculate already calculated League Matchdays.',
+        'confirmed_warning_title' => 'Confirmed score',
+        'delete_warning' => 'Deleting this score can weaken historical traceability. Existing calculated league results are not recalculated.',
+        'missing_final_score' => 'Missing final score',
+        'real_club_captain' => 'Real club captain',
+        'real_club_captain_help' => 'The player captained the real club.',
+        'sections' => [
+            'identity' => 'Identity',
+            'match_events' => 'Match events',
+            'raw_performance' => 'Raw performance',
+            'status_scoring' => 'Status / scoring input',
+        ],
+    ],
+    'validation' => ['player_scores' => [
+        'confirmed_final_score_required' => 'A final score is required when the status is confirmed.',
+        'duplicate' => 'A score already exists for this player registration and matchday.',
+        'season_mismatch' => 'The player registration must belong to the matchday season.',
+    ]],
     'navigation' => ['groups' => [
         'system' => 'System',
         'competitions' => 'Competitions',

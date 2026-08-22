@@ -6,6 +6,27 @@ return [
         'locales' => ['en' => 'Englisch', 'de' => 'Deutsch', 'it' => 'Italienisch'],
     ],
     'panel' => ['title' => 'FantaMeister Admin'],
+    'player_scores' => [
+        'bulk_delete_warning' => 'Das Löschen von Bewertungen kann die historische Nachvollziehbarkeit beeinträchtigen. Bestehende Ligaergebnisse werden nicht neu berechnet.',
+        'captain' => 'Kapitän',
+        'confirmed_warning_body' => 'Änderungen an dieser bestätigten Spielerbewertung berechnen bereits berechnete Liga-Spieltage nicht automatisch neu.',
+        'confirmed_warning_title' => 'Bestätigte Bewertung',
+        'delete_warning' => 'Das Löschen dieser Bewertung kann die historische Nachvollziehbarkeit beeinträchtigen. Bestehende Ligaergebnisse werden nicht neu berechnet.',
+        'missing_final_score' => 'Fehlende Endbewertung',
+        'real_club_captain' => 'Kapitän des realen Vereins',
+        'real_club_captain_help' => 'Der Spieler war Kapitän seines realen Vereins.',
+        'sections' => [
+            'identity' => 'Identität',
+            'match_events' => 'Spielereignisse',
+            'raw_performance' => 'Rohleistung',
+            'status_scoring' => 'Status / Bewertung',
+        ],
+    ],
+    'validation' => ['player_scores' => [
+        'confirmed_final_score_required' => 'Für den Status „Bestätigt“ ist eine Endbewertung erforderlich.',
+        'duplicate' => 'Für diese Spielerregistrierung und diesen Spieltag existiert bereits eine Bewertung.',
+        'season_mismatch' => 'Die Spielerregistrierung muss zur Saison des Spieltags gehören.',
+    ]],
     'navigation' => ['groups' => [
         'system' => 'System',
         'competitions' => 'Wettbewerbe',

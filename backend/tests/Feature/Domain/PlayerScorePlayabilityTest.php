@@ -33,7 +33,6 @@ class PlayerScorePlayabilityTest extends TestCase
         yield 'confirmed score' => [PlayerScoreStatus::Confirmed, 6.0, true];
         yield 'pending score' => [PlayerScoreStatus::Pending, 6.0, false];
         yield 'did not play' => [PlayerScoreStatus::DidNotPlay, null, false];
-        yield 'confirmed without final score' => [PlayerScoreStatus::Confirmed, null, false];
         yield 'genuine zero score' => [PlayerScoreStatus::Confirmed, 0.0, true];
     }
 

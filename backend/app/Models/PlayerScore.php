@@ -48,8 +48,11 @@ class PlayerScore extends Model
         static::saving(function (self $score): void {
             $registrationSeasonId = PlayerSeasonRegistration::query()->with('seasonClub')->find($score->player_season_registration_id)?->seasonClub?->season_id;
             $matchdaySeasonId = Matchday::query()->find($score->matchday_id)?->season_id;
+
             if ($registrationSeasonId === null || $registrationSeasonId !== $matchdaySeasonId) {
-                throw ValidationException::withMessages(['player_season_registration_id' => 'The player registration must belong to the matchday season.']);
+                throw ValidationException::withMessages([
+                    'player_season_registration_id' => __('admin.validation.player_scores.season_mismatch'),
+                ]);
             }
         });
     }
