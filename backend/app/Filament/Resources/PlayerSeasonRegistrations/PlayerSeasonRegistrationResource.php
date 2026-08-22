@@ -23,7 +23,7 @@ class PlayerSeasonRegistrationResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin.navigation.groups.system');
+        return __('admin.navigation.groups.real_data');
     }
 
     public static function getNavigationLabel(): string

@@ -41,7 +41,7 @@ return [
     'resources' => [
         'matchdays' => ['singular' => 'Spieltag', 'plural' => 'Spieltage'],
         'league_types' => ['singular' => 'Ligatyp', 'plural' => 'Ligatype'],
-        'real_matchs' => ['singular' => 'Reales Spiel', 'plural' => 'Reales Spiele'],
+        'real_matches' => ['singular' => 'Reales Spiel', 'plural' => 'Reales Spiele'],
         'seasons' => ['singular' => 'Saison', 'plural' => 'Saisone'],
         'roles' => ['singular' => 'Rolle', 'plural' => 'Rollee'],
         'season_clubs' => ['singular' => 'Saisonverein', 'plural' => 'Saisonvereine'],

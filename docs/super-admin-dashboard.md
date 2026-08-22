@@ -30,7 +30,7 @@ Labels below are the English translations. All listed resources provide list/cre
 | Real Data | Matchdays | Season rounds, number/name and start/end datetimes. |
 | Real Data | Real Matches | Fixture linking Matchday and home/away SeasonClubs, kickoff, score and status. This is manual UI only, not a CSV type. |
 | Scores | Player Scores | Global registration + Matchday performance and supplied final score; super_admin only. |
-| System | Player Season Registrations | Player, SeasonClub, role, external identity, quotation/shirt/timestamps/active. (Its current navigation group is literally System.) |
+| Real Data | Player Season Registrations | Player, SeasonClub, role, external identity, quotation/shirt/timestamps/active. |
 | System | Users | Accounts, email, global roles and password; super_admin only. |
 | System | Roles | Global role name/label/level/system flag; super_admin only. |
 | Lookups | League Types | Type key/name/description used by Leagues. |
@@ -106,5 +106,3 @@ The page does **not** display an import-history table, job progress, completed r
 - Import history exists in models/storage but is not browsable on the Import data page.
 - There is no global League, scoring-rule, or settings resource in Filament.
 - Most resources expose generic bulk deletion without domain-specific warnings. Only PlayerScore adds explicit historical warnings.
-- **UI inconsistency (not changed):** PlayerSeasonRegistration is placed in the **System** navigation group rather than Real Data, despite being global real-football data.
-- **Documentation-relevant defect (not changed):** the English translation key is `resources.real_matchs` (misspelled internally), although its displayed plural label is correctly “Real Matches.”

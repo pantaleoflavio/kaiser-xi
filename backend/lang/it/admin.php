@@ -41,7 +41,7 @@ return [
     'resources' => [
         'matchdays' => ['singular' => 'Giornata', 'plural' => 'Giornata'],
         'league_types' => ['singular' => 'Tipo di lega', 'plural' => 'Tipo di lega'],
-        'real_matchs' => ['singular' => 'Partita reale', 'plural' => 'Partita reale'],
+        'real_matches' => ['singular' => 'Partita reale', 'plural' => 'Partita reale'],
         'seasons' => ['singular' => 'Stagione', 'plural' => 'Stagione'],
         'roles' => ['singular' => 'Ruolo', 'plural' => 'Ruolo'],
         'season_clubs' => ['singular' => 'Club della stagione', 'plural' => 'Club della stagione'],

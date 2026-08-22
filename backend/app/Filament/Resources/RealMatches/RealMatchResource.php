@@ -29,17 +29,17 @@ class RealMatchResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('admin.resources.real_matchs.plural');
+        return __('admin.resources.real_matches.plural');
     }
 
     public static function getModelLabel(): string
     {
-        return __('admin.resources.real_matchs.singular');
+        return __('admin.resources.real_matches.singular');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('admin.resources.real_matchs.plural');
+        return __('admin.resources.real_matches.plural');
     }
 
     protected static ?string $recordTitleAttribute = 'id';
