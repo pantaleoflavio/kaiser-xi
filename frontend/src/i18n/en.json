@@ -159,7 +159,7 @@
   "leagues": {
     "eyebrow": "League basics",
     "title": "Your leagues",
-    "description": "This protected page lists the leagues available to your account. Fantasy team flows are intentionally not implemented yet.",
+    "description": "View and manage the leagues available to your account.",
     "loading": "Loading leagues...",
     "error": "Unable to load leagues.",
     "errorTitle": "Unable to load leagues",
@@ -574,7 +574,7 @@
       "conflict": "The request conflicts with the league’s current state.",
       "validation": "Please correct the highlighted fields.",
       "unexpected": "The request could not be completed. Please try again.",
-      "commissionerUnverified": "The league was created, but the backend did not identify you as its commissioner.",
+      "commissionerUnverified": "The league was created, but your commissioner access could not be confirmed.",
       "server": "The server could not complete the request. Please try again.",
       "network": "The request could not be completed. Check your connection and try again."
     },
@@ -884,7 +884,7 @@
       "nonNegativeInteger": "Every position must award a non-negative whole number of points.",
       "nonIncreasing": "Points cannot increase as the finishing position gets worse."
     },
-    "standingsDescription": "Formula One championship ranking in backend-authoritative finishing order."
+    "standingsDescription": "Formula One championship standings in official finishing order."
   },
   "playerMarket": {
     "available": "Available",

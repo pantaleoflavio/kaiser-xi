@@ -574,7 +574,7 @@
       "conflict": "Die Anfrage steht im Konflikt mit dem aktuellen Ligastatus.",
       "validation": "Bitte korrigiere die markierten Felder.",
       "unexpected": "Die Anfrage konnte nicht abgeschlossen werden. Versuche es erneut.",
-      "commissionerUnverified": "Die Liga wurde erstellt, aber das Backend hat dich nicht als Commissioner erkannt.",
+      "commissionerUnverified": "Die Liga wurde erstellt, aber dein Zugriff als Ligaleitung konnte nicht bestätigt werden.",
       "server": "Der Server konnte die Anfrage nicht abschließen. Versuche es erneut.",
       "network": "Die Anfrage konnte nicht abgeschlossen werden. Prüfe deine Verbindung und versuche es erneut."
     },
@@ -884,7 +884,7 @@
       "nonNegativeInteger": "Jede Position muss eine nichtnegative ganze Punktzahl vergeben.",
       "nonIncreasing": "Die Punkte dürfen bei schlechterer Platzierung nicht steigen."
     },
-    "standingsDescription": "Formel-1-Meisterschaftstabelle in der vom Backend vorgegebenen Reihenfolge."
+    "standingsDescription": "Formel-1-Meisterschaftstabelle in der offiziellen Zielreihenfolge."
   },
   "playerMarket": {
     "available": "Verfügbar",

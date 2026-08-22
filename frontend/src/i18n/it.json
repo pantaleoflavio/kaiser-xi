@@ -488,7 +488,7 @@
     },
     "options": {
       "title": "Dati di selezione non disponibili",
-      "unavailable": "Il backend non fornisce ancora endpoint per selezionare stagioni e tipi di lega. La creazione è disabilitata finché non saranno disponibili opzioni reali."
+      "unavailable": "Le stagioni e i tipi di lega non sono al momento disponibili. La creazione sarà abilitata quando saranno disponibili opzioni valide."
     },
     "loading": {
       "defaults": "Caricamento delle regole predefinite salvate…",
@@ -526,7 +526,7 @@
       "conflict": "La richiesta è in conflitto con lo stato attuale della lega.",
       "validation": "Correggi i campi evidenziati.",
       "unexpected": "Impossibile completare la richiesta. Riprova.",
-      "commissionerUnverified": "La lega è stata creata, ma il backend non ti identifica come commissioner.",
+      "commissionerUnverified": "La lega è stata creata, ma non è stato possibile confermare il tuo accesso come responsabile.",
       "server": "Il server non ha potuto completare la richiesta. Riprova.",
       "network": "Impossibile completare la richiesta. Controlla la connessione e riprova."
     },
@@ -836,7 +836,7 @@
       "nonNegativeInteger": "Ogni posizione deve assegnare un numero intero non negativo di punti.",
       "nonIncreasing": "I punti non possono aumentare al peggiorare della posizione."
     },
-    "standingsDescription": "Classifica del campionato Formula Uno nell’ordine determinato dal backend."
+    "standingsDescription": "Classifica del campionato Formula Uno secondo l’ordine di arrivo ufficiale."
   },
   "playerMarket": {
     "available": "Disponibile",
