@@ -6,10 +6,14 @@ use App\Enums\CsvImportType;
 use App\Enums\ImportStatus;
 use App\Jobs\ExecuteCsvImportJob;
 use App\Models\Import;
+use App\Services\Import\CsvParser;
 use App\Services\Import\Importers\CsvImporter;
+use App\Services\Import\Importers\MatchdayCsvImporter;
 use App\Services\Import\Importers\PlayerCsvImporter;
 use App\Services\Import\Importers\RealClubCsvImporter;
 use App\Services\Import\Importers\RealCompetitionCsvImporter;
+use App\Services\Import\Importers\SeasonClubCsvImporter;
+use App\Services\Import\Importers\SeasonCsvImporter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,7 +26,10 @@ class CsvImportService
         return app(match ($type) {
             CsvImportType::RealCompetitions => RealCompetitionCsvImporter::class,
             CsvImportType::RealClubs => RealClubCsvImporter::class,
-            CsvImportType::Players => PlayerCsvImporter::class
+            CsvImportType::Players => PlayerCsvImporter::class,
+            CsvImportType::Seasons => SeasonCsvImporter::class,
+            CsvImportType::SeasonClubs => SeasonClubCsvImporter::class,
+            CsvImportType::Matchdays => MatchdayCsvImporter::class,
         });
     }
 

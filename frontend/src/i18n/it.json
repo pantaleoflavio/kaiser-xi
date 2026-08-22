@@ -53,7 +53,7 @@
   "dashboard": {
     "eyebrow": "Dashboard",
     "title": "Bentornato, {{name}}.",
-    "description": "Il tuo spazio autenticato FantaMeister è pronto. I moduli per leghe, inviti e fantasy team possono essere aggiunti qui senza modificare la base di autenticazione.",
+    "description": "Gestisci leghe, inviti e fantasy team in un unico spazio.",
     "accountTitle": "Account",
     "nameLabel": "Nome",
     "emailLabel": "Email",
@@ -116,9 +116,9 @@
     "noDescription": "Nessuna descrizione fornita.",
     "viewDetails": "Vedi dettagli lega",
     "roles": {
-      "commissioner": "Commissioner",
-      "co_commissioner": "Co-commissioner",
-      "participant": "Participant",
+      "commissioner": "Amministratore",
+      "co_commissioner": "Vice amministratore",
+      "participant": "Partecipante",
       "unknown": "Membro"
     },
     "fields": {
@@ -232,7 +232,7 @@
       "description": "Team attualmente registrati in questa lega.",
       "emptyTitle": "Nessun fantasy team ancora",
       "emptyDescription": "Nessun membro della lega ha ancora creato un fantasy team.",
-      "owner": "Owner: {{name}}",
+      "owner": "Proprietario: {{name}}",
       "ownedByYou": "Il tuo team",
       "youOwnTeam": "Possiedi già un team"
     },
@@ -248,11 +248,11 @@
       "eyebrow": "Fantasy team",
       "loading": "Caricamento fantasy team...",
       "backToLeague": "← Torna alla lega",
-      "owner": "Owner: {{name}}",
+      "owner": "Proprietario: {{name}}",
       "ownedByYou": "Di tua proprietà",
       "fields": {
         "slug": "Slug",
-        "leagueId": "ID lega",
+        "leagueId": "Lega",
         "createdAt": "Creato",
         "updatedAt": "Aggiornato"
       },

@@ -53,7 +53,7 @@
   "dashboard": {
     "eyebrow": "Dashboard",
     "title": "Welcome back, {{name}}.",
-    "description": "Your authenticated FantaMeister workspace is ready. League, invitation, and fantasy team modules can be added here without changing the auth foundation.",
+    "description": "Manage your leagues, invitations, and fantasy teams from one place.",
     "accountTitle": "Account",
     "nameLabel": "Name",
     "emailLabel": "Email",
@@ -72,87 +72,87 @@
     "account": "Account"
   },
   "home": {
-    "eyebrow": "Fantasy football a modo tuo",
-    "title": "Crea mondi di fantasy football privati su più competizioni.",
-    "description": "FantaMeister è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
+    "eyebrow": "Fantasy football your way",
+    "title": "Build private fantasy-football worlds across competitions.",
+    "description": "Create or join private leagues and manage fantasy teams with friends.",
     "cta": {
-      "login": "Accedi",
-      "register": "Registrati",
-      "dashboard": "Vai alla dashboard"
+      "login": "Log in",
+      "register": "Register",
+      "dashboard": "Go to dashboard"
     },
     "panel": {
-      "label": "Base per il futuro",
-      "title": "Pronta per stagioni fantasy più profonde",
-      "description": "L’app viene preparata per rose, aste, formazioni e giornate, mantenendo l’esperienza attuale semplice e focalizzata."
+      "label": "Everything in one place",
+      "title": "Your fantasy season starts here",
+      "description": "Manage squads, auctions, formations, and matchdays in a focused experience."
     },
     "features": {
       "competitions": {
-        "title": "Piattaforma multi-competizione",
-        "description": "Organizza esperienze di fantasy football che possono crescere oltre una sola competizione reale."
+        "title": "Multiple competitions",
+        "description": "Enjoy fantasy football across more than one real competition."
       },
       "leagues": {
-        "title": "Leghe private",
-        "description": "Crea o unisciti a leghe private per il tuo gruppo e tieni ogni stagione in un unico spazio FantaMeister."
+        "title": "Private leagues",
+        "description": "Create or join a private league for your group."
       },
       "teams": {
-        "title": "Gestione fantasy team",
-        "description": "Gestisci le basi del tuo fantasy team prima dell’arrivo di strumenti avanzati per leghe e rose."
+        "title": "Fantasy-team management",
+        "description": "Manage your team, squad, and matchday formation."
       },
       "roadmap": {
-        "title": "Costruita per i prossimi passi",
-        "description": "È previsto il supporto futuro per rose, aste, formazioni tattiche e flussi delle giornate."
+        "title": "A complete season",
+        "description": "Follow your league from squad building through every matchday."
       }
     }
   },
   "rules": {
-    "eyebrow": "Regole e guida",
-    "title": "Come funziona FantaMeister",
-    "description": "Una guida rapida alle idee principali dietro leghe, team e future aree di gioco di FantaMeister.",
+    "eyebrow": "Rules and guide",
+    "title": "How FantaMeister works",
+    "description": "A quick guide to leagues, teams, and matchday play.",
     "sections": {
       "overview": {
-        "title": "Cos’è FantaMeister",
-        "description": "FantaMeister è una piattaforma di fantasy football multi-competizione per gruppi privati che vogliono gestire le proprie stagioni fantasy."
+        "title": "What is FantaMeister?",
+        "description": "A multi-competition fantasy-football platform for private groups."
       },
       "leagues": {
-        "title": "Come funzionano le leghe",
-        "description": "Le leghe sono spazi privati in cui i membri seguono una competizione, confrontano i team e vivono una stagione condivisa."
+        "title": "How leagues work",
+        "description": "Leagues are private spaces where members share a fantasy season."
       },
       "roles": {
-        "title": "Ruoli della lega",
-        "description": "Ogni membro della lega ha un ruolo con responsabilità specifiche. I commissioner guidano la lega, i co-commissioner aiutano e i participant giocano."
+        "title": "League roles",
+        "description": "Every member has a role: commissioners manage the league, co-commissioners assist, and participants compete."
       },
       "teams": {
-        "title": "Basi dei fantasy team",
-        "description": "I fantasy team rappresentano ogni partecipante in una lega. La gestione del team diventerà la base per rose, formazioni e punteggi di giornata."
+        "title": "Fantasy teams",
+        "description": "Each participant manages a fantasy team, squad, formation, and matchday scores."
       },
       "future": {
-        "title": "Aree di gioco future",
-        "description": "La base del prodotto viene preparata per flussi fantasy più profondi su rose, budget, aste, formazioni e giornate."
+        "title": "The season experience",
+        "description": "Build squads, manage budgets and auctions, set formations, and compete on matchdays."
       }
     },
     "roles": {
-      "title": "Dettagli dei ruoli",
+      "title": "Role details",
       "commissioner": {
         "title": "Commissioner",
-        "description": "Gestisce la configurazione della lega e guida l’esperienza della lega."
+        "description": "Configures and manages the league."
       },
       "coCommissioner": {
         "title": "Co-commissioner",
-        "description": "Supporta il commissioner nelle responsabilità di gestione della lega."
+        "description": "Helps manage the league."
       },
       "participant": {
         "title": "Participant",
-        "description": "Compete nella lega gestendo un fantasy team."
+        "description": "Competes by managing a fantasy team."
       }
     },
     "future": {
-      "title": "Aree di gioco pianificate",
+      "title": "Ways to play",
       "items": {
-        "squads": "Rose per costruire e mantenere i roster dei team.",
-        "budget": "Regole di budget per bilanciare le decisioni di costruzione del team.",
-        "auctions": "Aste per assegnare i giocatori nelle leghe private.",
-        "formations": "Formazioni per scelte tattiche di lineup.",
-        "matchdays": "Giornate per organizzare partite, punteggi e avanzamento."
+        "squads": "Build and maintain your team squad.",
+        "budget": "Balance team-building decisions with a budget.",
+        "auctions": "Assign players through private-league auctions.",
+        "formations": "Make tactical lineup choices.",
+        "matchdays": "Follow fixtures, scores, and league progress."
       }
     }
   },
@@ -304,7 +304,7 @@
       "ownedByYou": "Owned by you",
       "fields": {
         "slug": "Slug",
-        "leagueId": "League ID",
+        "leagueId": "League",
         "createdAt": "Created",
         "updatedAt": "Updated"
       },

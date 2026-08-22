@@ -24,6 +24,7 @@ class SeasonForm
                 DatePicker::make('ends_at')
                     ->required(),
                 Toggle::make('is_active')
+                    ->default(true)
                     ->required(),
             ]);
     }

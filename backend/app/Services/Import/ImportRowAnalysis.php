@@ -55,7 +55,11 @@ class ImportRowAnalysis
             }
 
             if ($current instanceof \DateTimeInterface) {
-                $current = $current->format('Y-m-d');
+                $date = \DateTimeImmutable::createFromInterface($current);
+
+                $current = strlen((string) $value) === 10
+                    ? $date->format('Y-m-d')
+                    : $date->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
             }
 
             if ((string) $current !== (string) $value) {

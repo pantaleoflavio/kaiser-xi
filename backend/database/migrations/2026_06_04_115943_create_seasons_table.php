@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('name');
             $table->date('starts_at');
             $table->date('ends_at');
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->unique(['real_competition_id', 'name']);
         });

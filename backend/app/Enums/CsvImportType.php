@@ -7,6 +7,9 @@ enum CsvImportType: string
     case RealCompetitions = 'real_competitions';
     case RealClubs = 'real_clubs';
     case Players = 'players';
+    case Seasons = 'seasons';
+    case SeasonClubs = 'season_clubs';
+    case Matchdays = 'matchdays';
 
     public function label(): string
     {
@@ -14,6 +17,9 @@ enum CsvImportType: string
             self::RealCompetitions => 'Real competitions',
             self::RealClubs => 'Real clubs',
             self::Players => 'Players',
+            self::Seasons => 'Seasons',
+            self::SeasonClubs => 'Season clubs',
+            self::Matchdays => 'Matchdays',
         };
     }
 }

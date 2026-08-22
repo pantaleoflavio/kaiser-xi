@@ -53,7 +53,7 @@
   "dashboard": {
     "eyebrow": "Dashboard",
     "title": "Willkommen zurück, {{name}}.",
-    "description": "Dein authentifizierter FantaMeister-Arbeitsbereich ist bereit. Ligen, Einladungen und Fantasy-Teams können hier ergänzt werden, ohne die Auth-Grundlage zu ändern.",
+    "description": "Verwalte deine Ligen, Einladungen und Fantasy-Teams an einem Ort.",
     "accountTitle": "Konto",
     "nameLabel": "Name",
     "emailLabel": "E-Mail",
@@ -167,9 +167,9 @@
     "emptyDescription": "Du bist noch in keiner Liga. Ligaerstellung und Einladungen werden in einem späteren Schritt ergänzt.",
     "noDescription": "Keine Beschreibung vorhanden.",
     "roles": {
-      "commissioner": "Commissioner",
-      "co_commissioner": "Co-commissioner",
-      "participant": "Participant",
+      "commissioner": "Ligaleiter",
+      "co_commissioner": "Stellvertretender Ligaleiter",
+      "participant": "Mitglied",
       "unknown": "Mitglied"
     },
     "fields": {
@@ -284,7 +284,7 @@
       "description": "Teams, die aktuell in dieser Liga registriert sind.",
       "emptyTitle": "Noch keine Fantasy-Teams",
       "emptyDescription": "Noch kein Liga-Mitglied hat ein Fantasy-Team erstellt.",
-      "owner": "Owner: {{name}}",
+      "owner": "Besitzer: {{name}}",
       "ownedByYou": "Dein Team",
       "youOwnTeam": "Du besitzt bereits ein Team"
     },
@@ -300,11 +300,11 @@
       "eyebrow": "Fantasy-Team",
       "loading": "Fantasy-Team wird geladen...",
       "backToLeague": "← Zurück zur Liga",
-      "owner": "Owner: {{name}}",
+      "owner": "Besitzer: {{name}}",
       "ownedByYou": "Gehört dir",
       "fields": {
         "slug": "Slug",
-        "leagueId": "Liga-ID",
+        "leagueId": "Liga",
         "createdAt": "Erstellt",
         "updatedAt": "Aktualisiert"
       },
