@@ -26,14 +26,23 @@ class PlayerScoreCsvImportTest extends TestCase
     public function test_it_creates_confirmed_score_by_direct_identity_without_writing_during_analysis(): void
     {
         $this->fixture();
-        $analysis = $this->analyse($this->row(status: 'confirmed', finalScore: '10.00'));
+
+        $analysis = $this->analyse(
+            $this->row(
+                status: 'confirmed',
+                finalScore: '10.00',
+                extras: '7.25,,,,,,,,,,,',
+            ),
+        );
 
         $this->assertFalse($analysis['has_errors']);
         $this->assertSame(1, $analysis['counts']['create']);
         $this->assertSame(0, PlayerScore::count());
 
         $this->execute($analysis);
+
         $score = PlayerScore::firstOrFail();
+
         $this->assertSame(PlayerScoreStatus::Confirmed, $score->status);
         $this->assertSame('10.00', $score->final_score);
     }
@@ -93,13 +102,13 @@ class PlayerScoreCsvImportTest extends TestCase
         $this->assertSame(2, $analysis['counts']['errors']);
     }
 
-    public function test_confirmed_without_final_score_and_invalid_scalar_values_are_rejected(): void
+    public function test_confirmed_without_base_rating_and_invalid_scalar_values_are_rejected(): void
     {
         $this->fixture();
 
         $this->assertError(
             $this->row(status: 'confirmed', finalScore: ''),
-            __('admin.validation.player_scores.confirmed_final_score_required'),
+            __('admin.validation.player_scores.confirmed_base_rating_required'),
         );
 
         $this->assertError($this->row(status: 'invalid'), 'status');

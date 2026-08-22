@@ -26,7 +26,6 @@ return [
         'external_identity_pair' => 'Anbieter und externe ID müssen entweder beide angegeben oder beide leer sein.',
         'external_identity_unique' => 'Diese Zuordnung aus Anbieter und externer ID existiert bereits.',
         'player_scores' => [
-            'confirmed_final_score_required' => 'Für den Status „Bestätigt“ ist eine Endbewertung erforderlich.',
             'confirmed_base_rating_required' => 'Für den Status „Bestätigt“ ist eine Basisbewertung erforderlich.',
             'duplicate' => 'Für diese Spielerregistrierung und diesen Spieltag existiert bereits eine Bewertung.',
             'season_mismatch' => 'Die Spielerregistrierung muss zur Saison des Spieltags gehören.',

@@ -13,9 +13,6 @@ class PlayerScore extends Model
 {
     use HasFactory;
 
-    /** @deprecated External/provider score; League fantasy scoring uses raw performance fields. */
-    public const FANTASY_SCORE_INPUT_FIELD = 'final_score';
-
     protected $fillable = [
         'player_season_registration_id',
         'matchday_id',
