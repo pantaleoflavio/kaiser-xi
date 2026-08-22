@@ -28,8 +28,7 @@
                 </div>
             </dl>
             <p class="mt-3"><strong>Formats:</strong> {{ implode('; ', $guide['formats']) }}</p>
-            <p><strong>Create/update and empty cells:</strong> {{ $guide['behavior'] }} Empty cells clear nullable
-                supplied fields; omitted columns preserve existing values.</p>
+            <p><strong>Create/update and empty cells:</strong> {{ $guide['behavior'] }}</p>
             <p><strong>Header:</strong> <code>{{ implode(',', $guide['columns']) }}</code></p>
             <p><strong>Example:</strong> <code>{{ implode(',', $guide['example']) }}</code></p>
             <p><strong>Caveats:</strong> {{ implode(' ', $guide['caveats']) }}</p>
@@ -45,7 +44,8 @@
                 <div class="grid grid-cols-2 gap-3 md:grid-cols-6">
                     @foreach (['total', 'create', 'update', 'unchanged', 'warnings', 'errors'] as $count)
                         <div class="rounded-lg bg-gray-100 p-3 dark:bg-gray-800">
-                            <strong>{{ ucfirst($count) }}</strong><br>{{ $analysis['counts'][$count] }}</div>
+                            <strong>{{ ucfirst($count) }}</strong><br>{{ $analysis['counts'][$count] }}
+                        </div>
                     @endforeach
                 </div>
                 <div class="mt-4 overflow-x-auto">

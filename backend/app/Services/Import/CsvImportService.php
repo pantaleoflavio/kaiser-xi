@@ -10,6 +10,7 @@ use App\Services\Import\CsvParser;
 use App\Services\Import\Importers\CsvImporter;
 use App\Services\Import\Importers\MatchdayCsvImporter;
 use App\Services\Import\Importers\PlayerCsvImporter;
+use App\Services\Import\Importers\PlayerScoreCsvImporter;
 use App\Services\Import\Importers\PlayerSeasonRegistrationCsvImporter;
 use App\Services\Import\Importers\RealClubCsvImporter;
 use App\Services\Import\Importers\RealCompetitionCsvImporter;
@@ -32,6 +33,7 @@ class CsvImportService
             CsvImportType::SeasonClubs => SeasonClubCsvImporter::class,
             CsvImportType::Matchdays => MatchdayCsvImporter::class,
             CsvImportType::PlayerSeasonRegistrations => PlayerSeasonRegistrationCsvImporter::class,
+            CsvImportType::PlayerScores => PlayerScoreCsvImporter::class,
         });
     }
 

@@ -11,6 +11,7 @@ enum CsvImportType: string
     case SeasonClubs = 'season_clubs';
     case Matchdays = 'matchdays';
     case PlayerSeasonRegistrations = 'player_season_registrations';
+    case PlayerScores = 'player_scores';
 
     public function label(): string
     {
@@ -22,6 +23,7 @@ enum CsvImportType: string
             self::SeasonClubs => 'Season clubs',
             self::Matchdays => 'Matchdays',
             self::PlayerSeasonRegistrations => 'Player season registrations',
+            self::PlayerScores => 'Player scores',
         };
     }
 }
