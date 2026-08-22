@@ -1,6 +1,7 @@
 {
   "app": {
-    "name": "FantaMeister"
+    "name": "Kaiser XI",
+    "tagline": "Deine Liga. Deine Regeln."
   },
   "common": {
     "loading": "Wird geladen...",
@@ -26,7 +27,7 @@
   "auth": {
     "login": {
       "title": "Anmelden",
-      "description": "Melde dich mit deinen FantaMeister-Zugangsdaten an.",
+      "description": "Melde dich mit deinen Kaiser XI-Zugangsdaten an.",
       "email": "E-Mail",
       "password": "Passwort",
       "submit": "Anmelden",
@@ -72,9 +73,9 @@
     "account": "Konto"
   },
   "home": {
-    "eyebrow": "Fantasy Football nach deinen Regeln",
+    "eyebrow": "Deine Liga. Deine Regeln.",
     "title": "Erstelle private Fantasy-Football-Welten über mehrere Wettbewerbe hinweg.",
-    "description": "FantaMeister ist eine Multi-Wettbewerbs-Plattform für Fantasy Football, auf der du private Ligen erstellen oder ihnen beitreten und Fantasy-Teams mit Freunden verwalten kannst.",
+    "description": "Kaiser XI ist eine Multi-Wettbewerbs-Plattform für Fantasy Football, auf der du private Ligen erstellen oder ihnen beitreten und Fantasy-Teams mit Freunden verwalten kannst.",
     "cta": {
       "login": "Anmelden",
       "register": "Registrieren",
@@ -92,7 +93,7 @@
       },
       "leagues": {
         "title": "Private Ligen",
-        "description": "Erstelle private Ligen für deine Gruppe oder tritt ihnen bei und halte jede Saison in einem FantaMeister-Arbeitsbereich zusammen."
+        "description": "Erstelle private Ligen für deine Gruppe oder tritt ihnen bei und halte jede Saison in einem Kaiser XI-Arbeitsbereich zusammen."
       },
       "teams": {
         "title": "Fantasy-Teams verwalten",
@@ -106,12 +107,12 @@
   },
   "rules": {
     "eyebrow": "Regeln und Guide",
-    "title": "So funktioniert FantaMeister",
-    "description": "Ein kurzer Guide zu den Grundideen hinter FantaMeister-Ligen, Teams und künftigen Spielbereichen.",
+    "title": "So funktioniert Kaiser XI",
+    "description": "Ein kurzer Guide zu den Grundideen hinter Kaiser XI-Ligen, Teams und künftigen Spielbereichen.",
     "sections": {
       "overview": {
-        "title": "Was FantaMeister ist",
-        "description": "FantaMeister ist eine Multi-Wettbewerbs-Plattform für Fantasy Football für private Gruppen, die eigene Fantasy-Saisons verwalten möchten."
+        "title": "Was Kaiser XI ist",
+        "description": "Kaiser XI ist eine Multi-Wettbewerbs-Plattform für Fantasy Football für private Gruppen, die eigene Fantasy-Saisons verwalten möchten."
       },
       "leagues": {
         "title": "Wie Ligen funktionieren",
@@ -627,7 +628,7 @@
   "account": {
     "eyebrow": "Konto",
     "title": "Dein Konto",
-    "description": "Sieh dir deine FantaMeister-Kontodaten an und aktualisiere sie.",
+    "description": "Sieh dir deine Kaiser XI-Kontodaten an und aktualisiere sie.",
     "fields": {
       "name": "Name",
       "email": "E-Mail",

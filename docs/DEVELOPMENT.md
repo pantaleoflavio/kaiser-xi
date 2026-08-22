@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document describes the development conventions used throughout the FantaMeister backend.
+This document describes the development conventions used throughout the Kaiser XI backend.
 
 The goal is to keep the codebase consistent, maintainable and easy to extend as the project grows.
 
@@ -227,7 +227,7 @@ Additional documentation is available under the `docs/` directory:
 * ROADMAP.md
 
 
-This document describes the local development workflow for FantaMeister.
+This document describes the local development workflow for Kaiser XI.
 
 ## Requirements
 
@@ -246,7 +246,7 @@ The preferred workflow uses Docker containers for application commands.
 Example project path in WSL:
 
 ```bash
-cd /mnt/c/xampp/htdocs/FantaMeister-fantasy-football
+cd /mnt/c/xampp/htdocs/kaiser-xi
 ```
 
 ## Start the local stack

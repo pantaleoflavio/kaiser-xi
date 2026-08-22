@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document describes the business domain of FantaMeister.
+This document describes the business domain of Kaiser XI.
 
 It explains the concepts represented by the application, their relationships and the business rules that govern them.
 
@@ -12,7 +12,7 @@ Implementation details are intentionally omitted.
 
 # Domain overview
 
-FantaMeister consists of two interconnected domains:
+Kaiser XI consists of two interconnected domains:
 
 * **Real Football**, representing real-world football competitions.
 * **Fantasy Football**, representing user-created fantasy leagues.

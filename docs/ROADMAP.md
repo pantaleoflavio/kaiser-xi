@@ -2,7 +2,7 @@
 
 ## Vision
 
-FantaMeister aims to become a complete multi-competition fantasy football platform with a modern API-first architecture.
+Kaiser XI aims to become a complete multi-competition fantasy football platform with a modern API-first architecture.
 
 The project is developed incrementally, with each milestone building upon a stable domain model.
 
