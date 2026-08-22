@@ -228,8 +228,8 @@
   },
   "fantasyTeams": {
     "list": {
-      "title": "Fantasy team",
-      "description": "Team attualmente registrati in questa lega.",
+      "title": "Fantasquadre",
+      "description": "Fantasquadre attualmente registrate in questa lega.",
       "emptyTitle": "Nessun fantasy team ancora",
       "emptyDescription": "Nessun membro della lega ha ancora creato un fantasy team.",
       "owner": "Proprietario: {{name}}",
@@ -238,14 +238,14 @@
     },
     "create": {
       "title": "Crea il tuo fantasy team",
-      "description": "Scegli un nome per partecipare a questa lega come owner di un fantasy team.",
+      "description": "Scegli un nome per partecipare a questa lega come proprietario di un fantasy team.",
       "name": "Nome team",
       "namePlaceholder": "es. Meister XI",
       "submit": "Crea team",
       "submitting": "Creazione team..."
     },
     "detail": {
-      "eyebrow": "Fantasy team",
+      "eyebrow": "Fantasquadra",
       "loading": "Caricamento fantasy team...",
       "backToLeague": "← Torna alla lega",
       "owner": "Proprietario: {{name}}",
@@ -260,7 +260,7 @@
     },
     "update": {
       "title": "Rinomina fantasy team",
-      "description": "Solo l’owner del team può aggiornare il nome del fantasy team.",
+      "description": "Solo il proprietario può aggiornare il nome del fantasy team.",
       "edit": "Modifica nome",
       "name": "Nome team",
       "cancel": "Annulla",

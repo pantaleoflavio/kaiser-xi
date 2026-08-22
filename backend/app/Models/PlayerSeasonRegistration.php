@@ -86,12 +86,15 @@ class PlayerSeasonRegistration extends Model
 
     public function scopeActiveForSeason(Builder $query, int $seasonId): Builder
     {
+        return $query->activeForSeasonIds([$seasonId]);
+    }
+
+    /** @param array<int, int> $seasonIds */
+    public function scopeActiveForSeasonIds(Builder $query, array $seasonIds): Builder
+    {
         return $query
             ->where('player_season_registrations.is_active', true)
             ->whereNull('player_season_registrations.released_at')
-            ->whereHas(
-                'seasonClub',
-                fn(Builder $query) => $query->where('season_clubs.season_id', $seasonId)
-            );
+            ->whereHas('seasonClub', fn(Builder $query) => $query->whereIn('season_clubs.season_id', $seasonIds));
     }
 }

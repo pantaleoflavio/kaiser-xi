@@ -58,7 +58,7 @@
     "nameLabel": "Name",
     "emailLabel": "Email",
     "leaguesTitle": "Leagues",
-    "leaguesDescription": "View the private leagues connected to your account. League creation will arrive in a later step.",
+    "leaguesDescription": "View your private leagues or create a new one.",
     "leaguesLink": "View leagues"
   },
   "nav": {
@@ -308,7 +308,7 @@
         "createdAt": "Created",
         "updatedAt": "Updated"
       },
-      "formationDescription": "Open your current matchday formation in its dedicated matchday context."
+      "formationDescription": "Open your lineup for the current matchday."
     },
     "update": {
       "title": "Rename fantasy team",
