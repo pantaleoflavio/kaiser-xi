@@ -42,4 +42,43 @@ class PhaseACsvImportTest extends TestCase
         $a = app(CsvImportService::class)->analyse(CsvImportType::RealCompetitions, "code,name,type\nfoo,Foo,custom\nFOO,Foo 2,custom\n");
         $this->assertSame(2, $a['counts']['errors']);
     }
+
+    public function test_empty_optional_competition_values_are_not_supplied_on_update(): void
+    {
+        RealCompetition::create([
+            'code' => 'serie_a',
+            'name' => 'Serie A',
+            'type' => 'domestic_league',
+            'country_code' => 'IT',
+            'is_active' => false,
+        ]);
+
+        $analysis = app(CsvImportService::class)->analyse(
+            CsvImportType::RealCompetitions,
+            "code,name,type,country_code,is_active\nserie_a,Serie A,domestic_league,,\n",
+        );
+
+        $this->assertSame('unchanged', $analysis['rows'][0]['action']);
+        $this->assertSame([], $analysis['rows'][0]['changes']);
+        $this->assertArrayNotHasKey('country_code', $analysis['rows'][0]['payload']);
+        $this->assertArrayNotHasKey('is_active', $analysis['rows'][0]['payload']);
+    }
+
+    public function test_importers_ignore_non_executable_analysis_rows(): void
+    {
+        $analysis = [
+            'rows' => [
+                ['action' => 'error'],
+                ['action' => 'unchanged'],
+            ],
+        ];
+
+        foreach (CsvImportType::cases() as $type) {
+            app(CsvImportService::class)->importer($type)->execute($analysis);
+        }
+
+        $this->assertDatabaseCount('real_competitions', 0);
+        $this->assertDatabaseCount('real_clubs', 0);
+        $this->assertDatabaseCount('players', 0);
+    }
 }

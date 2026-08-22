@@ -76,7 +76,7 @@ abstract class ExternalIdentityCsvImporter implements CsvImporter
             $model = $identityModel ?: $bySlug;
             $rules = [];
             if (! $model) foreach ($c['required_create'] as $field) $rules[$field] = ['required', 'string', 'max:255'];
-            foreach ($c['rules'] as $field => $rule) if (array_key_exists($field, $d)) $rules[$field] = $rule;
+            foreach ($c['rules'] as $field => $rule) if (($d[$field] ?? '') !== '') $rules[$field] = $rule;
             try {
                 $this->rows->validate($d, $rules);
             } catch (ValidationException $e) {
@@ -84,8 +84,7 @@ abstract class ExternalIdentityCsvImporter implements CsvImporter
                 continue;
             }
             $payload = array_intersect_key($d, array_flip($c['payload']));
-            foreach ($c['nullable'] as $field) if (array_key_exists($field, $payload) && $payload[$field] === '') $payload[$field] = null;
-            if (isset($payload['is_active'])) $payload['is_active'] = $payload['is_active'] === 'true';
+            $payload = array_filter($payload, static fn(string $value): bool => $value !== '');
             if (! $model && in_array('is_active', $c['payload'], true)) $payload += ['is_active' => true];
             if (! array_key_exists('slug', $payload) && $slug !== '' && ! $model) $payload['slug'] = $slug;
             $changes = $model ? $this->rows->changedFields($model, $payload) : array_keys($payload);
@@ -102,7 +101,7 @@ abstract class ExternalIdentityCsvImporter implements CsvImporter
         $modelClass = $c['model'];
         $identityClass = $c['identity_model'];
         foreach ($analysis['rows'] as $row) {
-            if ($row['action'] === 'unchanged') continue;
+            if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $identity = $row['provider'] !== '' ? $identityClass::where('provider', $row['provider'])->where('external_id', $row['external_id'])->first() : null;
             $bySlug = isset($row['payload']['slug']) ? $modelClass::where('slug', $row['payload']['slug'])->first() : null;
             $model = $identity?->{$c['identity_relation']} ?: $bySlug;

@@ -95,9 +95,7 @@ class PlayerScoreCsvImporter implements CsvImporter
     public function execute(array $analysis): void
     {
         foreach ($analysis['rows'] as $row) {
-            if (in_array($row['action'], ['unchanged', 'error'], true)) {
-                continue;
-            }
+            if (! in_array($row['action'], ['create', 'update'], true)) continue;
 
             $competition = RealCompetition::whereKey($row['competition_id'])->where('code', $row['competition_code'])->first();
             $season = Season::whereKey($row['season_id'])->where('real_competition_id', $row['competition_id'])->where('name', $row['season_name'])->first();

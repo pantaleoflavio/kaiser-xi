@@ -146,7 +146,7 @@ class PlayerSeasonRegistrationCsvImporter implements CsvImporter
     public function execute(array $analysis): void
     {
         foreach ($analysis['rows'] as $row) {
-            if ($row['action'] === 'unchanged') continue;
+            if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $playerIdentity = PlayerExternalIdentity::where('provider', explode("\0", $row['player_pair'], 2)[0])->where('external_id', explode("\0", $row['player_pair'], 2)[1])->first();
             $clubIdentity = RealClubExternalIdentity::where('provider', explode("\0", $row['club_pair'], 2)[0])->where('external_id', explode("\0", $row['club_pair'], 2)[1])->first();
             $competition = RealCompetition::whereKey($row['competition_id'])->where('code', $row['competition_code'])->first();

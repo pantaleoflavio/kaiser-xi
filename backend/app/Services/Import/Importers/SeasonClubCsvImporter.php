@@ -119,7 +119,7 @@ class SeasonClubCsvImporter implements CsvImporter
             );
             foreach (['club_provider', 'season_club_provider'] as $field) if (isset($d[$field])) $d[$field] = mb_strtolower($d[$field]);
             if (isset($d['club_slug'])) $d['club_slug'] = str($d['club_slug'])->slug()->lower()->toString();
-            return $d + ['row_number' => $row['row_number'], 'original' => $original, 'club_provider' => '', 'club_external_id' => '', 'club_slug' => '', 'season_club_provider' => '', 'season_club_external_id' => '', 'display_name' => '', 'is_active' => '', 'club_pair' => filled($d['club_provider'] ?? '') && filled($d['club_external_id'] ?? '') ? ($d['club_provider'] . "\0" . $d['club_external_id']) : '', 'season_pair' => filled($d['season_club_provider'] ?? '') && filled($d['season_club_external_id'] ?? '') ? ($d['season_club_provider'] . "\0" . $d['season_club_external_id']) : '', 'has_display_name' => array_key_exists('display_name', $d), 'has_is_active' => array_key_exists('is_active', $d), 'has_season_pair' => array_key_exists('season_club_provider', $d) && array_key_exists('season_club_external_id', $d)];
+            return $d + ['row_number' => $row['row_number'], 'original' => $original, 'club_provider' => '', 'club_external_id' => '', 'club_slug' => '', 'season_club_provider' => '', 'season_club_external_id' => '', 'display_name' => '', 'is_active' => '', 'club_pair' => filled($d['club_provider'] ?? '') && filled($d['club_external_id'] ?? '') ? ($d['club_provider'] . "\0" . $d['club_external_id']) : '', 'season_pair' => filled($d['season_club_provider'] ?? '') && filled($d['season_club_external_id'] ?? '') ? ($d['season_club_provider'] . "\0" . $d['season_club_external_id']) : '', 'has_display_name' => ($d['display_name'] ?? '') !== '', 'has_is_active' => ($d['is_active'] ?? '') !== '', 'has_season_pair' => array_key_exists('season_club_provider', $d) && array_key_exists('season_club_external_id', $d)];
         }, $rows);
     }
 
@@ -149,7 +149,7 @@ class SeasonClubCsvImporter implements CsvImporter
     public function execute(array $analysis): void
     {
         foreach ($analysis['rows'] as $row) {
-            if ($row['action'] === 'unchanged') continue;
+            if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $model = SeasonClub::where('season_id', $row['season_id'])->where('real_club_id', $row['real_club_id'])->first();
             if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("SeasonClub identity changed since analysis at CSV row {$row['row_number']}.");
             $model ? $model->fill($row['payload'])->save() : SeasonClub::create(['season_id' => $row['season_id'], 'real_club_id' => $row['real_club_id']] + $row['payload']);

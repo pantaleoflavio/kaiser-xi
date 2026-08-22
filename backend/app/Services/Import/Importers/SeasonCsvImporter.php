@@ -66,9 +66,9 @@ class SeasonCsvImporter implements CsvImporter
             $model = $seasons->get($competition->id . "\0" . $d['season_name']);
             $rules = ['competition_code' => ['required', 'string'], 'season_name' => ['required', 'string', 'max:255']];
 
-            foreach (['starts_at', 'ends_at'] as $field) if (! $model || array_key_exists($field, $d)) $rules[$field] = ['required', 'date_format:Y-m-d'];
+            foreach (['starts_at', 'ends_at'] as $field) if (! $model || ($d[$field] ?? '') !== '') $rules[$field] = ['required', 'date_format:Y-m-d'];
 
-            if (array_key_exists('ends_at', $d) && ($d['starts_at'] ?? ($model?->starts_at?->format('Y-m-d'))) !== null) $rules['ends_at'][] = 'after_or_equal:starts_at';
+            if (($d['ends_at'] ?? '') !== '' && ($d['starts_at'] ?? ($model?->starts_at?->format('Y-m-d'))) !== null) $rules['ends_at'][] = 'after_or_equal:starts_at';
 
             if (array_key_exists('is_active', $d) && $d['is_active'] !== '') {
                 $rules['is_active'] = [Rule::in(['true', 'false'])];
@@ -85,6 +85,8 @@ class SeasonCsvImporter implements CsvImporter
                 $d,
                 array_flip(['starts_at', 'ends_at', 'is_active'])
             );
+
+            foreach (['starts_at', 'ends_at'] as $field) if (($payload[$field] ?? null) === '') unset($payload[$field]);
 
             if (array_key_exists('is_active', $payload)) {
                 if ($payload['is_active'] === '') {
@@ -107,7 +109,7 @@ class SeasonCsvImporter implements CsvImporter
     public function execute(array $analysis): void
     {
         foreach ($analysis['rows'] as $row) {
-            if ($row['action'] === 'unchanged') continue;
+            if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $model = Season::where('real_competition_id', $row['competition_id'])->where('name', $row['name'])->first();
             if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("Season identity changed since analysis at CSV row {$row['row_number']}.");
             $model ? $model->fill($row['payload'])->save() : Season::create(['real_competition_id' => $row['competition_id'], 'name' => $row['name']] + $row['payload']);

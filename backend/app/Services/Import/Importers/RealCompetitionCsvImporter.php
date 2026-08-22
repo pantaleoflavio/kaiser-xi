@@ -22,7 +22,7 @@ class RealCompetitionCsvImporter implements CsvImporter
             'required_create' => ['code', 'name', 'type'],
             'optional' => ['country_code', 'is_active'],
             'formats' => ['type: ' . implode(', ', $types), 'country_code: two letters', 'is_active: true or false'],
-            'behavior' => 'Updates only supplied columns; empty country_code clears it.',
+            'behavior' => 'Updates only non-empty supplied columns; empty optional cells preserve existing values.',
             'dependency' => 'Import before seasons.',
             'example' => ['bundesliga', 'Bundesliga', CompetitionType::DomesticLeague->value, 'DE', 'true'],
             'caveats' => ['Codes are normalized to lowercase snake_case; names are never identities.'],
@@ -35,7 +35,7 @@ class RealCompetitionCsvImporter implements CsvImporter
         $codes = [];
         foreach ($csv['rows'] as $row) {
             $data = $row['data'];
-            $data['code'] = str(trim($data['code']))->slug('_')->lower()->toString();
+            $data['code'] = RealCompetition::normalizeCode($data['code']);
             foreach (['name', 'type', 'country_code', 'is_active'] as $field) if (array_key_exists($field, $data)) $data[$field] = trim($data[$field]);
             if (isset($data['country_code']) && $data['country_code'] !== '') $data['country_code'] = strtoupper($data['country_code']);
             $prepared[] = $row + ['normalized' => $data];
@@ -53,9 +53,9 @@ class RealCompetitionCsvImporter implements CsvImporter
             }
             $model = $existing->get($data['code']);
             $rules = ['code' => ['required', 'string', 'max:255']];
-            foreach (['name', 'type'] as $field) if (! $model || array_key_exists($field, $data)) $rules[$field] = ['required', 'string', $field === 'type' ? Rule::enum(CompetitionType::class) : 'max:255'];
-            if (array_key_exists('country_code', $data)) $rules['country_code'] = ['nullable', 'alpha:ascii', 'size:2'];
-            if (array_key_exists('is_active', $data)) $rules['is_active'] = ['required', Rule::in(['true', 'false'])];
+            foreach (['name', 'type'] as $field) if (! $model || ($data[$field] ?? '') !== '') $rules[$field] = ['required', 'string', $field === 'type' ? Rule::enum(CompetitionType::class) : 'max:255'];
+            if (($data['country_code'] ?? '') !== '') $rules['country_code'] = ['alpha:ascii', 'size:2'];
+            if (($data['is_active'] ?? '') !== '') $rules['is_active'] = [Rule::in(['true', 'false'])];
             try {
                 $this->rows->validate($data, $rules);
             } catch (ValidationException $e) {
@@ -63,7 +63,7 @@ class RealCompetitionCsvImporter implements CsvImporter
                 continue;
             }
             $payload = array_intersect_key($data, array_flip(['name', 'type', 'country_code', 'is_active']));
-            if (isset($payload['country_code']) && $payload['country_code'] === '') $payload['country_code'] = null;
+            $payload = array_filter($payload, static fn(string $value): bool => $value !== '');
             if (isset($payload['is_active'])) $payload['is_active'] = $payload['is_active'] === 'true';
             if (! $model) $payload += ['is_active' => true];
             $changes = $model ? $this->rows->changedFields($model, $payload) : array_keys($payload);
@@ -75,7 +75,7 @@ class RealCompetitionCsvImporter implements CsvImporter
     public function execute(array $analysis): void
     {
         foreach ($analysis['rows'] as $row) {
-            if ($row['action'] === 'unchanged') continue;
+            if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $model = RealCompetition::where('code', $row['identity'])->first();
             if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("Competition identity changed since analysis at CSV row {$row['row_number']}.");
             if ($model) $model->fill($row['payload'])->save();

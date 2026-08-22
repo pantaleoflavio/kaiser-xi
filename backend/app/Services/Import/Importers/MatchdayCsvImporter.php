@@ -68,10 +68,10 @@ class MatchdayCsvImporter implements CsvImporter
             $model = $matchdays->get($season->id . "\0" . $d['matchday_number']);
             $rules = ['competition_code' => ['required'], 'season_name' => ['required'], 'matchday_number' => ['required', 'integer', 'between:0,65535']];
             if (array_key_exists('name', $d)) $rules['name'] = ['nullable', 'string', 'max:255'];
-            foreach (['starts_at', 'ends_at'] as $f) if (!$model || array_key_exists($f, $d)) $rules[$f] = ['required', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/'];
+            foreach (['starts_at', 'ends_at'] as $f) if (! $model || ($d[$f] ?? '') !== '') $rules[$f] = ['required', 'regex:/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/'];
             try {
                 $this->rows->validate($d, $rules);
-                foreach (['starts_at', 'ends_at'] as $f) if (isset($d[$f])) $d[$f] = CarbonImmutable::parse($d[$f])->utc()->format('Y-m-d H:i:s');
+                foreach (['starts_at', 'ends_at'] as $f) if (($d[$f] ?? '') !== '') $d[$f] = CarbonImmutable::parse($d[$f])->utc()->format('Y-m-d H:i:s');
                 $start = $d['starts_at'] ?? $model?->starts_at?->utc()->format('Y-m-d H:i:s');
                 $end = $d['ends_at'] ?? $model?->ends_at?->utc()->format('Y-m-d H:i:s');
                 if ($end < $start) throw ValidationException::withMessages(['ends_at' => 'The ends at field must be after or equal to starts at.']);
@@ -83,6 +83,7 @@ class MatchdayCsvImporter implements CsvImporter
                 continue;
             }
             $payload = array_intersect_key($d, array_flip(['name', 'starts_at', 'ends_at']));
+            foreach (['starts_at', 'ends_at'] as $field) if (($payload[$field] ?? null) === '') unset($payload[$field]);
             if (array_key_exists('name', $payload) && $payload['name'] === '') $payload['name'] = null;
             $changes = $model ? $this->rows->changedFields($model, $payload) : array_keys($payload);
             $results[] = ['row_number' => $n, 'data' => $row['data'], 'identifier' => $model?->displayLabel() ?? $label, 'action' => !$model ? 'create' : ($changes ? 'update' : 'unchanged'), 'changes' => $changes, 'warnings' => [], 'errors' => [], 'model_id' => $model?->id, 'payload' => $payload, 'season_id' => $season->id, 'number' => (int)$d['matchday_number']];
@@ -93,7 +94,7 @@ class MatchdayCsvImporter implements CsvImporter
     public function execute(array $analysis): void
     {
         foreach ($analysis['rows'] as $row) {
-            if ($row['action'] === 'unchanged') continue;
+            if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $model = Matchday::where('season_id', $row['season_id'])->where('number', $row['number'])->first();
             if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("Matchday identity changed since analysis at CSV row {$row['row_number']}.");
             $model ? $model->fill($row['payload'])->save() : Matchday::create(['season_id' => $row['season_id'], 'number' => $row['number']] + $row['payload']);
