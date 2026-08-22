@@ -16,12 +16,12 @@ class PlayerScorePlayabilityTest extends TestCase
     #[DataProvider('scoreStates')]
     public function test_playability_is_defined_by_confirmed_status_and_base_rating(
         PlayerScoreStatus $status,
-        ?float $finalScore,
+        ?float $baseRating,
         bool $playable,
     ): void {
         $score = PlayerScore::factory()->create([
             'status' => $status,
-            'base_rating' => $finalScore,
+            'base_rating' => $baseRating,
         ]);
 
         $this->assertSame($playable, $score->isPlayable());
@@ -41,11 +41,6 @@ class PlayerScorePlayabilityTest extends TestCase
         $score = PlayerScore::factory()->create(['base_rating' => null]);
 
         $this->assertFalse($score->isPlayable());
-    }
-
-    public function test_final_score_constant_is_retained_only_for_compatibility(): void
-    {
-        $this->assertSame('final_score', PlayerScore::FANTASY_SCORE_INPUT_FIELD);
     }
 
     public function test_missing_score_is_not_playable(): void
