@@ -6,6 +6,32 @@ return [
         'locales' => ['en' => 'Inglese', 'de' => 'Tedesco', 'it' => 'Italiano'],
     ],
     'panel' => ['title' => 'FantaMeister Admin'],
+    'player_scores' => [
+        'bulk_delete_warning' => 'L’eliminazione dei punteggi può ridurre la tracciabilità storica. I risultati di Lega esistenti non vengono ricalcolati.',
+        'captain' => 'Capitano',
+        'confirmed_warning_body' => 'Le modifiche a questo punteggio confermato non ricalcolano automaticamente le giornate di Lega già calcolate.',
+        'confirmed_warning_title' => 'Punteggio confermato',
+        'delete_warning' => 'L’eliminazione di questo punteggio può ridurre la tracciabilità storica. I risultati di Lega esistenti non vengono ricalcolati.',
+        'missing_final_score' => 'Punteggio finale mancante',
+        'real_club_captain' => 'Capitano del club reale',
+        'real_club_captain_help' => 'Il giocatore è stato capitano del club reale.',
+        'sections' => [
+            'identity' => 'Identità',
+            'match_events' => 'Eventi partita',
+            'raw_performance' => 'Prestazione grezza',
+            'status_scoring' => 'Stato / punteggio',
+        ],
+    ],
+    'validation' => [
+        'external_identity_pair' => 'Fornitore e ID esterno devono essere entrambi compilati oppure entrambi vuoti.',
+        'external_identity_unique' => 'Questa associazione tra fornitore e ID esterno esiste già.',
+        'player_scores' => [
+            'confirmed_final_score_required' => 'Un punteggio finale è obbligatorio quando lo stato è confermato.',
+            'confirmed_base_rating_required' => 'Un voto base è obbligatorio quando lo stato è confermato.',
+            'duplicate' => 'Esiste già un punteggio per questa registrazione giocatore e giornata.',
+            'season_mismatch' => 'La registrazione del giocatore deve appartenere alla stagione della giornata.',
+        ],
+    ],
     'navigation' => ['groups' => [
         'system' => 'Sistema',
         'competitions' => 'Competizioni',
@@ -16,7 +42,7 @@ return [
     'resources' => [
         'matchdays' => ['singular' => 'Giornata', 'plural' => 'Giornata'],
         'league_types' => ['singular' => 'Tipo di lega', 'plural' => 'Tipo di lega'],
-        'real_matchs' => ['singular' => 'Partita reale', 'plural' => 'Partita reale'],
+        'real_matches' => ['singular' => 'Partita reale', 'plural' => 'Partita reale'],
         'seasons' => ['singular' => 'Stagione', 'plural' => 'Stagione'],
         'roles' => ['singular' => 'Ruolo', 'plural' => 'Ruolo'],
         'season_clubs' => ['singular' => 'Club della stagione', 'plural' => 'Club della stagione'],
@@ -33,7 +59,7 @@ return [
         'real_competitions' => ['singular' => 'Competizione reale', 'plural' => 'Competizione reale'],
     ],
     'labels' => [
-        'active' => 'Attivo',
+        'is_active' => 'È Attivo',
         'assists' => 'Assist',
         'away_club' => 'Club ospite',
         'away_score' => 'Gol ospiti',
@@ -52,6 +78,7 @@ return [
         'email' => 'Email',
         'email_address' => 'Indirizzo email',
         'ends_at' => 'Termina il',
+        'external_identities' => 'ID esterni',
         'external_id' => 'ID esterno',
         'external_provider' => 'Fornitore esterno',
         'final_score' => 'Punteggio finale',

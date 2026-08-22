@@ -15,6 +15,13 @@ return [
 
     'default' => env('QUEUE_CONNECTION', 'database'),
 
+    'imports' => [
+        'tries' => (int) env('IMPORT_QUEUE_TRIES', 2),
+        'timeout' => (int) env('IMPORT_QUEUE_TIMEOUT', 900),
+        'backoff' => (int) env('IMPORT_QUEUE_BACKOFF', 60),
+        'stale_after' => (int) env('IMPORT_STALE_AFTER', 1200),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Queue Connections

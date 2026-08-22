@@ -1,29 +1,923 @@
 {
   "app": {
-    "name": "FantaMeister",
-    "competitionLabel": "Competizione"
-  },
-  "leagueModes": {
-    "classic": "Classifica punti totali",
-    "formula_one": "Punti per piazzamento giornata",
-    "head_to_head": "Scontri diretti"
-  },
-  "auth": {
-    "login": "Accedi",
-    "register": "Registrati",
-    "logout": "Esci",
-    "forgotPassword": "Password dimenticata",
-    "resetPassword": "Reimposta password",
-    "email": "Email",
-    "password": "Password",
-    "confirmPassword": "Conferma password",
-    "name": "Nome",
-    "sendResetLink": "Invia link di reset",
-    "passwordsMustMatch": "Le password devono coincidere",
-    "forgotPasswordLink": "Password dimenticata?",
-    "invalidCredentials": "Credenziali non valide."
+    "name": "FantaMeister"
   },
   "common": {
-    "loading": "Caricamento..."
+    "loading": "Caricamento...",
+    "checkingSession": "Controllo della sessione...",
+    "logout": "Esci",
+    "language": "Lingua",
+    "confirmations": {
+      "releasePlayer": "Svincolare {{name}}? Il rimborso previsto è il {{percent}}% del prezzo di acquisto."
+    },
+    "errors": {
+      "forbidden": "Non hai il permesso per eseguire questa azione.",
+      "notFound": "La lega, il team o il giocatore del roster richiesto non è stato trovato.",
+      "conflict": "La richiesta è in conflitto con lo stato attuale del roster o del budget.",
+      "validation": "Correggi i seguenti errori.",
+      "unexpected": "Si è verificato un errore imprevisto."
+    },
+    "cancel": "Annulla",
+    "enabled": "Abilitato",
+    "disabled": "Disabilitato",
+    "previous": "Precedente",
+    "next": "Successivo"
+  },
+  "auth": {
+    "login": {
+      "title": "Accedi",
+      "description": "Usa le credenziali del tuo account FantaMeister.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Accedi",
+      "submitting": "Accesso in corso...",
+      "noAccount": "Non hai un account?",
+      "registerLink": "Registrati",
+      "error": "Impossibile accedere."
+    },
+    "register": {
+      "title": "Crea account",
+      "description": "Inizia a gestire la tua stagione di fantasy football.",
+      "name": "Nome",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Conferma password",
+      "submit": "Registrati",
+      "submitting": "Creazione account...",
+      "alreadyRegistered": "Già registrato?",
+      "loginLink": "Accedi",
+      "passwordsMustMatch": "Le password devono coincidere.",
+      "error": "Impossibile registrarsi."
+    }
+  },
+  "dashboard": {
+    "eyebrow": "Dashboard",
+    "title": "Bentornato, {{name}}.",
+    "description": "Gestisci leghe, inviti e fantasy team in un unico spazio.",
+    "accountTitle": "Account",
+    "nameLabel": "Nome",
+    "emailLabel": "Email",
+    "leaguesTitle": "Leghe",
+    "leaguesDescription": "Visualizza le leghe private collegate al tuo account. La creazione delle leghe arriverà in un passaggio successivo.",
+    "leaguesLink": "Vedi leghe"
+  },
+  "nav": {
+    "login": "Accedi",
+    "register": "Registrati",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "rules": "Regole",
+    "leagues": "Leghe",
+    "invitations": "Inviti",
+    "account": "Account"
+  },
+  "home": {
+    "eyebrow": "Fantasy football a modo tuo",
+    "title": "Crea mondi di fantasy football privati su più competizioni.",
+    "description": "FantaMeister è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
+    "cta": {
+      "login": "Accedi",
+      "register": "Registrati",
+      "dashboard": "Vai alla dashboard"
+    },
+    "panel": {
+      "label": "Base per il futuro",
+      "title": "Pronta per stagioni fantasy più profonde",
+      "description": "L’app viene preparata per rose, aste, formazioni e giornate, mantenendo l’esperienza attuale semplice e focalizzata."
+    },
+    "features": {
+      "competitions": {
+        "title": "Piattaforma multi-competizione",
+        "description": "Organizza esperienze di fantasy football che possono crescere oltre una sola competizione reale."
+      },
+      "leagues": {
+        "title": "Leghe private",
+        "description": "Crea o unisciti a leghe private per il tuo gruppo e tieni ogni stagione in un unico spazio FantaMeister."
+      },
+      "teams": {
+        "title": "Gestione fantasy team",
+        "description": "Gestisci le basi del tuo fantasy team prima dell’arrivo di strumenti avanzati per leghe e rose."
+      },
+      "roadmap": {
+        "title": "Costruita per i prossimi passi",
+        "description": "È previsto il supporto futuro per rose, aste, formazioni tattiche e flussi delle giornate."
+      }
+    }
+  },
+  "leagues": {
+    "eyebrow": "Base leghe",
+    "title": "Le tue leghe",
+    "description": "Questa pagina protetta elenca le leghe disponibili per il tuo account.",
+    "loading": "Caricamento leghe...",
+    "error": "Impossibile caricare le leghe.",
+    "errorTitle": "Impossibile caricare le leghe",
+    "emptyTitle": "Nessuna lega ancora",
+    "emptyDescription": "Non fai ancora parte di una lega.",
+    "noDescription": "Nessuna descrizione fornita.",
+    "viewDetails": "Vedi dettagli lega",
+    "roles": {
+      "commissioner": "Amministratore",
+      "co_commissioner": "Vice amministratore",
+      "participant": "Partecipante",
+      "unknown": "Membro"
+    },
+    "fields": {
+      "competition": "Competizione",
+      "season": "Stagione",
+      "type": "Tipo",
+      "status": "Stato"
+    }
+  },
+  "leagueDetail": {
+    "eyebrow": "Dettagli lega",
+    "loading": "Caricamento lega...",
+    "backToLeagues": "← Torna alle leghe",
+    "error": "Impossibile caricare la lega.",
+    "errorTitle": "Impossibile caricare la lega",
+    "notAvailable": "Non disponibile",
+    "unlimited": "Illimitato",
+    "never": "Mai",
+    "fields": {
+      "maxParticipants": "Partecipanti max"
+    },
+    "members": {
+      "title": "Membri",
+      "description": "Visualizza i partecipanti alla lega e gestisci i loro ruoli e la loro partecipazione.",
+      "error": "Impossibile caricare i membri.",
+      "errorTitle": "Impossibile caricare i membri",
+      "emptyTitle": "Nessun membro trovato",
+      "emptyDescription": "Questa lega non ha ancora membri visibili.",
+      "loading": "Caricamento membri...",
+      "management": {
+        "promote": "Promuovi a co-commissario",
+        "revoke": "Revoca ruolo di co-commissario",
+        "saving": "Salvataggio...",
+        "roles": {
+          "commissioner": "Commissario",
+          "co_commissioner": "Co-commissario",
+          "participant": "Partecipante"
+        },
+        "remove": {
+          "action": "Rimuovi membro",
+          "title": "Rimuovi membro della lega",
+          "confirmation": "Rimuovere {{name}} ({{role}}) da {{league}}?",
+          "preservation": "I dati storici del fantasy team e della rosa rimarranno conservati.",
+          "confirm": "Rimuovi membro",
+          "success": "{{name}} è stato rimosso dalla lega."
+        },
+        "role": {
+          "co_commissioner": {
+            "title": "Promuovi membro della lega",
+            "confirmation": "Promuovere {{name}} da {{role}} a co-commissario in {{league}}?",
+            "confirm": "Promuovi membro",
+            "success": "{{name}} ora è co-commissario."
+          },
+          "participant": {
+            "title": "Revoca ruolo di co-commissario",
+            "confirmation": "Revocare a {{name}} il ruolo di {{role}} e renderlo partecipante in {{league}}?",
+            "confirm": "Revoca ruolo",
+            "success": "{{name}} ora è partecipante."
+          }
+        },
+        "errors": {
+          "remove": {
+            "forbidden": "Non puoi rimuovere questo membro. Il commissario è protetto.",
+            "notFound": "Questo membro non fa più parte della lega.",
+            "conflict": "Questo membro non può essere rimosso a causa di un conflitto con lo stato attuale della lega.",
+            "unexpected": "Impossibile rimuovere il membro. Riprova."
+          },
+          "role": {
+            "forbidden": "Non puoi modificare il ruolo di questo membro. Il ruolo di commissario è protetto.",
+            "notFound": "Questo membro non fa più parte della lega.",
+            "conflict": "Questo ruolo non può essere modificato a causa di un conflitto con lo stato attuale della lega.",
+            "unexpected": "Impossibile modificare il ruolo del membro. Riprova."
+          }
+        }
+      }
+    },
+    "invitations": {
+      "title": "Inviti",
+      "error": "Impossibile caricare gli inviti.",
+      "errorTitle": "Impossibile caricare gli inviti",
+      "emptyTitle": "Nessun invito ancora",
+      "emptyDescription": "Crea un invito per permettere a un altro utente di unirsi alla lega.",
+      "maxUses": "Utilizzi max",
+      "unlimitedUses": "Utilizzi illimitati",
+      "expiresAt": "Scade il",
+      "create": "Crea invito",
+      "creating": "Creazione...",
+      "createError": "Impossibile creare l’invito.",
+      "delete": "Invito revocato.",
+      "deleting": "Annullamento...",
+      "deleteError": "Riprova.",
+      "status": "Stato",
+      "used": "Usati",
+      "remaining": "Rimanenti",
+      "expires": "Scadenza",
+      "createdBy": "Creato da",
+      "email": "Email",
+      "invitedRole": "Ruolo invitato"
+    },
+    "status": {
+      "draft": "Bozza",
+      "setup": "Configurazione",
+      "active": "Attiva",
+      "completed": "Completata",
+      "archived": "Archiviata"
+    }
+  },
+  "fantasyTeams": {
+    "list": {
+      "title": "Fantasquadre",
+      "description": "Fantasquadre attualmente registrate in questa lega.",
+      "emptyTitle": "Nessun fantasy team ancora",
+      "emptyDescription": "Nessun membro della lega ha ancora creato un fantasy team.",
+      "owner": "Proprietario: {{name}}",
+      "ownedByYou": "Il tuo team",
+      "youOwnTeam": "Possiedi già un team"
+    },
+    "create": {
+      "title": "Crea il tuo fantasy team",
+      "description": "Scegli un nome per partecipare a questa lega come proprietario di un fantasy team.",
+      "name": "Nome team",
+      "namePlaceholder": "es. Meister XI",
+      "submit": "Crea team",
+      "submitting": "Creazione team..."
+    },
+    "detail": {
+      "eyebrow": "Fantasquadra",
+      "loading": "Caricamento fantasy team...",
+      "backToLeague": "← Torna alla lega",
+      "owner": "Proprietario: {{name}}",
+      "ownedByYou": "Di tua proprietà",
+      "fields": {
+        "slug": "Slug",
+        "leagueId": "Lega",
+        "createdAt": "Creato",
+        "updatedAt": "Aggiornato"
+      },
+      "formationDescription": "Apri la formazione della giornata attuale nel relativo contesto."
+    },
+    "update": {
+      "title": "Rinomina fantasy team",
+      "description": "Solo il proprietario può aggiornare il nome del fantasy team.",
+      "edit": "Modifica nome",
+      "name": "Nome team",
+      "cancel": "Annulla",
+      "submit": "Salva modifiche",
+      "submitting": "Salvataggio...",
+      "success": "Nome del fantasy team aggiornato.",
+      "forbidden": "Non sei autorizzato ad aggiornare il nome di questo fantasy team.",
+      "nameRequired": "Il nome del team è obbligatorio.",
+      "nameLength": "Il nome del team non può superare 100 caratteri."
+    },
+    "errors": {
+      "list": "Impossibile caricare i fantasy team.",
+      "listTitle": "Impossibile caricare i fantasy team",
+      "create": "Impossibile creare il fantasy team.",
+      "createTitle": "Impossibile creare il fantasy team",
+      "detail": "Impossibile caricare il fantasy team.",
+      "detailTitle": "Impossibile caricare il fantasy team",
+      "update": "Impossibile aggiornare il fantasy team.",
+      "updateTitle": "Impossibile aggiornare il fantasy team"
+    }
+  },
+  "leagueSettings": {
+    "title": "Impostazioni lega",
+    "description": "Regole di budget, rosa, formazione, panchina, sostituzioni e punteggio per ogni squadra fantasy della lega.",
+    "maxRosterPlayers": "Dimensione massima della rosa",
+    "maxRosterPlayersDescription": "Numero massimo di calciatori che ogni fantasy squadra può avere contemporaneamente in rosa.",
+    "rosterRuleHelp": "I limiti per ruolo sono massimi indipendenti. La loro somma deve essere almeno pari al limite totale della rosa.",
+    "roles": {
+      "goalkeeper": "Limite portieri",
+      "defender": "Limite difensori",
+      "midfielder": "Limite centrocampisti",
+      "forward": "Limite attaccanti"
+    },
+    "save": "Salva impostazioni",
+    "saving": "Salvataggio...",
+    "success": "Impostazioni lega aggiornate.",
+    "readOnly": "Solo commissioner e co-commissioner possono modificare le impostazioni della lega.",
+    "errors": {
+      "load": "Impossibile caricare le impostazioni della lega.",
+      "update": "Impossibile aggiornare le impostazioni della lega.",
+      "title": "Impossibile aggiornare le impostazioni della lega",
+      "rosterValidation": "Inserisci un limite totale intero positivo e limiti per ruolo interi non negativi la cui somma raggiunga il limite totale.",
+      "conflict": "Queste impostazioni sono in conflitto con la configurazione esistente della lega."
+    },
+    "sections": {
+      "roster": "Budget e rosa"
+    },
+    "formations": {
+      "title": "Formazioni consentite",
+      "help": "Seleziona almeno una formazione che i fantasy team possono utilizzare."
+    },
+    "bench": {
+      "title": "Configurazione panchina",
+      "help": "Imposta le dimensioni della panchina e i massimi indipendenti per ogni ruolo. I limiti devono coprire le dimensioni della panchina.",
+      "size": "Dimensioni panchina",
+      "roles": {
+        "goalkeeper": "Limite portieri in panchina",
+        "defender": "Limite difensori in panchina",
+        "midfielder": "Limite centrocampisti in panchina",
+        "forward": "Limite attaccanti in panchina"
+      }
+    },
+    "substitutions": {
+      "title": "Regole sostituzioni",
+      "maximum": "Sostituzioni massime",
+      "order": "Ordine sostituzioni",
+      "allowFormationChange": "Consenti cambi di formazione durante le sostituzioni",
+      "modes": {
+        "bench_order": {
+          "label": "Ordine panchina",
+          "description": "Le riserve vengono considerate nel loro ordine in panchina."
+        },
+        "role_priority": {
+          "label": "Priorità ruolo",
+          "description": "Le riserve vengono considerate in base alla priorità del ruolo."
+        }
+      }
+    },
+    "validation": {
+      "formationRequired": "Seleziona almeno una formazione consentita.",
+      "nonNegativeInteger": "Inserisci un numero intero non negativo.",
+      "benchTotal": "La somma dei limiti per ruolo in panchina deve essere almeno pari alle dimensioni della panchina.",
+      "substitutionRange": "Le sostituzioni massime devono essere un numero intero tra zero e le dimensioni della panchina.",
+      "positiveInteger": "Inserisci un numero intero positivo.",
+      "percentage": "Inserisci una percentuale intera da 0 a 100.",
+      "realCaptainBonusRange": "Inserisci punti bonus da 0 a 5 in incrementi di 0,5.",
+      "halfPoint": "Inserisci un valore nell’intervallo consentito con incrementi di 0,5.",
+      "cleanSheetBonusRange": "Inserisci punti bonus da 0 a 5 con incrementi di 0,5.",
+      "defenseThresholds": "Le soglie devono essere uniche e crescenti con incrementi di 0,25; i bonus non negativi con incrementi di 0,5.",
+      "scoringValue": "Inserisci un valore da -100 a 100 con massimo due decimali."
+    },
+    "scoring": {
+      "title": "Punteggio",
+      "defenseModifier": "Abilita modificatore difesa",
+      "defenseModifierDescription": "Usa il portiere e i 3 difensori con i voti base più alti quando la formazione effettiva ha almeno 4 difensori. Il bonus corrispondente viene aggiunto una volta al punteggio finale della squadra.",
+      "enableRealCaptainBonus": "Abilita bonus capitano reale",
+      "realCaptainBonusPoints": "Punti bonus capitano reale",
+      "realCaptainBonusDescription": "Assegna il bonus configurato quando un giocatore che contribuisce era il vero capitano del suo club in quella partita.",
+      "firstGoalThreshold": "Soglia del primo gol",
+      "firstGoalThresholdDescription": "Il punteggio minimo della squadra necessario per segnare il primo gol.",
+      "goalInterval": "Intervallo gol",
+      "goalIntervalDescription": "Ogni ulteriore intervallo di punti aggiunge un altro gol.",
+      "goalkeeperCleanSheetBonus": "Bonus porta inviolata",
+      "cleanSheetBonusPoints": "Punti bonus porta inviolata",
+      "defenseThresholds": "Media difesa → bonus squadra",
+      "defenseAverage": "Soglia media difesa",
+      "defenseBonus": "Bonus squadra",
+      "addDefenseThreshold": "Aggiungi soglia",
+      "removeDefenseThreshold": "Rimuovi",
+      "goal_bonus": "Bonus gol",
+      "assist_bonus": "Bonus assist",
+      "yellow_card_malus": "Malus ammonizione",
+      "red_card_malus": "Malus espulsione",
+      "own_goal_malus": "Malus autogol",
+      "penalty_scored_bonus": "Bonus rigore segnato",
+      "penalty_missed_malus": "Malus rigore sbagliato",
+      "penalty_saved_bonus": "Bonus rigore parato",
+      "goal_conceded_malus": "Malus gol subito"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "initialBudget": "Budget iniziale",
+    "totalBudget": "Budget totale",
+    "remainingBudget": "Budget rimanente",
+    "releaseRefundPercentage": "Percentuale di rimborso svincolo"
+  },
+  "roster": {
+    "title": "Roster",
+    "description": "Giocatori attualmente assegnati a questo fantasy team.",
+    "loading": "Caricamento roster...",
+    "emptyTitle": "Nessun giocatore nel roster",
+    "emptyDescription": "Questo fantasy team non ha ancora giocatori attivi o storici nel roster.",
+    "unknownPlayer": "Giocatore sconosciuto",
+    "purchasePrice": "Prezzo di acquisto",
+    "assignedAt": "Assegnato il",
+    "releasedAt": "Svincolato il",
+    "availability": "Disponibilità",
+    "available": "Disponibile",
+    "notAvailable": "Non disponibile",
+    "managementReadOnly": "Solo  commissioner e co-commissioner della lega possono gestire le rose.",
+    "assign": {
+      "title": "Assegna giocatore",
+      "player": "Giocatore",
+      "purchasePrice": "Prezzo di acquisto",
+      "submit": "Assegna giocatore",
+      "submitting": "Assegnazione...",
+      "playerRequired": "Seleziona un giocatore eleggibile.",
+      "priceRequired": "Inserisci un prezzo di acquisto valido.",
+      "success": "Giocatore assegnato con successo."
+    },
+    "release": {
+      "submit": "Svincola giocatore",
+      "releasing": "Svincolo...",
+      "success": "Giocatore svincolato con successo."
+    },
+    "errors": {
+      "title": "Impossibile caricare il roster",
+      "assign": "Impossibile assegnare il giocatore.",
+      "assignTitle": "Impossibile assegnare il giocatore",
+      "release": "Impossibile svincolare il giocatore.",
+      "insufficientBudget": "Il fantasy team non dispone di budget rimanente sufficiente.",
+      "alreadyAssigned": "Questo giocatore è già assegnato nella lega."
+    },
+    "eligible": {
+      "title": "Giocatori eleggibili",
+      "search": "Ricerca giocatore",
+      "searchPlaceholder": "Cerca per nome del giocatore",
+      "role": "Filtro ruolo",
+      "allRoles": "Tutti i ruoli",
+      "club": "Filtro club",
+      "allClubs": "Tutti i club disponibili",
+      "selected": "Selezionato: {{name}}",
+      "clear": "Cancella selezione",
+      "loading": "Caricamento giocatori eleggibili...",
+      "empty": "Nessun giocatore eleggibile corrisponde ai filtri.",
+      "error": "Impossibile caricare i giocatori eleggibili.",
+      "results": "Risultati giocatori eleggibili",
+      "quotation": "Quotazione: {{value}}",
+      "pagination": "Paginazione giocatori eleggibili",
+      "previous": "Pagina precedente",
+      "next": "Pagina successiva",
+      "page": "Pagina {{current}} di {{total}}",
+      "unknownRole": "Ruolo sconosciuto",
+      "unknownClub": "Club sconosciuto"
+    },
+    "roles": {
+      "goalkeeper": "Portiere",
+      "defender": "Difensore",
+      "midfielder": "Centrocampista",
+      "forward": "Attaccante"
+    }
+  },
+  "leagueCreate": {
+    "eyebrow": "Configurazione lega",
+    "title": "Crea lega",
+    "description": "Crea la tua lega e configura le regole iniziali.",
+    "steps": {
+      "basic": "Informazioni di base",
+      "rules": "Regole iniziali"
+    },
+    "progress": {
+      "label": "Avanzamento creazione lega"
+    },
+    "fields": {
+      "name": "Nome della lega",
+      "description": "Descrizione",
+      "season": "Stagione",
+      "selectSeason": "Seleziona una stagione",
+      "type": "Tipo di lega",
+      "selectType": "Seleziona un tipo di lega",
+      "maxParticipants": "Numero massimo di partecipanti",
+      "initialBudget": "Budget iniziale",
+      "refund": "Percentuale di rimborso per rilascio",
+      "maxRoster": "Dimensione massima rosa",
+      "roleLimits": "Limiti per ruolo",
+      "roleLimitsHelp": "La somma dei limiti per ruolo deve essere almeno pari alla dimensione massima della rosa."
+    },
+    "roles": {
+      "goalkeeper": "Portiere",
+      "defender": "Difensore",
+      "midfielder": "Centrocampista",
+      "forward": "Attaccante"
+    },
+    "actions": {
+      "createLeague": "Crea lega",
+      "create": "Crea",
+      "creating": "Creazione…",
+      "next": "Avanti",
+      "back": "Indietro",
+      "saveRules": "Salva regole",
+      "saving": "Salvataggio…",
+      "retry": "Riprova",
+      "retryLoading": "Riprova il caricamento"
+    },
+    "options": {
+      "title": "Dati di selezione non disponibili",
+      "unavailable": "Le stagioni e i tipi di lega non sono al momento disponibili. La creazione sarà abilitata quando saranno disponibili opzioni valide."
+    },
+    "loading": {
+      "defaults": "Caricamento delle regole predefinite salvate…",
+      "seasons": "Caricamento delle stagioni attive…",
+      "leagueTypes": "Caricamento dei tipi di lega…"
+    },
+    "success": {
+      "created": "Lega creata con successo. Le regole predefinite salvate sono mostrate qui sotto.",
+      "settings": "Regole della lega salvate con successo."
+    },
+    "partial": {
+      "title": "La lega è stata creata, ma le regole non sono state salvate",
+      "message": "La lega esiste con le impostazioni predefinite. Correggi l’errore e riprova; non verrà creata un’altra lega.",
+      "viewLeague": "Visualizza la lega creata",
+      "loadTitle": "La lega è stata creata, ma non è stato possibile caricarne le regole salvate. Riprova senza creare un’altra lega."
+    },
+    "validation": {
+      "nameRequired": "Il nome della lega è obbligatorio.",
+      "seasonRequired": "Seleziona una stagione.",
+      "typeRequired": "Seleziona un tipo di lega.",
+      "participants": "Il numero massimo di partecipanti deve essere un intero da 2 a 100.",
+      "budget": "Il budget iniziale deve essere un intero non negativo.",
+      "refund": "La percentuale di rimborso deve essere un intero da 0 a 100.",
+      "rosterMaximum": "La dimensione massima della rosa deve essere un intero positivo.",
+      "roleLimit": "Ogni limite di ruolo deve essere un intero non negativo.",
+      "roleTotal": "La somma dei limiti di ruolo deve essere almeno pari alla dimensione massima della rosa.",
+      "nameLength": "Il nome della lega non può superare 255 caratteri.",
+      "descriptionLength": "La descrizione non può superare 5.000 caratteri."
+    },
+    "errors": {
+      "authentication": "È necessario autenticarsi. Accedi nuovamente.",
+      "createForbidden": "Non hai il permesso di creare una lega.",
+      "settingsForbidden": "La lega esiste, ma non puoi configurarne le regole.",
+      "notFound": "La lega creata o una risorsa correlata non è più disponibile.",
+      "conflict": "La richiesta è in conflitto con lo stato attuale della lega.",
+      "validation": "Correggi i campi evidenziati.",
+      "unexpected": "Impossibile completare la richiesta. Riprova.",
+      "commissionerUnverified": "La lega è stata creata, ma non è stato possibile confermare il tuo accesso come responsabile.",
+      "server": "Il server non ha potuto completare la richiesta. Riprova.",
+      "network": "Impossibile completare la richiesta. Controlla la connessione e riprova."
+    },
+    "lookups": {
+      "seasonsUnavailable": "Le stagioni non sono al momento disponibili.",
+      "typesUnavailable": "I tipi di lega non sono al momento disponibili.",
+      "noActiveSeasons": "Non sono disponibili stagioni attive. Per creare una lega è necessaria una stagione attiva.",
+      "noLeagueTypes": "Non sono disponibili tipi di lega."
+    },
+    "leagueTypes": {
+      "classic": "Classica",
+      "formula_one": "Formula 1",
+      "head_to_head": "Testa a testa"
+    }
+  },
+  "invitations": {
+    "eyebrow": "Inviti",
+    "title": "Inviti in sospeso",
+    "loading": "Caricamento inviti...",
+    "errorTitle": "Impossibile caricare gli inviti",
+    "error": "Riprova.",
+    "emptyTitle": "Nessun invito in sospeso",
+    "empty": "Non hai inviti alla lega in sospeso.",
+    "invitedRole": "Ruolo invitato",
+    "inviter": "Invitato da",
+    "expiration": "Scadenza",
+    "accept": "Accetta",
+    "reject": "Rifiuta",
+    "accepted": "Invito accettato.",
+    "rejected": "Invito rifiutato.",
+    "revoked": "Invito revocato.",
+    "expired": "Questo invito è scaduto.",
+    "processed": "Questo invito è già stato elaborato.",
+    "member": "Sei già membro.",
+    "permission": "Non hai il permesso di gestire questo invito.",
+    "rejectConfirmation": "Rifiutare questo invito?",
+    "revokeConfirmation": "Revocare questo invito?",
+    "viewLeague": "Vedi lega"
+  },
+  "account": {
+    "eyebrow": "Account",
+    "title": "Il tuo account",
+    "description": "Visualizza e aggiorna i dati del tuo account FantaMeister.",
+    "fields": {
+      "name": "Nome",
+      "email": "Email",
+      "emailVerification": "Verifica email",
+      "currentPassword": "Password attuale",
+      "newPassword": "Nuova password",
+      "confirmNewPassword": "Conferma nuova password"
+    },
+    "email": {
+      "verified": "Verificata",
+      "unverified": "Non verificata"
+    },
+    "profile": {
+      "title": "Profilo",
+      "submit": "Salva profilo",
+      "saving": "Salvataggio...",
+      "success": "Profilo aggiornato.",
+      "currentPasswordHint": "Conferma la password attuale per modificare l’email in modo sicuro."
+    },
+    "password": {
+      "title": "Cambia password",
+      "submit": "Cambia password",
+      "saving": "Cambio...",
+      "success": "Password aggiornata."
+    },
+    "errors": {
+      "authentication": "È necessario autenticarsi. Accedi nuovamente.",
+      "forbidden": "Il tuo account non può eseguire questa azione.",
+      "conflict": "L’aggiornamento dell’account è in conflitto con i dati attuali.",
+      "validation": "Correggi i campi dell’account evidenziati.",
+      "generic": "Impossibile aggiornare l’account."
+    }
+  },
+  "formation": {
+    "title": "Formazione della giornata",
+    "description": "Scegli modulo, titolari e panchina ordinata per la giornata selezionata.",
+    "module": "Modulo",
+    "starters": "Titolari",
+    "bench": "Panchina",
+    "matchday": "Giornata",
+    "matchdayNumber": "Giornata {{number}}",
+    "deadline": "Scadenza",
+    "locked": "Formazione bloccata — la scadenza è passata.",
+    "editable": "La formazione è modificabile fino alla scadenza.",
+    "submitted": "Inviata",
+    "noneYet": "Nessuna formazione salvata per questa giornata.",
+    "noMatchdays": "Nessuna giornata disponibile.",
+    "chooseModuleFirst": "Scegli un modulo prima di selezionare i titolari.",
+    "roleRequirements": "Requisiti per ruolo",
+    "unknownRole": "Ruolo sconosciuto",
+    "benchCount": "Selezionati {{count}} di {{limit}}",
+    "benchOrder": "Ordine della panchina",
+    "moveUp": "Sposta {{player}} su",
+    "moveDown": "Sposta {{player}} giù",
+    "save": "Salva formazione",
+    "saving": "Salvataggio…",
+    "submit": "Invia formazione",
+    "submitting": "Invio…",
+    "roles": {
+      "goalkeeper": "Portiere",
+      "defender": "Difensore",
+      "midfielder": "Centrocampista",
+      "forward": "Attaccante"
+    },
+    "success": {
+      "saved": "Formazione salvata.",
+      "submitted": "Formazione inviata."
+    },
+    "errors": {
+      "load": "Impossibile caricare la formazione.",
+      "scheduleNotInitialized": "Questa giornata non fa parte di un calendario testa a testa inizializzato. La modifica della formazione non è disponibile.",
+      "matchdays": "Impossibile caricare le giornate.",
+      "deadline": "La scadenza è passata. La formazione è ora in sola lettura.",
+      "invalid": "La formazione non è valida. Controlla le sezioni evidenziate.",
+      "module": "Scegli un modulo consentito.",
+      "starters": "I titolari devono rispettare i requisiti del modulo e la rosa.",
+      "bench": "La panchina supera i limiti di dimensione o ruolo, oppure contiene un giocatore non valido."
+    },
+    "unsaved": "Modifiche non salvate",
+    "draftSaved": "Bozza salvata",
+    "remaining": "{{count}} rimanenti"
+  },
+  "leagueNavigation": {
+    "label": "Navigazione lega",
+    "overview": "Panoramica lega",
+    "matchdays": "Giornate",
+    "rules": "Regole",
+    "fantasyTeams": "Fantasquadre",
+    "myTeam": "La mia squadra",
+    "matchdaysDescription": "Consulta le giornate passate e gestisci la formazione attuale.",
+    "rulesDescription": "Leggi le regole effettive per rosa, formazione, panchina e sostituzioni.",
+    "teamsDescription": "Visualizza le fantasquadre della lega e crea la tua squadra."
+  },
+  "matchdays": {
+    "title": "Giornate",
+    "description": "Giornate passate, attuale e future di questa lega.",
+    "past": "Passate",
+    "current": "Giornata attuale",
+    "upcoming": "In arrivo",
+    "open": "Apri giornata",
+    "openFormation": "Apri formazione",
+    "createFormation": "Crea formazione",
+    "editFormation": "Modifica formazione",
+    "viewFormation": "Visualizza formazione",
+    "viewOpponentFormation": "Visualizza formazione avversaria",
+    "scheduleNotInitialized": "Il calendario testa a testa non è inizializzato. Queste giornate sono solo il contesto della stagione reale e non sono ancora giornate fantasy giocabili.",
+    "openScheduleSetup": "Apri configurazione calendario",
+    "notFound": "Giornata non trovata",
+    "backToMatchday": "← Torna alla giornata",
+    "backToMatchdays": "← Torna alle giornate",
+    "calculate": "Calcola giornata",
+    "recalculate": "Ricalcola giornata",
+    "calculating": "Calcolo in corso…",
+    "calculationSuccess": "Giornata calcolata correttamente.",
+    "recalculationSuccess": "Giornata ricalcolata correttamente.",
+    "calculationError": "Non è stato possibile calcolare la giornata. Verifica che sia terminata e riprova.",
+    "recalculationWarning": "Il ricalcolo sostituirà i punteggi e i risultati calcolati di questa giornata usando le regole attuali della lega e ricalcolerà la classifica."
+  },
+  "h2h": {
+    "title": "Campionato testa a testa",
+    "schedule": "Calendario",
+    "notStarted": "Campionato non iniziato",
+    "startChampionship": "Inizia campionato",
+    "startingMatchday": "Giornata iniziale",
+    "currentParticipants": "Partecipanti attuali",
+    "maximumParticipants": "Partecipanti massimi",
+    "minimumTeams": "Sono richieste almeno due squadre.",
+    "maximumNotRequired": "Non è necessario raggiungere il numero massimo di partecipanti.",
+    "irreversible": "La generazione del calendario è irreversibile.",
+    "participantsBlocked": "Dopo l’avvio non potranno unirsi nuovi partecipanti.",
+    "invitationsBlocked": "I nuovi inviti non sono disponibili perché il campionato è iniziato.",
+    "participantsAndInvitationsBlocked": "Nuovi partecipanti e inviti saranno bloccati.",
+    "cannotRegenerate": "Il calendario non può essere rigenerato.",
+    "confirmStart": "Conferma avvio",
+    "confirmParticipants": "Partecipanti attuali: {{count}}",
+    "confirmMatchday": "Giornata iniziale: {{matchday}}",
+    "generated": "Calendario generato",
+    "generatedAt": "Generato il",
+    "startedFrom": "Iniziato da {{matchday}}",
+    "viewSchedule": "Visualizza calendario",
+    "configureStart": "Configura / Avvia",
+    "restDay": "Turno di riposo",
+    "opponent": "Avversario",
+    "vsTeam": "contro {{team}}",
+    "versus": "contro",
+    "noFutureMatchdays": "Non sono disponibili giornate future.",
+    "unauthorized": "Solo il commissioner o un co-commissioner può avviare il campionato.",
+    "notAvailable": "Il calendario testa a testa è disponibile solo per le leghe testa a testa.",
+    "errors": {
+      "load": "Impossibile caricare il calendario.",
+      "initialize": "Impossibile avviare il campionato.",
+      "alreadyInitialized": "Il calendario è già inizializzato. Ricaricamento del calendario generato.",
+      "invalidMatchday": "La giornata iniziale selezionata o la configurazione della lega non è valida."
+    }
+  },
+  "classic": {
+    "title": "Campionato Classic",
+    "start": "Avvia campionato",
+    "startingMatchday": "Giornata iniziale",
+    "started": "Campionato avviato",
+    "notStarted": "Campionato non avviato",
+    "participants": "Partecipanti: {{count}} / {{max}}",
+    "maxNotice": "Non è necessario raggiungere il numero massimo di partecipanti.",
+    "freezeWarning": "L'avvio è irreversibile e blocca i partecipanti.",
+    "missingZero": "Una formazione mancante vale zero punti.",
+    "noFutureMatchdays": "Non sono disponibili giornate future."
+  },
+  "standings": {
+    "totalPoints": "Punti totali",
+    "totalPointsShort": "Totale",
+    "averagePoints": "Media punti",
+    "averagePointsShort": "Media",
+    "bestMatchday": "Miglior giornata",
+    "bestMatchdayShort": "Migliore",
+    "title": "Classifica",
+    "description": "Classifica degli scontri diretti basata sui risultati calcolati.",
+    "position": "Posizione",
+    "positionShort": "Pos",
+    "team": "Fantasquadra",
+    "played": "Giocate",
+    "playedShort": "G",
+    "wins": "Vittorie",
+    "winsShort": "V",
+    "draws": "Pareggi",
+    "drawsShort": "N",
+    "losses": "Sconfitte",
+    "lossesShort": "P",
+    "goalsFor": "Gol fatti",
+    "goalsForShort": "GF",
+    "goalsAgainst": "Gol subiti",
+    "goalsAgainstShort": "GS",
+    "goalDifference": "Differenza reti",
+    "goalDifferenceShort": "DR",
+    "points": "Punti",
+    "pointsShort": "Pt",
+    "you": "Tu",
+    "currentTeam": "{{team}}, la tua fantasquadra",
+    "empty": "Nessuna classifica ancora disponibile.",
+    "errorTitle": "Impossibile caricare la classifica",
+    "championshipPoints": "Punti campionato",
+    "championshipPointsShort": "PC",
+    "podiums": "Podi",
+    "podiumsShort": "Podi",
+    "bestFinish": "Miglior piazzamento",
+    "bestFinishShort": "Migliore",
+    "fantasyPointsTotal": "Punti fantasy totali",
+    "fantasyPointsTotalShort": "PF",
+    "averageFantasyPoints": "Media punti fantasy",
+    "averageFantasyPointsShort": "Media PF"
+  },
+  "results": {
+    "matchResult": "Risultato partita",
+    "yourFixture": "La tua partita",
+    "pendingResult": "Risultato in attesa",
+    "submittedPending": "Formazione inviata, risultato in attesa",
+    "notSubmitted": "Formazione non inviata",
+    "missingFormation": "Formazione mancante (zero punti)",
+    "finalScore": "Risultato finale",
+    "fantasyPoints": "Fantapunti",
+    "viewFormation": "Visualizza formazione",
+    "viewTeamFormation": "Visualizza la formazione di {{team}}",
+    "substitute": "Subentrato",
+    "replaced": "Ha sostituito",
+    "noCalculatedResult": "Nessun risultato calcolato disponibile",
+    "submittedFormation": "Formazione inviata",
+    "effectiveLineup": "Formazione effettiva",
+    "starter": "Titolare",
+    "bench": "Panchina",
+    "replacedBy": "Sostituito da",
+    "noPlayableScore": "Nessun punteggio valido",
+    "importedScore": "Punteggio importato",
+    "effectiveContribution": "Contributo effettivo",
+    "realCaptain": "Capitano della squadra reale",
+    "realCaptainBonus": "Bonus capitano reale",
+    "teamTotal": "Totale squadra",
+    "basePoints": "Punti base",
+    "enteredFromBench": "Entrato dalla panchina",
+    "viewTeamResult": "Vedi risultato squadra",
+    "matchdayResults": "Risultati giornata",
+    "noFixtures": "Nessun incontro disponibile per questa giornata",
+    "noClassicParticipants": "Nessun partecipante Classic disponibile per questa giornata",
+    "goals": "Gol",
+    "assists": "Assist",
+    "yellowCards": "Cartellini gialli",
+    "redCards": "Cartellini rossi",
+    "cleanSheet": "Porta inviolata"
+  },
+  "formulaOne": {
+    "standingsTitle": "Classifica Formula Uno",
+    "initializationTitle": "Campionato Formula Uno",
+    "notInitialized": "Il campionato Formula Uno non è ancora stato inizializzato.",
+    "initializeAction": "Inizializza campionato",
+    "maxNotice": "Non è necessario raggiungere il numero massimo di partecipanti.",
+    "freezeWarning": "L'inizializzazione è irreversibile e blocca i partecipanti.",
+    "positionPoints": "Punti per posizione",
+    "positionPointsHelp": "I punti devono essere numeri interi non negativi e non possono aumentare per una posizione peggiore.",
+    "positionLabel": "{{position}}° posto",
+    "addPosition": "Aggiungi posizione",
+    "removePosition": "Rimuovi posizione",
+    "matchdayPlacements": "Risultati Formula Uno",
+    "participantStatus": "Stato partecipanti",
+    "validation": {
+      "atLeastOne": "Aggiungi almeno una posizione di arrivo.",
+      "nonNegativeInteger": "Ogni posizione deve assegnare un numero intero non negativo di punti.",
+      "nonIncreasing": "I punti non possono aumentare al peggiorare della posizione."
+    },
+    "standingsDescription": "Classifica del campionato Formula Uno secondo l’ordine di arrivo ufficiale."
+  },
+  "playerMarket": {
+    "available": "Disponibile",
+    "alreadyAssigned": "Già assegnato"
+  },
+  "championshipInitialization": {
+    "errors": {
+      "missingTeam": "Impossibile inizializzare il campionato: 1 partecipante non ha ancora creato la propria squadra.",
+      "missingTeams": "Impossibile inizializzare il campionato: {{count}} partecipanti non hanno ancora creato la propria squadra.",
+      "unauthorized": "Solo il commissioner o un co-commissioner può inizializzare il campionato.",
+      "invalidMatchday": "La giornata iniziale selezionata o la configurazione della lega non è valida.",
+      "generic": "Impossibile inizializzare il campionato."
+    }
+  },
+  "market": {
+    "title": "Mercato",
+    "status": "Stato del mercato",
+    "open": "Aperto",
+    "closed": "Chiuso",
+    "opens": "Apre",
+    "closes": "Chiude",
+    "cash": "Conguagli in denaro",
+    "allowed": "Consentiti",
+    "notAllowed": "Non consentiti",
+    "notConfigured": "Non configurato",
+    "directory": "Elenco giocatori",
+    "search": "Cerca giocatori",
+    "allRoles": "Tutti i ruoli",
+    "allAssignments": "Tutte le rose",
+    "assigned": "Rosa attuale",
+    "unassigned": "Non assegnato",
+    "empty": "Nessun giocatore corrisponde ai filtri.",
+    "error": "Impossibile caricare il Mercato.",
+    "player": "Giocatore",
+    "role": "Ruolo",
+    "club": "Club reale",
+    "quotation": "Quotazione",
+    "roster": "Rosa attuale",
+    "yourTeam": "La tua squadra",
+    "enabledLabel": "Abilitato",
+    "disabledLabel": "Disabilitato",
+    "settings": {
+      "title": "Regole del mercato",
+      "description": "Configura quando il mercato è disponibile e se sono consentiti conguagli in denaro.",
+      "enabled": "Mercato abilitato",
+      "cashEnabled": "Conguagli in denaro abilitati",
+      "success": "Impostazioni del mercato aggiornate.",
+      "invalidWindow": "Scegli apertura e chiusura; la chiusura deve essere successiva all’apertura.",
+      "updateError": "Impossibile aggiornare le impostazioni del mercato.",
+      "errorTitle": "Impossibile aggiornare le regole del mercato"
+    },
+    "trades": {
+      "title": "Le mie proposte di scambio",
+      "incoming": "Proposte ricevute",
+      "outgoing": "Proposte inviate",
+      "history": "Completate / cronologia",
+      "empty": "Nessuna proposta di scambio.",
+      "accept": "Accetta",
+      "reject": "Rifiuta",
+      "propose": "Proponi scambio",
+      "sendingProposal": "Invio proposta...",
+      "accepting": "Accettazione...",
+      "rejecting": "Rifiuto...",
+      "cancelling": "Annullamento...",
+      "sent": "Proposta di scambio inviata.",
+      "duplicate": "Esiste già una proposta identica in attesa.",
+      "invalidCash": "Il conguaglio deve essere un numero intero di crediti e, se positivo, deve avere un pagatore.",
+      "proposeFor": "Richiedi {{name}}",
+      "choosePlayer": "Scegli un giocatore da offrire",
+      "noCash": "Nessun conguaglio",
+      "acceptConfirmation": "Accettando, i giocatori verranno scambiati immediatamente tra le due fantasquadre e verrà applicato il conguaglio configurato."
+    }
   }
 }

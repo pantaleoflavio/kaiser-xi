@@ -1,5 +1,232 @@
 # Development Guide
 
+## Purpose
+
+This document describes the development conventions used throughout the FantaMeister backend.
+
+The goal is to keep the codebase consistent, maintainable and easy to extend as the project grows.
+
+---
+
+# General principles
+
+The project follows a domain-oriented approach where business rules are kept outside controllers whenever possible.
+
+General principles:
+
+* Keep controllers thin.
+* Prefer explicit code over clever code.
+* Keep business rules inside dedicated services.
+* Validate all incoming requests through Form Requests.
+* Authorize access through Policies.
+* Return API Resources from API endpoints.
+* Prefer composition over duplication.
+* Favor readability over micro-optimizations.
+
+---
+
+# Project architecture
+
+The typical request flow is:
+
+```text
+HTTP Request
+      │
+      ▼
+Route
+      │
+      ▼
+Middleware
+      │
+      ▼
+Form Request
+      │
+      ▼
+Policy
+      │
+      ▼
+Controller
+      │
+      ▼
+Service
+      │
+      ▼
+Eloquent Models
+      │
+      ▼
+API Resource
+      │
+      ▼
+HTTP Response
+```
+
+Responsibilities are intentionally separated.
+
+---
+
+# Controller conventions
+
+Controllers should:
+
+* remain small;
+* delegate business logic to Services;
+* return API Resources;
+* never contain validation logic;
+* never contain authorization logic other than explicit Gate checks when route middleware cannot be used.
+
+Controllers should not manipulate domain objects directly beyond orchestration.
+
+---
+
+# Validation
+
+Every endpoint accepting user input should use a dedicated Form Request.
+
+Validation rules belong inside Form Requests.
+
+Controllers should never call `Validator::make()` directly.
+
+---
+
+# Authorization
+
+Authorization is handled through Laravel Policies.
+
+Whenever possible, authorization should be applied through route middleware.
+
+Examples:
+
+* view
+* create
+* update
+
+When policy signatures require additional contextual models that cannot be resolved through route middleware, explicit `Gate::authorize()` calls are acceptable.
+
+---
+
+# Business logic
+
+Business logic belongs inside Services.
+
+Services should:
+
+* implement a single use case;
+* receive models or DTO-like values;
+* remain framework-light whenever practical.
+
+Controllers should orchestrate Services rather than implementing business rules.
+
+---
+
+# Eloquent models
+
+Models should contain:
+
+* relationships;
+* casts;
+* scopes;
+* model-specific behavior.
+
+Models should not contain orchestration logic.
+
+---
+
+# API Resources
+
+All API responses exposing domain models should use API Resources.
+
+Resources are responsible for:
+
+* response shape;
+* field visibility;
+* computed attributes;
+* nested resources.
+
+---
+
+# Database conventions
+
+The project follows these database conventions:
+
+* granular migrations;
+* foreign keys whenever possible;
+* explicit unique constraints;
+* factories for testing;
+* seeders for local development.
+
+Business invariants should be enforced both in the application layer and, where appropriate, at the database level.
+
+---
+
+# Testing
+
+Feature tests should verify complete HTTP behavior.
+
+Unit tests should verify isolated business logic when appropriate.
+
+Factories should generate valid domain objects with minimal configuration.
+
+Tests should clearly express:
+
+* the scenario;
+* the action;
+* the expected outcome.
+
+---
+
+# Coding style
+
+The project follows:
+
+* PSR-12;
+* Laravel Pint;
+* typed properties;
+* constructor property promotion;
+* explicit return types.
+
+Consistency is preferred over personal style.
+
+---
+
+# Local development workflow
+
+Typical workflow:
+
+```bash
+php artisan migrate:fresh --seed
+
+php artisan test
+
+./vendor/bin/pint
+
+composer validate
+
+composer audit --locked
+```
+
+---
+
+# Git workflow
+
+Recommended workflow:
+
+* create a feature branch;
+* keep commits focused on a single concern;
+* ensure all tests pass before pushing;
+* open a pull request for review.
+
+---
+
+# Related documentation
+
+Additional documentation is available under the `docs/` directory:
+
+* ARCHITECTURE.md
+* DOMAIN.md
+* API.md
+* ROADMAP.md
+
+
 This document describes the local development workflow for FantaMeister.
 
 ## Requirements
@@ -209,6 +436,38 @@ localhost:5433
 ## Multi-competition domain model
 
 The application stores multiple real football competitions in one database. Seasons belong to real competitions, and fantasy leagues belong to seasons. Real clubs and players are global identities: `season_clubs` records club participation in a season, while `player_season_registrations` records a player's club, eligibility, quotation, and active status for a season.
+
+## Deterministic demo environment
+
+> **Local development only:** the credentials below are intentionally public demo credentials and must never be used in production.
+
+From the `backend` directory, seed the complete demo environment with:
+
+```bash
+php artisan db:seed --class=DemoEnvironmentSeeder
+```
+
+For a clean database, run:
+
+```bash
+php artisan migrate:fresh
+php artisan db:seed --class=DemoEnvironmentSeeder
+```
+
+The default `DatabaseSeeder` includes this environment only when `APP_ENV` is `local` or `testing`; production seeding retains reference data without creating these demo users.
+
+All demo users use the password `password`:
+
+| Email | Purpose |
+| --- | --- |
+| `demo.commissioner@example.com` | Commissioner and owner of a populated roster |
+| `demo.cocommissioner@example.com` | Co-commissioner with a partial roster |
+| `demo.participant1@example.com` | Ordinary participant with a nearly empty roster |
+| `demo.participant2@example.com` | Ordinary participant with an empty roster |
+| `demo.participant3@example.com` through `demo.participant7@example.com` | Existing ordinary participant scenarios with empty rosters |
+| `demo.nonmember@example.com` | Non-member for authorization checks |
+
+The seed creates **Demo League** for Serie A 2025/2026 with four clubs, 24 deterministic registered players across all four roles, nine memberships and fantasy teams, a 500 initial budget, and a 50% release refund. Seven players are actively assigned at deterministic prices, one assignment is historical/released, and the remaining player pool supports search, filtering, eligibility, and pagination checks. The original commissioner and seven participant accounts and teams remain available; the co-commissioner and non-member scenarios are additive. The command is safe to repeat: stable emails, slugs, and composite natural keys are resolved with idempotent Eloquent operations, while roster services create only missing assignments.
 
 Real matches reference season clubs, and player scores reference player season registrations. This keeps competition- and season-specific data separate from global club and player identity.
 

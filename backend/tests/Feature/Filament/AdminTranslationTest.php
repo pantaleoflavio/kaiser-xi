@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class AdminTranslationTest extends TestCase
 {
-     public function test_admin_translation_files_have_identical_keys(): void
+    public function test_admin_translation_files_have_identical_keys(): void
     {
         $translations = collect(['en', 'de', 'it'])->mapWithKeys(fn (string $locale): array => [
             $locale => require lang_path("{$locale}/admin.php"),

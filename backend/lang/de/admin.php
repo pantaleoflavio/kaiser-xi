@@ -6,6 +6,32 @@ return [
         'locales' => ['en' => 'Englisch', 'de' => 'Deutsch', 'it' => 'Italienisch'],
     ],
     'panel' => ['title' => 'FantaMeister Admin'],
+    'player_scores' => [
+        'bulk_delete_warning' => 'Das Löschen von Bewertungen kann die historische Nachvollziehbarkeit beeinträchtigen. Bestehende Ligaergebnisse werden nicht neu berechnet.',
+        'captain' => 'Kapitän',
+        'confirmed_warning_body' => 'Änderungen an dieser bestätigten Spielerbewertung berechnen bereits berechnete Liga-Spieltage nicht automatisch neu.',
+        'confirmed_warning_title' => 'Bestätigte Bewertung',
+        'delete_warning' => 'Das Löschen dieser Bewertung kann die historische Nachvollziehbarkeit beeinträchtigen. Bestehende Ligaergebnisse werden nicht neu berechnet.',
+        'missing_final_score' => 'Fehlende Endbewertung',
+        'real_club_captain' => 'Kapitän des realen Vereins',
+        'real_club_captain_help' => 'Der Spieler war Kapitän seines realen Vereins.',
+        'sections' => [
+            'identity' => 'Identität',
+            'match_events' => 'Spielereignisse',
+            'raw_performance' => 'Rohleistung',
+            'status_scoring' => 'Status / Bewertung',
+        ],
+    ],
+    'validation' => [
+        'external_identity_pair' => 'Anbieter und externe ID müssen entweder beide angegeben oder beide leer sein.',
+        'external_identity_unique' => 'Diese Zuordnung aus Anbieter und externer ID existiert bereits.',
+        'player_scores' => [
+            'confirmed_final_score_required' => 'Für den Status „Bestätigt“ ist eine Endbewertung erforderlich.',
+            'confirmed_base_rating_required' => 'Für den Status „Bestätigt“ ist eine Basisbewertung erforderlich.',
+            'duplicate' => 'Für diese Spielerregistrierung und diesen Spieltag existiert bereits eine Bewertung.',
+            'season_mismatch' => 'Die Spielerregistrierung muss zur Saison des Spieltags gehören.',
+        ],
+    ],
     'navigation' => ['groups' => [
         'system' => 'System',
         'competitions' => 'Wettbewerbe',
@@ -16,7 +42,7 @@ return [
     'resources' => [
         'matchdays' => ['singular' => 'Spieltag', 'plural' => 'Spieltage'],
         'league_types' => ['singular' => 'Ligatyp', 'plural' => 'Ligatype'],
-        'real_matchs' => ['singular' => 'Reales Spiel', 'plural' => 'Reales Spiele'],
+        'real_matches' => ['singular' => 'Reales Spiel', 'plural' => 'Reales Spiele'],
         'seasons' => ['singular' => 'Saison', 'plural' => 'Saisone'],
         'roles' => ['singular' => 'Rolle', 'plural' => 'Rollee'],
         'season_clubs' => ['singular' => 'Saisonverein', 'plural' => 'Saisonvereine'],
@@ -33,7 +59,7 @@ return [
         'real_competitions' => ['singular' => 'Realer Wettbewerb', 'plural' => 'Realer Wettbewerbe'],
     ],
     'labels' => [
-        'active' => 'Aktiv',
+        'is_active' => 'Ist Aktiv',
         'assists' => 'Vorlagen',
         'away_club' => 'Auswärtsverein',
         'away_score' => 'Auswärtstore',
@@ -52,6 +78,7 @@ return [
         'email' => 'E-Mail',
         'email_address' => 'E-Mail-Adresse',
         'ends_at' => 'Endet am',
+        'external_identities' => 'Externe IDs',
         'external_id' => 'Externe ID',
         'external_provider' => 'Externer Anbieter',
         'final_score' => 'Endpunktzahl',

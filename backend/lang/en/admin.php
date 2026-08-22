@@ -6,6 +6,32 @@ return [
         'locales' => ['en' => 'English', 'de' => 'German', 'it' => 'Italian'],
     ],
     'panel' => ['title' => 'FantaMeister Admin'],
+    'player_scores' => [
+        'bulk_delete_warning' => 'Deleting scores can weaken historical traceability. Existing calculated league results are not recalculated.',
+        'captain' => 'Captain',
+        'confirmed_warning_body' => 'Changes to this confirmed PlayerScore do not automatically recalculate already calculated League Matchdays.',
+        'confirmed_warning_title' => 'Confirmed score',
+        'delete_warning' => 'Deleting this score can weaken historical traceability. Existing calculated league results are not recalculated.',
+        'missing_final_score' => 'Missing final score',
+        'real_club_captain' => 'Real club captain',
+        'real_club_captain_help' => 'The player captained the real club.',
+        'sections' => [
+            'identity' => 'Identity',
+            'match_events' => 'Match events',
+            'raw_performance' => 'Raw performance',
+            'status_scoring' => 'Status / scoring input',
+        ],
+    ],
+    'validation' => [
+        'external_identity_pair' => 'Provider and external ID must either both be supplied or both be empty.',
+        'external_identity_unique' => 'This provider and external ID mapping already exists.',
+        'player_scores' => [
+            'confirmed_final_score_required' => 'A final score is required when the status is confirmed.',
+            'confirmed_base_rating_required' => 'A base rating is required when the status is confirmed.',
+            'duplicate' => 'A score already exists for this player registration and matchday.',
+            'season_mismatch' => 'The player registration must belong to the matchday season.',
+        ],
+    ],
     'navigation' => ['groups' => [
         'system' => 'System',
         'competitions' => 'Competitions',
@@ -16,7 +42,7 @@ return [
     'resources' => [
         'matchdays' => ['singular' => 'Matchday', 'plural' => 'Matchdays'],
         'league_types' => ['singular' => 'League Type', 'plural' => 'League Types'],
-        'real_matchs' => ['singular' => 'Real Match', 'plural' => 'Real Matches'],
+        'real_matches' => ['singular' => 'Real Match', 'plural' => 'Real Matches'],
         'seasons' => ['singular' => 'Season', 'plural' => 'Seasons'],
         'roles' => ['singular' => 'Role', 'plural' => 'Roles'],
         'season_clubs' => ['singular' => 'Season Club', 'plural' => 'Season Clubs'],
@@ -33,7 +59,7 @@ return [
         'real_competitions' => ['singular' => 'Real Competition', 'plural' => 'Real Competitions'],
     ],
     'labels' => [
-        'active' => 'Active',
+        'is_active' => 'IsActive',
         'assists' => 'Assists',
         'away_club' => 'Away club',
         'away_score' => 'Away Score',
@@ -52,6 +78,7 @@ return [
         'email' => 'Email',
         'email_address' => 'Email address',
         'ends_at' => 'Ends At',
+        'external_identities' => 'External IDs',
         'external_id' => 'External Id',
         'external_provider' => 'External provider',
         'final_score' => 'Final Score',

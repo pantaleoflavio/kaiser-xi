@@ -1,29 +1,971 @@
 {
   "app": {
-    "name": "FantaMeister",
-    "competitionLabel": "Wettbewerb"
-  },
-  "leagueModes": {
-    "classic": "Gesamtpunkteliste",
-    "formula_one": "Punkte nach Spieltag",
-    "head_to_head": "Kopf-an-Kopf"
-  },
-  "auth": {
-    "login": "Anmelden",
-    "register": "Registrieren",
-    "logout": "Abmelden",
-    "forgotPassword": "Passwort vergessen",
-    "resetPassword": "Passwort zurücksetzen",
-    "email": "E-Mail",
-    "password": "Passwort",
-    "confirmPassword": "Passwort bestätigen",
-    "name": "Name",
-    "sendResetLink": "Reset-Link senden",
-    "passwordsMustMatch": "Passwörter müssen übereinstimmen",
-    "forgotPasswordLink": "Passwort vergessen?",
-    "invalidCredentials": "Ungültige Anmeldedaten."
+    "name": "FantaMeister"
   },
   "common": {
-    "loading": "Wird geladen..."
+    "loading": "Wird geladen...",
+    "checkingSession": "Sitzung wird geprüft...",
+    "logout": "Abmelden",
+    "language": "Sprache",
+    "confirmations": {
+      "releasePlayer": "{{name}} entlassen? Die erwartete Erstattung beträgt {{percent}} % des Kaufpreises."
+    },
+    "errors": {
+      "forbidden": "Du hast keine Berechtigung für diese Aktion.",
+      "notFound": "Die angefragte Liga, das Team oder der Roster-Spieler wurde nicht gefunden.",
+      "conflict": "Die Anfrage steht im Konflikt mit dem aktuellen Roster- oder Budgetstatus.",
+      "validation": "Bitte korrigiere die folgende Fehler.",
+      "unexpected": "Ein unerwarteter Fehler ist aufgetreten."
+    },
+    "cancel": "Abbrechen",
+    "enabled": "Aktiviert",
+    "disabled": "Deaktiviert",
+    "previous": "Zurück",
+    "next": "Weiter"
+  },
+  "auth": {
+    "login": {
+      "title": "Anmelden",
+      "description": "Melde dich mit deinen FantaMeister-Zugangsdaten an.",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "submitting": "Anmeldung läuft...",
+      "noAccount": "Noch kein Konto?",
+      "registerLink": "Registrieren",
+      "error": "Anmeldung nicht möglich."
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "description": "Starte mit der Verwaltung deiner Fantasy-Football-Saison.",
+      "name": "Name",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "confirmPassword": "Passwort bestätigen",
+      "submit": "Registrieren",
+      "submitting": "Konto wird erstellt...",
+      "alreadyRegistered": "Bereits registriert?",
+      "loginLink": "Anmelden",
+      "passwordsMustMatch": "Passwörter müssen übereinstimmen.",
+      "error": "Registrierung nicht möglich."
+    }
+  },
+  "dashboard": {
+    "eyebrow": "Dashboard",
+    "title": "Willkommen zurück, {{name}}.",
+    "description": "Verwalte deine Ligen, Einladungen und Fantasy-Teams an einem Ort.",
+    "accountTitle": "Konto",
+    "nameLabel": "Name",
+    "emailLabel": "E-Mail",
+    "leaguesTitle": "Ligen",
+    "leaguesDescription": "Sieh dir die privaten Ligen an, die mit deinem Konto verbunden sind. Ligaerstellung und Einladungen folgen in einem späteren Schritt.",
+    "leaguesLink": "Ligen ansehen"
+  },
+  "nav": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "home": "Startseite",
+    "dashboard": "Dashboard",
+    "rules": "Regeln",
+    "leagues": "Ligen",
+    "invitations": "Einladungen",
+    "account": "Konto"
+  },
+  "home": {
+    "eyebrow": "Fantasy Football nach deinen Regeln",
+    "title": "Erstelle private Fantasy-Football-Welten über mehrere Wettbewerbe hinweg.",
+    "description": "FantaMeister ist eine Multi-Wettbewerbs-Plattform für Fantasy Football, auf der du private Ligen erstellen oder ihnen beitreten und Fantasy-Teams mit Freunden verwalten kannst.",
+    "cta": {
+      "login": "Anmelden",
+      "register": "Registrieren",
+      "dashboard": "Zum Dashboard"
+    },
+    "panel": {
+      "label": "Grundlage für kommende Funktionen",
+      "title": "Bereit für tiefere Fantasy-Saisons",
+      "description": "Die App wird für Kader, Auktionen, Formationen und Spieltage vorbereitet, während die aktuelle Nutzung einfach und fokussiert bleibt."
+    },
+    "features": {
+      "competitions": {
+        "title": "Multi-Wettbewerbs-Plattform",
+        "description": "Organisiere Fantasy-Football-Erlebnisse, die über einen einzelnen realen Wettbewerb hinauswachsen können."
+      },
+      "leagues": {
+        "title": "Private Ligen",
+        "description": "Erstelle private Ligen für deine Gruppe oder tritt ihnen bei und halte jede Saison in einem FantaMeister-Arbeitsbereich zusammen."
+      },
+      "teams": {
+        "title": "Fantasy-Teams verwalten",
+        "description": "Verwalte die Grundlage deines Fantasy-Teams, bevor erweiterte Liga- und Kaderwerkzeuge dazukommen."
+      },
+      "roadmap": {
+        "title": "Gebaut für die nächsten Schritte",
+        "description": "Künftige Unterstützung für Kader, Auktionen, taktische Formationen und Spieltagsabläufe ist geplant."
+      }
+    }
+  },
+  "rules": {
+    "eyebrow": "Regeln und Guide",
+    "title": "So funktioniert FantaMeister",
+    "description": "Ein kurzer Guide zu den Grundideen hinter FantaMeister-Ligen, Teams und künftigen Spielbereichen.",
+    "sections": {
+      "overview": {
+        "title": "Was FantaMeister ist",
+        "description": "FantaMeister ist eine Multi-Wettbewerbs-Plattform für Fantasy Football für private Gruppen, die eigene Fantasy-Saisons verwalten möchten."
+      },
+      "leagues": {
+        "title": "Wie Ligen funktionieren",
+        "description": "Ligen sind private Bereiche, in denen Mitglieder einen Wettbewerb verfolgen, Teams vergleichen und eine gemeinsame Saison erleben."
+      },
+      "roles": {
+        "title": "Liga-Rollen",
+        "description": "Jedes Liga-Mitglied hat eine Rolle mit bestimmten Verantwortlichkeiten. Commissioners leiten die Liga, Co-Commissioners unterstützen und Participants spielen mit."
+      },
+      "teams": {
+        "title": "Fantasy-Team-Grundlagen",
+        "description": "Fantasy-Teams repräsentieren Teilnehmende innerhalb einer Liga. Die Teamverwaltung wird die Grundlage für Kader, Aufstellungen und Spieltagswertung."
+      },
+      "future": {
+        "title": "Künftige Spielbereiche",
+        "description": "Die Produktbasis wird für tiefere Fantasy-Football-Abläufe rund um Kader, Budget, Auktionen, Formationen und Spieltage vorbereitet."
+      }
+    },
+    "roles": {
+      "title": "Rollendetails",
+      "commissioner": {
+        "title": "Commissioner",
+        "description": "Verantwortet die Ligaeinrichtung und leitet das Ligaerlebnis."
+      },
+      "coCommissioner": {
+        "title": "Co-commissioner",
+        "description": "Unterstützt den Commissioner bei Aufgaben der Ligaverwaltung."
+      },
+      "participant": {
+        "title": "Participant",
+        "description": "Nimmt an der Liga teil und verwaltet ein Fantasy-Team."
+      }
+    },
+    "future": {
+      "title": "Geplante Spielbereiche",
+      "items": {
+        "squads": "Kader zum Aufbau und zur Pflege von Teamrosters.",
+        "budget": "Budgetregeln für ausgewogene Entscheidungen beim Teambau.",
+        "auctions": "Auktionen zur Spielerzuteilung in privaten Ligen.",
+        "formations": "Formationen für taktische Aufstellungsentscheidungen.",
+        "matchdays": "Spieltage für Begegnungen, Wertung und Fortschritt."
+      }
+    }
+  },
+  "leagues": {
+    "eyebrow": "Liga-Grundlage",
+    "title": "Deine Ligen",
+    "description": "Diese geschützte Seite listet die Ligen auf, die deinem Konto zur Verfügung stehen. Erstellung, Einladungen und Fantasy-Team-Abläufe werden bewusst noch nicht umgesetzt.",
+    "loading": "Ligen werden geladen...",
+    "error": "Ligen konnten nicht geladen werden.",
+    "errorTitle": "Ligen konnten nicht geladen werden",
+    "emptyTitle": "Noch keine Ligen",
+    "emptyDescription": "Du bist noch in keiner Liga. Ligaerstellung und Einladungen werden in einem späteren Schritt ergänzt.",
+    "noDescription": "Keine Beschreibung vorhanden.",
+    "roles": {
+      "commissioner": "Ligaleiter",
+      "co_commissioner": "Stellvertretender Ligaleiter",
+      "participant": "Mitglied",
+      "unknown": "Mitglied"
+    },
+    "fields": {
+      "competition": "Wettbewerb",
+      "season": "Saison",
+      "type": "Typ",
+      "status": "Status"
+    },
+    "viewDetails": "Ligadetails ansehen"
+  },
+  "leagueDetail": {
+    "eyebrow": "Ligadetails",
+    "loading": "Liga wird geladen...",
+    "backToLeagues": "← Zurück zu Ligen",
+    "error": "Liga konnte nicht geladen werden.",
+    "errorTitle": "Liga konnte nicht geladen werden",
+    "notAvailable": "Nicht verfügbar",
+    "unlimited": "Unbegrenzt",
+    "never": "Nie",
+    "fields": {
+      "maxParticipants": "Max. Teilnehmende"
+    },
+    "members": {
+      "title": "Mitglieder",
+      "description": "Sieh dir die Ligamitglieder an und verwalte ihre Rollen und Teilnahme.",
+      "error": "Mitglieder konnten nicht geladen werden.",
+      "errorTitle": "Mitglieder konnten nicht geladen werden",
+      "emptyTitle": "Keine Mitglieder gefunden",
+      "emptyDescription": "Diese Liga hat noch keine sichtbaren Mitglieder.",
+      "loading": "Mitglieder werden geladen...",
+      "management": {
+        "promote": "Zum Co-Commissioner befördern",
+        "revoke": "Co-Commissioner-Rolle entziehen",
+        "saving": "Wird gespeichert...",
+        "roles": {
+          "commissioner": "Commissioner",
+          "co_commissioner": "Co-Commissioner",
+          "participant": "Teilnehmer"
+        },
+        "remove": {
+          "action": "Mitglied entfernen",
+          "title": "Ligamitglied entfernen",
+          "confirmation": "{{name}} ({{role}}) aus {{league}} entfernen?",
+          "preservation": "Historische Fantasy-Team- und Kaderdaten bleiben erhalten.",
+          "confirm": "Mitglied entfernen",
+          "success": "{{name}} wurde aus der Liga entfernt."
+        },
+        "role": {
+          "co_commissioner": {
+            "title": "Ligamitglied befördern",
+            "confirmation": "{{name}} in {{league}} von {{role}} zum Co-Commissioner befördern?",
+            "confirm": "Mitglied befördern",
+            "success": "{{name}} ist jetzt Co-Commissioner."
+          },
+          "participant": {
+            "title": "Co-Commissioner-Rolle entziehen",
+            "confirmation": "{{name}} die Rolle {{role}} entziehen und die Person in {{league}} zum Teilnehmer machen?",
+            "confirm": "Rolle entziehen",
+            "success": "{{name}} ist jetzt Teilnehmer."
+          }
+        },
+        "errors": {
+          "remove": {
+            "forbidden": "Du darfst dieses Mitglied nicht entfernen. Der Commissioner ist geschützt.",
+            "notFound": "Dieses Mitglied gehört nicht mehr zur Liga.",
+            "conflict": "Dieses Mitglied kann wegen eines Konflikts mit dem aktuellen Ligastatus nicht entfernt werden.",
+            "unexpected": "Das Mitglied konnte nicht entfernt werden. Bitte versuche es erneut."
+          },
+          "role": {
+            "forbidden": "Du darfst die Rolle dieses Mitglieds nicht ändern. Die Commissioner-Rolle ist geschützt.",
+            "notFound": "Dieses Mitglied gehört nicht mehr zur Liga.",
+            "conflict": "Diese Rolle kann wegen eines Konflikts mit dem aktuellen Ligastatus nicht geändert werden.",
+            "unexpected": "Die Mitgliedsrolle konnte nicht geändert werden. Bitte versuche es erneut."
+          }
+        }
+      }
+    },
+    "invitations": {
+      "title": "Einladungen",
+      "error": "Einladungen konnten nicht geladen werden.",
+      "errorTitle": "Einladungen konnten nicht geladen werden",
+      "emptyTitle": "Noch keine Einladungen",
+      "emptyDescription": "Erstelle eine Einladung, damit ein weiterer Nutzer dieser Liga beitreten kann.",
+      "maxUses": "Max. Nutzungen",
+      "unlimitedUses": "Unbegrenzte Nutzungen",
+      "expiresAt": "Läuft ab am",
+      "create": "Einladung erstellen",
+      "creating": "Wird erstellt...",
+      "createError": "Einladung konnte nicht erstellt werden.",
+      "delete": "Einladung widerrufen",
+      "deleting": "Wird storniert...",
+      "deleteError": "Bitte versuche es erneut.",
+      "status": "Status",
+      "used": "Genutzt",
+      "remaining": "Verbleibend",
+      "expires": "Läuft ab",
+      "createdBy": "Erstellt von",
+      "email": "Email",
+      "invitedRole": "Eingeladene Rolle"
+    },
+    "status": {
+      "draft": "Entwurf",
+      "setup": "Einrichtung",
+      "active": "Aktiv",
+      "completed": "Abgeschlossen",
+      "archived": "Archiviert"
+    }
+  },
+  "fantasyTeams": {
+    "list": {
+      "title": "Fantasy-Teams",
+      "description": "Teams, die aktuell in dieser Liga registriert sind.",
+      "emptyTitle": "Noch keine Fantasy-Teams",
+      "emptyDescription": "Noch kein Liga-Mitglied hat ein Fantasy-Team erstellt.",
+      "owner": "Besitzer: {{name}}",
+      "ownedByYou": "Dein Team",
+      "youOwnTeam": "Du besitzt bereits ein Team"
+    },
+    "create": {
+      "title": "Fantasy-Team erstellen",
+      "description": "Wähle einen Teamnamen, um in dieser Liga als Fantasy-Team-Owner teilzunehmen.",
+      "name": "Teamname",
+      "namePlaceholder": "z. B. Meister XI",
+      "submit": "Team erstellen",
+      "submitting": "Team wird erstellt..."
+    },
+    "detail": {
+      "eyebrow": "Fantasy-Team",
+      "loading": "Fantasy-Team wird geladen...",
+      "backToLeague": "← Zurück zur Liga",
+      "owner": "Besitzer: {{name}}",
+      "ownedByYou": "Gehört dir",
+      "fields": {
+        "slug": "Slug",
+        "leagueId": "Liga",
+        "createdAt": "Erstellt",
+        "updatedAt": "Aktualisiert"
+      },
+      "formationDescription": "Öffne die Aufstellung des aktuellen Spieltags im zugehörigen Spieltagskontext."
+    },
+    "update": {
+      "title": "Fantasy-Team umbenennen",
+      "description": "Nur der Team-Owner kann den Namen des Fantasy-Teams ändern.",
+      "edit": "Namen bearbeiten",
+      "name": "Teamname",
+      "cancel": "Abbrechen",
+      "submit": "Änderungen speichern",
+      "submitting": "Speichern...",
+      "success": "Name des Fantasy-Teams aktualisiert.",
+      "forbidden": "Du darfst den Namen dieses Fantasy-Teams nicht ändern.",
+      "nameRequired": "Der Teamname ist erforderlich.",
+      "nameLength": "Der Teamname darf höchstens 100 Zeichen lang sein."
+    },
+    "errors": {
+      "list": "Fantasy-Teams konnten nicht geladen werden.",
+      "listTitle": "Fantasy-Teams konnten nicht geladen werden",
+      "create": "Fantasy-Team konnte nicht erstellt werden.",
+      "createTitle": "Fantasy-Team konnte nicht erstellt werden",
+      "detail": "Fantasy-Team konnte nicht geladen werden.",
+      "detailTitle": "Fantasy-Team konnte nicht geladen werden",
+      "update": "Fantasy-Team konnte nicht aktualisiert werden.",
+      "updateTitle": "Fantasy-Team konnte nicht aktualisiert werden"
+    }
+  },
+  "leagueSettings": {
+    "title": "Liga-Einstellungen",
+    "description": "Budget-, Kader-, Aufstellungs-, Bank-, Auswechslungs- und Wertungsregeln für jedes Fantasy-Team dieser Liga.",
+    "maxRosterPlayers": "Maximale Kadergröße",
+    "maxRosterPlayersDescription": "Maximale Anzahl an Fußballspielern, die jede Fantasy-Mannschaft gleichzeitig in ihrem Kader haben darf.",
+    "rosterRuleHelp": "Rollenlimits sind unabhängige Obergrenzen. Ihre Summe muss mindestens der maximalen Kadergröße entsprechen.",
+    "roles": {
+      "goalkeeper": "Torwartlimit",
+      "defender": "Verteidigerlimit",
+      "midfielder": "Mittelfeldspielerlimit",
+      "forward": "Stürmerlimit"
+    },
+    "save": "Einstellungen speichern",
+    "saving": "Speichern...",
+    "success": "Liga-Einstellungen aktualisiert.",
+    "readOnly": "Nur Commissioner und Co-Commissioner können Liga-Einstellungen bearbeiten.",
+    "errors": {
+      "load": "Liga-Einstellungen konnten nicht geladen werden.",
+      "update": "Liga-Einstellungen konnten nicht aktualisiert werden.",
+      "title": "Liga-Einstellungen konnten nicht aktualisiert werden",
+      "rosterValidation": "Gib eine positive ganzzahlige Kadergröße und nichtnegative ganzzahlige Rollenlimits ein, deren Summe diese Größe erreicht.",
+      "conflict": "Diese Einstellungen stehen im Konflikt mit der bestehenden Ligakonfiguration."
+    },
+    "sections": {
+      "roster": "Budget und Kader"
+    },
+    "formations": {
+      "title": "Erlaubte Formationen",
+      "help": "Wähle mindestens eine Formation aus, die Fantasy-Teams verwenden dürfen."
+    },
+    "bench": {
+      "title": "Bankkonfiguration",
+      "help": "Lege die Bankgröße und unabhängige Höchstwerte je Spielerrolle fest. Die Rollenlimits müssen die Bankgröße abdecken.",
+      "size": "Bankgröße",
+      "roles": {
+        "goalkeeper": "Torwartlimit auf der Bank",
+        "defender": "Verteidigerlimit auf der Bank",
+        "midfielder": "Mittelfeldspielerlimit auf der Bank",
+        "forward": "Stürmerlimit auf der Bank"
+      }
+    },
+    "substitutions": {
+      "title": "Auswechslungsregeln",
+      "maximum": "Maximale Auswechslungen",
+      "order": "Auswechslungsreihenfolge",
+      "allowFormationChange": "Formationswechsel bei Auswechslungen erlauben",
+      "modes": {
+        "bench_order": {
+          "label": "Bankreihenfolge",
+          "description": "Ersatzspieler werden in ihrer Reihenfolge auf der Bank berücksichtigt."
+        },
+        "role_priority": {
+          "label": "Rollenpriorität",
+          "description": "Ersatzspieler werden nach der Priorität ihrer Spielerrolle berücksichtigt."
+        }
+      }
+    },
+    "validation": {
+      "formationRequired": "Wähle mindestens eine erlaubte Formation aus.",
+      "nonNegativeInteger": "Gib eine nichtnegative ganze Zahl ein.",
+      "benchTotal": "Die Summe der Bank-Rollenlimits muss mindestens der Bankgröße entsprechen.",
+      "substitutionRange": "Die maximale Anzahl Auswechslungen muss eine ganze Zahl zwischen null und der Bankgröße sein.",
+      "positiveInteger": "Gib eine positive ganze Zahl ein.",
+      "percentage": "Gib einen ganzzahligen Prozentsatz von 0 bis 100 ein.",
+      "realCaptainBonusRange": "Bonuspunkte zwischen 0 und 5 in Schritten von 0,5 eingeben.",
+      "halfPoint": "Gib einen Wert im zulässigen Bereich in Schritten von 0,5 ein.",
+      "cleanSheetBonusRange": "Gib Bonuspunkte von 0 bis 5 in Schritten von 0,5 ein.",
+      "defenseThresholds": "Schwellen müssen eindeutig und steigend in 0,25-Schritten sein; Boni nicht negativ in 0,5-Schritten.",
+      "scoringValue": "Wert von -100 bis 100 mit höchstens zwei Dezimalstellen eingeben."
+    },
+    "scoring": {
+      "title": "Punktewertung",
+      "defenseModifier": "Abwehrmodifikator aktivieren",
+      "defenseModifierDescription": "Verwendet den Torwart und die 3 Verteidiger mit den höchsten Rohnoten, wenn die effektive Formation mindestens 4 Verteidiger hat. Der passende Bonus wird einmal zur endgültigen Mannschaftspunktzahl addiert.",
+      "enableRealCaptainBonus": "Bonus für echten Kapitän aktivieren",
+      "realCaptainBonusPoints": "Bonuspunkte für echten Kapitän",
+      "realCaptainBonusDescription": "Vergibt den festgelegten Bonus, wenn ein beitragender Spieler in diesem Spiel der echte Kapitän seines Vereins war.",
+      "firstGoalThreshold": "Schwelle für das erste Tor",
+      "firstGoalThresholdDescription": "Die Mindestpunktzahl eines Teams für das erste Tor.",
+      "goalInterval": "Torintervall",
+      "goalIntervalDescription": "Jedes zusätzliche Punkteintervall ergibt ein weiteres Tor.",
+      "goalkeeperCleanSheetBonus": "Zu-Null-Bonus für Torhüter",
+      "cleanSheetBonusPoints": "Punkte für Zu-Null-Bonus",
+      "defenseThresholds": "Abwehrdurchschnitt → Teambonus",
+      "defenseAverage": "Schwelle des Abwehrdurchschnitts",
+      "defenseBonus": "Teambonus",
+      "addDefenseThreshold": "Schwelle hinzufügen",
+      "removeDefenseThreshold": "Entfernen",
+      "goal_bonus": "Torbonus",
+      "assist_bonus": "Assist-Bonus",
+      "yellow_card_malus": "Gelbe-Karte-Malus",
+      "red_card_malus": "Rote-Karte-Malus",
+      "own_goal_malus": "Eigentor-Malus",
+      "penalty_scored_bonus": "Elfmeterbonus",
+      "penalty_missed_malus": "Malus für verschossenen Elfmeter",
+      "penalty_saved_bonus": "Bonus für gehaltenen Elfmeter",
+      "goal_conceded_malus": "Gegentor-Malus"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "initialBudget": "Startbudget",
+    "totalBudget": "Gesamtbudget",
+    "remainingBudget": "Verbleibendes Budget",
+    "releaseRefundPercentage": "Erstattungsprozentsatz bei Entlassung"
+  },
+  "roster": {
+    "title": "Roster",
+    "description": "Spieler, die diesem Fantasy-Team aktuell zugeordnet sind.",
+    "loading": "Roster wird geladen...",
+    "emptyTitle": "Noch keine Roster-Spieler",
+    "emptyDescription": "Dieses Fantasy-Team hat noch keine aktiven oder historischen Roster-Spieler.",
+    "unknownPlayer": "Unbekannter Spieler",
+    "purchasePrice": "Kaufpreis",
+    "assignedAt": "Zugeordnet am",
+    "releasedAt": "Freigegeben am",
+    "availability": "Verfügbarkeit",
+    "available": "Verfügbar",
+    "notAvailable": "Nicht verfügbar",
+    "managementReadOnly": "Nur Liga-Commissioner und Co-Commissioner können Roster-Spieler verwalten.",
+    "assign": {
+      "title": "Spieler zuordnen",
+      "player": "Spieler",
+      "purchasePrice": "Kaufpreis",
+      "submit": "Spieler zuordnen",
+      "submitting": "Zuordnung läuft...",
+      "playerRequired": "Wähle einen verfügbaren Spieler aus.",
+      "priceRequired": "Gib einen gültigen Kaufpreis ein.",
+      "success": "Spieler wurde erfolgreich zugeordnet."
+    },
+    "release": {
+      "submit": "Spieler entlassen",
+      "releasing": "Entlassung läuft...",
+      "success": "Spieler wurde erfolgreich entlassen."
+    },
+    "errors": {
+      "title": "Roster konnte nicht geladen werden",
+      "assign": "Spieler konnte nicht zugeordnet werden.",
+      "assignTitle": "Spieler konnte nicht zugeordnet werden",
+      "release": "Spieler konnte nicht entlassen werden.",
+      "insufficientBudget": "Das Fantasy-Team hat nicht genug verbleibendes Budget.",
+      "alreadyAssigned": "Dieser Spieler ist in der Liga bereits zugeordnet."
+    },
+    "eligible": {
+      "title": "Verfügbare Spieler",
+      "search": "Spielersuche",
+      "searchPlaceholder": "Nach Spielername suchen",
+      "role": "Rollenfilter",
+      "allRoles": "Alle Rollen",
+      "club": "Vereinsfilter",
+      "allClubs": "Alle verfügbaren Vereine",
+      "selected": "Ausgewählt: {{name}}",
+      "clear": "Auswahl löschen",
+      "loading": "Verfügbare Spieler werden geladen...",
+      "empty": "Keine verfügbaren Spieler entsprechen diesen Filtern.",
+      "error": "Verfügbare Spieler konnten nicht geladen werden.",
+      "results": "Ergebnisse der Spielersuche",
+      "quotation": "Marktwert: {{value}}",
+      "pagination": "Seitennavigation der verfügbaren Spieler",
+      "previous": "Vorherige Seite",
+      "next": "Nächste Seite",
+      "page": "Seite {{current}} von {{total}}",
+      "unknownRole": "Unbekannte Rolle",
+      "unknownClub": "Unbekannter Verein"
+    },
+    "roles": {
+      "goalkeeper": "Torwart",
+      "defender": "Verteidiger",
+      "midfielder": "Mittelfeldspieler",
+      "forward": "Stürmer"
+    }
+  },
+  "leagueCreate": {
+    "eyebrow": "Liga-Einrichtung",
+    "title": "Liga erstellen",
+    "description": "Erstelle deine Liga und konfiguriere anschließend die Anfangsregeln.",
+    "steps": {
+      "basic": "Grundinformationen",
+      "rules": "Anfangsregeln"
+    },
+    "progress": {
+      "label": "Fortschritt der Ligaerstellung"
+    },
+    "fields": {
+      "name": "Liganame",
+      "description": "Beschreibung",
+      "season": "Saison",
+      "selectSeason": "Saison auswählen",
+      "type": "Ligatyp",
+      "selectType": "Ligatyp auswählen",
+      "maxParticipants": "Maximale Teilnehmerzahl",
+      "initialBudget": "Anfangsbudget",
+      "refund": "Freigabe-Erstattung in Prozent",
+      "maxRoster": "Maximale Kadergröße",
+      "roleLimits": "Limits pro Position",
+      "roleLimitsHelp": "Die Summe der Positionslimits muss mindestens der maximalen Kadergröße entsprechen."
+    },
+    "roles": {
+      "goalkeeper": "Torwart",
+      "defender": "Verteidiger",
+      "midfielder": "Mittelfeldspieler",
+      "forward": "Stürmer"
+    },
+    "actions": {
+      "createLeague": "Liga erstellen",
+      "create": "Erstellen",
+      "creating": "Wird erstellt…",
+      "next": "Weiter",
+      "back": "Zurück",
+      "saveRules": "Regeln speichern",
+      "saving": "Wird gespeichert…",
+      "retry": "Erneut versuchen",
+      "retryLoading": "Erneut laden"
+    },
+    "loading": {
+      "defaults": "Gespeicherte Standardregeln werden geladen…",
+      "seasons": "Aktive Saisons werden geladen…",
+      "leagueTypes": "Ligatypen werden geladen…"
+    },
+    "success": {
+      "created": "Liga erfolgreich erstellt. Die gespeicherten Standardregeln werden unten angezeigt.",
+      "settings": "Ligaregeln erfolgreich gespeichert."
+    },
+    "partial": {
+      "title": "Die Liga wurde erstellt, aber die Regeln wurden nicht gespeichert",
+      "message": "Die Liga besteht mit den Standardeinstellungen. Behebe den Fehler und versuche es erneut; es wird keine weitere Liga erstellt.",
+      "viewLeague": "Erstellte Liga anzeigen",
+      "loadTitle": "Die Liga wurde erstellt, aber ihre gespeicherten Regeln konnten nicht geladen werden. Lade erneut, ohne eine weitere Liga zu erstellen."
+    },
+    "validation": {
+      "nameRequired": "Der Liganame ist erforderlich.",
+      "seasonRequired": "Wähle eine Saison.",
+      "typeRequired": "Wähle einen Ligatyp.",
+      "participants": "Die maximale Teilnehmerzahl muss eine ganze Zahl zwischen 2 und 100 sein.",
+      "budget": "Das Anfangsbudget muss eine nicht negative ganze Zahl sein.",
+      "refund": "Der Erstattungssatz muss eine ganze Zahl zwischen 0 und 100 sein.",
+      "rosterMaximum": "Die maximale Kadergröße muss eine positive ganze Zahl sein.",
+      "roleLimit": "Jedes Positionslimit muss eine nicht negative ganze Zahl sein.",
+      "roleTotal": "Die Summe der Positionslimits muss mindestens der maximalen Kadergröße entsprechen.",
+      "nameLength": "Der Liganame darf höchstens 255 Zeichen lang sein.",
+      "descriptionLength": "Die Beschreibung darf höchstens 5.000 Zeichen lang sein."
+    },
+    "errors": {
+      "authentication": "Eine Anmeldung ist erforderlich. Bitte melde dich erneut an.",
+      "createForbidden": "Du darfst keine Liga erstellen.",
+      "settingsForbidden": "Die Liga besteht, aber du darfst ihre Regeln nicht konfigurieren.",
+      "notFound": "Die erstellte Liga oder eine zugehörige Ressource ist nicht mehr verfügbar.",
+      "conflict": "Die Anfrage steht im Konflikt mit dem aktuellen Ligastatus.",
+      "validation": "Bitte korrigiere die markierten Felder.",
+      "unexpected": "Die Anfrage konnte nicht abgeschlossen werden. Versuche es erneut.",
+      "commissionerUnverified": "Die Liga wurde erstellt, aber dein Zugriff als Ligaleitung konnte nicht bestätigt werden.",
+      "server": "Der Server konnte die Anfrage nicht abschließen. Versuche es erneut.",
+      "network": "Die Anfrage konnte nicht abgeschlossen werden. Prüfe deine Verbindung und versuche es erneut."
+    },
+    "lookups": {
+      "seasonsUnavailable": "Saisons sind derzeit nicht verfügbar.",
+      "typesUnavailable": "Ligatypen sind derzeit nicht verfügbar.",
+      "noActiveSeasons": "Es sind keine aktiven Saisons verfügbar. Für die Ligaerstellung ist eine aktive Saison erforderlich.",
+      "noLeagueTypes": "Es sind keine Ligatypen verfügbar."
+    },
+    "leagueTypes": {
+      "classic": "Klassisch",
+      "formula_one": "Formel 1",
+      "head_to_head": "Direktes Duell"
+    }
+  },
+  "invitations": {
+    "eyebrow": "Einladungen",
+    "title": "Ausstehende Einladungen",
+    "loading": "Einladungen werden geladen...",
+    "errorTitle": "Einladungen konnten nicht geladen werden",
+    "error": "Bitte versuche es erneut.",
+    "emptyTitle": "Keine ausstehenden Einladungen",
+    "empty": "Du hast keine ausstehenden Liga-Einladungen.",
+    "invitedRole": "Eingeladene Rolle",
+    "inviter": "Eingeladen von",
+    "expiration": "Ablauf",
+    "accept": "Annehmen",
+    "reject": "Ablehnen",
+    "accepted": "Einladung angenommen.",
+    "rejected": "Einladung abgelehnt.",
+    "revoked": "Einladung widerrufen.",
+    "expired": "Diese Einladung ist abgelaufen.",
+    "processed": "Diese Einladung wurde bereits bearbeitet.",
+    "member": "Du bist bereits Mitglied.",
+    "permission": "Du darfst diese Einladung nicht verwalten.",
+    "rejectConfirmation": "Diese Einladung ablehnen?",
+    "revokeConfirmation": "Diese Einladung widerrufen?",
+    "viewLeague": "Liga anzeigen"
+  },
+  "account": {
+    "eyebrow": "Konto",
+    "title": "Dein Konto",
+    "description": "Sieh dir deine FantaMeister-Kontodaten an und aktualisiere sie.",
+    "fields": {
+      "name": "Name",
+      "email": "E-Mail",
+      "emailVerification": "E-Mail-Verifizierung",
+      "currentPassword": "Aktuelles Passwort",
+      "newPassword": "Neues Passwort",
+      "confirmNewPassword": "Neues Passwort bestätigen"
+    },
+    "email": {
+      "verified": "Verifiziert",
+      "unverified": "Nicht verifiziert"
+    },
+    "profile": {
+      "title": "Profil",
+      "submit": "Profil speichern",
+      "saving": "Speichern...",
+      "success": "Profil aktualisiert.",
+      "currentPasswordHint": "Bestätige dein aktuelles Passwort, um deine E-Mail sicher zu ändern."
+    },
+    "password": {
+      "title": "Passwort ändern",
+      "submit": "Passwort ändern",
+      "saving": "Ändern...",
+      "success": "Passwort aktualisiert."
+    },
+    "errors": {
+      "authentication": "Eine Anmeldung ist erforderlich. Bitte melde dich erneut an.",
+      "forbidden": "Dein Konto darf diese Aktion nicht ausführen.",
+      "conflict": "Die Kontoänderung steht in Konflikt mit aktuellen Kontodaten.",
+      "validation": "Bitte korrigiere die markierten Kontofelder.",
+      "generic": "Dein Konto konnte nicht aktualisiert werden."
+    }
+  },
+  "formation": {
+    "title": "Spieltagsaufstellung",
+    "description": "Wähle Formation, Startelf und geordnete Bank für den ausgewählten Spieltag.",
+    "module": "Spielsystem",
+    "starters": "Startelf",
+    "bench": "Bank",
+    "matchday": "Spieltag",
+    "matchdayNumber": "Spieltag {{number}}",
+    "deadline": "Frist",
+    "locked": "Aufstellung gesperrt — die Frist ist abgelaufen.",
+    "editable": "Die Aufstellung kann bis zur Frist bearbeitet werden.",
+    "submitted": "Eingereicht",
+    "noneYet": "Für diesen Spieltag wurde noch keine Aufstellung gespeichert.",
+    "noMatchdays": "Keine Spieltage verfügbar.",
+    "chooseModuleFirst": "Wähle zuerst ein Spielsystem.",
+    "roleRequirements": "Positionsvorgaben",
+    "unknownRole": "Unbekannte Position",
+    "benchCount": "{{count}} von {{limit}} ausgewählt",
+    "benchOrder": "Reihenfolge der Bank",
+    "moveUp": "{{player}} nach oben",
+    "moveDown": "{{player}} nach unten",
+    "save": "Aufstellung speichern",
+    "saving": "Wird gespeichert…",
+    "submit": "Aufstellung einreichen",
+    "submitting": "Wird eingereicht…",
+    "roles": {
+      "goalkeeper": "Torwart",
+      "defender": "Verteidiger",
+      "midfielder": "Mittelfeldspieler",
+      "forward": "Stürmer"
+    },
+    "success": {
+      "saved": "Aufstellung gespeichert.",
+      "submitted": "Aufstellung eingereicht."
+    },
+    "errors": {
+      "load": "Die Aufstellung konnte nicht geladen werden.",
+      "scheduleNotInitialized": "Dieser Spieltag gehört zu keinem initialisierten Head-to-Head-Spielplan. Die Aufstellung kann nicht bearbeitet werden.",
+      "matchdays": "Die Spieltage konnten nicht geladen werden.",
+      "deadline": "Die Aufstellungsfrist ist abgelaufen. Die Ansicht ist schreibgeschützt.",
+      "invalid": "Die Aufstellung ist ungültig. Prüfe die markierten Bereiche.",
+      "module": "Wähle ein erlaubtes Spielsystem.",
+      "starters": "Die Startelf muss den Positionsvorgaben und dem Kader entsprechen.",
+      "bench": "Die Bank überschreitet Größen- oder Positionslimits oder enthält einen ungültigen Spieler."
+    },
+    "unsaved": "Ungespeicherte Änderungen",
+    "draftSaved": "Gespeicherter Entwurf",
+    "remaining": "noch {{count}}"
+  },
+  "leagueNavigation": {
+    "label": "Liga-Navigation",
+    "overview": "Ligaübersicht",
+    "matchdays": "Spieltage",
+    "rules": "Regeln",
+    "fantasyTeams": "Fantasy-Teams",
+    "myTeam": "Mein Team",
+    "matchdaysDescription": "Vergangene Spieltage ansehen und die aktuelle Aufstellung verwalten.",
+    "rulesDescription": "Lies die geltenden Kader-, Aufstellungs-, Bank- und Auswechslungsregeln.",
+    "teamsDescription": "Fantasy-Teams der Liga ansehen und ein eigenes Team erstellen."
+  },
+  "matchdays": {
+    "title": "Spieltage",
+    "description": "Vergangene, aktuelle und kommende Spieltage dieser Liga.",
+    "past": "Vergangen",
+    "current": "Aktueller Spieltag",
+    "upcoming": "Bevorstehend",
+    "open": "Spieltag öffnen",
+    "openFormation": "Aufstellung öffnen",
+    "createFormation": "Aufstellung erstellen",
+    "editFormation": "Aufstellung bearbeiten",
+    "viewFormation": "Aufstellung ansehen",
+    "viewOpponentFormation": "Gegnerische Aufstellung ansehen",
+    "scheduleNotInitialized": "Der Head-to-Head-Spielplan ist nicht initialisiert. Diese Spieltage dienen nur als Kontext der realen Saison und sind noch keine spielbaren Fantasy-Runden.",
+    "openScheduleSetup": "Spielplan-Einrichtung öffnen",
+    "notFound": "Spieltag nicht gefunden",
+    "backToMatchday": "← Zurück zum Spieltag",
+    "backToMatchdays": "← Zurück zu den Spieltagen",
+    "calculate": "Spieltag berechnen",
+    "recalculate": "Spieltag neu berechnen",
+    "calculating": "Wird berechnet…",
+    "calculationSuccess": "Der Spieltag wurde erfolgreich berechnet.",
+    "recalculationSuccess": "Der Spieltag wurde erfolgreich neu berechnet.",
+    "calculationError": "Der Spieltag konnte nicht berechnet werden. Prüfe, ob er beendet ist, und versuche es erneut.",
+    "recalculationWarning": "Bei einer Neuberechnung werden die berechneten Punkte und Ergebnisse dieses Spieltags durch Werte nach den aktuellen Ligaregeln ersetzt und die Tabelle wird neu berechnet."
+  },
+  "h2h": {
+    "title": "Head-to-Head-Meisterschaft",
+    "schedule": "Spielplan",
+    "notStarted": "Meisterschaft noch nicht gestartet",
+    "startChampionship": "Meisterschaft starten",
+    "startingMatchday": "Startspieltag",
+    "currentParticipants": "Aktuelle Teilnehmer",
+    "maximumParticipants": "Maximale Teilnehmerzahl",
+    "minimumTeams": "Mindestens zwei Teams erforderlich.",
+    "maximumNotRequired": "Die maximale Teilnehmerzahl muss nicht erreicht werden.",
+    "irreversible": "Die Spielplanerstellung kann nicht rückgängig gemacht werden.",
+    "participantsBlocked": "Danach können keine neuen Teilnehmer beitreten.",
+    "invitationsBlocked": "Neue Einladungen sind nicht verfügbar, da die Meisterschaft gestartet wurde.",
+    "participantsAndInvitationsBlocked": "Neue Teilnehmer und Einladungen werden gesperrt.",
+    "cannotRegenerate": "Der Spielplan kann nicht neu erstellt werden.",
+    "confirmStart": "Start bestätigen",
+    "confirmParticipants": "Aktuelle Teilnehmer: {{count}}",
+    "confirmMatchday": "Startspieltag: {{matchday}}",
+    "generated": "Spielplan erstellt",
+    "generatedAt": "Erstellt am",
+    "startedFrom": "Gestartet ab {{matchday}}",
+    "viewSchedule": "Spielplan anzeigen",
+    "configureStart": "Konfigurieren / Starten",
+    "restDay": "Spielfrei",
+    "opponent": "Gegner",
+    "vsTeam": "gegen {{team}}",
+    "versus": "gegen",
+    "noFutureMatchdays": "Keine zukünftigen Spieltage verfügbar.",
+    "unauthorized": "Nur der Commissioner oder ein Co-Commissioner kann die Meisterschaft starten.",
+    "notAvailable": "Der Head-to-Head-Spielplan ist nur für Head-to-Head-Ligen verfügbar.",
+    "errors": {
+      "load": "Der Spielplan konnte nicht geladen werden.",
+      "initialize": "Die Meisterschaft konnte nicht gestartet werden.",
+      "alreadyInitialized": "Der Spielplan wurde bereits erstellt. Der erstellte Spielplan wird neu geladen.",
+      "invalidMatchday": "Der gewählte Startspieltag oder die Ligakonfiguration ist ungültig."
+    }
+  },
+  "classic": {
+    "title": "Classic-Meisterschaft",
+    "start": "Meisterschaft starten",
+    "startingMatchday": "Startspieltag",
+    "started": "Meisterschaft gestartet",
+    "notStarted": "Meisterschaft nicht gestartet",
+    "participants": "Teilnehmer: {{count}} / {{max}}",
+    "maxNotice": "Die maximale Teilnehmerzahl muss nicht erreicht sein.",
+    "freezeWarning": "Der Start ist endgültig und friert die Teilnehmer ein.",
+    "missingZero": "Eine fehlende Aufstellung zählt null Punkte.",
+    "noFutureMatchdays": "Keine zukünftigen Spieltage verfügbar."
+  },
+  "standings": {
+    "totalPoints": "Gesamtpunkte",
+    "totalPointsShort": "Gesamt",
+    "averagePoints": "Durchschnittspunkte",
+    "averagePointsShort": "Ø",
+    "bestMatchday": "Bester Spieltag",
+    "bestMatchdayShort": "Best",
+    "title": "Tabelle",
+    "description": "Tabelle der direkten Duelle aus berechneten Ergebnissen.",
+    "position": "Position",
+    "positionShort": "Pos",
+    "team": "Fantasy-Team",
+    "played": "Spiele",
+    "playedShort": "Sp",
+    "wins": "Siege",
+    "winsShort": "S",
+    "draws": "Unentschieden",
+    "drawsShort": "U",
+    "losses": "Niederlagen",
+    "lossesShort": "N",
+    "goalsFor": "Tore",
+    "goalsForShort": "TF",
+    "goalsAgainst": "Gegentore",
+    "goalsAgainstShort": "TG",
+    "goalDifference": "Tordifferenz",
+    "goalDifferenceShort": "TD",
+    "points": "Punkte",
+    "pointsShort": "Pkt",
+    "you": "Du",
+    "currentTeam": "{{team}}, dein Fantasy-Team",
+    "empty": "Noch keine Tabelle verfügbar.",
+    "errorTitle": "Tabelle konnte nicht geladen werden",
+    "championshipPoints": "Meisterschaftspunkte",
+    "championshipPointsShort": "MP",
+    "podiums": "Podestplätze",
+    "podiumsShort": "Pod",
+    "bestFinish": "Beste Platzierung",
+    "bestFinishShort": "Best",
+    "fantasyPointsTotal": "Fantasy-Punkte gesamt",
+    "fantasyPointsTotalShort": "FP",
+    "averageFantasyPoints": "Fantasy-Punkte im Durchschnitt",
+    "averageFantasyPointsShort": "Ø FP"
+  },
+  "results": {
+    "matchResult": "Spielergebnis",
+    "yourFixture": "Deine Begegnung",
+    "pendingResult": "Ergebnis ausstehend",
+    "submittedPending": "Aufstellung eingereicht, Ergebnis ausstehend",
+    "notSubmitted": "Aufstellung nicht eingereicht",
+    "missingFormation": "Fehlende Aufstellung (null Punkte)",
+    "finalScore": "Endstand",
+    "fantasyPoints": "Fantasy-Punkte",
+    "viewFormation": "Aufstellung ansehen",
+    "viewTeamFormation": "Aufstellung von {{team}} ansehen",
+    "substitute": "Einwechselspieler",
+    "replaced": "Ersetzte",
+    "noCalculatedResult": "Noch kein berechnetes Ergebnis",
+    "submittedFormation": "Eingereichte Aufstellung",
+    "effectiveLineup": "Effektive Aufstellung",
+    "starter": "Startelf",
+    "bench": "Bank",
+    "replacedBy": "Ersetzt durch",
+    "noPlayableScore": "Keine spielbare Wertung",
+    "importedScore": "Importierte Wertung",
+    "effectiveContribution": "Effektiver Beitrag",
+    "realCaptain": "Kapitän des realen Vereins",
+    "realCaptainBonus": "Echter Kapitänsbonus",
+    "teamTotal": "Teamgesamtwert",
+    "basePoints": "Basispunkte",
+    "enteredFromBench": "Von der Bank eingewechselt",
+    "viewTeamResult": "Teamergebnis ansehen",
+    "matchdayResults": "Spieltagergebnisse",
+    "noFixtures": "Für diesen Spieltag sind keine Begegnungen verfügbar",
+    "noClassicParticipants": "Für diesen Spieltag sind keine Classic-Teilnehmer verfügbar",
+    "goals": "Tore",
+    "assists": "Vorlagen",
+    "yellowCards": "Gelbe Karten",
+    "redCards": "Rote Karten",
+    "cleanSheet": "Ohne Gegentor"
+  },
+  "formulaOne": {
+    "standingsTitle": "Formel-1-Tabelle",
+    "initializationTitle": "Formel-1-Meisterschaft",
+    "notInitialized": "Die Formel-1-Meisterschaft wurde noch nicht initialisiert.",
+    "initializeAction": "Meisterschaft initialisieren",
+    "maxNotice": "Die maximale Teilnehmerzahl muss nicht erreicht sein.",
+    "freezeWarning": "Die Initialisierung ist endgültig und friert die Teilnehmer ein.",
+    "positionPoints": "Platzierungspunkte",
+    "positionPointsHelp": "Punkte müssen nichtnegative ganze Zahlen sein und dürfen sich bei schlechterer Platzierung nicht erhöhen.",
+    "positionLabel": "{{position}}. Platz",
+    "addPosition": "Position hinzufügen",
+    "removePosition": "Position entfernen",
+    "matchdayPlacements": "Formel-1-Ergebnisse",
+    "participantStatus": "Teilnehmerstatus",
+    "validation": {
+      "atLeastOne": "Füge mindestens eine Platzierung hinzu.",
+      "nonNegativeInteger": "Jede Position muss eine nichtnegative ganze Punktzahl vergeben.",
+      "nonIncreasing": "Die Punkte dürfen bei schlechterer Platzierung nicht steigen."
+    },
+    "standingsDescription": "Formel-1-Meisterschaftstabelle in der offiziellen Zielreihenfolge."
+  },
+  "playerMarket": {
+    "available": "Verfügbar",
+    "alreadyAssigned": "Bereits vergeben"
+  },
+  "championshipInitialization": {
+    "errors": {
+      "missingTeam": "Die Meisterschaft kann nicht initialisiert werden: 1 Teilnehmer hat noch kein Fantasy-Team erstellt.",
+      "missingTeams": "Die Meisterschaft kann nicht initialisiert werden: {{count}} Teilnehmer haben noch kein Fantasy-Team erstellt.",
+      "unauthorized": "Nur der Commissioner oder ein Co-Commissioner kann die Meisterschaft initialisieren.",
+      "invalidMatchday": "Der gewählte Startspieltag oder die Ligakonfiguration ist ungültig.",
+      "generic": "Die Meisterschaft konnte nicht initialisiert werden."
+    }
+  },
+  "market": {
+    "title": "Markt",
+    "status": "Marktstatus",
+    "open": "Geöffnet",
+    "closed": "Geschlossen",
+    "opens": "Öffnet",
+    "closes": "Schließt",
+    "cash": "Barausgleich",
+    "allowed": "Erlaubt",
+    "notAllowed": "Nicht erlaubt",
+    "notConfigured": "Nicht konfiguriert",
+    "directory": "Spielerverzeichnis",
+    "search": "Spieler suchen",
+    "allRoles": "Alle Rollen",
+    "allAssignments": "Alle Zuordnungen",
+    "assigned": "Aktueller Kader",
+    "unassigned": "Nicht zugeordnet",
+    "empty": "Keine Spieler entsprechen den Filtern.",
+    "error": "Der Markt konnte nicht geladen werden.",
+    "player": "Spieler",
+    "role": "Rolle",
+    "club": "Verein",
+    "quotation": "Bewertung",
+    "roster": "Aktueller Kader",
+    "yourTeam": "Dein Team",
+    "enabledLabel": "Aktiviert",
+    "disabledLabel": "Deaktiviert",
+    "settings": {
+      "title": "Marktregeln",
+      "description": "Lege fest, wann der Markt verfügbar ist und ob Bargeldanpassungen erlaubt sind.",
+      "enabled": "Markt aktiviert",
+      "cashEnabled": "Bargeldanpassungen aktiviert",
+      "success": "Markteinstellungen aktualisiert.",
+      "invalidWindow": "Wähle Öffnung und Schließung; die Schließung muss nach der Öffnung liegen.",
+      "updateError": "Die Markteinstellungen konnten nicht aktualisiert werden.",
+      "errorTitle": "Marktregeln konnten nicht aktualisiert werden"
+    },
+    "trades": {
+      "title": "Meine Tauschangebote",
+      "incoming": "Eingehende Angebote",
+      "outgoing": "Ausgehende Angebote",
+      "history": "Abgeschlossen / Verlauf",
+      "empty": "Keine Tauschangebote.",
+      "accept": "Annehmen",
+      "reject": "Ablehnen",
+      "propose": "Tausch anbieten",
+      "sendingProposal": "Vorschlag wird gesendet...",
+      "accepting": "Wird angenommen...",
+      "rejecting": "Wird abgelehnt...",
+      "cancelling": "Wird storniert...",
+      "sent": "Tauschvorschlag gesendet.",
+      "duplicate": "Es gibt bereits einen identischen ausstehenden Vorschlag.",
+      "invalidCash": "Der Geldausgleich muss eine ganze Anzahl an Credits sein und bei einem positiven Betrag einen Zahler haben.",
+      "proposeFor": "{{name}} anfragen",
+      "choosePlayer": "Anzubietenden Spieler wählen",
+      "noCash": "Kein Geldausgleich",
+      "acceptConfirmation": "Durch die Annahme werden die Spieler sofort zwischen den beiden Fantasy-Teams getauscht und der festgelegte Geldausgleich angewendet."
+    }
   }
 }

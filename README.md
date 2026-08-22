@@ -53,6 +53,11 @@ PostgreSQL
 
 Filament provides a separate internal interface for managing competitions, seasons, clubs, players, fixtures, scores, users and roles.
 
+Internal reference documentation:
+
+* [CSV import system](docs/csv-import-system.md)
+* [Super Admin dashboard](docs/super-admin-dashboard.md)
+
 ## Technology stack
 
 ### Backend

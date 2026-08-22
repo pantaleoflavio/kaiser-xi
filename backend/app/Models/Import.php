@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\CsvImportType;
+use App\Enums\ImportStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +19,7 @@ class Import extends Model
         'disk',
         'path',
         'status',
+        'checksum',
         'imported_by_user_id',
         'total_rows',
         'successful_rows',
@@ -28,6 +31,8 @@ class Import extends Model
     protected $casts = [
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
+        'type' => CsvImportType::class,
+        'status' => ImportStatus::class,
     ];
 
     public function importedBy(): BelongsTo

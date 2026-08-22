@@ -35,7 +35,11 @@ The backend is designed to support multiple real football competitions, seasons,
 * Filament administration panel
 * English, German and Italian admin translations
 * Session-based language switcher
-* Database factories, seeders and automated tests
+* League lifecycle management
+* League memberships with scoped roles
+* Fantasy team management
+* Policy-based authorization
+* API Resources and Form Requests
 
 ## Domain architecture
 
@@ -54,6 +58,20 @@ RealCompetition
         └── RealMatch
 ```
 
+```text
+League
+├── Memberships
+│   ├── User
+│   └── LeagueRole
+├── FantasyTeams
+│   ├── User
+│   ├── Players
+│   ├── Formations
+│   └── MatchdayScores
+├── Invitations
+└── Settings
+```
+
 Key design decisions:
 
 * real clubs and players are global identities
@@ -63,20 +81,63 @@ Key design decisions:
 * real matches reference the participating season clubs
 * fantasy league permissions remain separate from global platform roles
 
+## Architecture
+
+```text
+Authentication
+        │
+        ▼
+Controllers
+        │
+        ▼
+Form Requests
+        │
+        ▼
+Policies
+        │
+        ▼
+Services
+        │
+        ▼
+Eloquent Models
+        │
+        ▼
+API Resources
+```
+
 ## API
 
 Implemented endpoints:
 
 ```text
-GET  /api/v1/health
+GET    /api/v1/health
 
-POST /api/v1/auth/register
-POST /api/v1/auth/login
-POST /api/v1/auth/logout
-GET  /api/v1/auth/me
+POST   /api/v1/auth/register
+POST   /api/v1/auth/login
+POST   /api/v1/auth/logout
+GET    /api/v1/auth/me
+POST   /api/v1/auth/forgot-password
+POST   /api/v1/auth/reset-password
 
-POST /api/v1/auth/forgot-password
-POST /api/v1/auth/reset-password
+GET    /api/v1/leagues
+POST   /api/v1/leagues
+GET    /api/v1/leagues/{league}
+PATCH  /api/v1/leagues/{league}
+DELETE /api/v1/leagues/{league}
+
+GET    /api/v1/leagues/{league}/members
+
+GET    /api/v1/leagues/{league}/invitations
+POST   /api/v1/leagues/{league}/invitations
+DELETE /api/v1/leagues/{league}/invitations/{invitation}
+
+GET    /api/v1/league-invitations/{code}
+POST   /api/v1/league-invitations/{code}/accept
+
+GET    /api/v1/leagues/{league}/fantasy-teams
+POST   /api/v1/leagues/{league}/fantasy-teams
+GET    /api/v1/leagues/{league}/fantasy-teams/{fantasyTeam}
+PATCH  /api/v1/leagues/{league}/fantasy-teams/{fantasyTeam}
 ```
 
 List the registered routes:
@@ -147,15 +208,15 @@ docker compose exec backend composer dump-autoload -o
 The backend follows these conventions:
 
 * thin controllers
-* Form Requests for validation
-* API Resources for response transformation
+* Form Requests for validation and authorization
+* API Resources for response serialization
 * Policies for authorization
-* services or actions for non-trivial business logic
-* granular database migrations
-* explicit Eloquent relationships
-* database constraints for domain integrity
-* automated feature and domain tests
-* PSR-4 compliant namespaces and file structure
+* dedicated Services for business logic
+* Eloquent relationships and route model binding
+* database constraints enforcing domain integrity
+* factories and seeders for local development
+* automated feature tests
+* Laravel Pint for code style
 
 ## Project status
 
@@ -163,13 +224,18 @@ Completed foundations:
 
 * development infrastructure
 * authentication
-* global role hierarchy
-* multi-competition domain
+* global administration
+* real-football domain
+* league lifecycle
+* league memberships
+* fantasy team management
 * Filament administration
 * backend internationalization
 
-Next development area:
+Current focus:
 
-* fantasy league lifecycle
-* league memberships
-* commissioner and participant permissions
+* player assignment
+* fantasy roster management
+* formations
+* transfers and auction workflow
+* matchday engine

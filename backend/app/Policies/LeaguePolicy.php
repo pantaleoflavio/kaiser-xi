@@ -3,64 +3,86 @@
 namespace App\Policies;
 
 use App\Models\League;
+use App\Models\LeagueRole;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class LeaguePolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view(User $user, League $league): bool
     {
-        return false;
+        return $league->users()->whereKey($user->id)->exists();
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, League $league): bool
     {
-        return false;
+        return $this->hasRole($user, $league, 'commissioner');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
+    public function manageInvitations(User $user, League $league): bool
+    {
+        return $this->hasAnyRole($user, $league, ['commissioner', 'co_commissioner']);
+    }
+
+    public function manageSettings(User $user, League $league): bool
+    {
+        return $this->hasAnyRole($user, $league, ['commissioner', 'co_commissioner']);
+    }
+
+    public function manageSchedule(User $user, League $league): bool
+    {
+        return $this->hasAnyRole($user, $league, ['commissioner', 'co_commissioner']);
+    }
+
+    public function calculateMatchday(User $user, League $league): bool
+    {
+        return $this->hasAnyRole($user, $league, ['commissioner', 'co_commissioner']);
+    }
+
+    public function removeMember(User $user, League $league, User $target): bool
+    {
+        if ($user->is($target) || ! $this->isMember($target, $league)) {
+            return false;
+        }
+
+        if ($this->hasRole($user, $league, 'commissioner')) {
+            return $target->id !== $league->commissioner_user_id;
+        }
+
+        return $this->hasRole($user, $league, 'co_commissioner')
+            && $this->hasRole($target, $league, 'participant');
+    }
+
+    public function manageMemberRole(User $user, League $league, User $target): bool
+    {
+        return ! $user->is($target)
+            && $target->id !== $league->commissioner_user_id
+            && $this->isMember($target, $league)
+            && $this->hasRole($user, $league, 'commissioner');
+    }
+
     public function delete(User $user, League $league): bool
     {
-        return false;
+        return $this->hasRole($user, $league, 'commissioner');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, League $league): bool
+    private function isMember(User $user, League $league): bool
     {
-        return false;
+        return $league->users()->whereKey($user->id)->exists();
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, League $league): bool
+    private function hasRole(User $user, League $league, string $role): bool
     {
-        return false;
+        return $this->hasAnyRole($user, $league, [$role]);
+    }
+
+    private function hasAnyRole(User $user, League $league, array $roles): bool
+    {
+        return $league->users()
+            ->whereKey($user->id)
+            ->wherePivotIn(
+                'league_role_id',
+                LeagueRole::query()->whereIn('key', $roles)->pluck('id')
+            )
+            ->exists();
     }
 }

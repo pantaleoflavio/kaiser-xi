@@ -23,7 +23,7 @@ class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
-public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.navigation.groups.system');
     }

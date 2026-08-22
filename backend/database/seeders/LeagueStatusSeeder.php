@@ -11,11 +11,11 @@ class LeagueStatusSeeder extends Seeder
     {
         foreach (
             [
-                ['draft', 'Draft', 1],
-                ['setup', 'Setup', 2],
-                ['active', 'Active', 3],
-                ['completed', 'Completed', 4],
-                ['archived', 'Archived', 5],
+                [LeagueStatus::DRAFT, 'Draft', 1],
+                [LeagueStatus::SETUP, 'Setup', 2],
+                [LeagueStatus::ACTIVE, 'Active', 3],
+                [LeagueStatus::COMPLETED, 'Completed', 4],
+                [LeagueStatus::ARCHIVED, 'Archived', 5],
             ] as [$key, $label, $sort]
         ) {
             LeagueStatus::query()->updateOrCreate(

@@ -25,4 +25,13 @@ class FormationModule extends Model
     {
         return $this->hasMany(FormationModuleRequirement::class);
     }
+
+    public function requiredPlayersCount(): int
+    {
+        if ($this->relationLoaded('requirements')) {
+            return (int) $this->requirements->sum('required_count');
+        }
+
+        return (int) $this->requirements()->sum('required_count');
+    }
 }

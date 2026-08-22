@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -23,11 +24,17 @@ return new class extends Migration
             $table->integer('penalties_saved')->default(0);
             $table->integer('goals_conceded')->default(0);
             $table->boolean('clean_sheet')->default(false);
+            // Whether the player captained his real club in this matchday performance.
+            $table->boolean('is_captain')->default(false);
             $table->decimal('final_score', 5, 2)->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
             $table->unique(['matchday_id', 'player_season_registration_id']);
         });
+
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement("ALTER TABLE player_scores ADD CONSTRAINT player_scores_status_check CHECK (status IN ('pending', 'confirmed', 'did_not_play'))");
+        }
     }
 
     public function down(): void

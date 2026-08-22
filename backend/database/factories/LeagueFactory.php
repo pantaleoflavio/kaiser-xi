@@ -21,13 +21,12 @@ class LeagueFactory extends Factory
         return [
             'season_id' => Season::factory(),
             'league_type_id' => LeagueType::query()->firstOrCreate(['key' => 'classic'], ['label' => 'Classic'])->id,
-            'league_status_id' => LeagueStatus::query()->firstOrCreate(['key' => 'draft'], ['label' => 'Draft'])->id,
+            'league_status_id' => LeagueStatus::query()->firstOrCreate(['key' => LeagueStatus::ACTIVE], ['label' => 'Active'])->id,
             'commissioner_user_id' => User::factory(),
             'name' => $this->faker->words(2, true),
             'slug' => $this->faker->unique()->slug(),
             'description' => $this->faker->sentence(),
             'max_participants' => 10,
-            'invite_code' => strtoupper($this->faker->bothify('????##')),
         ];
     }
 }

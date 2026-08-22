@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FantasyTeamPlayer extends Model
 {
@@ -15,6 +17,7 @@ class FantasyTeamPlayer extends Model
         'fantasy_team_id',
         'player_id',
         'assigned_by_user_id',
+        'released_by_user_id',
         'purchase_price',
         'assigned_at',
         'released_at',
@@ -44,5 +47,20 @@ class FantasyTeamPlayer extends Model
     public function assignedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_by_user_id');
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->whereNull('fantasy_team_players.released_at');
+    }
+
+    public function releasedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'released_by_user_id');
+    }
+
+    public function formationPlayers(): HasMany
+    {
+        return $this->hasMany(FormationPlayer::class);
     }
 }

@@ -1,0 +1,370 @@
+import type { CollectionResponse, PaginatedResponse, ResourceResponse } from './api';
+
+export type LeagueRole = 'commissioner' | 'co_commissioner' | 'participant';
+
+export type LeagueReference = {
+  key: string;
+  label: string;
+};
+
+export type League = {
+  id: number;
+  name: string;
+  description: string | null;
+  max_participants: number | null;
+  season: {
+    id: number;
+    name: string;
+    competition: {
+      id: number;
+      name: string;
+    };
+  };
+  type: LeagueReference;
+  status: LeagueReference;
+  my_role: LeagueRole | null;
+  competition_initialized: boolean;
+  competition_start_matchday_id: number | null;
+};
+
+export type LeagueResponse = ResourceResponse<League>;
+
+export type CreatedLeagueResponse = LeagueResponse;
+
+export type LeagueCollectionResponse = PaginatedResponse<League>;
+
+export type CreateLeaguePayload = {
+  name: string;
+  season_id: number;
+  league_type_id: number;
+  description?: string | null;
+  max_participants?: number;
+};
+
+export type Season = {
+  id: number;
+  name: string;
+  starts_at: string;
+  ends_at: string;
+  is_active: boolean;
+  competition: { id: number; name: string; code: string };
+};
+
+export type LeagueType = {
+  id: number;
+  key: string;
+  label: string;
+};
+
+export type SeasonCollectionResponse = CollectionResponse<Season>;
+export type LeagueTypeCollectionResponse = CollectionResponse<LeagueType>;
+
+export type LeagueMember = {
+  id: number;
+  name: string;
+  role: LeagueReference;
+};
+
+export type LeagueMemberResponse = ResourceResponse<LeagueMember>;
+
+export type LeagueMemberCollectionResponse = CollectionResponse<LeagueMember>;
+
+export type ManageableLeagueRole = 'participant' | 'co_commissioner';
+
+export type LeagueInvitation = {
+  id: number;
+  code: string;
+  status: InvitationStatus;
+  max_uses: number | null;
+  used_count: number;
+  remaining_uses: number | null;
+  expires_at: string | null;
+  is_active: boolean;
+  is_expired: boolean;
+  is_exhausted: boolean;
+  is_available: boolean;
+  created_at: string | null;
+  creator?: {
+    id: number;
+    name: string;
+  };
+  recipient?: { id: number; name: string };
+  role: { key: InvitationRole; label: string };
+  league?: { id: number; name: string };
+  available_actions: Array<'accept' | 'reject'>;
+};
+
+export type LeagueInvitationResponse = ResourceResponse<LeagueInvitation>;
+
+export type LeagueInvitationCollectionResponse = PaginatedResponse<LeagueInvitation>;
+
+export type InvitationStatus = 'pending' | 'accepted' | 'rejected' | 'revoked' | 'expired';
+export type InvitationRole = 'participant' | 'co_commissioner';
+export type CreateLeagueInvitationPayload = {
+  email: string;
+  role: InvitationRole;
+  expires_at?: string | null;
+};
+
+export type FantasyTeamOwner = {
+  id: number;
+  name: string;
+};
+
+export type FantasyTeam = {
+  id: number;
+  name: string;
+  slug: string;
+  league_id: number;
+  owner: FantasyTeamOwner;
+  is_owned_by_current_user: boolean;
+  budget?: string | number | null;
+  remaining_budget?: string | number | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+export type FantasyTeamResponse = ResourceResponse<FantasyTeam>;
+
+export type FantasyTeamCollectionResponse = CollectionResponse<FantasyTeam>;
+
+export type FantasyTeamPayload = {
+  name: string;
+};
+
+export type HeadToHeadStanding = {
+  position: number;
+  fantasy_team: Pick<FantasyTeam, 'id' | 'name' | 'slug'>;
+  played: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  goals_for: number;
+  goals_against: number;
+  goal_difference: number;
+  points: number;
+};
+
+export type ClassicStanding = {
+  position: number;
+  fantasy_team: Pick<FantasyTeam, 'id' | 'name' | 'slug'>;
+  played: number;
+  total_points: string;
+  average_points: string;
+  best_matchday_score: string;
+};
+
+export type FormulaOneStanding = {
+  position: number;
+  fantasy_team: Pick<FantasyTeam, 'id' | 'name' | 'slug'>;
+  played: number;
+  championship_points: number;
+  wins: number;
+  podiums: number;
+  best_finish: number | null;
+  fantasy_points_total: string;
+  average_fantasy_points: string;
+};
+
+export type Standing = HeadToHeadStanding | ClassicStanding;
+
+export type StandingsResponse = CollectionResponse<Standing>;
+export type FormulaOneStandingsResponse = CollectionResponse<FormulaOneStanding>;
+
+export type LeagueSettings = {
+  trade_market_enabled: boolean;
+  trade_market_opens_at: string | null;
+  trade_market_closes_at: string | null;
+  trade_cash_adjustment_enabled: boolean;
+  initial_budget: string | number | null;
+  release_refund_percentage: string | number | null;
+  max_roster_players: number;
+  roster_role_limits: RosterRoleLimits;
+  allowed_formation_module_names: FormationModuleName[];
+  allowed_formation_modules: FormationModule[];
+  bench_size: number;
+  bench_role_limits: BenchRoleLimits;
+  max_substitutions: number;
+  substitution_order_mode: SubstitutionOrderMode;
+  allow_formation_change_on_substitution: boolean;
+  real_captain_bonus_enabled: boolean;
+  real_captain_bonus_points: number;
+  goalkeeper_clean_sheet_bonus_enabled: boolean;
+  goalkeeper_clean_sheet_bonus_points: number;
+  goal_bonus: number;
+  assist_bonus: number;
+  yellow_card_malus: number;
+  red_card_malus: number;
+  own_goal_malus: number;
+  penalty_scored_bonus: number;
+  penalty_missed_malus: number;
+  penalty_saved_bonus: number;
+  goal_conceded_malus: number;
+  defense_modifier_enabled: boolean;
+  defense_modifier_thresholds: DefenseModifierThreshold[];
+  first_goal_threshold?: number;
+  goal_interval?: number;
+  status: string;
+  can_update_settings: boolean;
+  locked_rule_groups: string[];
+  formula_one_position_points?: Record<string, number>;
+};
+
+export type LeagueSettingsResponse = ResourceResponse<LeagueSettings>;
+
+export type PlayerRoleKey = 'goalkeeper' | 'defender' | 'midfielder' | 'forward';
+
+export type RosterRoleLimits = Record<PlayerRoleKey, number>;
+
+export type FormationModuleName = string;
+
+export type FormationModule = {
+  id: number;
+  name: FormationModuleName;
+  label: string;
+  required_players_count: number;
+  requirements: Record<PlayerRoleKey, number>;
+};
+
+export type BenchRoleLimits = Record<PlayerRoleKey, number>;
+
+export type SubstitutionOrderMode = 'bench_order' | 'role_priority';
+export type DefenseModifierThreshold = { id: string; threshold: number; bonus: number };
+
+export type LeagueSettingsPayload = Partial<{
+  trade_market_enabled: boolean;
+  trade_market_opens_at: string;
+  trade_market_closes_at: string;
+  trade_cash_adjustment_enabled: boolean;
+  initial_budget: number;
+  release_refund_percentage: number;
+  max_roster_players: number;
+  roster_role_limits: RosterRoleLimits;
+  allowed_formation_module_names: FormationModuleName[];
+  bench_size: number;
+  bench_role_limits: BenchRoleLimits;
+  max_substitutions: number;
+  substitution_order_mode: SubstitutionOrderMode;
+  allow_formation_change_on_substitution: boolean;
+  real_captain_bonus_enabled: boolean;
+  real_captain_bonus_points: number;
+  defense_modifier_enabled: boolean;
+  defense_modifier_thresholds: DefenseModifierThreshold[];
+  goalkeeper_clean_sheet_bonus_enabled: boolean;
+  goalkeeper_clean_sheet_bonus_points: number;
+  first_goal_threshold: number;
+  goal_bonus: number;
+  assist_bonus: number;
+  yellow_card_malus: number;
+  red_card_malus: number;
+  own_goal_malus: number;
+  penalty_scored_bonus: number;
+  penalty_missed_malus: number;
+  penalty_saved_bonus: number;
+  goal_conceded_malus: number;
+  goal_interval: number;
+  formula_one_position_points: Record<string, number>;
+}>;
+
+export type RosterPlayer = {
+  id: number;
+  purchase_price: string | number;
+  assigned_at: string | null;
+  released_at: string | null;
+  player: {
+    id: number;
+    name: string | null;
+    role: PlayerRoleKey | null;
+  };
+};
+
+export type Market = {
+  enabled: boolean;
+  is_open: boolean;
+  opens_at: string | null;
+  closes_at: string | null;
+  cash_adjustment_enabled: boolean;
+  can_manage: boolean;
+  can_trade: boolean;
+};
+export type MarketPlayer = {
+  id: number;
+  name: string;
+  role: LeagueReference;
+  club: { id: number; name: string };
+  quotation: number | null;
+  assignment_id: number | null;
+  assignment_state: 'assigned' | 'unassigned';
+  fantasy_team: { id: number; name: string; is_own: boolean } | null;
+};
+export type MarketResponse = ResourceResponse<Market>;
+export type MarketPlayerResponse = PaginatedResponse<MarketPlayer>;
+export type MarketPlayerFilters = {
+  search?: string;
+  role?: string;
+  club_id?: number;
+  fantasy_team_id?: number;
+  assignment_state?: string;
+  page?: number;
+  per_page?: number;
+};
+
+export type RosterPlayerResponse = ResourceResponse<RosterPlayer>;
+
+export type RosterPlayerCollectionResponse = CollectionResponse<RosterPlayer>;
+
+export type AssignPlayerPayload = {
+  player_id: number;
+  purchase_price: number;
+};
+
+export type EligiblePlayer = {
+  id: number;
+  name: string;
+  role: {
+    key: PlayerRoleKey | null;
+    label: string | null;
+  };
+  club: {
+    id: number;
+    name: string;
+    real_club_id: number;
+  } | null;
+  quotation: string | number | null;
+  availability: string;
+};
+
+export type EligiblePlayerCollectionResponse = PaginatedResponse<EligiblePlayer>;
+
+export type EligiblePlayerFilters = {
+  search?: string;
+  role?: PlayerRoleKey;
+  club_id?: number;
+  page?: number;
+  per_page?: number;
+};
+
+export type TradeProposal = {
+  id: number;
+  status: 'pending' | 'accepted' | 'rejected' | 'cancelled';
+  proposing_fantasy_team: { id: number; name: string };
+  receiving_fantasy_team: { id: number; name: string };
+  offered_player: { assignment_id: number; id: number; name: string };
+  requested_player: { assignment_id: number; id: number; name: string };
+  cash_from_fantasy_team: { id: number; name: string } | null;
+  cash_amount: number;
+  created_at: string;
+  accepted_at: string | null;
+  rejected_at: string | null;
+  cancelled_at: string | null;
+  capabilities: { can_accept: boolean; can_reject: boolean; can_cancel: boolean };
+};
+export type TradeProposalResponse = ResourceResponse<TradeProposal>;
+export type TradeProposalCollectionResponse = CollectionResponse<TradeProposal>;
+export type CreateTradePayload = {
+  receiving_fantasy_team_id: number;
+  offered_fantasy_team_player_id: number;
+  requested_fantasy_team_player_id: number;
+  cash_from_fantasy_team_id?: number | null;
+  cash_amount?: number;
+};

@@ -12,15 +12,11 @@ class FormationPlayer extends Model
 
     protected $fillable = [
         'formation_id',
+        'fantasy_team_player_id',
         'player_id',
         'player_role_id',
         'slot_type',
         'position_index',
-        'is_captain',
-    ];
-
-    protected $casts = [
-        'is_captain' => 'boolean',
     ];
 
     public function formation(): BelongsTo
@@ -31,6 +27,11 @@ class FormationPlayer extends Model
     public function player(): BelongsTo
     {
         return $this->belongsTo(Player::class);
+    }
+
+    public function fantasyTeamPlayer(): BelongsTo
+    {
+        return $this->belongsTo(FantasyTeamPlayer::class);
     }
 
     public function playerRole(): BelongsTo

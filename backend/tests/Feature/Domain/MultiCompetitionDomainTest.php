@@ -12,6 +12,7 @@ use App\Models\RealCompetition;
 use App\Models\RealMatch;
 use App\Models\Season;
 use App\Models\SeasonClub;
+use Database\Seeders\RealCompetitionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,8 +22,8 @@ class MultiCompetitionDomainTest extends TestCase
 
     public function test_real_competitions_are_seeded_idempotently(): void
     {
-        $this->seed();
-        $this->seed();
+        $this->seed(RealCompetitionSeeder::class);
+        $this->seed(RealCompetitionSeeder::class);
 
         $this->assertSame(7, RealCompetition::query()->count());
         $this->assertSame(
@@ -33,7 +34,7 @@ class MultiCompetitionDomainTest extends TestCase
 
     public function test_season_belongs_to_a_real_competition_and_league_resolves_it_through_season(): void
     {
-        $this->seed();
+        $this->seed(RealCompetitionSeeder::class);
         $competition = RealCompetition::factory()->create();
         $season = Season::factory()->create(['real_competition_id' => $competition->id]);
         $league = League::factory()->create(['season_id' => $season->id]);

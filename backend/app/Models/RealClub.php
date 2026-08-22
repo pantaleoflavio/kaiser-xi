@@ -11,11 +11,20 @@ class RealClub extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'short_name', 'slug', 'country_code', 'logo_path',
+        'name',
+        'short_name',
+        'slug',
+        'country_code',
+        'logo_path',
     ];
 
     public function seasonClubs(): HasMany
     {
         return $this->hasMany(SeasonClub::class);
+    }
+
+    public function externalIdentities(): HasMany
+    {
+        return $this->hasMany(RealClubExternalIdentity::class);
     }
 }

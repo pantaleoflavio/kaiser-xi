@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('filename');
             $table->string('disk');
             $table->string('path');
+            $table->string('checksum', 64);
             $table->string('status')->default('pending');
             $table->foreignId('imported_by_user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->unsignedInteger('total_rows')->default(0);

@@ -15,8 +15,8 @@ class PlayersTable
     {
         return $table
             ->columns([
-                TextColumn::make('external_id')
-                    ->searchable(),
+                TextColumn::make('external_identities_count')
+                    ->counts('externalIdentities'),
                 TextColumn::make('first_name')
                     ->searchable(),
                 TextColumn::make('last_name')

@@ -23,7 +23,8 @@ class PlayerSeasonRegistrationForm
                 Select::make('real_club_id')
                     ->relationship('realClub', 'name')
                     ->required(),
-                TextInput::make('external_id'),
+                TextInput::make('external_provider')->maxLength(255)->requiredWith('external_id')->dehydrateStateUsing(fn(?string $state): ?string => filled($state) ? mb_strtolower(trim($state)) : null),
+                TextInput::make('external_id')->maxLength(255)->requiredWith('external_provider'),
                 TextInput::make('shirt_number')
                     ->numeric(),
                 TextInput::make('quotation')

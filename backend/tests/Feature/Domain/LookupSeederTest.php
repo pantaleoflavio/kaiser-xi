@@ -6,6 +6,10 @@ use App\Models\LeagueRole;
 use App\Models\LeagueStatus;
 use App\Models\LeagueType;
 use App\Models\PlayerRole;
+use Database\Seeders\LeagueRoleSeeder;
+use Database\Seeders\LeagueStatusSeeder;
+use Database\Seeders\LeagueTypeSeeder;
+use Database\Seeders\PlayerRoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,8 +19,10 @@ class LookupSeederTest extends TestCase
 
     public function test_lookup_seeders_create_expected_data_idempotently(): void
     {
-        $this->seed();
-        $this->seed();
+        $seeders = [PlayerRoleSeeder::class, LeagueStatusSeeder::class, LeagueTypeSeeder::class, LeagueRoleSeeder::class];
+
+        $this->seed($seeders);
+        $this->seed($seeders);
 
         $this->assertSame(
             ['defender', 'forward', 'goalkeeper', 'midfielder'],

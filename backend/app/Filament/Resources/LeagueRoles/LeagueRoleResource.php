@@ -16,7 +16,7 @@ class LeagueRoleResource extends Resource
 {
     protected static ?string $model = LeagueRole::class;
 
-public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.navigation.groups.lookups');
     }

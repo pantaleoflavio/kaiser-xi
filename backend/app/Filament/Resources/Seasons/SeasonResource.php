@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Seasons;
 
+use App\Filament\Resources\Concerns\ProtectsHistoricalDeletion;
 use App\Filament\Resources\Seasons\Pages\CreateSeason;
 use App\Filament\Resources\Seasons\Pages\EditSeason;
 use App\Filament\Resources\Seasons\Pages\ListSeasons;
@@ -21,6 +22,8 @@ use Filament\Tables\Table;
 
 class SeasonResource extends Resource
 {
+    use ProtectsHistoricalDeletion;
+
     protected static ?string $model = Season::class;
 
     public static function getNavigationGroup(): ?string

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\RealCompetitions\Schemas;
 
+use App\Models\RealCompetition;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -15,7 +16,10 @@ class RealCompetitionForm
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('code')
-                    ->required(),
+                    ->required()
+                    ->dehydrateStateUsing(
+                        fn(string $state): string => RealCompetition::normalizeCode($state)
+                    ),
                 TextInput::make('country_code'),
                 TextInput::make('type')
                     ->required(),

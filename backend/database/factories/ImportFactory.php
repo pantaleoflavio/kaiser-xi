@@ -20,6 +20,7 @@ class ImportFactory extends Factory
             'filename' => 'players.csv',
             'disk' => 'local',
             'path' => 'imports/players.csv',
+            'checksum' => hash('sha256', 'players.csv'),
             'status' => 'pending',
             'imported_by_user_id' => User::factory(),
             'total_rows' => 0,

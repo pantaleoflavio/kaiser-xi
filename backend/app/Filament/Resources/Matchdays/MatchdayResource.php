@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Matchdays;
 
+use App\Filament\Resources\Concerns\ProtectsHistoricalDeletion;
 use App\Models\Matchday;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -16,6 +17,8 @@ use Filament\Tables\Table;
 
 class MatchdayResource extends Resource
 {
+    use ProtectsHistoricalDeletion;
+
     protected static ?string $model = Matchday::class;
 
     public static function getNavigationGroup(): ?string

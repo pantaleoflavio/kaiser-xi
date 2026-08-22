@@ -9,5 +9,5 @@ Route::get('/', function () {
 });
 
 Route::post('/admin/locale/{locale}', UpdateLocaleController::class)
-    ->middleware(['auth', EnsureAdminPanelAccess::class])
+    ->middleware(EnsureAdminPanelAccess::class)
     ->name('admin.locale.update');

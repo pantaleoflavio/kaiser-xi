@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PlayerScoreStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +12,9 @@ use Illuminate\Validation\ValidationException;
 class PlayerScore extends Model
 {
     use HasFactory;
+
+    /** @deprecated External/provider score; League fantasy scoring uses raw performance fields. */
+    public const FANTASY_SCORE_INPUT_FIELD = 'final_score';
 
     protected $fillable = [
         'player_season_registration_id',
@@ -26,6 +30,7 @@ class PlayerScore extends Model
         'penalties_saved',
         'goals_conceded',
         'clean_sheet',
+        'is_captain',
         'final_score',
         'status',
     ];
@@ -33,7 +38,9 @@ class PlayerScore extends Model
     protected $casts = [
         'base_rating' => 'decimal:2',
         'clean_sheet' => 'boolean',
+        'is_captain' => 'boolean',
         'final_score' => 'decimal:2',
+        'status' => PlayerScoreStatus::class,
     ];
 
     protected static function booted(): void
@@ -41,10 +48,28 @@ class PlayerScore extends Model
         static::saving(function (self $score): void {
             $registrationSeasonId = PlayerSeasonRegistration::query()->with('seasonClub')->find($score->player_season_registration_id)?->seasonClub?->season_id;
             $matchdaySeasonId = Matchday::query()->find($score->matchday_id)?->season_id;
+
             if ($registrationSeasonId === null || $registrationSeasonId !== $matchdaySeasonId) {
-                throw ValidationException::withMessages(['player_season_registration_id' => 'The player registration must belong to the matchday season.']);
+                throw ValidationException::withMessages([
+                    'player_season_registration_id' => __('admin.validation.player_scores.season_mismatch'),
+                ]);
             }
         });
+    }
+
+    public function isPlayable(): bool
+    {
+        return $this->status === PlayerScoreStatus::Confirmed
+            && $this->base_rating !== null;
+    }
+
+    public static function isPlayableFor(int $playerSeasonRegistrationId, int $matchdayId): bool
+    {
+        return self::query()
+            ->where('player_season_registration_id', $playerSeasonRegistrationId)
+            ->where('matchday_id', $matchdayId)
+            ->first()
+            ?->isPlayable() ?? false;
     }
 
     public function playerSeasonRegistration(): BelongsTo

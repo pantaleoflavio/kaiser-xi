@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -41,5 +42,24 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function withRole(string $roleName): static
+    {
+        return $this->afterCreating(function (User $user) use ($roleName): void {
+            $role = Role::query()->where('name', $roleName)->firstOrFail();
+
+            $user->roles()->syncWithoutDetaching([$role->id]);
+        });
+    }
+
+    public function superAdmin(): static
+    {
+        return $this->withRole('super_admin');
+    }
+
+    public function globalAdmin(): static
+    {
+        return $this->withRole('global_admin');
     }
 }

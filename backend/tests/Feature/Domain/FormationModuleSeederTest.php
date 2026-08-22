@@ -3,6 +3,8 @@
 namespace Tests\Feature\Domain;
 
 use App\Models\FormationModule;
+use Database\Seeders\FormationModuleSeeder;
+use Database\Seeders\PlayerRoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -12,14 +14,16 @@ class FormationModuleSeederTest extends TestCase
 
     public function test_seeded_433_module_has_correct_role_requirements(): void
     {
-        $this->seed();
-        $this->seed();
+        $seeders = [PlayerRoleSeeder::class, FormationModuleSeeder::class];
+
+        $this->seed($seeders);
+        $this->seed($seeders);
 
         $module = FormationModule::query()->where('name', '4-3-3')->firstOrFail();
         $requirements = $module->requirements()
             ->with('playerRole')
             ->get()
-            ->mapWithKeys(fn ($requirement) => [
+            ->mapWithKeys(fn($requirement) => [
                 $requirement->playerRole->key => $requirement->required_count,
             ])
             ->all();
@@ -31,5 +35,6 @@ class FormationModuleSeederTest extends TestCase
             'forward' => 3,
         ], $requirements);
         $this->assertSame(7, FormationModule::query()->count());
+        $this->assertSame(11, $module->requiredPlayersCount());
     }
 }

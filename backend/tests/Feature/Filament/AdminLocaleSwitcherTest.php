@@ -18,10 +18,10 @@ class AdminLocaleSwitcherTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seedReferenceData();
         $this->withoutMiddleware(PreventRequestForgery::class);
 
-        Route::middleware(['web', SetLocale::class])->get('/_test/locale', fn () => response()->json([
+        Route::middleware(['web', SetLocale::class])->get('/_test/locale', fn() => response()->json([
             'locale' => app()->getLocale(),
             'label' => __('admin.locale_switcher.label'),
         ]));
@@ -50,13 +50,13 @@ class AdminLocaleSwitcherTest extends TestCase
     public function test_unauthenticated_user_cannot_mutate_session(): void
     {
         $this->post(route('admin.locale.update', 'it'))
-            ->assertRedirect('/admin/login')
+            ->assertForbidden()
             ->assertSessionMissing('locale');
     }
 
     public function test_regular_user_cannot_mutate_admin_locale_session(): void
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = User::factory()->create();
         $this->actingAs($user)
             ->post(route('admin.locale.update', 'it'))

@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\UpdatePasswordRequest;
+use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Http\Resources\Auth\UserResource;
 use App\Models\User;
 use App\Services\Auth\LoginUserService;
@@ -66,6 +68,29 @@ class AuthController extends Controller
     public function me(Request $request): UserResource
     {
         return new UserResource($request->user()->load('roles'));
+    }
+
+    public function updateProfile(UpdateProfileRequest $request): UserResource
+    {
+        $user = $request->user();
+        $validated = $request->safe()->only(['name', 'email']);
+
+        if (array_key_exists('email', $validated) && $validated['email'] !== $user->email) {
+            $validated['email_verified_at'] = null;
+        }
+
+        $user->forceFill($validated)->save();
+
+        return new UserResource($user->refresh()->load('roles'));
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request): JsonResponse
+    {
+        $request->user()->forceFill([
+            'password' => $request->string('password')->toString(),
+        ])->save();
+
+        return response()->json(null, 204);
     }
 
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse

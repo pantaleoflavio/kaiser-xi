@@ -4,7 +4,9 @@ namespace Tests\Feature\Filament;
 
 use App\Filament\Resources\FormationModuleRequirements\FormationModuleRequirementResource;
 use App\Filament\Resources\Matchdays\MatchdayResource;
+use App\Filament\Resources\Players\PlayerResource;
 use App\Filament\Resources\PlayerScores\PlayerScoreResource;
+use App\Filament\Resources\RealClubs\RealClubResource;
 use App\Filament\Resources\RealCompetitions\RealCompetitionResource;
 use App\Filament\Resources\Roles\RoleResource;
 use App\Models\Role;
@@ -18,20 +20,20 @@ class ResourceSmokeTest extends TestCase
 
     public function test_super_admin_can_open_key_resource_indexes(): void
     {
-        $this->seed();
+        $this->seedReferenceData();
         $this->actingAs($this->userWithRole('super_admin'));
 
-        foreach ([RoleResource::class, RealCompetitionResource::class, MatchdayResource::class, PlayerScoreResource::class, FormationModuleRequirementResource::class] as $resource) {
+        foreach ([RoleResource::class, RealCompetitionResource::class, MatchdayResource::class, PlayerScoreResource::class, PlayerResource::class, RealClubResource::class, FormationModuleRequirementResource::class] as $resource) {
             $this->get($resource::getUrl('index'))->assertSuccessful();
         }
     }
 
     public function test_global_admin_can_open_domain_resource_indexes(): void
     {
-        $this->seed();
+        $this->seedReferenceData();
         $this->actingAs($this->userWithRole('global_admin'));
 
-        foreach ([RealCompetitionResource::class, MatchdayResource::class, PlayerScoreResource::class, FormationModuleRequirementResource::class] as $resource) {
+        foreach ([RealCompetitionResource::class, MatchdayResource::class, PlayerScoreResource::class, PlayerResource::class, RealClubResource::class, FormationModuleRequirementResource::class] as $resource) {
             $this->get($resource::getUrl('index'))->assertSuccessful();
         }
     }

@@ -17,7 +17,7 @@ class LeagueTypeResource extends Resource
 {
     protected static ?string $model = LeagueType::class;
 
-public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('admin.navigation.groups.lookups');
     }

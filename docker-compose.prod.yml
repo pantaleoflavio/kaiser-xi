@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    env_file: ./backend/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend_private_storage:/app/storage/app/private
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    env_file: ./backend/.env
+    command: php artisan queue:work --queue=default --tries=${IMPORT_QUEUE_TRIES:-2} --timeout=${IMPORT_QUEUE_TIMEOUT:-900}
+    restart: unless-stopped
+    volumes:
+      - backend_private_storage:/app/storage/app/private
+
+  release:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    env_file: ./backend/.env
+    command: sh -c "php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache"
+    profiles: ["release"]
+    volumes:
+      - backend_private_storage:/app/storage/app/private
+
+volumes:
+  backend_private_storage:

@@ -1,65 +1,59 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\League\StoreLeagueRequest;
+use App\Http\Requests\League\UpdateLeagueRequest;
+use App\Http\Resources\League\LeagueResource;
 use App\Models\League;
-use Illuminate\Http\Request;
+use App\Services\League\CreateLeague;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class LeagueController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private const WITH = [
+        'season.realCompetition',
+        'type',
+        'status',
+        'memberships.role',
+    ];
+
+    public function index(): AnonymousResourceCollection
     {
-        //
+        return LeagueResource::collection(
+            request()->user()->leagues()->with(self::WITH)->paginate()
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StoreLeagueRequest $request, CreateLeague $createLeague): JsonResponse
     {
-        //
+        $league = $createLeague
+            ->handle($request->validated(), $request->user())
+            ->load(self::WITH);
+
+        return (new LeagueResource($league))
+            ->response()
+            ->setStatusCode(201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show(League $league): LeagueResource
     {
-        //
+        return new LeagueResource($league->load(self::WITH));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(League $league)
+    public function update(UpdateLeagueRequest $request, League $league): LeagueResource
     {
-        //
+        $league->update($request->validated());
+
+        return new LeagueResource($league->load(self::WITH));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(League $league)
+    public function destroy(League $league): JsonResponse
     {
-        //
-    }
+        $league->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, League $league)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(League $league)
-    {
-        //
+        return response()->json(null, 204);
     }
 }
