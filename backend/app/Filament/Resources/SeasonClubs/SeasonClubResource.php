@@ -50,8 +50,8 @@ class SeasonClubResource extends Resource
             Select::make('season_id')->label(__('admin.labels.season'))->relationship('season', 'name')->searchable()->preload()->required(),
             Select::make('real_club_id')->label(__('admin.labels.real_club'))->relationship('realClub', 'name')->searchable()->preload()->required(),
             TextInput::make('display_name')->label(__('admin.labels.display_name')),
-            TextInput::make('external_provider')->label(__('admin.labels.external_provider')),
-            TextInput::make('external_id')->label(__('admin.labels.external_id')),
+            TextInput::make('external_provider')->label(__('admin.labels.external_provider'))->maxLength(255)->requiredWith('external_id')->dehydrateStateUsing(fn(?string $state): ?string => filled($state) ? mb_strtolower(trim($state)) : null),
+            TextInput::make('external_id')->label(__('admin.labels.external_id'))->maxLength(255)->requiredWith('external_provider'),
             Toggle::make('is_active')->label(__('admin.labels.is_active'))->default(true),
         ]);
     }

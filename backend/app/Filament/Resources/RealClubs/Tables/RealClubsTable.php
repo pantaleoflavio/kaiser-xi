@@ -22,6 +22,8 @@ class RealClubsTable
                     ->searchable(),
                 TextColumn::make('country_code')
                     ->searchable(),
+                TextColumn::make('external_identities_count')
+                    ->counts('externalIdentities'),
                 TextColumn::make('logo_path')
                     ->searchable(),
                 TextColumn::make('created_at')

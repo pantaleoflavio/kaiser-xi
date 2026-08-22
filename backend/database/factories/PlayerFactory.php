@@ -18,7 +18,6 @@ class PlayerFactory extends Factory
         $lastName = $this->faker->lastName();
 
         return [
-            'external_id' => $this->faker->uuid(),
             'first_name' => $firstName,
             'last_name' => $lastName,
             'display_name' => "$firstName $lastName",

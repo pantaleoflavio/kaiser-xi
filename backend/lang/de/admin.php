@@ -22,11 +22,15 @@ return [
             'status_scoring' => 'Status / Bewertung',
         ],
     ],
-    'validation' => ['player_scores' => [
-        'confirmed_final_score_required' => 'Für den Status „Bestätigt“ ist eine Endbewertung erforderlich.',
-        'duplicate' => 'Für diese Spielerregistrierung und diesen Spieltag existiert bereits eine Bewertung.',
-        'season_mismatch' => 'Die Spielerregistrierung muss zur Saison des Spieltags gehören.',
-    ]],
+    'validation' => [
+        'external_identity_pair' => 'Anbieter und externe ID müssen entweder beide angegeben oder beide leer sein.',
+        'external_identity_unique' => 'Diese Zuordnung aus Anbieter und externer ID existiert bereits.',
+        'player_scores' => [
+            'confirmed_final_score_required' => 'Für den Status „Bestätigt“ ist eine Endbewertung erforderlich.',
+            'duplicate' => 'Für diese Spielerregistrierung und diesen Spieltag existiert bereits eine Bewertung.',
+            'season_mismatch' => 'Die Spielerregistrierung muss zur Saison des Spieltags gehören.',
+        ],
+    ],
     'navigation' => ['groups' => [
         'system' => 'System',
         'competitions' => 'Wettbewerbe',
@@ -73,6 +77,7 @@ return [
         'email' => 'E-Mail',
         'email_address' => 'E-Mail-Adresse',
         'ends_at' => 'Endet am',
+        'external_identities' => 'Externe IDs',
         'external_id' => 'Externe ID',
         'external_provider' => 'Externer Anbieter',
         'final_score' => 'Endpunktzahl',

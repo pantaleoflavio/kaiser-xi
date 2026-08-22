@@ -22,11 +22,15 @@ return [
             'status_scoring' => 'Status / scoring input',
         ],
     ],
-    'validation' => ['player_scores' => [
-        'confirmed_final_score_required' => 'A final score is required when the status is confirmed.',
-        'duplicate' => 'A score already exists for this player registration and matchday.',
-        'season_mismatch' => 'The player registration must belong to the matchday season.',
-    ]],
+    'validation' => [
+        'external_identity_pair' => 'Provider and external ID must either both be supplied or both be empty.',
+        'external_identity_unique' => 'This provider and external ID mapping already exists.',
+        'player_scores' => [
+            'confirmed_final_score_required' => 'A final score is required when the status is confirmed.',
+            'duplicate' => 'A score already exists for this player registration and matchday.',
+            'season_mismatch' => 'The player registration must belong to the matchday season.',
+        ],
+    ],
     'navigation' => ['groups' => [
         'system' => 'System',
         'competitions' => 'Competitions',
@@ -73,6 +77,7 @@ return [
         'email' => 'Email',
         'email_address' => 'Email address',
         'ends_at' => 'Ends At',
+        'external_identities' => 'External IDs',
         'external_id' => 'External Id',
         'external_provider' => 'External provider',
         'final_score' => 'Final Score',

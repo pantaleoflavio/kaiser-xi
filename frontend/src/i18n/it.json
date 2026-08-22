@@ -107,12 +107,12 @@
   "leagues": {
     "eyebrow": "Base leghe",
     "title": "Le tue leghe",
-    "description": "Questa pagina protetta elenca le leghe disponibili per il tuo account. I flussi dei fantasy team non sono ancora implementati di proposito.",
+    "description": "Questa pagina protetta elenca le leghe disponibili per il tuo account.",
     "loading": "Caricamento leghe...",
     "error": "Impossibile caricare le leghe.",
     "errorTitle": "Impossibile caricare le leghe",
     "emptyTitle": "Nessuna lega ancora",
-    "emptyDescription": "Non fai ancora parte di una lega. La creazione delle leghe sarà aggiunta in un passaggio futuro.",
+    "emptyDescription": "Non fai ancora parte di una lega.",
     "noDescription": "Nessuna descrizione fornita.",
     "viewDetails": "Vedi dettagli lega",
     "roles": {

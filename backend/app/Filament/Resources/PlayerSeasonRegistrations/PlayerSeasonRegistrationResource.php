@@ -47,10 +47,12 @@ class PlayerSeasonRegistrationResource extends Resource
     {
         return $schema->components([
             Select::make('player_id')->label(__('admin.labels.player'))->relationship('player', 'display_name')->searchable()->preload()->required(),
-            Select::make('season_club_id')->label(__('admin.labels.registered_club'))->relationship('seasonClub', 'id')->getOptionLabelFromRecordUsing(fn ($record): string => "{$record->season->realCompetition->name} — {$record->season->name} — {$record->realClub->name}")->searchable()->preload()->required(),
+            Select::make('season_club_id')->label(__('admin.labels.registered_club'))->relationship('seasonClub', 'id')->getOptionLabelFromRecordUsing(fn($record): string => "{$record->season->realCompetition->name} — {$record->season->name} — {$record->realClub->name}")->searchable()->preload()->required(),
             Select::make('player_role_id')->label(__('admin.labels.player_role'))->relationship('playerRole', 'label')->searchable()->preload()->required(),
-            TextInput::make('external_provider')->label(__('admin.labels.external_provider')), TextInput::make('external_id')->label(__('admin.labels.external_id')),
-            TextInput::make('shirt_number')->label(__('admin.labels.shirt_number'))->numeric(), TextInput::make('quotation')->label(__('admin.labels.quotation'))->numeric(),
+            TextInput::make('external_provider')->label(__('admin.labels.external_provider'))->maxLength(255)->requiredWith('external_id')->dehydrateStateUsing(fn(?string $state): ?string => filled($state) ? mb_strtolower(trim($state)) : null),
+            TextInput::make('external_id')->label(__('admin.labels.external_id'))->maxLength(255)->requiredWith('external_provider'),
+            TextInput::make('shirt_number')->label(__('admin.labels.shirt_number'))->numeric(),
+            TextInput::make('quotation')->label(__('admin.labels.quotation'))->numeric(),
             Toggle::make('is_active')->label(__('admin.labels.is_active'))->default(true),
             DateTimePicker::make('registered_at')->label(__('admin.labels.registered_at')),
             DateTimePicker::make('released_at')->label(__('admin.labels.released_at')),
@@ -60,8 +62,11 @@ class PlayerSeasonRegistrationResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('player.display_name')->label(__('admin.labels.player'))->searchable()->sortable(), TextColumn::make('seasonClub.season.realCompetition.name')->label(__('admin.labels.competition')),
-            TextColumn::make('seasonClub.season.name')->label(__('admin.labels.season')), TextColumn::make('seasonClub.realClub.name')->label(__('admin.labels.registered_club')), TextColumn::make('playerRole.label')->label(__('admin.labels.player_role')),
+            TextColumn::make('player.display_name')->label(__('admin.labels.player'))->searchable()->sortable(),
+            TextColumn::make('seasonClub.season.realCompetition.name')->label(__('admin.labels.competition')),
+            TextColumn::make('seasonClub.season.name')->label(__('admin.labels.season')),
+            TextColumn::make('seasonClub.realClub.name')->label(__('admin.labels.registered_club')),
+            TextColumn::make('playerRole.label')->label(__('admin.labels.player_role')),
             TextColumn::make('quotation')->label(__('admin.labels.quotation'))->numeric(2),
             IconColumn::make('is_active')->label(__('admin.labels.is_active'))->boolean(),
         ])->recordActions([EditAction::make()])->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

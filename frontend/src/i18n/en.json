@@ -164,7 +164,7 @@
     "error": "Unable to load leagues.",
     "errorTitle": "Unable to load leagues",
     "emptyTitle": "No leagues yet",
-    "emptyDescription": "You are not part of a league yet. League creation will be added in a future step.",
+    "emptyDescription": "You are not part of a league yet.",
     "noDescription": "No description provided.",
     "roles": {
       "commissioner": "Commissioner",
