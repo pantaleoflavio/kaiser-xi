@@ -169,6 +169,14 @@ Import a missing competition (occasional), persistent clubs and global players (
 
 After a real round, obtain authorized performance data, transform it to PlayerScore CSV, Analyse, resolve errors and inspect warnings, Confirm, and monitor the queue outside this page. Explicitly recalculate affected fantasy Matchdays when desired. Import registration changes first after transfers or new players.
 
+### Production execution and recovery
+
+Confirmation dispatches only after the `ready` to `queued` transaction commits. A queued job may take over an `importing` record only after `IMPORT_STALE_AFTER`; configure `IMPORT_QUEUE_TIMEOUT < IMPORT_STALE_AFTER < DB_QUEUE_RETRY_AFTER`. Terminal records never execute again. Terminal job failure changes a queued/importing record to `failed` and stores one execution-level diagnostic rather than copying an infrastructure error to every row.
+
+Uploads are limited to 10 MiB, and analysis and execution parse the complete file in memory. This is not a performance guarantee: benchmark representative files and configure `IMPORT_QUEUE_TIMEOUT`, `DB_QUEUE_RETRY_AFTER`, and `IMPORT_STALE_AFTER` before launch.
+
+The checksummed execution source remains in private storage. Web and worker processes must share that persistent storage. No automatic cleanup runs; never delete sources for queued/importing imports and define an operator retention policy for terminal records.
+
 ## Troubleshooting and current limitations
 
 - **Blocked:** fix duplicate rows, partial/unknown identities, formats, or validation errors and create a new analysis; blocked history cannot be confirmed.

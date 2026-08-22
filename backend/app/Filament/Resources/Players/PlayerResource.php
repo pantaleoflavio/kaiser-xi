@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Players;
 
+use App\Filament\Resources\Concerns\ProtectsHistoricalDeletion;
 use App\Models\Player;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -18,6 +19,8 @@ use Filament\Tables\Table;
 
 class PlayerResource extends Resource
 {
+    use ProtectsHistoricalDeletion;
+
     protected static ?string $model = Player::class;
 
     public static function getNavigationGroup(): ?string

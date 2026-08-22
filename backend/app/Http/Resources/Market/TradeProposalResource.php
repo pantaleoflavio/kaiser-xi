@@ -11,7 +11,8 @@ class TradeProposalResource extends JsonResource
     public function toArray(Request $request): array
     {
         $userId = $request->user()?->id;
-        $pending = $this->status === TradeProposalStatus::Pending;
+        $pending = $this->status === TradeProposalStatus::Pending
+            && ($this->expires_at === null || ! $this->expires_at->isPast());
         $player = static fn($assignment): array => ['assignment_id' => $assignment->id, 'id' => $assignment->player->id, 'name' => $assignment->player->display_name];
         return [
             'id' => $this->id,
@@ -23,6 +24,7 @@ class TradeProposalResource extends JsonResource
             'cash_from_fantasy_team' => $this->cashPaidByTeam ? ['id' => $this->cashPaidByTeam->id, 'name' => $this->cashPaidByTeam->name] : null,
             'cash_amount' => (int) $this->cash_amount,
             'created_at' => $this->created_at,
+            'expires_at' => $this->expires_at,
             'accepted_at' => $this->accepted_at,
             'rejected_at' => $this->rejected_at,
             'cancelled_at' => $this->cancelled_at,

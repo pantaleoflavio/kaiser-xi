@@ -44,7 +44,9 @@ class AdminAccessTest extends TestCase
 
     public function test_regular_user_cannot_access_admin_panel(): void
     {
-        $this->actingAs($this->userWithRole('user'))->get('/admin')->assertForbidden();
+        $user = $this->userWithRole('user');
+        $this->actingAs($user)->get('/admin')->assertForbidden();
+        $this->actingAs($user)->get(PlayerScoreResource::getUrl('index'))->assertForbidden();
     }
 
     public function test_unauthenticated_user_is_redirected_to_filament_login(): void

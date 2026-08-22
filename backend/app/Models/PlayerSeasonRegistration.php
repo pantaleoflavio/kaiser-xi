@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class PlayerSeasonRegistration extends Model
 {
@@ -61,6 +62,18 @@ class PlayerSeasonRegistration extends Model
                 'external_id.required_with' => __('admin.validation.external_identity_pair'),
                 'external_id.unique' => __('admin.validation.external_identity_unique'),
             ])->validate();
+
+            if ($registration->is_active && $registration->released_at === null) {
+                $seasonId = SeasonClub::query()->whereKey($registration->season_club_id)->value('season_id');
+                $query = self::query()
+                    ->where('player_id', $registration->player_id)
+                    ->where('is_active', true)
+                    ->whereNull('released_at')
+                    ->whereHas('seasonClub', fn(Builder $query) => $query->where('season_id', $seasonId));
+                if ($registration->exists) $query->whereKeyNot($registration->getKey());
+                $duplicate = $query->exists();
+                if ($duplicate) throw ValidationException::withMessages(['player_id' => 'A player may have only one active registration per season.']);
+            }
         });
     }
 

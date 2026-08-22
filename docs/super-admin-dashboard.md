@@ -9,7 +9,7 @@ The Filament panel at `/admin` is the internal **global administration** area. I
 | Entry | super_admin | global_admin | Normal / commissioner / co-commissioner |
 |---|---:|---:|---:|
 | Users, Roles | yes | no | no |
-| Player Scores | yes | no | no |
+| Player Scores | yes | yes  | no |
 | All other resources, Dashboard, Import data | yes | yes | no |
 
 There is no global `LeagueResource`; Leagues and their members, teams, settings, matchday calculation, markets, and trades are managed through API/product workflows rather than this Filament navigation. League policy separately allows commissioners/co-commissioners specific League operations, but does not grant global data administration.
@@ -29,7 +29,7 @@ Labels below are the English translations. All listed resources provide list/cre
 | Real Data | Season Clubs | Season + RealClub participation, seasonal external identity/display/active. |
 | Real Data | Matchdays | Season rounds, number/name and start/end datetimes. |
 | Real Data | Real Matches | Fixture linking Matchday and home/away SeasonClubs, kickoff, score and status. This is manual UI only, not a CSV type. |
-| Scores | Player Scores | Global registration + Matchday performance and supplied final score; super_admin only. |
+| Scores | Player Scores | Global registration + Matchday performance and supplied final score; super_admin and global_admin. |
 | Real Data | Player Season Registrations | Player, SeasonClub, role, external identity, quotation/shirt/timestamps/active. |
 | System | Users | Accounts, email, global roles and password; super_admin only. |
 | System | Roles | Global role name/label/level/system flag; super_admin only. |
@@ -52,7 +52,7 @@ No dedicated scoring-rules/settings resource is registered. Formation resources 
 
 ## Player Score administration
 
-Player Scores is intentionally super-admin-only.
+Player Scores is global football data and is available to both super administrators and global administrators.
 
 ### Form and invariants
 
@@ -105,4 +105,4 @@ The page does **not** display an import-history table, job progress, completed r
 - Import execution is whole-file atomic and has no partial/chunked success or null-clear sentinel.
 - Import history exists in models/storage but is not browsable on the Import data page.
 - There is no global League, scoring-rule, or settings resource in Filament.
-- Most resources expose generic bulk deletion without domain-specific warnings. Only PlayerScore adds explicit historical warnings.
+- PlayerScore deletion retains its explicit traceability warning. Bulk deletion is disabled for PlayerSeasonRegistration, Matchday, Season, SeasonClub, Player and RealClub; single deletion is denied when the record owns or contains PlayerScore history. Released/deactivated records without score history remain removable.

@@ -19,6 +19,7 @@ class FantasyTeamPlayerController extends Controller
 
     public function index(League $league, FantasyTeam $fantasyTeam): AnonymousResourceCollection
     {
+        abort_unless($fantasyTeam->league_id === $league->id, 404);
         return FantasyTeamPlayerResource::collection(
             $fantasyTeam->activePlayerAssignments()
                 ->with(['player.playerSeasonRegistrations' => fn($query) => $query

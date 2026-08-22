@@ -227,6 +227,21 @@ class TradeProposalServiceTest extends TestCase
         $this->assertSame('60.00', $f['to']->refresh()->remaining_budget);
     }
 
+    public function test_expired_pending_proposal_cannot_be_accepted_rejected_or_cancelled(): void
+    {
+        foreach (['accept', 'reject', 'cancel'] as $operation) {
+            $f = $this->fixture();
+            $trade = $this->proposal($f);
+            $trade->update(['expires_at' => now()->subSecond()]);
+            $actor = $operation === 'cancel' ? $f['fromUser'] : $f['toUser'];
+
+            $this->expectConflict('trade_expired', fn() => $operation === 'accept'
+                ? $this->service()->accept($f['league'], $trade, $actor)
+                : $this->service()->{$operation}($trade, $actor));
+            $this->assertSame(TradeProposalStatus::Pending, $trade->refresh()->status);
+        }
+    }
+
     public function test_real_database_transaction_rolls_back_a_failure_during_replacement_creation(): void
     {
         $f = $this->fixture();

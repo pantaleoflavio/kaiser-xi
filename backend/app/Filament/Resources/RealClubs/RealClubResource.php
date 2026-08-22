@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\RealClubs;
 
+use App\Filament\Resources\Concerns\ProtectsHistoricalDeletion;
 use App\Filament\Resources\RealClubs\Pages\CreateRealClub;
 use App\Filament\Resources\RealClubs\Pages\EditRealClub;
 use App\Filament\Resources\RealClubs\Pages\ListRealClubs;
@@ -18,6 +19,8 @@ use Filament\Tables\Table;
 
 class RealClubResource extends Resource
 {
+    use ProtectsHistoricalDeletion;
+
     protected static ?string $model = RealClub::class;
 
     public static function getNavigationGroup(): ?string

@@ -39,11 +39,13 @@ class FantasyTeamController extends Controller
 
     public function show(League $league, FantasyTeam $fantasyTeam): FantasyTeamResource
     {
+        abort_unless($fantasyTeam->league_id === $league->id, 404);
         return new FantasyTeamResource($fantasyTeam->load('user'));
     }
 
     public function update(UpdateFantasyTeamRequest $request, League $league, FantasyTeam $fantasyTeam): FantasyTeamResource
     {
+        abort_unless($fantasyTeam->league_id === $league->id, 404);
         $fantasyTeam = $this->fantasyTeamService
             ->update($fantasyTeam, $request->validated('name'))
             ->load('user');

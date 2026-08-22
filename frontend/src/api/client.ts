@@ -1,12 +1,12 @@
 import { clearStoredToken, getStoredToken } from '../auth/tokenStorage';
 import type { ApiErrorResponse } from '../types/auth';
 
-const fallbackApiUrl = 'http://localhost:8000/api/v1';
+const configuredApiUrl = import.meta.env.VITE_API_BASE_URL;
+if (import.meta.env.PROD && !configuredApiUrl) {
+  throw new Error('VITE_API_BASE_URL is required for production builds.');
+}
 
-export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? fallbackApiUrl).replace(
-  /\/$/,
-  '',
-);
+export const API_BASE_URL = (configuredApiUrl ?? 'http://localhost:8000/api/v1').replace(/\/$/, '');
 
 export class ApiError extends Error {
   status: number;

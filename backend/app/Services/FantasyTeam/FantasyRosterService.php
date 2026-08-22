@@ -24,6 +24,7 @@ class FantasyRosterService
         return DB::transaction(function () use ($league, $team, $player, $assignedBy, $purchasePrice): FantasyTeamPlayer {
             $league = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
             $team = FantasyTeam::query()->whereKey($team->id)->lockForUpdate()->firstOrFail();
+            abort_unless($team->league_id === $league->id, 404);
 
             $registration = $this->activeRegistration($league, $player);
             if (! $registration) {
@@ -46,7 +47,7 @@ class FantasyRosterService
                 || count($roleLimits) !== count(LeagueSetting::PLAYER_ROLE_KEYS)
                 || array_diff(LeagueSetting::PLAYER_ROLE_KEYS, array_keys($roleLimits)) !== []
                 || array_sum($roleLimits) < $maxRosterPlayers
-                || array_any($roleLimits, fn (mixed $limit): bool => ! is_int($limit) || $limit < 0)
+                || array_any($roleLimits, fn(mixed $limit): bool => ! is_int($limit) || $limit < 0)
             ) {
                 throw new InvalidLeagueConfigurationException('The league roster limits are invalid.');
             }
@@ -67,7 +68,7 @@ class FantasyRosterService
             $activeRoleCount = (clone $activeRoster)
                 ->whereHas('player.playerSeasonRegistrations', function ($query) use ($league, $roleKey): void {
                     $query->activeForSeason($league->season_id)
-                        ->whereHas('playerRole', fn ($query) => $query->where('key', $roleKey));
+                        ->whereHas('playerRole', fn($query) => $query->where('key', $roleKey));
                 })
                 ->count();
 
@@ -96,6 +97,7 @@ class FantasyRosterService
         return DB::transaction(function () use ($league, $team, $player, $releasedBy): FantasyTeamPlayer {
             $league = League::query()->whereKey($league->id)->lockForUpdate()->firstOrFail();
             $team = FantasyTeam::query()->whereKey($team->id)->lockForUpdate()->firstOrFail();
+            abort_unless($team->league_id === $league->id, 404);
             $assignment = FantasyTeamPlayer::query()
                 ->where('league_id', $league->id)
                 ->where('fantasy_team_id', $team->id)

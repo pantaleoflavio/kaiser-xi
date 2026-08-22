@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SeasonClubs;
 
+use App\Filament\Resources\Concerns\ProtectsHistoricalDeletion;
 use App\Filament\Resources\SeasonClubs\Pages\CreateSeasonClub;
 use App\Filament\Resources\SeasonClubs\Pages\EditSeasonClub;
 use App\Filament\Resources\SeasonClubs\Pages\ListSeasonClubs;
@@ -20,6 +21,8 @@ use Filament\Tables\Table;
 
 class SeasonClubResource extends Resource
 {
+    use ProtectsHistoricalDeletion;
+
     protected static ?string $model = SeasonClub::class;
 
     public static function getNavigationGroup(): ?string

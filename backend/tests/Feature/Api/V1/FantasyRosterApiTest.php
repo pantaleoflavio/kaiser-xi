@@ -231,6 +231,9 @@ class FantasyRosterApiTest extends TestCase
         Sanctum::actingAs($user);
 
         $this->getJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players")->assertNotFound();
+        $player = $this->eligiblePlayer($league);
+        $this->postJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players", ['player_id' => $player->id, 'purchase_price' => 1])->assertNotFound();
+        $this->deleteJson("/api/v1/leagues/{$league->id}/fantasy-teams/{$team->id}/players/{$player->id}")->assertNotFound();
     }
 
     public function test_player_assignment_rules_and_client_fields_are_enforced(): void

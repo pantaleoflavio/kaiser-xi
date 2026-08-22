@@ -198,6 +198,25 @@ class MarketTradeApiTest extends TestCase
         $this->getJson($this->url($f['league']))->assertOk()->assertJsonPath('data.0.id', $trade->id);
     }
 
+    public function test_expired_proposal_has_no_capabilities_and_returns_trade_expired(): void
+    {
+        $f = $this->fixture();
+        $trade = $this->trade($f, ['expires_at' => now()->subSecond()]);
+
+        Sanctum::actingAs($f['toUser']);
+        $this->getJson($this->url($f['league']))
+            ->assertOk()
+            ->assertJsonPath('data.0.capabilities.can_accept', false)
+            ->assertJsonPath('data.0.capabilities.can_reject', false);
+        $this->postJson($this->url($f['league']) . "/{$trade->id}/accept")
+            ->assertConflict()->assertJsonPath('code', 'trade_expired');
+
+        Sanctum::actingAs($f['fromUser']);
+        $this->getJson($this->url($f['league']))->assertJsonPath('data.0.capabilities.can_cancel', false);
+        $this->postJson($this->url($f['league']) . "/{$trade->id}/cancel")
+            ->assertConflict()->assertJsonPath('code', 'trade_expired');
+    }
+
     private function fixture(): array
     {
         $league = League::factory()->create();

@@ -41,10 +41,10 @@ class FantasyTeamPolicy
         return $this->view($user, $fantasyTeam);
     }
 
-    public function manageRoster(User $user, FantasyTeam $fantasyTeam, League $league): bool
+    public function manageRoster(User $user, FantasyTeam $fantasyTeam, League $league): bool|Response
     {
         if ($fantasyTeam->league_id !== $league->id) {
-            return false;
+            return Response::denyAsNotFound();
         }
 
         return $league->users()

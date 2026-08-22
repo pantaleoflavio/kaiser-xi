@@ -163,9 +163,21 @@ class TradeProposalService
         if ($amount === 0 && $payer !== null) $this->conflict('invalid_cash_payer', 'Zero cash must not specify a payer.');
     }
 
-    private function pending(TradeProposal $t): void
+    private function pending(TradeProposal $trade): void
     {
-        if ($t->status !== TradeProposalStatus::Pending) $this->conflict('trade_not_pending', 'The trade is no longer pending.');
+        if ($trade->status !== TradeProposalStatus::Pending) {
+            $this->conflict(
+                'trade_not_pending',
+                'The trade is no longer pending.',
+            );
+        }
+
+        if ($trade->expires_at?->isPast()) {
+            $this->conflict(
+                'trade_expired',
+                'The trade proposal has expired.',
+            );
+        }
     }
 
     private function open(League $l): void

@@ -76,7 +76,7 @@ class CsvImportService
             }
 
             $locked->update(['status' => ImportStatus::Queued]);
-            ExecuteCsvImportJob::dispatch($locked->getKey());
+            ExecuteCsvImportJob::dispatch($locked->getKey())->afterCommit();
 
             return true;
         });
@@ -87,7 +87,12 @@ class CsvImportService
         $import = DB::transaction(function () use ($importId): ?Import {
             $locked = Import::query()->lockForUpdate()->findOrFail($importId);
 
-            if ($locked->status !== ImportStatus::Queued) {
+            $staleBefore = now()->subSeconds(config('queue.imports.stale_after'));
+            $recoverable = $locked->status === ImportStatus::Importing
+                && $locked->started_at !== null
+                && $locked->started_at->lte($staleBefore);
+
+            if ($locked->status !== ImportStatus::Queued && ! $recoverable) {
                 return null;
             }
 
@@ -138,6 +143,16 @@ class CsvImportService
         }
     }
 
+    public function failQueuedExecution(int $importId, string $message): void
+    {
+        DB::transaction(function () use ($importId, $message): void {
+            $import = Import::query()->lockForUpdate()->find($importId);
+            if (! $import || ! in_array($import->status, [ImportStatus::Queued, ImportStatus::Importing], true)) return;
+
+            $this->fail($import, ['rows' => [], 'counts' => ['total' => $import->total_rows]], $message);
+        });
+    }
+
     private function fail(Import $import, array $analysis, string $message): void
     {
         $total = $analysis['counts']['total'] ?? 0;
@@ -149,6 +164,12 @@ class CsvImportService
             return;
         }
 
-        foreach ($analysis['rows'] as $row) if ($row['errors'] || $message) $import->rowErrors()->create(['row_number' => $row['row_number'], 'row_data' => $row['data'], 'error_message' => implode('; ', $row['errors']) ?: $message]);
+        $hasRowErrors = collect($analysis['rows'])->contains(fn(array $row): bool => $row['errors'] !== []);
+        if (! $hasRowErrors) {
+            $import->rowErrors()->create(['row_number' => 1, 'row_data' => null, 'error_message' => $message]);
+            return;
+        }
+
+        foreach ($analysis['rows'] as $row) if ($row['errors']) $import->rowErrors()->create(['row_number' => $row['row_number'], 'row_data' => $row['data'], 'error_message' => implode('; ', $row['errors'])]);
     }
 }

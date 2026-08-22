@@ -43,6 +43,7 @@ class JsonFieldCastingTest extends TestCase
             'filename' => 'players.csv',
             'disk' => 'local',
             'path' => 'imports/players.csv',
+            'checksum' => hash('sha256', 'test csv contents'),
             'status' => 'completed',
         ]);
         $rowError = ImportRowError::query()->create([

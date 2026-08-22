@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PlayerSeasonRegistrations;
 
+use App\Filament\Resources\Concerns\ProtectsHistoricalDeletion;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -17,6 +18,8 @@ use Filament\Tables\Table;
 
 class PlayerSeasonRegistrationResource extends Resource
 {
+    use ProtectsHistoricalDeletion;
+
     protected static ?string $modelLabel = 'Player Registration';
 
     protected static ?string $pluralModelLabel = 'Player Registrations';
