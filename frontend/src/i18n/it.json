@@ -1,6 +1,7 @@
 {
   "app": {
-    "name": "FantaMeister"
+    "name": " Kaiser XI",
+    "tagline": "La tua lega. Le tue regole."
   },
   "common": {
     "loading": "Caricamento...",
@@ -26,7 +27,7 @@
   "auth": {
     "login": {
       "title": "Accedi",
-      "description": "Usa le credenziali del tuo account FantaMeister.",
+      "description": "Usa le credenziali del tuo account  Kaiser XI.",
       "email": "Email",
       "password": "Password",
       "submit": "Accedi",
@@ -74,7 +75,7 @@
   "home": {
     "eyebrow": "Fantasy football a modo tuo",
     "title": "Crea mondi di fantasy football privati su più competizioni.",
-    "description": "FantaMeister è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
+    "description": " Kaiser XI è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
     "cta": {
       "login": "Accedi",
       "register": "Registrati",
@@ -92,7 +93,7 @@
       },
       "leagues": {
         "title": "Leghe private",
-        "description": "Crea o unisciti a leghe private per il tuo gruppo e tieni ogni stagione in un unico spazio FantaMeister."
+        "description": "Crea o unisciti a leghe private per il tuo gruppo e tieni ogni stagione in un unico spazio  Kaiser XI."
       },
       "teams": {
         "title": "Gestione fantasy team",
@@ -579,7 +580,7 @@
   "account": {
     "eyebrow": "Account",
     "title": "Il tuo account",
-    "description": "Visualizza e aggiorna i dati del tuo account FantaMeister.",
+    "description": "Visualizza e aggiorna i dati del tuo account  Kaiser XI.",
     "fields": {
       "name": "Nome",
       "email": "Email",

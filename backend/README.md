@@ -1,6 +1,6 @@
-# FantaMeister Backend
+# Kaiser XI Backend
 
-Laravel API backend for **FantaMeister**, a multi-competition fantasy football platform.
+Laravel API backend for **Kaiser XI**, a multi-competition fantasy football platform.
 
 The backend is designed to support multiple real football competitions, seasons, clubs and players within a single deployment, while keeping global administration separate from league-specific permissions.
 

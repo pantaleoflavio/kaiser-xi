@@ -1,12 +1,13 @@
-# FantaMeister
+# Kaiser XI
+**Your League. Your Rules.**
 
-FantaMeister is a full-stack fantasy football platform inspired by the Italian Fantacalcio model.
+Kaiser XI is a full-stack fantasy football platform inspired by the Italian Fantacalcio model.
 
 The application is designed to support multiple real football competitions, seasons and custom fantasy leagues within a single deployment. It separates real-football data, global platform administration and league-specific gameplay permissions.
 
 ## Project status
 
-FantaMeister is under active development.
+Kaiser XI is under active development.
 
 Currently implemented:
 
@@ -30,10 +31,10 @@ The next development phase focuses on fantasy league creation, membership and le
 
 ## Architecture
 
-FantaMeister uses a monorepo structure:
+Kaiser XI uses a monorepo structure:
 
 ```text
-FantaMeister/
+Kaiser XI/
 ├── backend/          Laravel API and Filament administration
 ├── frontend/         React application
 ├── docs/             Development documentation

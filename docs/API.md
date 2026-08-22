@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document describes the conventions used by the FantaMeister REST API.
+This document describes the conventions used by the Kaiser XI REST API.
 
 It focuses on consistency rather than documenting every endpoint individually.
 

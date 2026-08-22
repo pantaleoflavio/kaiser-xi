@@ -2,7 +2,7 @@
 
 ## Overview
 
-FantaMeister is organized around two independent but connected domains:
+Kaiser XI is organized around two independent but connected domains:
 
 * the **Real Football Domain**, which models real-world football competitions;
 * the **Fantasy Domain**, which models user-created fantasy leagues.
@@ -14,7 +14,7 @@ The separation between these domains allows the platform to support multiple com
 # High-level architecture
 
 ```text
-                  FantaMeister
+                    Kaiser XI
                         │
         ┌───────────────┴────────────────┐
         │                                │
