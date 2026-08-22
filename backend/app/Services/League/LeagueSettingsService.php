@@ -179,6 +179,16 @@ class LeagueSettingsService
                     ['value' => LeagueSetting::decimalPayload((float) $settings[LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS])],
                 );
             }
+
+            foreach (LeagueSetting::PLAYER_SCORING_KEYS as $key) {
+                if (array_key_exists($key, $settings)) {
+                    LeagueSetting::query()->updateOrCreate(
+                        ['league_id' => $lockedLeague->id, 'key' => $key],
+                        ['value' => LeagueSetting::decimalPayload((float) $settings[$key])],
+                    );
+                }
+            }
+
             if (array_key_exists(LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS, $settings)) {
                 LeagueSetting::query()->updateOrCreate(
                     ['league_id' => $lockedLeague->id, 'key' => LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS],
@@ -315,6 +325,15 @@ class LeagueSettingsService
             LeagueSetting::REAL_CAPTAIN_BONUS_POINTS => (float) $incoming !== $league->realCaptainBonusPoints(),
             LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED => (bool) $incoming !== $league->goalkeeperCleanSheetBonusEnabled(),
             LeagueSetting::GOALKEEPER_CLEAN_SHEET_BONUS_POINTS => (float) $incoming !== $league->goalkeeperCleanSheetBonusPoints(),
+            LeagueSetting::GOAL_BONUS => (float) $incoming !== $league->goalBonus(),
+            LeagueSetting::ASSIST_BONUS => (float) $incoming !== $league->assistBonus(),
+            LeagueSetting::YELLOW_CARD_MALUS => (float) $incoming !== $league->yellowCardMalus(),
+            LeagueSetting::RED_CARD_MALUS => (float) $incoming !== $league->redCardMalus(),
+            LeagueSetting::OWN_GOAL_MALUS => (float) $incoming !== $league->ownGoalMalus(),
+            LeagueSetting::PENALTY_SCORED_BONUS => (float) $incoming !== $league->penaltyScoredBonus(),
+            LeagueSetting::PENALTY_MISSED_MALUS => (float) $incoming !== $league->penaltyMissedMalus(),
+            LeagueSetting::PENALTY_SAVED_BONUS => (float) $incoming !== $league->penaltySavedBonus(),
+            LeagueSetting::GOAL_CONCEDED_MALUS => (float) $incoming !== $league->goalConcededMalus(),
             LeagueSetting::DEFENSE_MODIFIER_ENABLED => (bool) $incoming !== $league->defenseModifierEnabled(),
             LeagueSetting::FIRST_GOAL_THRESHOLD => (float) $incoming !== $league->firstGoalThreshold(),
             LeagueSetting::DEFENSE_MODIFIER_THRESHOLDS => $incoming !== $league->defenseModifierThresholds(),

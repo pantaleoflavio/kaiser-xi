@@ -12,6 +12,7 @@ type Props = {
   defenseModifierThresholds: { id: string; threshold: string; bonus: string }[];
   goalkeeperCleanSheetBonusEnabled: boolean;
   goalkeeperCleanSheetBonusPoints: string;
+  playerScoring: Record<string, string>;
   errors: SettingsFieldErrors;
   firstGoalThreshold: string;
   goalInterval: string;
@@ -22,6 +23,7 @@ type Props = {
   onRealCaptainBonusPointsChange: (value: string) => void;
   onGoalkeeperCleanSheetBonusEnabledChange: (enabled: boolean) => void;
   onGoalkeeperCleanSheetBonusPointsChange: (value: string) => void;
+  onPlayerScoringChange: (key: string, value: string) => void;
   onDefenseModifierChange: (enabled: boolean) => void;
   onDefenseModifierThresholdsChange: (
     rows: { id: string; threshold: string; bonus: string }[],
@@ -35,6 +37,7 @@ export function ScoringRulesSection({
   realCaptainBonusPoints,
   goalkeeperCleanSheetBonusEnabled,
   goalkeeperCleanSheetBonusPoints,
+  playerScoring,
   defenseModifierThresholds,
   defenseModifierEnabled,
   firstGoalThreshold,
@@ -47,6 +50,7 @@ export function ScoringRulesSection({
   onRealCaptainBonusPointsChange,
   onGoalkeeperCleanSheetBonusEnabledChange,
   onGoalkeeperCleanSheetBonusPointsChange,
+  onPlayerScoringChange,
   onDefenseModifierChange,
   onDefenseModifierThresholdsChange,
   onFirstGoalThresholdChange,
@@ -60,6 +64,26 @@ export function ScoringRulesSection({
       <legend className="text-lg font-semibold text-white">
         {t('leagueSettings.scoring.title')}
       </legend>
+      <div className="grid gap-3 sm:grid-cols-3">
+        {Object.entries(playerScoring).map(([key, value]) => (
+          <label className="block text-sm text-slate-200" key={key}>
+            {t(`leagueSettings.scoring.${key}`)}
+            <input
+              className={settingsInputClass}
+              disabled={disabled}
+              max={100}
+              min={-100}
+              onChange={(event) => onPlayerScoringChange(key, event.target.value)}
+              step={0.01}
+              type="number"
+              value={value}
+            />
+            {exactError(errors, key) ? (
+              <span className="mt-1 block text-red-300">{exactError(errors, key)}</span>
+            ) : null}
+          </label>
+        ))}
+      </div>
       <label className="flex items-center gap-2 text-sm text-slate-200">
         <input
           checked={realCaptainBonusEnabled}

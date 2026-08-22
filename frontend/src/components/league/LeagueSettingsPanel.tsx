@@ -182,6 +182,17 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
         <ScoringRulesSection
           goalkeeperCleanSheetBonusEnabled={form.goalkeeperCleanSheetBonusEnabled}
           goalkeeperCleanSheetBonusPoints={form.goalkeeperCleanSheetBonusPoints}
+          playerScoring={{
+            goal_bonus: form.goalBonus,
+            assist_bonus: form.assistBonus,
+            yellow_card_malus: form.yellowCardMalus,
+            red_card_malus: form.redCardMalus,
+            own_goal_malus: form.ownGoalMalus,
+            penalty_scored_bonus: form.penaltyScoredBonus,
+            penalty_missed_malus: form.penaltyMissedMalus,
+            penalty_saved_bonus: form.penaltySavedBonus,
+            goal_conceded_malus: form.goalConcededMalus,
+          }}
           realCaptainBonusEnabled={form.realCaptainBonusEnabled}
           realCaptainBonusPoints={form.realCaptainBonusPoints}
           defenseModifierEnabled={form.defenseModifierEnabled}
@@ -197,6 +208,24 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
           }
           onGoalkeeperCleanSheetBonusPointsChange={(value) =>
             setField('goalkeeperCleanSheetBonusPoints', value)
+          }
+          onPlayerScoringChange={(key, value) =>
+            setField(
+              (
+                {
+                  goal_bonus: 'goalBonus',
+                  assist_bonus: 'assistBonus',
+                  yellow_card_malus: 'yellowCardMalus',
+                  red_card_malus: 'redCardMalus',
+                  own_goal_malus: 'ownGoalMalus',
+                  penalty_scored_bonus: 'penaltyScoredBonus',
+                  penalty_missed_malus: 'penaltyMissedMalus',
+                  penalty_saved_bonus: 'penaltySavedBonus',
+                  goal_conceded_malus: 'goalConcededMalus',
+                } as const
+              )[key as 'goal_bonus'],
+              value,
+            )
           }
           onDefenseModifierChange={(value) => setField('defenseModifierEnabled', value)}
           onDefenseModifierThresholdsChange={(value) =>

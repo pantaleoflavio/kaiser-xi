@@ -24,6 +24,15 @@ class LeagueSetting extends Model
     public const REAL_CAPTAIN_BONUS_POINTS = 'real_captain_bonus_points';
     public const GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED = 'goalkeeper_clean_sheet_bonus_enabled';
     public const GOALKEEPER_CLEAN_SHEET_BONUS_POINTS = 'goalkeeper_clean_sheet_bonus_points';
+    public const GOAL_BONUS = 'goal_bonus';
+    public const ASSIST_BONUS = 'assist_bonus';
+    public const YELLOW_CARD_MALUS = 'yellow_card_malus';
+    public const RED_CARD_MALUS = 'red_card_malus';
+    public const OWN_GOAL_MALUS = 'own_goal_malus';
+    public const PENALTY_SCORED_BONUS = 'penalty_scored_bonus';
+    public const PENALTY_MISSED_MALUS = 'penalty_missed_malus';
+    public const PENALTY_SAVED_BONUS = 'penalty_saved_bonus';
+    public const GOAL_CONCEDED_MALUS = 'goal_conceded_malus';
     public const DEFENSE_MODIFIER_ENABLED = 'defense_modifier_enabled';
     public const DEFENSE_MODIFIER_THRESHOLDS = 'defense_modifier_thresholds';
     public const FIRST_GOAL_THRESHOLD = 'first_goal_threshold';
@@ -67,6 +76,26 @@ class LeagueSetting extends Model
     public const DEFAULT_REAL_CAPTAIN_BONUS_POINTS = 0.5;
     public const DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_ENABLED = false;
     public const DEFAULT_GOALKEEPER_CLEAN_SHEET_BONUS_POINTS = 1.0;
+    public const DEFAULT_GOAL_BONUS = 3.0;
+    public const DEFAULT_ASSIST_BONUS = 1.0;
+    public const DEFAULT_YELLOW_CARD_MALUS = -0.5;
+    public const DEFAULT_RED_CARD_MALUS = -1.0;
+    public const DEFAULT_OWN_GOAL_MALUS = -2.0;
+    public const DEFAULT_PENALTY_SCORED_BONUS = 3.0;
+    public const DEFAULT_PENALTY_MISSED_MALUS = -3.0;
+    public const DEFAULT_PENALTY_SAVED_BONUS = 3.0;
+    public const DEFAULT_GOAL_CONCEDED_MALUS = -1.0;
+    public const PLAYER_SCORING_KEYS = [
+        self::GOAL_BONUS,
+        self::ASSIST_BONUS,
+        self::YELLOW_CARD_MALUS,
+        self::RED_CARD_MALUS,
+        self::OWN_GOAL_MALUS,
+        self::PENALTY_SCORED_BONUS,
+        self::PENALTY_MISSED_MALUS,
+        self::PENALTY_SAVED_BONUS,
+        self::GOAL_CONCEDED_MALUS,
+    ];
     public const DEFAULT_DEFENSE_MODIFIER_ENABLED = false;
     public const DEFAULT_DEFENSE_MODIFIER_THRESHOLDS = [
         ['id' => 'default-600', 'threshold' => 6.0, 'bonus' => 1.0],

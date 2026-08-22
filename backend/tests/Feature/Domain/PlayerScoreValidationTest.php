@@ -18,14 +18,14 @@ class PlayerScoreValidationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_confirmed_requires_a_final_score_while_pending_does_not(): void
+    public function test_confirmed_requires_a_base_rating_but_not_a_final_score(): void
     {
         $service = app(PlayerScoreService::class);
-        $service->prepare($this->validInput(['status' => PlayerScoreStatus::Confirmed, 'final_score' => 7.25]));
+        $service->prepare($this->validInput(['status' => PlayerScoreStatus::Confirmed, 'base_rating' => 7.25, 'final_score' => null]));
         $service->prepare($this->validInput(['status' => PlayerScoreStatus::Pending, 'final_score' => null]));
 
         $this->expectException(ValidationException::class);
-        $service->prepare($this->validInput(['status' => PlayerScoreStatus::Confirmed, 'final_score' => null]));
+        $service->prepare($this->validInput(['status' => PlayerScoreStatus::Confirmed, 'base_rating' => null]));
     }
 
     public function test_missing_performance_values_receive_database_compatible_defaults(): void

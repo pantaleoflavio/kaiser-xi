@@ -42,7 +42,8 @@ class PlayerScoreForm
             Section::make(__('admin.player_scores.sections.raw_performance'))
                 ->columns(3)
                 ->schema([
-                    TextInput::make('base_rating')->label(__('admin.labels.base_rating'))->numeric()->step(0.01)->rules(['decimal:0,2', 'between:-99.99,99.99']),
+                    TextInput::make('base_rating')->label(__('admin.labels.base_rating'))->numeric()->step(0.01)->rules(['decimal:0,2', 'between:-99.99,99.99'])
+                        ->required(fn(Get $get): bool => $get('status') === PlayerScoreStatus::Confirmed->value),
                     Toggle::make('clean_sheet')->label(__('admin.labels.clean_sheet'))->default(false),
                     Toggle::make('is_captain')->label(__('admin.player_scores.real_club_captain'))->helperText(__('admin.player_scores.real_club_captain_help'))->default(false),
                 ]),
@@ -70,8 +71,7 @@ class PlayerScoreForm
                         ->label(__('admin.labels.final_score'))
                         ->numeric()
                         ->step(0.01)
-                        ->rules(['decimal:0,2', 'between:-999.99,999.99'])
-                        ->required(fn(Get $get): bool => $get('status') === PlayerScoreStatus::Confirmed->value),
+                        ->rules(['decimal:0,2', 'between:-999.99,999.99']),
                 ]),
         ]);
     }

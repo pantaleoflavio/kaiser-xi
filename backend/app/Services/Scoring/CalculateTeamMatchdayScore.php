@@ -9,14 +9,19 @@ use App\Models\Matchday;
 use App\Models\PlayerScore;
 use App\Models\TeamMatchdayScore;
 use App\Services\Formation\ResolveFormationSubstitutions;
+use App\Services\Scoring\PlayerFantasyScoreCalculator;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use LogicException;
 
+
 final class CalculateTeamMatchdayScore
 {
-    public function __construct(private ResolveFormationSubstitutions $substitutionResolver) {}
+    public function __construct(
+        private ResolveFormationSubstitutions $substitutionResolver,
+        private PlayerFantasyScoreCalculator $playerScoreCalculator,
+    ) {}
 
     public function calculate(FantasyTeam $fantasyTeam, Matchday $matchday): TeamMatchdayScore
     {
@@ -51,6 +56,7 @@ final class CalculateTeamMatchdayScore
             $defenseModifierCents = 0;
             $baseCents = 0;
             $bonusCents = 0;
+            $fantasyScoreCents = [];
 
             foreach ($contributingIds as $playerId) {
                 $score = $scores->get($playerId);
@@ -58,7 +64,9 @@ final class CalculateTeamMatchdayScore
                     continue;
                 }
 
-                $baseCents += $this->cents($score->{PlayerScore::FANTASY_SCORE_INPUT_FIELD});
+                $fantasyScoreCents[$playerId] = $this->playerScoreCalculator->calculateCents($score, $formation->league);
+                $baseCents += $fantasyScoreCents[$playerId];
+
                 if ($score->is_captain) {
                     $bonusCents += $captainBonusCents;
                 }
@@ -74,13 +82,17 @@ final class CalculateTeamMatchdayScore
                 $defenders = $effective->filter(fn($player): bool => $player->playerRole?->key === 'defender');
                 $goalkeeper = $effective->first(fn($player): bool => $player->playerRole?->key === 'goalkeeper');
                 if ($defenders->count() >= 4 && $goalkeeper !== null) {
-                    $votes = $defenders->map(fn($player): float => (float) $scores->get($player->player_id)->base_rating)
+                    $votes = $defenders->map(fn($player): ?float => $scores->get($player->player_id)->base_rating !== null ? (float) $scores->get($player->player_id)->base_rating : null)
+                        ->filter(fn(?float $vote): bool => $vote !== null)
                         ->sortDesc()->take(3)->values();
-                    $votes->push((float) $scores->get($goalkeeper->player_id)->base_rating);
-                    $average = $votes->sum() / 4;
-                    foreach ($formation->league->defenseModifierThresholds() as $threshold) {
-                        if ($average >= $threshold['threshold']) {
-                            $defenseModifierCents = $this->cents($threshold['bonus']);
+                    $goalkeeperVote = $scores->get($goalkeeper->player_id)->base_rating;
+                    if ($votes->count() === 3 && $goalkeeperVote !== null) {
+                        $votes->push((float) $goalkeeperVote);
+                        $average = $votes->sum() / 4;
+                        foreach ($formation->league->defenseModifierThresholds() as $threshold) {
+                            if ($average >= $threshold['threshold']) {
+                                $defenseModifierCents = $this->cents($threshold['bonus']);
+                            }
                         }
                     }
                 }
@@ -112,7 +124,8 @@ final class CalculateTeamMatchdayScore
             foreach ($this->orderedSubmittedPlayers($formation) as $formationPlayer) {
                 $score = $scores->get($formationPlayer->player_id);
                 $isContributing = isset($contributing[$formationPlayer->player_id]) && $score?->isPlayable();
-                $pointsCents = $isContributing ? $this->cents($score->{PlayerScore::FANTASY_SCORE_INPUT_FIELD}) : 0;
+                $pointsCents = $isContributing ? ($fantasyScoreCents[$formationPlayer->player_id]
+                    ?? $this->playerScoreCalculator->calculateCents($score, $formation->league)) : 0;
                 if ($isContributing && $score->is_captain) {
                     $pointsCents += $captainBonusCents;
                 }

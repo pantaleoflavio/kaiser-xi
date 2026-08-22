@@ -401,7 +401,8 @@
       "realCaptainBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5.",
       "halfPoint": "Enter a value within the allowed range in increments of 0.5.",
       "cleanSheetBonusRange": "Enter bonus points from 0 to 5 in increments of 0.5.",
-      "defenseThresholds": "Thresholds must be unique and increasing in 0.25 increments; bonuses must be non-negative in 0.5 increments."
+      "defenseThresholds": "Thresholds must be unique and increasing in 0.25 increments; bonuses must be non-negative in 0.5 increments.",
+      "scoringValue": "Enter a value from -100 to 100 with at most two decimals."
     },
     "scoring": {
       "title": "Scoring",
@@ -420,7 +421,16 @@
       "defenseAverage": "Defense average threshold",
       "defenseBonus": "Team bonus",
       "addDefenseThreshold": "Add threshold",
-      "removeDefenseThreshold": "Remove"
+      "removeDefenseThreshold": "Remove",
+      "goal_bonus": "Goal bonus",
+      "assist_bonus": "Assist bonus",
+      "yellow_card_malus": "Yellow-card malus",
+      "red_card_malus": "Red-card malus",
+      "own_goal_malus": "Own-goal malus",
+      "penalty_scored_bonus": "Penalty scored bonus",
+      "penalty_missed_malus": "Penalty missed malus",
+      "penalty_saved_bonus": "Penalty saved bonus",
+      "goal_conceded_malus": "Goal conceded malus"
     }
   },
   "budget": {

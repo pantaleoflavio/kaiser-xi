@@ -401,7 +401,8 @@
       "realCaptainBonusRange": "Bonuspunkte zwischen 0 und 5 in Schritten von 0,5 eingeben.",
       "halfPoint": "Gib einen Wert im zulässigen Bereich in Schritten von 0,5 ein.",
       "cleanSheetBonusRange": "Gib Bonuspunkte von 0 bis 5 in Schritten von 0,5 ein.",
-      "defenseThresholds": "Schwellen müssen eindeutig und steigend in 0,25-Schritten sein; Boni nicht negativ in 0,5-Schritten."
+      "defenseThresholds": "Schwellen müssen eindeutig und steigend in 0,25-Schritten sein; Boni nicht negativ in 0,5-Schritten.",
+      "scoringValue": "Wert von -100 bis 100 mit höchstens zwei Dezimalstellen eingeben."
     },
     "scoring": {
       "title": "Punktewertung",
@@ -420,7 +421,16 @@
       "defenseAverage": "Schwelle des Abwehrdurchschnitts",
       "defenseBonus": "Teambonus",
       "addDefenseThreshold": "Schwelle hinzufügen",
-      "removeDefenseThreshold": "Entfernen"
+      "removeDefenseThreshold": "Entfernen",
+      "goal_bonus": "Torbonus",
+      "assist_bonus": "Assist-Bonus",
+      "yellow_card_malus": "Gelbe-Karte-Malus",
+      "red_card_malus": "Rote-Karte-Malus",
+      "own_goal_malus": "Eigentor-Malus",
+      "penalty_scored_bonus": "Elfmeterbonus",
+      "penalty_missed_malus": "Malus für verschossenen Elfmeter",
+      "penalty_saved_bonus": "Bonus für gehaltenen Elfmeter",
+      "goal_conceded_malus": "Gegentor-Malus"
     }
   },
   "budget": {

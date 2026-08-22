@@ -33,7 +33,7 @@ class UpdateLeagueSettingsRequest extends FormRequest
         $roleShape = 'array:' . implode(',', LeagueSetting::PLAYER_ROLE_KEYS);
         $requiredRoles = 'required_array_keys:' . implode(',', LeagueSetting::PLAYER_ROLE_KEYS);
 
-        return [
+        $rules = [
             LeagueSetting::INITIAL_BUDGET => [
                 'sometimes',
                 'required',
@@ -225,6 +225,12 @@ class UpdateLeagueSettingsRequest extends FormRequest
             'remaining_budget' => ['prohibited'],
             'league_id' => ['prohibited'],
         ];
+
+        foreach (LeagueSetting::PLAYER_SCORING_KEYS as $key) {
+            $rules[$key] = ['sometimes', 'required', 'numeric', 'decimal:0,2', 'between:-100,100'];
+        }
+
+        return $rules;
     }
 
     /** @return array<int, mixed> */

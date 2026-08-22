@@ -349,7 +349,8 @@
       "realCaptainBonusRange": "Inserisci punti bonus da 0 a 5 in incrementi di 0,5.",
       "halfPoint": "Inserisci un valore nell’intervallo consentito con incrementi di 0,5.",
       "cleanSheetBonusRange": "Inserisci punti bonus da 0 a 5 con incrementi di 0,5.",
-      "defenseThresholds": "Le soglie devono essere uniche e crescenti con incrementi di 0,25; i bonus non negativi con incrementi di 0,5."
+      "defenseThresholds": "Le soglie devono essere uniche e crescenti con incrementi di 0,25; i bonus non negativi con incrementi di 0,5.",
+      "scoringValue": "Inserisci un valore da -100 a 100 con massimo due decimali."
     },
     "scoring": {
       "title": "Punteggio",
@@ -368,7 +369,16 @@
       "defenseAverage": "Soglia media difesa",
       "defenseBonus": "Bonus squadra",
       "addDefenseThreshold": "Aggiungi soglia",
-      "removeDefenseThreshold": "Rimuovi"
+      "removeDefenseThreshold": "Rimuovi",
+      "goal_bonus": "Bonus gol",
+      "assist_bonus": "Bonus assist",
+      "yellow_card_malus": "Malus ammonizione",
+      "red_card_malus": "Malus espulsione",
+      "own_goal_malus": "Malus autogol",
+      "penalty_scored_bonus": "Bonus rigore segnato",
+      "penalty_missed_malus": "Malus rigore sbagliato",
+      "penalty_saved_bonus": "Bonus rigore parato",
+      "goal_conceded_malus": "Malus gol subito"
     }
   },
   "budget": {

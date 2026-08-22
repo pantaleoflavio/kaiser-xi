@@ -155,17 +155,17 @@ In every section, “duplicate” means a blocking duplicate within the file; ex
 
 - **Purpose/model/dependencies:** global real-world performance (`PlayerScore`), never League-specific. Competition, Season, Matchday, registration, Player/club fallback mappings and same-Season relationship must already exist.
 - **Canonical header:** `competition_code,season_name,matchday_number,registration_provider,registration_external_id,player_provider,player_external_id,club_provider,club_external_id,status,base_rating,goals,assists,yellow_cards,red_cards,own_goals,penalties_scored,penalties_missed,penalties_saved,goals_conceded,clean_sheet,is_captain,final_score`.
-- **Required header/create:** competition, season, number, status; create needs a complete direct registration pair or complete Player **and** club pairs. `confirmed` additionally requires `final_score`.
+- **Required header/create:** competition, season, number, status; create needs a complete direct registration pair or complete Player **and** club pairs. `confirmed` additionally requires `base_rating`.
 - **Identity:** resolved PlayerSeasonRegistration + Matchday. Direct registration identity is preferred; fallback resolves Player + RealClub -> SeasonClub -> registration in the Season. Both routes, if present, must agree.
 - **Formats:** status is `pending`, `confirmed`, or `did_not_play`; base rating -99.99..99.99; final score -999.99..999.99; events are non-negative integers; booleans `true`/`false`; decimals max two places.
-- **Updates/empty cells:** optional blanks preserve on update; creates use model/database defaults. `final_score` is supplied authoritative input—this import never derives it.
-- **Status:** `pending` may omit final score; `confirmed` requires it and is playable only with it; `did_not_play` forcibly clears `base_rating` and `final_score`, sets every event to zero, and sets `clean_sheet`/`is_captain` false, irrespective of omitted cells.
+- **Updates/empty cells:** optional blanks preserve on update; creates use model/database defaults. `final_score` is optional external/provider data—this import never derives it.
+- **Status:** `pending` may omit a base rating; `confirmed` requires a base rating and is playable only with it; `did_not_play` forcibly clears `base_rating` and `final_score`, sets every event to zero, and sets `clean_sheet`/`is_captain` false, irrespective of omitted cells.
 - **Duplicate/warning/caveat:** duplicate registration+matchday errors. Changing/new confirmed scores warns about explicit recalculation. Import never deletes a score.
 - **Example:** `serie_a,2026/27,1,opta,Registration-001,,,,,confirmed,7.50,1,0,0,0,0,0,0,0,0,true,false,10.00`
 
 ## PlayerScore versus fantasy scoring
 
-`PlayerScore` is source performance data. `CalculateTeamMatchdayScore` consumes its `final_score` in League-specific fantasy calculation. Importing, editing, or deleting a score **does not automatically recalculate** an already calculated League Matchday. If historical fantasy results should reflect a correction, a commissioner/co-commissioner must explicitly invoke the existing affected-matchday recalculation workflow.
+`PlayerScore` is source performance data. `CalculateTeamMatchdayScore` combines its raw performance fields with League-specific scoring settings. Importing, editing, or deleting a score **does not automatically recalculate** an already calculated League Matchday. If historical fantasy results should reflect a correction, a commissioner/co-commissioner must explicitly invoke the existing affected-matchday recalculation workflow.
 
 ## Operational workflows
 
@@ -195,3 +195,18 @@ The checksummed execution source remains in private storage. Web and worker proc
 - **Failed:** inspect persisted row errors/log/queue failure, correct the source or concurrent identity change, then upload as a new import. There is no retry/history UI here.
 - **Stale/checksum errors:** do not change stored sources; re-analyse after domain identity changes.
 - **Current limits:** no RealMatch external identity; no automatic transfer orchestration; no null-clear sentinel; no automatic PlayerScore/final-score calculation; no automatic League recalculation; no chunking/partial success; every import executes atomically. Market behavior is outside this subsystem.
+## League-specific fantasy scoring
+
+`PlayerScore` remains global raw real-football performance data. A confirmed score requires a
+`base_rating`; `final_score` remains an optional externally supplied/provider-derived value for
+compatibility and never controls League fantasy points. `CalculateTeamMatchdayScore` combines the
+raw rating and events with each League's bonus/malus settings. Its `base_points` is the sum of those
+League-specific individual scores before captain, goalkeeper clean-sheet, and defense modifiers.
+
+The default rules are goal +3, assist +1, yellow card -0.5, red card -1, own goal -2,
+penalty scored +3, penalty missed -3, penalty saved +3, and goal conceded -1. The source contract
+does not unambiguously state whether `goals` includes `penalties_scored`; scoring therefore safely
+treats penalties as a subset of goals (up to the reported goal count), replacing rather than adding
+the ordinary goal bonus. This prevents double counting. Clean-sheet and real-captain facts remain
+raw provider facts whose optional League bonuses are applied separately. Settings changes do not
+automatically recalculate historical results; the explicit recalculation flow remains required.

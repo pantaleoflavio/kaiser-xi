@@ -301,7 +301,7 @@ class ResolveFormationSubstitutionsTest extends TestCase
     {
         PlayerScore::query()->updateOrCreate(
             ['player_season_registration_id' => $this->registrations[$assignment]->id, 'matchday_id' => $formation->matchday_id],
-            ['status' => $status, 'final_score' => $score],
+            ['status' => $status, 'base_rating' => $score],
         );
     }
 

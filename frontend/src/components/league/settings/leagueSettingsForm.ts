@@ -56,6 +56,17 @@ export function validateLeagueSettingsForm(
   const maximumSubstitutions = requiredNumber(form.maxSubstitutions);
   const realCaptainBonusPoints = requiredNumber(form.realCaptainBonusPoints);
   const goalkeeperCleanSheetBonusPoints = requiredNumber(form.goalkeeperCleanSheetBonusPoints);
+  const playerScoring = {
+    goal_bonus: requiredNumber(form.goalBonus),
+    assist_bonus: requiredNumber(form.assistBonus),
+    yellow_card_malus: requiredNumber(form.yellowCardMalus),
+    red_card_malus: requiredNumber(form.redCardMalus),
+    own_goal_malus: requiredNumber(form.ownGoalMalus),
+    penalty_scored_bonus: requiredNumber(form.penaltyScoredBonus),
+    penalty_missed_malus: requiredNumber(form.penaltyMissedMalus),
+    penalty_saved_bonus: requiredNumber(form.penaltySavedBonus),
+    goal_conceded_malus: requiredNumber(form.goalConcededMalus),
+  };
   const firstGoalThreshold = requiredNumber(form.firstGoalThreshold);
   const goalInterval = requiredNumber(form.goalInterval);
   const errors: SettingsFieldErrors = {};
@@ -65,6 +76,10 @@ export function validateLeagueSettingsForm(
     threshold: requiredNumber(row.threshold),
     bonus: requiredNumber(row.bonus),
   }));
+  Object.entries(playerScoring).forEach(([key, value]) => {
+    if (value === null || value < -100 || value > 100 || !Number.isInteger(value * 100))
+      errors[key] = [t('leagueSettings.validation.scoringValue')];
+  });
   if (
     defenseThresholds.length < 1 ||
     defenseThresholds.some(
@@ -158,6 +173,7 @@ export function validateLeagueSettingsForm(
     errors.real_captain_bonus_points = [t('leagueSettings.validation.realCaptainBonusRange')];
   if (
     goalkeeperCleanSheetBonusPoints === null ||
+    Object.values(playerScoring).some((value) => value === null) ||
     goalkeeperCleanSheetBonusPoints < 0 ||
     goalkeeperCleanSheetBonusPoints > 5 ||
     !Number.isInteger(goalkeeperCleanSheetBonusPoints * 2)
@@ -214,6 +230,7 @@ export function validateLeagueSettingsForm(
       real_captain_bonus_points: realCaptainBonusPoints,
       goalkeeper_clean_sheet_bonus_enabled: form.goalkeeperCleanSheetBonusEnabled,
       goalkeeper_clean_sheet_bonus_points: goalkeeperCleanSheetBonusPoints,
+      ...(playerScoring as Record<keyof typeof playerScoring, number>),
       defense_modifier_enabled: form.defenseModifierEnabled,
       defense_modifier_thresholds: defenseThresholds.map((row) => ({
         id: row.id,

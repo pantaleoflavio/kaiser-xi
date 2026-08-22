@@ -27,6 +27,15 @@ export type LeagueSettingsFormState = {
   realCaptainBonusPoints: string;
   goalkeeperCleanSheetBonusEnabled: boolean;
   goalkeeperCleanSheetBonusPoints: string;
+  goalBonus: string;
+  assistBonus: string;
+  yellowCardMalus: string;
+  redCardMalus: string;
+  ownGoalMalus: string;
+  penaltyScoredBonus: string;
+  penaltyMissedMalus: string;
+  penaltySavedBonus: string;
+  goalConcededMalus: string;
   defenseModifierEnabled: boolean;
   defenseModifierThresholds: { id: string; threshold: string; bonus: string }[];
   firstGoalThreshold: string;
@@ -69,6 +78,15 @@ export function createLeagueSettingsFormState(
     goalkeeperCleanSheetBonusEnabled: settings?.goalkeeper_clean_sheet_bonus_enabled ?? false,
     goalkeeperCleanSheetBonusPoints: String(settings?.goalkeeper_clean_sheet_bonus_points ?? 1),
     defenseModifierEnabled: settings?.defense_modifier_enabled ?? false,
+    goalBonus: String(settings?.goal_bonus ?? 3),
+    assistBonus: String(settings?.assist_bonus ?? 1),
+    yellowCardMalus: String(settings?.yellow_card_malus ?? -0.5),
+    redCardMalus: String(settings?.red_card_malus ?? -1),
+    ownGoalMalus: String(settings?.own_goal_malus ?? -2),
+    penaltyScoredBonus: String(settings?.penalty_scored_bonus ?? 3),
+    penaltyMissedMalus: String(settings?.penalty_missed_malus ?? -3),
+    penaltySavedBonus: String(settings?.penalty_saved_bonus ?? 3),
+    goalConcededMalus: String(settings?.goal_conceded_malus ?? -1),
     defenseModifierThresholds: (settings?.defense_modifier_thresholds ?? []).map((row) => ({
       id: row.id,
       threshold: String(row.threshold),

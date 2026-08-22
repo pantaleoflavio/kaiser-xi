@@ -13,7 +13,7 @@ class PlayerScore extends Model
 {
     use HasFactory;
 
-    /** The authoritative input field for the future league team-scoring engine. */
+    /** @deprecated External/provider score; League fantasy scoring uses raw performance fields. */
     public const FANTASY_SCORE_INPUT_FIELD = 'final_score';
 
     protected $fillable = [
@@ -60,7 +60,7 @@ class PlayerScore extends Model
     public function isPlayable(): bool
     {
         return $this->status === PlayerScoreStatus::Confirmed
-            && $this->final_score !== null;
+            && $this->base_rating !== null;
     }
 
     public static function isPlayableFor(int $playerSeasonRegistrationId, int $matchdayId): bool

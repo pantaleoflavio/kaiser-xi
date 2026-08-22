@@ -14,14 +14,14 @@ class PlayerScorePlayabilityTest extends TestCase
     use RefreshDatabase;
 
     #[DataProvider('scoreStates')]
-    public function test_playability_is_defined_by_confirmed_status_and_final_score(
+    public function test_playability_is_defined_by_confirmed_status_and_base_rating(
         PlayerScoreStatus $status,
         ?float $finalScore,
         bool $playable,
     ): void {
         $score = PlayerScore::factory()->create([
             'status' => $status,
-            'final_score' => $finalScore,
+            'base_rating' => $finalScore,
         ]);
 
         $this->assertSame($playable, $score->isPlayable());
@@ -36,14 +36,14 @@ class PlayerScorePlayabilityTest extends TestCase
         yield 'genuine zero score' => [PlayerScoreStatus::Confirmed, 0.0, true];
     }
 
-    public function test_base_rating_is_not_required_for_a_playable_performance(): void
+    public function test_base_rating_is_required_for_a_playable_performance(): void
     {
         $score = PlayerScore::factory()->create(['base_rating' => null]);
 
-        $this->assertTrue($score->isPlayable());
+        $this->assertFalse($score->isPlayable());
     }
 
-    public function test_final_score_is_the_authoritative_future_fantasy_scoring_input(): void
+    public function test_final_score_constant_is_retained_only_for_compatibility(): void
     {
         $this->assertSame('final_score', PlayerScore::FANTASY_SCORE_INPUT_FIELD);
     }

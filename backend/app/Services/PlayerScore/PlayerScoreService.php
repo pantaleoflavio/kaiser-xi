@@ -97,16 +97,16 @@ class PlayerScoreService
 
         $rules = [
             'base_rating' => [
+                Rule::requiredIf(
+                    ($data['status'] ?? null) === PlayerScoreStatus::Confirmed->value
+                        || ($data['status'] ?? null) === PlayerScoreStatus::Confirmed
+                ),
                 'nullable',
                 'numeric',
                 'decimal:0,2',
                 'between:-99.99,99.99',
             ],
             'final_score' => [
-                Rule::requiredIf(
-                    ($data['status'] ?? null) === PlayerScoreStatus::Confirmed->value
-                        || ($data['status'] ?? null) === PlayerScoreStatus::Confirmed
-                ),
                 'nullable',
                 'numeric',
                 'decimal:0,2',
@@ -122,7 +122,7 @@ class PlayerScoreService
         }
 
         return Validator::make($data, $rules, [
-            'final_score.required' => __('admin.validation.player_scores.confirmed_final_score_required'),
+            'base_rating.required' => __('admin.validation.player_scores.confirmed_base_rating_required'),
         ])->validate();
     }
 }

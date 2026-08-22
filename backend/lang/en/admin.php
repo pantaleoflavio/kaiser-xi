@@ -27,6 +27,7 @@ return [
         'external_identity_unique' => 'This provider and external ID mapping already exists.',
         'player_scores' => [
             'confirmed_final_score_required' => 'A final score is required when the status is confirmed.',
+            'confirmed_base_rating_required' => 'A base rating is required when the status is confirmed.',
             'duplicate' => 'A score already exists for this player registration and matchday.',
             'season_mismatch' => 'The player registration must belong to the matchday season.',
         ],

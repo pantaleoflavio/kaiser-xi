@@ -415,6 +415,51 @@ class League extends Model
         );
     }
 
+    public function goalBonus(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::GOAL_BONUS, LeagueSetting::DEFAULT_GOAL_BONUS);
+    }
+
+    public function assistBonus(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::ASSIST_BONUS, LeagueSetting::DEFAULT_ASSIST_BONUS);
+    }
+
+    public function yellowCardMalus(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::YELLOW_CARD_MALUS, LeagueSetting::DEFAULT_YELLOW_CARD_MALUS);
+    }
+
+    public function redCardMalus(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::RED_CARD_MALUS, LeagueSetting::DEFAULT_RED_CARD_MALUS);
+    }
+
+    public function ownGoalMalus(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::OWN_GOAL_MALUS, LeagueSetting::DEFAULT_OWN_GOAL_MALUS);
+    }
+
+    public function penaltyScoredBonus(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::PENALTY_SCORED_BONUS, LeagueSetting::DEFAULT_PENALTY_SCORED_BONUS);
+    }
+
+    public function penaltyMissedMalus(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::PENALTY_MISSED_MALUS, LeagueSetting::DEFAULT_PENALTY_MISSED_MALUS);
+    }
+
+    public function penaltySavedBonus(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::PENALTY_SAVED_BONUS, LeagueSetting::DEFAULT_PENALTY_SAVED_BONUS);
+    }
+
+    public function goalConcededMalus(): float
+    {
+        return $this->decimalSettingValue(LeagueSetting::GOAL_CONCEDED_MALUS, LeagueSetting::DEFAULT_GOAL_CONCEDED_MALUS);
+    }
+
     public function defenseModifierEnabled(): bool
     {
         return $this->booleanSettingValue(

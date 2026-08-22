@@ -27,6 +27,7 @@ return [
         'external_identity_unique' => 'Questa associazione tra fornitore e ID esterno esiste già.',
         'player_scores' => [
             'confirmed_final_score_required' => 'Un punteggio finale è obbligatorio quando lo stato è confermato.',
+            'confirmed_base_rating_required' => 'Un voto base è obbligatorio quando lo stato è confermato.',
             'duplicate' => 'Esiste già un punteggio per questa registrazione giocatore e giornata.',
             'season_mismatch' => 'La registrazione del giocatore deve appartenere alla stagione della giornata.',
         ],
