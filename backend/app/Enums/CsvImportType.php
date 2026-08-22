@@ -10,6 +10,7 @@ enum CsvImportType: string
     case Seasons = 'seasons';
     case SeasonClubs = 'season_clubs';
     case Matchdays = 'matchdays';
+    case RealMatches = 'real_matches';
     case PlayerSeasonRegistrations = 'player_season_registrations';
     case PlayerScores = 'player_scores';
 
@@ -22,6 +23,7 @@ enum CsvImportType: string
             self::Seasons => 'Seasons',
             self::SeasonClubs => 'Season clubs',
             self::Matchdays => 'Matchdays',
+            self::RealMatches => 'Real matches',
             self::PlayerSeasonRegistrations => 'Player season registrations',
             self::PlayerScores => 'Player scores',
         };

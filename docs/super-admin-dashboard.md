@@ -101,8 +101,7 @@ The page does **not** display an import-history table, job progress, completed r
 
 ## Current limitations and audit findings
 
-- There is no RealMatch CSV importer, automatic registration-transfer workflow, automatic PlayerScore computation, or automatic fantasy recalculation.
-- Import execution is whole-file atomic and has no partial/chunked success or null-clear sentinel.
+ RealMatch uses the shared CSV importer. There is no automatic registration-transfer workflow, automatic PlayerScore computation, or automatic fantasy recalculation.- Import execution is whole-file atomic and has no partial/chunked success or null-clear sentinel.
 - Import history exists in models/storage but is not browsable on the Import data page.
 - There is no global League, scoring-rule, or settings resource in Filament.
 - PlayerScore deletion retains its explicit traceability warning. Bulk deletion is disabled for PlayerSeasonRegistration, Matchday, Season, SeasonClub, Player and RealClub; single deletion is denied when the record owns or contains PlayerScore history. Released/deactivated records without score history remain removable.

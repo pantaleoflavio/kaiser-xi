@@ -57,7 +57,7 @@ Player ----------------------------------------+                |
   + SeasonClub + PlayerRole -> PlayerSeasonRegistration --------+-> PlayerScore
 ```
 
-Recommended order: **(1)** RealCompetition, **(2)** RealClub, **(3)** Player, **(4)** Season, **(5)** SeasonClub, **(6)** Matchday, **(7)** PlayerSeasonRegistration, **(8)** PlayerScore. Player does not depend on RealClub; steps 2 and 3 may be exchanged. PlayerRole is a lookup managed outside CSV and must exist before registrations.
+Recommended order: **(1)** RealCompetition, **(2)** RealClub, **(3)** Player, **(4)** Season, **(5)** SeasonClub, **(6)** Matchday, **(7)** RealMatch, **(8)** PlayerSeasonRegistration, **(9)** PlayerScore. RealMatch and PlayerSeasonRegistration are both downstream of Season/SeasonClub; neither strictly depends on the other. Player does not depend on RealClub; steps 2 and 3 may be exchanged. PlayerRole is a lookup managed outside CSV and must exist before registrations.
 
 ## Import contracts
 
@@ -127,6 +127,18 @@ In every section, “duplicate” means a blocking duplicate within the file; ex
 - **Duplicate/caveat:** duplicate identity, unknown Season, or timezone-less timestamp errors.
 - **Example:** `bundesliga,2026/27,1,,2026-08-21T20:30:00+02:00,2026-08-23T20:30:00+02:00`
 
+### RealMatch
+
+- **Purpose/model/dependencies:** a fixture/result (`RealMatch`) within an existing Matchday, between two existing SeasonClubs. Competition, Season, Matchday, both global RealClub provider identities, and both seasonal memberships must exist.
+- **Canonical header:** `competition_code,season_name,matchday_number,home_club_provider,home_club_external_id,away_club_provider,away_club_external_id,kickoff_at,home_score,away_score,status`; the first seven identity columns are required headers.
+- **Create:** requires all identity fields plus `kickoff_at` and `status`; scores are optional and remain null when omitted.
+- **Identity:** authoritative database identity is Matchday + home SeasonClub + away SeasonClub. CSV resolves normalized competition code + exact trimmed season name + matchday number, then each provider/external ID through RealClubExternalIdentity -> RealClub -> SeasonClub for that Season. There is currently no RealMatch external identity.
+- **Normalization/formats:** providers are trimmed/lowercased; opaque external IDs remain exact. Kickoff requires ISO-8601 with explicit `Z` or `±HH:MM` and is normalized to UTC. Scores are integers from 0 through 65535. Status values are `scheduled`, `in_progress`, `finished`, `postponed`, and `cancelled`, sourced in code from `RealMatchStatus`.
+- **Updates/empty cells:** only `kickoff_at`, `home_score`, `away_score`, and `status` are mutable. A non-empty supplied value participates in semantic comparison; empty optional update cells preserve stored values. Zero is a supplied score. There is no null-clear sentinel, so CSV cannot clear a stored score to null.
+- **Duplicate/invariants:** every row sharing the same resolved identity is an error; an existing database identity is instead update/unchanged. Home and away must differ and both belong to the Matchday Season. Analysis batch-loads dependencies and writes nothing.
+- **Stale analysis:** execution skips error/unchanged rows, rechecks Matchday/SeasonClub Season membership and the expected create/update database identity, then saves through normal Eloquent invariants. Changed identity state raises an exception and the shared whole-import transaction rolls back.
+- **Example:** `serie_a,2026/27,1,opta,Club-Home,opta,Club-Away,2026-08-22T20:45:00+02:00,2,1,scheduled`
+
 ### PlayerSeasonRegistration
 
 - **Purpose/model/dependencies:** the season-specific combination **Player + SeasonClub + PlayerRole/context** (`PlayerSeasonRegistration`). Competition, Season, Player and club provider mappings, SeasonClub, and PlayerRole key must exist.
@@ -182,4 +194,4 @@ The checksummed execution source remains in private storage. Web and worker proc
 - **Blocked:** fix duplicate rows, partial/unknown identities, formats, or validation errors and create a new analysis; blocked history cannot be confirmed.
 - **Failed:** inspect persisted row errors/log/queue failure, correct the source or concurrent identity change, then upload as a new import. There is no retry/history UI here.
 - **Stale/checksum errors:** do not change stored sources; re-analyse after domain identity changes.
-- **Current limits:** no RealMatch importer; no automatic transfer orchestration; no null-clear sentinel; no automatic PlayerScore/final-score calculation; no automatic League recalculation; no chunking/partial success; every import executes atomically. Market behavior is outside this subsystem.
+- **Current limits:** no RealMatch external identity; no automatic transfer orchestration; no null-clear sentinel; no automatic PlayerScore/final-score calculation; no automatic League recalculation; no chunking/partial success; every import executes atomically. Market behavior is outside this subsystem.

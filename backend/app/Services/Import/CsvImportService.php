@@ -14,6 +14,7 @@ use App\Services\Import\Importers\PlayerScoreCsvImporter;
 use App\Services\Import\Importers\PlayerSeasonRegistrationCsvImporter;
 use App\Services\Import\Importers\RealClubCsvImporter;
 use App\Services\Import\Importers\RealCompetitionCsvImporter;
+use App\Services\Import\Importers\RealMatchCsvImporter;
 use App\Services\Import\Importers\SeasonClubCsvImporter;
 use App\Services\Import\Importers\SeasonCsvImporter;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +34,7 @@ class CsvImportService
             CsvImportType::SeasonClubs => SeasonClubCsvImporter::class,
             CsvImportType::Matchdays => MatchdayCsvImporter::class,
             CsvImportType::PlayerSeasonRegistrations => PlayerSeasonRegistrationCsvImporter::class,
+            CsvImportType::RealMatches => RealMatchCsvImporter::class,
             CsvImportType::PlayerScores => PlayerScoreCsvImporter::class,
         });
     }
