@@ -2,6 +2,7 @@ import { SubmitEvent, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
 import { FormError } from '../components/FormError';
+import { KaiserXiLogo } from '../components/branding/KaiserXiLogo';
 import { useTranslation } from '../i18n';
 
 export function LoginPage() {
@@ -38,6 +39,7 @@ export function LoginPage() {
       className="mx-auto max-w-md space-y-4 rounded-xl bg-theme-surface p-6 text-theme-primary-foreground"
       onSubmit={handleSubmit}
     >
+      <KaiserXiLogo className="mx-auto h-auto max-h-24 w-full object-contain" variant="full" />
       <div>
         <h1 className="text-2xl font-bold">{t('auth.login.title')}</h1>
         <p className="text-sm text-slate-600">{t('auth.login.description')}</p>

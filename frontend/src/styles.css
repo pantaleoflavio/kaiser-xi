@@ -17,113 +17,216 @@
 
 :root {
   color-scheme: dark;
-  --color-background: #090d16;
-  --color-surface: #151b27;
-  --color-surface-muted: #202838;
-  --color-text: #f8fafc;
-  --color-text-muted: #cbd5e1;
-  --color-border: #475569;
-  --color-primary-foreground: #ffffff;
 }
 
 :root,
-[data-theme='imperial-crimson'] {
-  --color-primary: #be123c;
-  --color-primary-hover: #9f1239;
-  --color-secondary: #fbbf24;
-  --color-accent: #fda4af;
-  --color-focus: #fbbf24;
-}
-[data-theme='golden-wall'] {
-  --color-primary: #a16207;
-  --color-primary-hover: #854d0e;
-  --color-secondary: #facc15;
-  --color-accent: #fde047;
-  --color-focus: #fde047;
-}
-[data-theme='royal-standard'] {
-  --color-primary: #1d4ed8;
-  --color-primary-hover: #1e40af;
-  --color-secondary: #fbbf24;
-  --color-accent: #93c5fd;
-  --color-focus: #fbbf24;
-}
-[data-theme='northern-flame'] {
-  --color-primary: #c2410c;
-  --color-primary-hover: #9a3412;
-  --color-secondary: #38bdf8;
-  --color-accent: #7dd3fc;
-  --color-focus: #38bdf8;
-}
-[data-theme='white-crown'] {
-  --color-primary: #334155;
-  --color-primary-hover: #1e293b;
-  --color-secondary: #e2e8f0;
-  --color-accent: #cbd5e1;
-  --color-focus: #f8fafc;
-}
-[data-theme='catalan-night'] {
-  --color-primary: #7e22ce;
-  --color-primary-hover: #6b21a8;
-  --color-secondary: #f59e0b;
-  --color-accent: #d8b4fe;
-  --color-focus: #f59e0b;
-}
-[data-theme='red-stripes'] {
-  --color-primary: #b91c1c;
-  --color-primary-hover: #991b1b;
+[data-theme='bavarian-red'] {
+  --color-primary: #c8102e;
+  --color-primary-hover: #a50d26;
+  --color-primary-foreground: #ffffff;
   --color-secondary: #f8fafc;
-  --color-accent: #fca5a5;
-  --color-focus: #f8fafc;
-}
-[data-theme='london-red'] {
-  --color-primary: #be123c;
-  --color-primary-hover: #9f1239;
-  --color-secondary: #f8fafc;
-  --color-accent: #93c5fd;
+  --color-accent: #5b8fc9;
+  --color-background: #111c2e;
+  --color-surface: #101f31;
+  --color-surface-muted: #1a2c42;
+  --color-text: #f8fafc;
+  --color-text-muted: #bac7d6;
+  --color-border: #52657a;
   --color-focus: #93c5fd;
 }
-[data-theme='sky-kingdom'] {
-  --color-primary: #0369a1;
-  --color-primary-hover: #075985;
-  --color-secondary: #7dd3fc;
-  --color-accent: #bae6fd;
-  --color-focus: #7dd3fc;
-}
-[data-theme='mersey-red'] {
-  --color-primary: #b91c1c;
-  --color-primary-hover: #991b1b;
-  --color-secondary: #2dd4bf;
-  --color-accent: #5eead4;
-  --color-focus: #2dd4bf;
-}
-[data-theme='black-crown'] {
-  --color-primary: #3f3f46;
-  --color-primary-hover: #27272a;
-  --color-secondary: #facc15;
+
+[data-theme='westphalian-yellow'] {
+  --color-primary: #facc15;
+  --color-primary-hover: #eab308;
+  --color-primary-foreground: #171717;
+  --color-secondary: #f8fafc;
   --color-accent: #fde047;
-  --color-focus: #facc15;
+    --color-background: #0c0c0b;
+  --color-surface: #181816;
+  --color-surface-muted: #272620;
+  --color-text: #fafafa;
+  --color-text-muted: #c9c8bf;
+  --color-border: #66645b;
+  --color-focus: #fde047;
 }
-[data-theme='nerazzurro-night'] {
-  --color-primary: #1d4ed8;
-  --color-primary-hover: #1e40af;
-  --color-secondary: #38bdf8;
-  --color-accent: #7dd3fc;
-  --color-focus: #38bdf8;
+
+[data-theme='koenigsblau'] {
+  --color-primary: #075fbd;
+  --color-primary-hover: #064f9e;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #60a5fa;
+  --color-background: #07101e;
+  --color-surface: #101b2c;
+  --color-surface-muted: #1a2940;
+  --color-text: #f8fafc;
+  --color-text-muted: #bac7d8;
+  --color-border: #526780;
+  --color-focus: #93c5fd;
 }
-[data-theme='rossonero'] {
-  --color-primary: #b91c1c;
-  --color-primary-hover: #991b1b;
-  --color-secondary: #a1a1aa;
-  --color-accent: #fca5a5;
-  --color-focus: #d4d4d8;
+
+[data-theme='rhine-red-black'] {
+  --color-primary: #c91c24;
+  --color-primary-hover: #a8171e;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+ --color-accent: #ef6b70;
+  --color-background: #09090a;
+  --color-surface: #171719;
+  --color-surface-muted: #27272a;
+  --color-text: #fafafa;
+  --color-text-muted: #c7c7cc;
+  --color-border: #63636a;
+  --color-focus: #fca5a5;
 }
-[data-theme='imperial-burgundy'] {
+
+[data-theme='blancos-white'] {
+  --color-primary: #101b3d;
+  --color-primary-hover: #1b2a52;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #d4af37;
+  --color-accent: #e5c75d;
+  --color-background: #0a1024;
+  --color-surface: #141c34;
+  --color-surface-muted: #202a45;
+  --color-text: #fffdf5;
+  --color-text-muted: #c9c9c4;
+  --color-border: #62697b;
+  --color-focus: #f1d675;
+}
+
+[data-theme='blaugrana-night'] {
   --color-primary: #9f1239;
   --color-primary-hover: #881337;
-  --color-secondary: #f59e0b;
-  --color-accent: #fda4af;
-  --color-focus: #f59e0b;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #2456a6;
+  --color-accent: #d9a51c;
+  --color-background: #070e20;
+  --color-surface: #111a31;
+  --color-surface-muted: #202944;
+  --color-text: #f8fafc;
+  --color-text-muted: #bbc4d5;
+  --color-border: #59657c;
+  --color-focus: #f4cc5e;
+}
+
+[data-theme='colchonero'] {
+  --color-primary: #c8102e;
+  --color-primary-hover: #a50d26;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #466fa9;
+  --color-background: #081326;
+  --color-surface: #121e33;
+  --color-surface-muted: #202d43;
+  --color-text: #f8fafc;
+  --color-text-muted: #bcc7d5;
+  --color-border: #57677c;
+  --color-focus: #fca5a5;
+}
+
+[data-theme='gunners-red'] {
+  --color-primary: #c8102e;
+  --color-primary-hover: #a50d26;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #6f8eb8;
+  --color-background: #0b1220;
+  --color-surface: #151e2d;
+  --color-surface-muted: #222d3e;
+  --color-text: #f8fafc;
+  --color-text-muted: #bec8d5;
+  --color-border: #5b6878;
+  --color-focus: #fca5a5;
+}
+
+[data-theme='manchester-sky'] {
+  --color-primary: #075985;
+  --color-primary-hover: #0c4a6e;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #bae6fd;
+  --color-background: #081522;
+  --color-surface: #112231;
+  --color-surface-muted: #1d3345;
+  --color-text: #f8fafc;
+  --color-text-muted: #bdd0dc;
+  --color-border: #557184;
+  --color-focus: #bae6fd;
+}
+
+[data-theme='mersey-red'] {
+    --color-primary: #c8102e;
+  --color-primary-hover: #a50d26;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #ef6b7d;
+  --color-background: #0c0b0c;
+  --color-surface: #1a1719;
+  --color-surface-muted: #2b2528;
+  --color-text: #fafafa;
+  --color-text-muted: #cec5c8;
+  --color-border: #6c6064;
+  --color-focus: #fda4af;
+}
+[data-theme='vecchia-signora'] {
+  --color-primary: #18181b;
+  --color-primary-hover: #3f3f46;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #a1a1aa;
+  --color-accent: #d4d4d8;
+  --color-background: #09090b;
+  --color-surface: #18181b;
+  --color-surface-muted: #27272a;
+  --color-text: #fafafa;
+  --color-text-muted: #c4c4ca;
+  --color-border: #64646c;
+  --color-focus: #e4e4e7;
+}
+
+[data-theme='nerazzurro-night'] {
+  --color-primary: #1769d2;
+  --color-primary-hover: #1258b2;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #05070b;
+  --color-accent: #60a5fa;
+  --color-background: #050910;
+  --color-surface: #0d1624;
+  --color-surface-muted: #17263a;
+  --color-text: #f8fafc;
+  --color-text-muted: #b9c8da;
+  --color-border: #4e6680;
+  --color-focus: #93c5fd;
+}
+
+[data-theme='milano-red-black'] {
+  --color-primary: #a50e2d;
+  --color-primary-hover: #7f0b22;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #d4d4d8;
+  --color-accent: #ef6a7d;
+  --color-background: #09090a;
+  --color-surface: #181719;
+  --color-surface-muted: #292629;
+  --color-text: #fafafa;
+  --color-text-muted: #cbc5ca;
+  --color-border: #696168;
+  --color-focus: #fda4af;
+}
+
+[data-theme='la-lupa-red-gold'] {
+  --color-primary: #a02639;
+  --color-primary-hover: #851f30;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #e3b341;
+  --color-accent: #f0cc6b;
+  --color-background: #120b0d;
+  --color-surface: #211417;
+  --color-surface-muted: #342126;
+  --color-text: #fffaf5;
+  --color-text-muted: #d3c3bf;
+  --color-border: #755e5e;
+  --color-focus: #f0cc6b;
 }
 
 body {
