@@ -26,7 +26,7 @@
   --color-primary-foreground: #ffffff;
   --color-secondary: #f8fafc;
   --color-accent: #5b8fc9;
-  --color-background: #071321;
+  --color-background: #111c2e;
   --color-surface: #101f31;
   --color-surface-muted: #1a2c42;
   --color-text: #f8fafc;
@@ -81,9 +81,9 @@
 }
 
 [data-theme='blancos-white'] {
-  --color-primary: #f3efe0;
-  --color-primary-hover: #ddd6bd;
-  --color-primary-foreground: #101b3d;
+  --color-primary: #101b3d;
+  --color-primary-hover: #1b2a52;
+  --color-primary-foreground: #ffffff;
   --color-secondary: #d4af37;
   --color-accent: #e5c75d;
   --color-background: #0a1024;
@@ -141,9 +141,9 @@
 }
 
 [data-theme='manchester-sky'] {
-  --color-primary: #7dd3fc;
-  --color-primary-hover: #38bdf8;
-  --color-primary-foreground: #102a43;
+  --color-primary: #075985;
+  --color-primary-hover: #0c4a6e;
+  --color-primary-foreground: #ffffff;
   --color-secondary: #f8fafc;
   --color-accent: #bae6fd;
   --color-background: #081522;
@@ -170,8 +170,8 @@
   --color-focus: #fda4af;
 }
 [data-theme='vecchia-signora'] {
-  --color-primary: #0c0c0d;
-  --color-primary-hover: #626269;
+  --color-primary: #18181b;
+  --color-primary-hover: #3f3f46;
   --color-primary-foreground: #ffffff;
   --color-secondary: #a1a1aa;
   --color-accent: #d4d4d8;
@@ -200,8 +200,8 @@
 }
 
 [data-theme='milano-red-black'] {
-  --color-primary: #c4122f;
-  --color-primary-hover: #a30f27;
+  --color-primary: #a50e2d;
+  --color-primary-hover: #7f0b22;
   --color-primary-foreground: #ffffff;
   --color-secondary: #d4d4d8;
   --color-accent: #ef6a7d;

@@ -26,7 +26,7 @@ export type Theme = {
 export const defaultThemeId: ThemeId = 'bavarian-red';
 
 export const themes: readonly Theme[] = [
-  { id: 'bavarian-red', name: 'Bavarian Red', swatches: ['#dc052d', '#ffffff', '#081f3d'] },
+  { id: 'bavarian-red', name: 'Bavarian Red', swatches: ['#dc052d', '#ffffff', '#111c2e'] },
   {
     id: 'westphalian-yellow',
     name: 'Westphalian Yellow',
@@ -34,18 +34,18 @@ export const themes: readonly Theme[] = [
   },
   { id: 'koenigsblau', name: 'Königsblau', swatches: ['#004d9d', '#ffffff', '#101827'] },
   { id: 'rhine-red-black', name: 'Rhine Red & Black', swatches: ['#d71920', '#09090b', '#f8fafc'] },
-  { id: 'blancos-white', name: 'Blancos White', swatches: ['#f8f5e9', '#c9a227', '#101b3d'] },
+  { id: 'blancos-white', name: 'Blancos White', swatches: ['#101b3d', '#c9a227', '#f8f5e9'] },
   { id: 'blaugrana-night', name: 'Blaugrana Night', swatches: ['#143c8c', '#8a1538', '#d9a51c'] },
   { id: 'colchonero', name: 'Colchonero', swatches: ['#d71920', '#ffffff', '#102a56'] },
   { id: 'gunners-red', name: 'Gunners Red', swatches: ['#db0007', '#ffffff', '#14213d'] },
-  { id: 'manchester-sky', name: 'Manchester Sky', swatches: ['#7dd3fc', '#ffffff', '#102a43'] },
+  { id: 'manchester-sky', name: 'Manchester Sky', swatches: ['#075985', '#7dd3fc', '#ffffff'] },
   { id: 'mersey-red', name: 'Mersey Red', swatches: ['#c8102e', '#ffffff', '#171717'] },
-  { id: 'vecchia-signora', name: 'Vecchia Signora', swatches: ['#09090b', '#ffffff', '#a1a1aa'] },
+  { id: 'vecchia-signora', name: 'Vecchia Signora', swatches: ['#18181b', '#ffffff', '#a1a1aa'] },
   { id: 'nerazzurro-night', name: 'Nerazzurro Night', swatches: ['#1261c9', '#05070b', '#60a5fa'] },
   {
     id: 'milano-red-black',
     name: 'Milano Red & Black',
-    swatches: ['#c4122f', '#09090b', '#d4d4d8'],
+    swatches: ['#a50e2d', '#09090b', '#d4d4d8'],
   },
   {
     id: 'la-lupa-red-gold',

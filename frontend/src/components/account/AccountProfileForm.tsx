@@ -130,7 +130,7 @@ export function AccountProfileForm() {
           </p>
         )}
         <button
-          className="rounded-md bg-theme-primary px-4 py-2 font-medium text-theme-text disabled:opacity-60"
+          className="rounded-md bg-theme-primary px-4 py-2 font-medium text-theme-primary-foreground transition hover:bg-theme-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-focus focus-visible:ring-offset-2 focus-visible:ring-offset-theme-background disabled:cursor-not-allowed"
           disabled={profileMutation.isPending}
           type="submit"
         >
