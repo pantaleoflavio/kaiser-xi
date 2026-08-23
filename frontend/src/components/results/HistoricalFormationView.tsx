@@ -1,11 +1,24 @@
 import type { TeamMatchdayResult } from '../../types/results';
 import { useTranslation } from '../../i18n';
 import { PlayerScoreBreakdownRow } from './PlayerScoreBreakdownRow';
+import { FormationPitch, type PitchPlayer } from '../formation/FormationPitch';
 
 export function HistoricalFormationView({ data }: { data: TeamMatchdayResult }) {
   const { t } = useTranslation();
   const starters = data.formation.players.filter((player) => player.submitted_slot === 'starter');
   const bench = data.formation.players.filter((player) => player.submitted_slot === 'bench');
+  const toPitchPlayer = (player: (typeof data.formation.players)[number]): PitchPlayer => ({
+    id: player.player.id,
+    name: player.player.name,
+    role: player.player.role,
+    order: player.submitted_order,
+    detail: player.player_score?.final_score ?? undefined,
+    status: player.used_as_substitute
+      ? t('results.enteredFromBench')
+      : player.replaced_by_player
+        ? `${t('results.replacedBy')}: ${player.replaced_by_player.name}`
+        : undefined,
+  });
   return (
     <article className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -35,6 +48,15 @@ export function HistoricalFormationView({ data }: { data: TeamMatchdayResult }) 
             </>
           ) : null}
         </div>
+      </div>
+      <div className="mt-6">
+        <FormationPitch
+          ariaLabel={`${t('results.submittedFormation')} · ${data.formation.module}`}
+          bench={bench.map(toPitchPlayer)}
+          benchLabel={t('results.bench')}
+          mode="readonly"
+          players={starters.map(toPitchPlayer)}
+        />
       </div>
       <h3 className="mt-6 text-xl font-semibold text-theme-text">{t('results.effectiveLineup')}</h3>
       <section className="mt-6">
