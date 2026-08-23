@@ -672,6 +672,10 @@
     "title": "Spieltagsaufstellung",
     "description": "Wähle Formation, Startelf und geordnete Bank für den ausgewählten Spieltag.",
     "module": "Spielsystem",
+    "moduleChange": {
+      "message": "Wenn du das Spielsystem änderst, wird deine ausgewählte Startelf gelöscht.",
+      "confirm": "Spielsystem ändern"
+    },
     "starters": "Startelf",
     "bench": "Bank",
     "matchday": "Spieltag",

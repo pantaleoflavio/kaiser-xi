@@ -672,6 +672,10 @@
     "title": "Matchday formation",
     "description": "Choose your module, starters, and ordered bench for the selected matchday.",
     "module": "Formation module",
+    "moduleChange": {
+      "message": "Changing formation will clear your selected starting lineup.",
+      "confirm": "Change formation"
+    },
     "starters": "Starters",
     "bench": "Bench",
     "matchday": "Matchday",

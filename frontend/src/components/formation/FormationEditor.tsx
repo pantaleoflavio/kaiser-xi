@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { BenchSelectionSection } from './BenchSelectionSection';
 import { FormationActions } from './FormationActions';
 import { FormationModuleSelector } from './FormationModuleSelector';
@@ -39,6 +40,13 @@ export function FormationEditor({
     benchSize: settings.bench_size,
     benchRoleLimits: settings.bench_role_limits,
   });
+  const moduleChangeDialogRef = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const dialog = moduleChangeDialogRef.current;
+    if (!dialog) return;
+    if (editor.pendingModuleId !== null && !dialog.open) dialog.showModal();
+    if (editor.pendingModuleId === null && dialog.open) dialog.close();
+  }, [editor.pendingModuleId]);
   const readOnly = locked || editor.deadlineConflict;
   const mutationError = editor.save.error ?? editor.submit.error;
   const formationMissing =
@@ -129,6 +137,35 @@ export function FormationEditor({
               onSubmit={() => editor.submit.mutate()}
             />
           ) : null}
+          <dialog
+            aria-labelledby="formation-module-change-title"
+            className="m-auto w-[min(92vw,34rem)] rounded-2xl border border-theme-border bg-theme-surface p-0 text-theme-text backdrop:bg-theme-background/80"
+            onCancel={editor.cancelModuleChange}
+            ref={moduleChangeDialogRef}
+          >
+            <div className="p-6">
+              <h3 className="text-xl font-semibold" id="formation-module-change-title">
+                {t('formation.moduleChange.message')}
+              </h3>
+              <div className="mt-6 flex flex-wrap justify-end gap-3">
+                <button
+                  className="rounded-lg border border-slate-600 px-4 py-2"
+                  onClick={editor.cancelModuleChange}
+                  type="button"
+                >
+                  {t('common.cancel')}
+                </button>
+                <button
+                  autoFocus
+                  className="rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground"
+                  onClick={editor.confirmModuleChange}
+                  type="button"
+                >
+                  {t('formation.moduleChange.confirm')}
+                </button>
+              </div>
+            </div>
+          </dialog>
         </div>
       ) : null}
     </section>
