@@ -624,6 +624,10 @@
     "title": "Formazione della giornata",
     "description": "Scegli modulo, titolari e panchina ordinata per la giornata selezionata.",
     "module": "Modulo",
+    "moduleChange": {
+      "message": "Cambiando modulo, la formazione titolare selezionata verrà cancellata.",
+      "confirm": "Cambia modulo"
+    },
     "starters": "Titolari",
     "bench": "Panchina",
     "matchday": "Giornata",

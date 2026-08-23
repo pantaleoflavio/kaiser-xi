@@ -36,6 +36,7 @@ export function useFormationEditor({
   const [savedDraft, setSavedDraft] = useState<FormationDraft>(emptyFormationDraft);
   const [success, setSuccess] = useState<'saved' | 'submitted' | null>(null);
   const [deadlineConflict, setDeadlineConflict] = useState(false);
+  const [pendingModuleId, setPendingModuleId] = useState<number | null>(null);
   const hydrated = useRef(false);
   const queryKey = formationKeys.detail(leagueId, matchdayId, fantasyTeamId);
   const formationQuery = useQuery({
@@ -72,6 +73,12 @@ export function useFormationEditor({
     setSuccess(null);
     setDraft(next);
   };
+  const changeModule = (id: number) =>
+    updateDraft((current) => ({
+      ...current,
+      formationModuleId: id,
+      starters: [],
+    }));
   const handleSuccess = (
     response: Awaited<ReturnType<typeof formationsApi.save>>,
     state: 'saved' | 'submitted',
@@ -115,7 +122,21 @@ export function useFormationEditor({
     deadlineConflict,
     save,
     submit,
-    selectModule: (id: number) => updateDraft((current) => ({ ...current, formationModuleId: id })),
+    pendingModuleId,
+    selectModule: (id: number) => {
+      if (id === draft.formationModuleId) return;
+      if (draft.starters.length > 0) {
+        setPendingModuleId(id);
+        return;
+      }
+      changeModule(id);
+    },
+    confirmModuleChange: () => {
+      if (pendingModuleId === null) return;
+      changeModule(pendingModuleId);
+      setPendingModuleId(null);
+    },
+    cancelModuleChange: () => setPendingModuleId(null),
     toggleStarter: (id: number) =>
       updateDraft((current) => {
         const selected = current.starters.includes(id);
