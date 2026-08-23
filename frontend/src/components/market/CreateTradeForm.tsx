@@ -71,7 +71,7 @@ export function CreateTradeForm({
   }
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/70">
-      <form onSubmit={submit} className="w-full max-w-lg space-y-4 rounded-xl bg-slate-900 p-6">
+      <form onSubmit={submit} className="w-full max-w-lg space-y-4 rounded-xl bg-theme-surface p-6">
         <h2 className="text-xl font-bold">
           {t('market.trades.proposeFor', { name: target.name })}
         </h2>
@@ -80,7 +80,7 @@ export function CreateTradeForm({
             required
             value={offered}
             onChange={(e) => setOffered(e.target.value)}
-            className="w-full rounded border border-slate-700 bg-slate-950 p-2"
+            className="w-full rounded border border-theme-border bg-theme-background p-2"
           >
             <option value="">{t('market.trades.choosePlayer')}</option>
             {roster.map((v) => (
@@ -94,7 +94,7 @@ export function CreateTradeForm({
               <select
                 value={payer}
                 onChange={(e) => setPayer(e.target.value)}
-                className="w-full rounded border border-slate-700 bg-slate-950 p-2"
+                className="w-full rounded border border-theme-border bg-theme-background p-2"
               >
                 <option value="">{t('market.trades.noCash')}</option>
                 <option value={ownTeam.id}>{ownTeam.name}</option>
@@ -106,7 +106,7 @@ export function CreateTradeForm({
                 step="1"
                 value={cash}
                 onChange={(e) => setCash(e.target.value)}
-                className="w-full rounded border border-slate-700 bg-slate-950 p-2"
+                className="w-full rounded border border-theme-border bg-theme-background p-2"
               />
             </>
           ) : null}
@@ -117,14 +117,14 @@ export function CreateTradeForm({
           ) : null}
           <div className="flex flex-wrap gap-2">
             <button
-              className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-lg bg-theme-primary px-4 py-2 text-sm font-semibold text-theme-primary-foreground transition hover:bg-theme-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-focus focus-visible:ring-offset-2 focus-visible:ring-offset-theme-surface disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!formIsValid || !market.can_trade}
               type="submit"
             >
               {mutation.isPending ? t('market.trades.sendingProposal') : t('market.trades.propose')}
             </button>
             <button
-              className="rounded-lg border border-slate-600 bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-slate-500 hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-lg border border-slate-600 bg-theme-muted-surface px-4 py-2 text-sm font-semibold text-theme-text transition hover:border-slate-500 hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2 focus-visible:ring-offset-theme-surface disabled:cursor-not-allowed disabled:opacity-50"
               type="button"
               onClick={close}
             >

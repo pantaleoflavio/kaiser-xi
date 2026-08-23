@@ -38,8 +38,10 @@ export function EligiblePlayerSelector({ leagueId, selected, onSelect, disabled,
       disabled={disabled}
       aria-describedby={error ? 'player-error' : undefined}
     >
-      <legend className="text-sm font-semibold text-slate-200">{t('roster.eligible.title')}</legend>
-            <EligiblePlayerFilters
+      <legend className="text-sm font-semibold text-theme-text">
+        {t('roster.eligible.title')}
+      </legend>
+      <EligiblePlayerFilters
         search={filters.searchInput}
         role={filters.role}
         clubId={filters.clubId}
@@ -50,7 +52,7 @@ export function EligiblePlayerSelector({ leagueId, selected, onSelect, disabled,
       />
 
       {selected ? (
-        <div className="flex items-center justify-between rounded-lg border border-emerald-400/30 bg-emerald-950/30 p-3 text-sm text-emerald-100">
+        <div className="flex items-center justify-between rounded-lg border border-theme-primary/30 bg-emerald-950/30 p-3 text-sm text-emerald-100">
           <span>{t('roster.eligible.selected', { name: selected.name })}</span>
           <button className="font-semibold underline" onClick={() => onSelect(null)} type="button">
             {t('roster.eligible.clear')}

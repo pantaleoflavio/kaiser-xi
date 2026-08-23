@@ -660,6 +660,12 @@
       "conflict": "The account update conflicts with current account data.",
       "validation": "Please correct the highlighted account fields.",
       "generic": "Unable to update your account."
+    },
+    "theme": {
+      "title": "Color theme",
+      "description": "Choose the Kaiser XI palette used across your account.",
+      "selected": "Selected",
+      "error": "The theme could not be saved. Your previous theme was restored."
     }
   },
   "formation": {

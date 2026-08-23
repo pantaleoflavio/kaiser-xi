@@ -6,7 +6,8 @@ import { useAuth } from '../../auth/useAuth';
 import { useTranslation } from '../../i18n';
 import { accountError, fieldErrors, type FieldErrors } from './accountFormErrors';
 
-const inputClassName = 'w-full rounded-md border border-slate-300 px-3 py-2 text-slate-950';
+const inputClassName =
+  'w-full rounded-md border border-theme-border px-3 py-2 text-theme-primary-foreground';
 
 export function AccountProfileForm() {
   const { user, setAuthenticatedUser } = useAuth();
@@ -23,10 +24,7 @@ export function AccountProfileForm() {
     onSuccess: (updatedUser) => {
       setAuthenticatedUser(updatedUser);
 
-      queryClient.setQueryData(
-        authKeys.currentUser(),
-        updatedUser,
-      );
+      queryClient.setQueryData(authKeys.currentUser(), updatedUser);
 
       setCurrentPassword('');
       setStatus(t('account.profile.success'));
@@ -60,10 +58,12 @@ export function AccountProfileForm() {
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-xl font-semibold text-slate-950">{t('account.profile.title')}</h2>
+    <section className="rounded-xl border border-theme-border bg-theme-surface p-6 shadow-sm">
+      <h2 className="text-xl font-semibold text-theme-primary-foreground">
+        {t('account.profile.title')}
+      </h2>
       <form className="mt-6 space-y-4" onSubmit={submit} noValidate>
-        <label className="block text-sm font-medium text-slate-700" htmlFor="account-name">
+        <label className="block text-sm font-medium text-theme-muted" htmlFor="account-name">
           {t('account.fields.name')}
         </label>
         <input
@@ -80,7 +80,7 @@ export function AccountProfileForm() {
             {errors.name}
           </p>
         )}
-        <label className="block text-sm font-medium text-slate-700" htmlFor="account-email">
+        <label className="block text-sm font-medium text-theme-muted" htmlFor="account-email">
           {t('account.fields.email')}
         </label>
         <input
@@ -100,12 +100,12 @@ export function AccountProfileForm() {
         {emailChanged && (
           <div>
             <label
-              className="block text-sm font-medium text-slate-700"
+              className="block text-sm font-medium text-theme-muted"
               htmlFor="profile-current-password"
             >
               {t('account.fields.currentPassword')}
             </label>
-            <p className="mb-2 text-sm text-slate-500">
+            <p className="mb-2 text-sm text-theme-muted">
               {t('account.profile.currentPasswordHint')}
             </p>
             <input
@@ -125,12 +125,12 @@ export function AccountProfileForm() {
           </div>
         )}
         {status && (
-          <p className="text-sm text-slate-700" role="status" aria-live="polite">
+          <p className="text-sm text-theme-muted" role="status" aria-live="polite">
             {status}
           </p>
         )}
         <button
-          className="rounded-md bg-emerald-600 px-4 py-2 font-medium text-white disabled:opacity-60"
+          className="rounded-md bg-theme-primary px-4 py-2 font-medium text-theme-text disabled:opacity-60"
           disabled={profileMutation.isPending}
           type="submit"
         >

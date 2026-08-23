@@ -660,6 +660,12 @@
       "conflict": "Die Kontoänderung steht in Konflikt mit aktuellen Kontodaten.",
       "validation": "Bitte korrigiere die markierten Kontofelder.",
       "generic": "Dein Konto konnte nicht aktualisiert werden."
+    },
+    "theme": {
+      "title": "Farbschema",
+      "description": "Wähle die Kaiser-XI-Farbpalette für dein Konto.",
+      "selected": "Ausgewählt",
+      "error": "Das Farbschema konnte nicht gespeichert werden."
     }
   },
   "formation": {

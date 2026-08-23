@@ -27,13 +27,16 @@ export function InvitationsPage() {
   return (
     <section className="space-y-5">
       <div>
-        <p className="text-sm font-semibold uppercase text-emerald-300">
+        <p className="text-sm font-semibold uppercase text-theme-accent">
           {t('invitations.eyebrow')}
         </p>
-        <h1 className="text-3xl font-bold text-white">{t('invitations.title')}</h1>
+        <h1 className="text-3xl font-bold text-theme-text">{t('invitations.title')}</h1>
       </div>
       {message ? (
-        <p className="rounded-lg border border-emerald-500/30 p-3 text-emerald-200" role="status">
+        <p
+          className="rounded-lg border border-theme-primary/30 p-3 text-theme-accent"
+          role="status"
+        >
           {message}
         </p>
       ) : null}
@@ -43,21 +46,21 @@ export function InvitationsPage() {
       <div className="grid gap-4">
         {invitations.map((invitation) => (
           <article
-            className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5"
+            className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5"
             key={invitation.id}
           >
-            <h2 className="text-xl font-semibold text-white">{invitation.league?.name}</h2>
-            <dl className="my-4 grid gap-2 text-sm text-slate-300 sm:grid-cols-3">
+            <h2 className="text-xl font-semibold text-theme-text">{invitation.league?.name}</h2>
+            <dl className="my-4 grid gap-2 text-sm text-theme-muted sm:grid-cols-3">
               <div>
-                <dt className="text-slate-500">{t('invitations.invitedRole')}</dt>
+                <dt className="text-theme-muted">{t('invitations.invitedRole')}</dt>
                 <dd>{t(`leagues.roles.${invitation.role.key}`)}</dd>
               </div>
               <div>
-                <dt className="text-slate-500">{t('invitations.inviter')}</dt>
+                <dt className="text-theme-muted">{t('invitations.inviter')}</dt>
                 <dd>{invitation.creator?.name}</dd>
               </div>
               <div>
-                <dt className="text-slate-500">{t('invitations.expiration')}</dt>
+                <dt className="text-theme-muted">{t('invitations.expiration')}</dt>
                 <dd>
                   {invitation.expires_at
                     ? new Intl.DateTimeFormat(language, { dateStyle: 'medium' }).format(
@@ -69,7 +72,7 @@ export function InvitationsPage() {
             </dl>
             <div className="flex gap-3">
               <button
-                className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-50"
+                className="rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-50"
                 disabled={accept.isPending || reject.isPending}
                 onClick={() =>
                   accept.mutate(invitation.id, {
@@ -93,7 +96,7 @@ export function InvitationsPage() {
               </button>
               {invitation.league ? (
                 <Link
-                  className="px-4 py-2 text-emerald-300"
+                  className="px-4 py-2 text-theme-accent"
                   to={`/leagues/${invitation.league.id}`}
                 >
                   {t('invitations.viewLeague')}

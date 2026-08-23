@@ -55,10 +55,10 @@ export function LeagueStandingsPage() {
         showStandings
       />
       <div>
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-3xl font-bold text-theme-text">
           {leagueType === 'formula_one' ? t('formulaOne.standingsTitle') : t('standings.title')}
         </h1>
-        <p className="mt-2 text-slate-300">
+        <p className="mt-2 text-theme-muted">
           {leagueType === 'formula_one'
             ? t('formulaOne.standingsDescription')
             : t('standings.description')}
@@ -80,7 +80,9 @@ export function LeagueStandingsPage() {
           classic={leagueType === 'classic'}
         />
       ) : (
-        <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">{t('standings.empty')}</p>
+        <p className="rounded-xl bg-theme-surface/70 p-5 text-theme-muted">
+          {t('standings.empty')}
+        </p>
       )}
     </section>
   );

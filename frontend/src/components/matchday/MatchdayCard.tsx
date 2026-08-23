@@ -48,22 +48,22 @@ export function MatchdayCard({
 
   return (
     <article
-      className={`rounded-xl border p-5 ${state === 'current' ? 'border-emerald-400/60 bg-emerald-950/20' : 'border-slate-800 bg-slate-900/70'}`}
+      className={`rounded-xl border p-5 ${state === 'current' ? 'border-theme-primary/60 bg-emerald-950/20' : 'border-theme-border bg-theme-surface/70'}`}
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
+          <p className="text-xs font-semibold uppercase tracking-wide text-theme-accent">
             {t(`matchdays.${state}`)}
           </p>
-          <h2 className="mt-1 text-xl font-semibold text-white">
+          <h2 className="mt-1 text-xl font-semibold text-theme-text">
             {item.name || t('formation.matchdayNumber', { number: item.number })}
           </h2>
-          <p className="mt-2 text-sm text-slate-300">
+          <p className="mt-2 text-sm text-theme-muted">
             {t('formation.deadline')}:{' '}
             {formatDate(item.deadline, t('leagueDetail.notAvailable'), language)}
           </p>
           {state !== 'past' && opponentTeam ? (
-            <p className="mt-2 text-sm font-semibold text-emerald-200">
+            <p className="mt-2 text-sm font-semibold text-theme-accent">
               {t('h2h.opponent')}: {t('h2h.vsTeam', { team: opponentTeam.name })}
             </p>
           ) : null}
@@ -72,7 +72,7 @@ export function MatchdayCard({
           ) : null}
           {state === 'past' && fixture ? (
             fixture.result?.status === 'calculated' ? (
-              <p className="mt-3 font-semibold text-white">
+              <p className="mt-3 font-semibold text-theme-text">
                 {fixture.home_fantasy_team.name} {fixture.result.home_goals}–
                 {fixture.result.away_goals} {fixture.away_fantasy_team.name}
               </p>
@@ -85,7 +85,7 @@ export function MatchdayCard({
         </div>
         <div className="flex flex-wrap gap-2">
           <Link
-            className="rounded-lg border border-slate-600 px-3 py-2 text-sm font-semibold text-white"
+            className="rounded-lg border border-slate-600 px-3 py-2 text-sm font-semibold text-theme-text"
             to={`/leagues/${leagueId}/matchdays/${item.id}`}
           >
             {t('matchdays.open')}
@@ -97,7 +97,7 @@ export function MatchdayCard({
           (!formation.error ||
             (formation.error instanceof ApiError && formation.error.status === 404)) ? (
             <Link
-              className="rounded-lg bg-emerald-500 px-3 py-2 text-sm font-semibold text-slate-950"
+              className="rounded-lg bg-theme-primary px-3 py-2 text-sm font-semibold text-theme-primary-foreground"
               to={`/leagues/${leagueId}/matchdays/${item.id}/fantasy-teams/${myTeam.id}/formation`}
             >
               {t(`matchdays.${action}`)}
@@ -105,7 +105,7 @@ export function MatchdayCard({
           ) : null}
           {state === 'current' && opponentTeam && opponentFormation.data ? (
             <Link
-              className="rounded-lg border border-emerald-500 px-3 py-2 text-sm font-semibold text-emerald-200"
+              className="rounded-lg border border-theme-primary px-3 py-2 text-sm font-semibold text-theme-accent"
               to={`/leagues/${leagueId}/matchdays/${item.id}/fantasy-teams/${opponentTeam.id}/formation`}
             >
               {t('matchdays.viewOpponentFormation')}

@@ -16,7 +16,7 @@ export function HeadToHeadMatchdayDetail({
   const { t } = useTranslation();
   return (
     <section className="space-y-4" aria-labelledby="fixtures-title">
-      <h2 className="text-2xl font-semibold text-white" id="fixtures-title">
+      <h2 className="text-2xl font-semibold text-theme-text" id="fixtures-title">
         {t('results.matchdayResults')}
       </h2>
       {fixtures.map((fixture) => (
@@ -29,7 +29,9 @@ export function HeadToHeadMatchdayDetail({
         />
       ))}
       {!fixtures.length ? (
-        <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">{t('results.noFixtures')}</p>
+        <p className="rounded-xl bg-theme-surface/70 p-5 text-theme-muted">
+          {t('results.noFixtures')}
+        </p>
       ) : null}
     </section>
   );
@@ -45,7 +47,7 @@ export function ClassicMatchdayDetail({
   const { t } = useTranslation();
   return (
     <section className="space-y-4" aria-labelledby="classic-results-title">
-      <h2 className="text-2xl font-semibold text-white" id="classic-results-title">
+      <h2 className="text-2xl font-semibold text-theme-text" id="classic-results-title">
         {t('results.matchdayResults')}
       </h2>
       {teams.map((entry) => (
@@ -57,7 +59,7 @@ export function ClassicMatchdayDetail({
         />
       ))}
       {!teams.length ? (
-        <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">
+        <p className="rounded-xl bg-theme-surface/70 p-5 text-theme-muted">
           {t('results.noClassicParticipants')}
         </p>
       ) : null}
@@ -77,7 +79,7 @@ export function FormulaOneMatchdayDetail({
   const { t } = useTranslation();
   return (
     <section className="space-y-4" aria-labelledby="formula-one-results-title">
-      <h2 className="text-2xl font-semibold text-white" id="formula-one-results-title">
+      <h2 className="text-2xl font-semibold text-theme-text" id="formula-one-results-title">
         {counted ? t('formulaOne.matchdayPlacements') : t('formulaOne.participantStatus')}
       </h2>
       {teams.length ? (
@@ -88,7 +90,7 @@ export function FormulaOneMatchdayDetail({
           teams={teams}
         />
       ) : (
-        <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">
+        <p className="rounded-xl bg-theme-surface/70 p-5 text-theme-muted">
           {t('results.noClassicParticipants')}
         </p>
       )}

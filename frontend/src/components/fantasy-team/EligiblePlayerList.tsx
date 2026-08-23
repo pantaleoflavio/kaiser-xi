@@ -35,7 +35,7 @@ export function EligiblePlayerList({
   return (
     <>
       {isLoading ? (
-        <p className="text-sm text-slate-300" role="status">
+        <p className="text-sm text-theme-muted" role="status">
           {t('roster.eligible.loading')}
         </p>
       ) : null}
@@ -45,7 +45,7 @@ export function EligiblePlayerList({
         </p>
       ) : null}
       {!isLoading && !error && players.length === 0 ? (
-        <p className="rounded-lg border border-slate-800 p-3 text-sm text-slate-400">
+        <p className="rounded-lg border border-theme-border p-3 text-sm text-theme-muted">
           {t('roster.eligible.empty')}
         </p>
       ) : null}
@@ -54,19 +54,19 @@ export function EligiblePlayerList({
           {players.map((player) => (
             <button
               aria-selected={selected?.id === player.id}
-              className="rounded-lg border border-slate-700 px-3 py-2 text-left text-sm text-slate-200 hover:border-emerald-400 disabled:opacity-60"
+              className="rounded-lg border border-theme-border px-3 py-2 text-left text-sm text-theme-text hover:border-theme-primary disabled:opacity-60"
               key={player.id}
               onClick={() => onSelect(player)}
               role="option"
               type="button"
             >
-              <span className="font-semibold text-white">{player.name}</span>
-              <span className="ml-2 text-slate-400">
+              <span className="font-semibold text-theme-text">{player.name}</span>
+              <span className="ml-2 text-theme-muted">
                 {player.role.label ?? t('roster.eligible.unknownRole')} ·{' '}
                 {player.club?.name ?? t('roster.eligible.unknownClub')} ·{' '}
                 {t('roster.eligible.quotation', { value: player.quotation ?? '—' })}
               </span>
-              <span className="ml-2 rounded bg-emerald-950 px-2 py-0.5 text-xs text-emerald-300">
+              <span className="ml-2 rounded bg-emerald-950 px-2 py-0.5 text-xs text-theme-accent">
                 {player.availability === 'available'
                   ? t('playerMarket.available')
                   : t('playerMarket.alreadyAssigned')}
@@ -77,11 +77,11 @@ export function EligiblePlayerList({
       ) : null}
       {meta && meta.last_page > 1 ? (
         <nav
-          className="flex items-center justify-between text-sm text-slate-300"
+          className="flex items-center justify-between text-sm text-theme-muted"
           aria-label={t('roster.eligible.pagination')}
         >
           <button
-            className="rounded-lg border border-slate-700 px-3 py-2 disabled:opacity-50"
+            className="rounded-lg border border-theme-border px-3 py-2 disabled:opacity-50"
             disabled={page <= 1 || isFetching}
             onClick={() => onPage((value) => value - 1)}
             type="button"
@@ -92,7 +92,7 @@ export function EligiblePlayerList({
             {t('roster.eligible.page', { current: meta.current_page, total: meta.last_page })}
           </span>
           <button
-            className="rounded-lg border border-slate-700 px-3 py-2 disabled:opacity-50"
+            className="rounded-lg border border-theme-border px-3 py-2 disabled:opacity-50"
             disabled={page >= meta.last_page || isFetching}
             onClick={() => onPage((value) => value + 1)}
             type="button"

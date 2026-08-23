@@ -3,12 +3,17 @@ import { authApi } from '../api/auth';
 import { clearStoredToken, getStoredToken, storeToken } from './tokenStorage';
 import type { LoginPayload, RegisterPayload, User } from '../types/auth';
 import { AuthContext, type AuthContextValue } from './auth-context';
+import { applyTheme, defaultThemeId } from '../theme/themes';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(() => getStoredToken());
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(() => Boolean(getStoredToken()));
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    applyTheme(user?.theme ?? defaultThemeId);
+  }, [user?.theme]);
 
   const clearSession = useCallback(() => {
     clearStoredToken();

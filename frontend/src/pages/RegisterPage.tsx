@@ -41,7 +41,10 @@ export function RegisterPage() {
   }
 
   return (
-    <form className="mx-auto max-w-md space-y-4 rounded-xl bg-white p-6 text-slate-950" onSubmit={handleSubmit}>
+    <form
+      className="mx-auto max-w-md space-y-4 rounded-xl bg-theme-surface p-6 text-theme-primary-foreground"
+      onSubmit={handleSubmit}
+    >
       <div>
         <h1 className="text-2xl font-bold">{t('auth.register.title')}</h1>
         <p className="text-sm text-slate-600">{t('auth.register.description')}</p>
@@ -49,26 +52,51 @@ export function RegisterPage() {
       <FormError message={formError ?? error} />
       <label className="block text-sm font-medium">
         {t('auth.register.name')}
-        <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" name="name" required />
+        <input
+          className="mt-1 w-full rounded-md border border-theme-border px-3 py-2"
+          name="name"
+          required
+        />
       </label>
       <label className="block text-sm font-medium">
         {t('auth.register.email')}
-        <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" name="email" required type="email" />
+        <input
+          className="mt-1 w-full rounded-md border border-theme-border px-3 py-2"
+          name="email"
+          required
+          type="email"
+        />
       </label>
       <label className="block text-sm font-medium">
         {t('auth.register.password')}
-        <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" minLength={8} name="password" required type="password" />
+        <input
+          className="mt-1 w-full rounded-md border border-theme-border px-3 py-2"
+          minLength={8}
+          name="password"
+          required
+          type="password"
+        />
       </label>
       <label className="block text-sm font-medium">
         {t('auth.register.confirmPassword')}
-        <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" minLength={8} name="password_confirmation" required type="password" />
+        <input
+          className="mt-1 w-full rounded-md border border-theme-border px-3 py-2"
+          minLength={8}
+          name="password_confirmation"
+          required
+          type="password"
+        />
       </label>
-      <button className="w-full rounded-md bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60" disabled={isSubmitting} type="submit">
+      <button
+        className="w-full rounded-md bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-60"
+        disabled={isSubmitting}
+        type="submit"
+      >
         {isSubmitting ? t('auth.register.submitting') : t('auth.register.submit')}
       </button>
       <p className="text-sm text-slate-600">
         {t('auth.register.alreadyRegistered')}{' '}
-        <Link className="font-medium text-emerald-700" to="/login">
+        <Link className="font-medium text-theme-primary" to="/login">
           {t('auth.register.loginLink')}
         </Link>
       </p>

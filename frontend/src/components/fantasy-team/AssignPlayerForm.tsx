@@ -48,8 +48,11 @@ export function AssignPlayerForm({
     }
   };
   return (
-    <form className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4" onSubmit={submit}>
-      <h3 className="text-lg font-semibold text-white">{t('roster.assign.title')}</h3>
+    <form
+      className="mt-6 rounded-xl border border-theme-border bg-theme-background/60 p-4"
+      onSubmit={submit}
+    >
+      <h3 className="text-lg font-semibold text-theme-text">{t('roster.assign.title')}</h3>
       {error ? (
         <div className="mt-4">
           <ErrorPanel error={error} title={t('roster.errors.assignTitle')} />
@@ -68,12 +71,12 @@ export function AssignPlayerForm({
         />
       </div>
       <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto]">
-        <label className="text-sm text-slate-300" htmlFor="purchase-price">
+        <label className="text-sm text-theme-muted" htmlFor="purchase-price">
           {t('roster.assign.purchasePrice')}
           <input
             aria-describedby={fieldErrors.purchase_price ? 'purchase-price-error' : undefined}
             aria-invalid={Boolean(fieldErrors.purchase_price)}
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+            className="mt-1 w-full rounded-lg border border-theme-border bg-theme-background px-3 py-2 text-theme-text"
             disabled={isAssigning}
             id="purchase-price"
             min="0"
@@ -92,7 +95,7 @@ export function AssignPlayerForm({
           ) : null}
         </label>
         <button
-          className="self-end rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
+          className="self-end rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-60"
           disabled={isAssigning || !selected}
           type="submit"
         >

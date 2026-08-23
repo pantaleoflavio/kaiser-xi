@@ -6,30 +6,30 @@ export function PlayerScoreBreakdownRow({ item }: { item: HistoricalPlayerResult
   const playable =
     item.player_score?.status === 'confirmed' && item.player_score.final_score !== null;
   return (
-    <li className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
+    <li className="rounded-xl border border-theme-border bg-theme-background/50 p-4">
       <div className="flex flex-wrap justify-between gap-3">
         <div>
-          <p className="font-semibold text-white">{item.player.name}</p>
-          <p className="text-sm text-slate-400">{t(`roster.roles.${item.player.role}`)}</p>
+          <p className="font-semibold text-theme-text">{item.player.name}</p>
+          <p className="text-sm text-theme-muted">{t(`roster.roles.${item.player.role}`)}</p>
         </div>
-        <span className="text-sm font-semibold text-emerald-200">
+        <span className="text-sm font-semibold text-theme-accent">
           {t(`results.${item.submitted_slot}`)} #{item.submitted_order}
         </span>
       </div>
       <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
         <div>
-          <dt className="text-slate-400">{t('results.importedScore')}</dt>
-          <dd className="text-white">
+          <dt className="text-theme-muted">{t('results.importedScore')}</dt>
+          <dd className="text-theme-text">
             {playable ? item.player_score?.final_score : t('results.noPlayableScore')}
           </dd>
         </div>
         <div>
-          <dt className="text-slate-400">{t('results.effectiveContribution')}</dt>
-          <dd className="text-white">{item.effective_contribution ?? '—'}</dd>
+          <dt className="text-theme-muted">{t('results.effectiveContribution')}</dt>
+          <dd className="text-theme-text">{item.effective_contribution ?? '—'}</dd>
         </div>
       </dl>
       {item.used_as_substitute ? (
-        <p className="mt-3 text-sm text-emerald-300">
+        <p className="mt-3 text-sm text-theme-accent">
           {t('results.enteredFromBench')}
           {item.replaced_player ? ` · ${t('results.replaced')} ${item.replaced_player.name}` : ''}
         </p>
@@ -40,10 +40,10 @@ export function PlayerScoreBreakdownRow({ item }: { item: HistoricalPlayerResult
         </p>
       ) : null}
       {item.player_score?.is_real_captain ? (
-        <p className="mt-3 text-xs text-slate-400">{t('results.realCaptain')}</p>
+        <p className="mt-3 text-xs text-theme-muted">{t('results.realCaptain')}</p>
       ) : null}
       {item.player_score ? (
-        <p className="mt-2 text-xs text-slate-400">
+        <p className="mt-2 text-xs text-theme-muted">
           {[
             item.player_score.goals ? `${t('results.goals')}: ${item.player_score.goals}` : null,
             item.player_score.assists

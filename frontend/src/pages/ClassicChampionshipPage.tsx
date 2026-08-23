@@ -53,10 +53,10 @@ export function ClassicChampionshipPage() {
   return (
     <section className="space-y-6">
       <LeagueNavigation leagueId={leagueId} showStandings />
-      <h1 className="text-3xl font-bold text-white">
+      <h1 className="text-3xl font-bold text-theme-text">
         {formulaOne ? t('formulaOne.initializationTitle') : t('classic.title')}
       </h1>
-      <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-5 text-slate-200">
+      <div className="rounded-xl border border-theme-border bg-theme-surface/70 p-5 text-theme-text">
         <p>
           {t('classic.participants', {
             count: championship?.participant_count ?? 0,
@@ -64,7 +64,7 @@ export function ClassicChampionshipPage() {
           })}
         </p>
         {championship?.initialized ? (
-          <p className="mt-3 text-emerald-300">{t('classic.started')}</p>
+          <p className="mt-3 text-theme-accent">{t('classic.started')}</p>
         ) : (
           <>
             <p className="mt-3">
@@ -76,7 +76,7 @@ export function ClassicChampionshipPage() {
             <label className="mt-4 block">
               {t('classic.startingMatchday')}
               <select
-                className="mt-2 block rounded bg-slate-800 p-2"
+                className="mt-2 block rounded bg-theme-muted-surface p-2"
                 value={start}
                 onChange={(event) => setStart(event.target.value)}
               >
@@ -89,7 +89,7 @@ export function ClassicChampionshipPage() {
               </select>
             </label>
             <button
-              className="mt-4 rounded bg-emerald-600 px-4 py-2 disabled:opacity-50"
+              className="mt-4 rounded bg-theme-primary px-4 py-2 disabled:opacity-50"
               disabled={!canStart || !start || initialize.isPending}
               onClick={() => initialize.mutate()}
             >
