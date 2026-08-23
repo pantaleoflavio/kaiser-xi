@@ -8,7 +8,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 import { HomePage } from '../pages/HomePage';
 import { LeagueDetailPage } from '../pages/LeagueDetailPage';
 import { LeaguesPage } from '../pages/LeaguesPage';
-import { RulesPage } from '../pages/RulesPage';
+import { GameInstructionsPage } from '../pages/GameInstructionsPage';
 import { FantasyTeamDetailPage } from '../pages/FantasyTeamDetailPage';
 import { CreateLeaguePage } from '../pages/CreateLeaguePage';
 import { InvitationsPage } from '../pages/InvitationsPage';
@@ -28,7 +28,8 @@ export function AppRoutes() {
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="rules" element={<RulesPage />} />
+        <Route path="game-instructions" element={<GameInstructionsPage />} />
+        <Route path="rules" element={<Navigate to="/game-instructions" replace />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="account" element={<AccountPage />} />

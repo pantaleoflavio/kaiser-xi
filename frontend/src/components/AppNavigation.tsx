@@ -36,8 +36,8 @@ export function AppNavigation() {
               {t('nav.home')}
             </Link>
 
-            <Link className={navLinkClass} to="/rules">
-              {t('nav.rules')}
+            <Link className={navLinkClass} to="/game-instruction">
+              {t('nav.gameInstructions')}
             </Link>
 
             {user && (
