@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
+import { KaiserXiLogo } from '../components/branding/KaiserXiLogo';
 import { useTranslation } from '../i18n';
 
 const featureKeys = ['competitions', 'leagues', 'teams', 'roadmap'] as const;
@@ -13,9 +14,10 @@ export function HomePage() {
       <div className="grid gap-8 rounded-3xl border border-theme-border bg-theme-surface/80 p-8 shadow-2xl shadow-emerald-950/20 md:grid-cols-[1.2fr_0.8fr] md:p-10">
         <div className="space-y-6">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-theme-accent">
-              {t('home.eyebrow')}
-            </p>
+            <KaiserXiLogo
+              className="h-auto max-h-28 w-full max-w-lg object-contain object-left"
+              variant="full"
+            />
             <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-theme-text sm:text-5xl">
               {t('home.title')}
             </h1>
