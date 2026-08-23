@@ -8,33 +8,33 @@ export function LeagueSummary({ league }: { league: League }) {
     ? t(`leagueDetail.status.${league.status.key}`)
     : league.status?.label;
   return (
-    <header className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-      <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
+    <header className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
+      <p className="text-sm font-semibold uppercase tracking-wide text-theme-accent">
         {t('leagueDetail.eyebrow')}
       </p>
-      <h1 className="mt-2 text-4xl font-bold text-white">{league.name}</h1>
-      <p className="mt-3 max-w-2xl text-slate-300">
+      <h1 className="mt-2 text-4xl font-bold text-theme-text">{league.name}</h1>
+      <p className="mt-3 max-w-2xl text-theme-muted">
         {league.description || t('leagues.noDescription')}
       </p>
-      <dl className="mt-6 grid gap-3 text-sm text-slate-300 md:grid-cols-5">
+      <dl className="mt-6 grid gap-3 text-sm text-theme-muted md:grid-cols-5">
         <div>
-          <dt className="text-slate-500">{t('leagues.fields.competition')}</dt>
+          <dt className="text-theme-muted">{t('leagues.fields.competition')}</dt>
           <dd>{league.season.competition.name}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">{t('leagues.fields.season')}</dt>
+          <dt className="text-theme-muted">{t('leagues.fields.season')}</dt>
           <dd>{league.season.name}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">{t('leagues.fields.type')}</dt>
+          <dt className="text-theme-muted">{t('leagues.fields.type')}</dt>
           <dd>{league.type?.label ?? t('leagueDetail.notAvailable')}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">{t('leagues.fields.status')}</dt>
+          <dt className="text-theme-muted">{t('leagues.fields.status')}</dt>
           <dd>{statusLabel ?? t('leagueDetail.notAvailable')}</dd>
         </div>
         <div>
-          <dt className="text-slate-500">{t('leagueDetail.fields.maxParticipants')}</dt>
+          <dt className="text-theme-muted">{t('leagueDetail.fields.maxParticipants')}</dt>
           <dd>{league.max_participants ?? t('leagueDetail.unlimited')}</dd>
         </div>
       </dl>

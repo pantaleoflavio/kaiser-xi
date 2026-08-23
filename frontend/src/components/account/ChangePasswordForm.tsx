@@ -4,7 +4,8 @@ import { accountApi } from '../../api/account';
 import { useTranslation } from '../../i18n';
 import { accountError, fieldErrors, type FieldErrors } from './accountFormErrors';
 
-const inputClassName = 'w-full rounded-md border border-slate-300 px-3 py-2 text-slate-950';
+const inputClassName =
+  'w-full rounded-md border border-theme-border px-3 py-2 text-theme-primary-foreground';
 
 const initialPasswordValues = {
   current_password: '',
@@ -41,10 +42,12 @@ export function ChangePasswordForm() {
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-xl font-semibold text-slate-950">{t('account.password.title')}</h2>
+    <section className="rounded-xl border border-theme-border bg-theme-surface p-6 shadow-sm">
+      <h2 className="text-xl font-semibold text-theme-primary-foreground">
+        {t('account.password.title')}
+      </h2>
       <form className="mt-6 space-y-4" onSubmit={submit} noValidate>
-        <label className="block text-sm font-medium text-slate-700" htmlFor="password-current">
+        <label className="block text-sm font-medium text-theme-muted" htmlFor="password-current">
           {t('account.fields.currentPassword')}
         </label>
         <input
@@ -61,7 +64,7 @@ export function ChangePasswordForm() {
             {errors.current_password}
           </p>
         )}
-        <label className="block text-sm font-medium text-slate-700" htmlFor="password-new">
+        <label className="block text-sm font-medium text-theme-muted" htmlFor="password-new">
           {t('account.fields.newPassword')}
         </label>
         <input
@@ -79,7 +82,10 @@ export function ChangePasswordForm() {
             {errors.password}
           </p>
         )}
-        <label className="block text-sm font-medium text-slate-700" htmlFor="password-confirmation">
+        <label
+          className="block text-sm font-medium text-theme-muted"
+          htmlFor="password-confirmation"
+        >
           {t('account.fields.confirmNewPassword')}
         </label>
         <input
@@ -98,12 +104,12 @@ export function ChangePasswordForm() {
           </p>
         )}
         {status && (
-          <p className="text-sm text-slate-700" role="status" aria-live="polite">
+          <p className="text-sm text-theme-muted" role="status" aria-live="polite">
             {status}
           </p>
         )}
         <button
-          className="rounded-md bg-emerald-600 px-4 py-2 font-medium text-white disabled:opacity-60"
+          className="rounded-md bg-theme-primary px-4 py-2 font-medium text-theme-text disabled:opacity-60"
           disabled={passwordMutation.isPending}
           type="submit"
         >

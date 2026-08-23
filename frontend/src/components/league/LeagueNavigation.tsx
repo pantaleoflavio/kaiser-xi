@@ -4,8 +4,8 @@ import { useTranslation } from '../../i18n';
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-lg px-3 py-2 text-sm font-semibold transition ${
     isActive
-      ? 'bg-emerald-500 text-slate-950'
-      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+      ? 'bg-theme-primary text-theme-primary-foreground'
+      : 'text-theme-muted hover:bg-theme-muted-surface hover:text-theme-text'
   }`;
 
 export function LeagueNavigation({
@@ -24,7 +24,7 @@ export function LeagueNavigation({
   return (
     <nav
       aria-label={t('leagueNavigation.label')}
-      className="flex flex-wrap gap-2 rounded-xl border border-slate-800 bg-slate-900/70 p-2"
+      className="flex flex-wrap gap-2 rounded-xl border border-theme-border bg-theme-surface/70 p-2"
     >
       <NavLink className={linkClass} end to={base}>
         {t('leagueNavigation.overview')}

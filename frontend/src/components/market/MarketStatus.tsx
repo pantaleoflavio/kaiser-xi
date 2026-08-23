@@ -10,8 +10,8 @@ export function MarketStatus({ market }: { market: Market }) {
         )
       : t('market.notConfigured');
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900 p-5">
-      <h2 className="text-xl font-bold text-white">{t('market.status')}</h2>
+    <section className="rounded-xl border border-theme-border bg-theme-surface p-5">
+      <h2 className="text-xl font-bold text-theme-text">{t('market.status')}</h2>
       <p
         className={`mt-2 text-lg font-semibold ${market.is_open ? 'text-emerald-400' : 'text-rose-400'}`}
       >
@@ -19,19 +19,19 @@ export function MarketStatus({ market }: { market: Market }) {
       </p>
       <dl className="mt-4 grid gap-3 sm:grid-cols-3">
         <div>
-          <dt className="text-slate-400">{t('market.settings.enabled')}</dt>
+          <dt className="text-theme-muted">{t('market.settings.enabled')}</dt>
           <dd>{market.enabled ? t('market.enabledLabel') : t('market.disabledLabel')}</dd>
         </div>
         <div>
-          <dt className="text-slate-400">{t('market.opens')}</dt>
+          <dt className="text-theme-muted">{t('market.opens')}</dt>
           <dd>{date(market.opens_at)}</dd>
         </div>
         <div>
-          <dt className="text-slate-400">{t('market.closes')}</dt>
+          <dt className="text-theme-muted">{t('market.closes')}</dt>
           <dd>{date(market.closes_at)}</dd>
         </div>
         <div>
-          <dt className="text-slate-400">{t('market.cash')}</dt>
+          <dt className="text-theme-muted">{t('market.cash')}</dt>
           <dd>{market.cash_adjustment_enabled ? t('market.allowed') : t('market.notAllowed')}</dd>
         </div>
       </dl>

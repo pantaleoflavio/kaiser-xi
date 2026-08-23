@@ -46,7 +46,7 @@ export function FantasyTeamDetailPage() {
   return (
     <section className="space-y-6">
       <Link
-        className="text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+        className="text-sm font-semibold text-theme-accent hover:text-theme-accent"
         to={`/leagues/${leagueId}`}
       >
         {t('fantasyTeams.detail.backToLeague')}
@@ -82,13 +82,13 @@ export function FantasyTeamDetailPage() {
           />
 
           {team.is_owned_by_current_user && currentMatchday ? (
-            <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-              <h2 className="text-2xl font-semibold text-white">{t('formation.title')}</h2>
-              <p className="mt-1 text-sm text-slate-300">
+            <section className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
+              <h2 className="text-2xl font-semibold text-theme-text">{t('formation.title')}</h2>
+              <p className="mt-1 text-sm text-theme-muted">
                 {t('fantasyTeams.detail.formationDescription')}
               </p>
               <Link
-                className="mt-4 inline-block rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950"
+                className="mt-4 inline-block rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground"
                 to={`/leagues/${leagueId}/matchdays/${currentMatchday.id}/fantasy-teams/${fantasyTeamId}/formation`}
               >
                 {t('matchdays.openFormation')}

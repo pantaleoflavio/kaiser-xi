@@ -16,10 +16,10 @@ export function ClassicTeamResultCard({
   const missing = entry.result_status === 'missing_formation';
 
   return (
-    <article className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-800 bg-slate-900/70 p-5">
+    <article className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-theme-border bg-theme-surface/70 p-5">
       <div>
-        <h3 className="font-semibold text-white">{entry.fantasy_team.name}</h3>
-        <p className={`mt-1 text-sm ${calculated ? 'text-emerald-200' : 'text-amber-200'}`}>
+        <h3 className="font-semibold text-theme-text">{entry.fantasy_team.name}</h3>
+        <p className={`mt-1 text-sm ${calculated ? 'text-theme-accent' : 'text-amber-200'}`}>
           {calculated
             ? t('results.finalScore')
             : missing
@@ -30,10 +30,10 @@ export function ClassicTeamResultCard({
         </p>
       </div>
       <div className="text-right">
-        <p className="text-3xl font-bold text-white">{entry.points ?? '—'}</p>
+        <p className="text-3xl font-bold text-theme-text">{entry.points ?? '—'}</p>
         {entry.formation_submitted ? (
           <Link
-            className="mt-2 inline-block text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+            className="mt-2 inline-block text-sm font-semibold text-theme-accent hover:text-theme-accent"
             to={`/leagues/${leagueId}/matchdays/${matchdayId}/fantasy-teams/${entry.fantasy_team.id}/formation`}
           >
             {calculated ? t('results.viewTeamResult') : t('results.viewFormation')}

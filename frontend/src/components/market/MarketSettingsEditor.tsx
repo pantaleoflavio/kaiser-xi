@@ -72,9 +72,9 @@ export function MarketSettingsEditor({ leagueId, market }: { leagueId: string; m
 
   const fieldError = (key: string) => fieldErrors[key]?.[0];
   return (
-    <section className="rounded-xl border border-slate-800 bg-slate-900 p-5">
-      <h2 className="text-xl font-bold text-white">{t('market.settings.title')}</h2>
-      <p className="mt-1 text-sm text-slate-400">{t('market.settings.description')}</p>
+    <section className="rounded-xl border border-theme-border bg-theme-surface p-5">
+      <h2 className="text-xl font-bold text-theme-text">{t('market.settings.title')}</h2>
+      <p className="mt-1 text-sm text-theme-muted">{t('market.settings.description')}</p>
       {error ? (
         <div className="mt-4">
           <ContentErrorPanel title={t('market.settings.errorTitle')} message={error} />
@@ -83,7 +83,7 @@ export function MarketSettingsEditor({ leagueId, market }: { leagueId: string; m
       {success ? (
         <p
           role="status"
-          className="mt-4 rounded-lg border border-emerald-500/30 bg-emerald-950/30 p-3 text-emerald-100"
+          className="mt-4 rounded-lg border border-theme-primary/30 bg-emerald-950/30 p-3 text-emerald-100"
         >
           {t('market.settings.success')}
         </p>
@@ -108,7 +108,7 @@ export function MarketSettingsEditor({ leagueId, market }: { leagueId: string; m
         <label className="grid gap-1 text-sm">
           {t('market.opens')}
           <input
-            className="rounded-lg border border-slate-700 bg-slate-950 p-2"
+            className="rounded-lg border border-theme-border bg-theme-background p-2"
             type="datetime-local"
             value={opensAt}
             onChange={(event) => setOpensAt(event.target.value)}
@@ -120,7 +120,7 @@ export function MarketSettingsEditor({ leagueId, market }: { leagueId: string; m
         <label className="grid gap-1 text-sm">
           {t('market.closes')}
           <input
-            className="rounded-lg border border-slate-700 bg-slate-950 p-2"
+            className="rounded-lg border border-theme-border bg-theme-background p-2"
             type="datetime-local"
             value={closesAt}
             onChange={(event) => setClosesAt(event.target.value)}
@@ -130,7 +130,7 @@ export function MarketSettingsEditor({ leagueId, market }: { leagueId: string; m
           ) : null}
         </label>
         <button
-          className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60 sm:col-span-2"
+          className="rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-60 sm:col-span-2"
           disabled={mutation.isPending}
           type="submit"
         >

@@ -40,17 +40,17 @@ export function HeadToHeadScheduleSetup({
     `${matchday.name || t('formation.matchdayNumber', { number: matchday.number })} — ${formatDate(matchday.starts_at, t('leagueDetail.notAvailable'), language)}`;
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-      <h1 className="text-3xl font-bold text-white">{t('h2h.title')}</h1>
-      <p className="mt-2 text-slate-300">{t('h2h.notStarted')}</p>
+    <section className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
+      <h1 className="text-3xl font-bold text-theme-text">{t('h2h.title')}</h1>
+      <p className="mt-2 text-theme-muted">{t('h2h.notStarted')}</p>
       <dl className="mt-6 grid gap-4 sm:grid-cols-2">
         <div>
-          <dt className="text-sm text-slate-400">{t('h2h.currentParticipants')}</dt>
-          <dd className="mt-1 text-xl font-semibold text-white">{participantCount}</dd>
+          <dt className="text-sm text-theme-muted">{t('h2h.currentParticipants')}</dt>
+          <dd className="mt-1 text-xl font-semibold text-theme-text">{participantCount}</dd>
         </div>
         <div>
-          <dt className="text-sm text-slate-400">{t('h2h.maximumParticipants')}</dt>
-          <dd className="mt-1 text-xl font-semibold text-white">
+          <dt className="text-sm text-theme-muted">{t('h2h.maximumParticipants')}</dt>
+          <dd className="mt-1 text-xl font-semibold text-theme-text">
             {maximumParticipants ?? t('leagueDetail.notAvailable')}
           </dd>
         </div>
@@ -59,11 +59,11 @@ export function HeadToHeadScheduleSetup({
         <p>{t('h2h.minimumTeams')}</p>
         <p className="mt-1">{t('h2h.maximumNotRequired')}</p>
       </div>
-      <label className="mt-5 block text-sm font-medium text-slate-200" htmlFor="start-matchday">
+      <label className="mt-5 block text-sm font-medium text-theme-text" htmlFor="start-matchday">
         {t('h2h.startingMatchday')}
       </label>
       <select
-        className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+        className="mt-2 w-full rounded-lg border border-theme-border bg-theme-background px-3 py-2 text-theme-text"
         disabled={!canInitialize || isPending || matchdays.length === 0}
         id="start-matchday"
         onChange={(event) => setSelectedId(Number(event.target.value))}
@@ -86,7 +86,7 @@ export function HeadToHeadScheduleSetup({
         <p className="mt-1 text-sm text-amber-100">{t('h2h.participantsBlocked')}</p>
       </div>
       {!canInitialize ? (
-        <p className="mt-4 text-sm text-slate-300">{t('h2h.unauthorized')}</p>
+        <p className="mt-4 text-sm text-theme-muted">{t('h2h.unauthorized')}</p>
       ) : null}
       {error ? (
         <p className="mt-4 text-sm text-red-200" role="alert">
@@ -95,7 +95,7 @@ export function HeadToHeadScheduleSetup({
       ) : null}
       <button
         aria-describedby="schedule-warning"
-        className="mt-5 rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
+        className="mt-5 rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-60"
         disabled={!canInitialize || !selected || isPending}
         onClick={() => setConfirming(true)}
         type="button"
@@ -104,16 +104,16 @@ export function HeadToHeadScheduleSetup({
       </button>
 
       <dialog
-        className="m-auto w-[min(92vw,34rem)] rounded-2xl border border-slate-700 bg-slate-900 p-0 text-white backdrop:bg-slate-950/80"
+        className="m-auto w-[min(92vw,34rem)] rounded-2xl border border-theme-border bg-theme-surface p-0 text-theme-text backdrop:bg-theme-background/80"
         onCancel={() => setConfirming(false)}
         ref={dialogRef}
       >
         <div className="p-6">
           <h2 className="text-2xl font-semibold">{t('h2h.confirmStart')}</h2>
-          <p className="mt-4 text-slate-300">
+          <p className="mt-4 text-theme-muted">
             {t('h2h.confirmParticipants', { count: participantCount })}
           </p>
-          <p className="mt-2 text-slate-300">
+          <p className="mt-2 text-theme-muted">
             {t('h2h.confirmMatchday', { matchday: selected ? matchdayLabel(selected) : '' })}
           </p>
           <p className="mt-4 text-amber-100">{t('h2h.participantsAndInvitationsBlocked')}</p>
@@ -129,7 +129,7 @@ export function HeadToHeadScheduleSetup({
             </button>
             <button
               autoFocus
-              className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
+              className="rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-60"
               disabled={!selected || isPending}
               onClick={() => selected && onConfirm(selected.id)}
               type="button"

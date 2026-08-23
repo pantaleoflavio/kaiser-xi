@@ -23,9 +23,9 @@ export function LeagueMemberCard({
   onRoleChange,
 }: Props) {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-      <p className="font-semibold text-white">{member.name}</p>
-      <p className="mt-1 text-sm text-slate-400">{role}</p>
+    <div className="rounded-xl border border-theme-border bg-theme-background/60 p-4">
+      <p className="font-semibold text-theme-text">{member.name}</p>
+      <p className="mt-1 text-sm text-theme-muted">{role}</p>
       {canRemove || canChangeRole ? (
         <div className="mt-4 flex flex-wrap gap-2">
           {canChangeRole ? (

@@ -114,9 +114,9 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
   }
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-      <h2 className="text-2xl font-semibold text-white">{t('leagueSettings.title')}</h2>
-      <p className="mt-1 text-sm text-slate-300">{t('leagueSettings.description')}</p>
+    <section className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
+      <h2 className="text-2xl font-semibold text-theme-text">{t('leagueSettings.title')}</h2>
+      <p className="mt-1 text-sm text-theme-muted">{t('leagueSettings.description')}</p>
       {error ? (
         <div className="mt-4">
           <ContentErrorPanel message={error} title={t('leagueSettings.errors.title')} />
@@ -124,7 +124,7 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
       ) : null}
       {success ? (
         <div
-          className="mt-4 rounded-xl border border-emerald-400/30 bg-emerald-950/30 p-4 text-sm text-emerald-100"
+          className="mt-4 rounded-xl border border-theme-primary/30 bg-emerald-950/30 p-4 text-sm text-emerald-100"
           role="status"
         >
           {success}
@@ -250,14 +250,14 @@ export function LeagueSettingsPanel({ league, initialSettings, initialError }: P
         ) : null}
         {canEdit ? (
           <button
-            className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
+            className="rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-60"
             disabled={updateSettings.isPending || !canEdit}
             type="submit"
           >
             {updateSettings.isPending ? t('leagueSettings.saving') : t('leagueSettings.save')}
           </button>
         ) : (
-          <p className="text-sm text-slate-400">{t('leagueSettings.readOnly')}</p>
+          <p className="text-sm text-theme-muted">{t('leagueSettings.readOnly')}</p>
         )}
       </form>
     </section>

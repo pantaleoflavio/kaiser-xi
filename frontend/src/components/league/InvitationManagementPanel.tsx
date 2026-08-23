@@ -70,9 +70,11 @@ export function InvitationManagementPanel({
     }
   }
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-      <h2 className="text-2xl font-semibold text-white">{t('leagueDetail.invitations.title')}</h2>
-      <p className="mt-1 text-sm text-slate-300">
+    <section className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
+      <h2 className="text-2xl font-semibold text-theme-text">
+        {t('leagueDetail.invitations.title')}
+      </h2>
+      <p className="mt-1 text-sm text-theme-muted">
         {t('leagueDetail.invitations.emptyDescription')}
       </p>
       {creationLocked ? (
@@ -81,20 +83,20 @@ export function InvitationManagementPanel({
         </p>
       ) : (
         <form className="mt-5 grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]" onSubmit={create}>
-          <label className="text-sm text-slate-300">
+          <label className="text-sm text-theme-muted">
             {t('leagueDetail.invitations.email')}
             <input
-              className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+              className="mt-1 w-full rounded-lg border border-theme-border bg-theme-background px-3 py-2 text-theme-text"
               onChange={(e) => setEmail(e.target.value)}
               required
               type="email"
               value={email}
             />
           </label>
-          <label className="text-sm text-slate-300">
+          <label className="text-sm text-theme-muted">
             {t('leagueDetail.invitations.invitedRole')}
             <select
-              className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+              className="mt-1 w-full rounded-lg border border-theme-border bg-theme-background px-3 py-2 text-theme-text"
               value={role}
               onChange={(event) => setRole(event.target.value as 'participant' | 'co_commissioner')}
             >
@@ -102,7 +104,7 @@ export function InvitationManagementPanel({
               <option value="co_commissioner">{t('leagues.roles.co_commissioner')}</option>
             </select>
           </label>
-          <label className="text-sm text-slate-300">
+          <label className="text-sm text-theme-muted">
             {t('leagueDetail.invitations.expiresAt')}
             <input
               className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
@@ -112,7 +114,7 @@ export function InvitationManagementPanel({
             />
           </label>
           <button
-            className="self-end rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
+            className="self-end rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-60"
             disabled={isCreating}
             type="submit"
           >
@@ -139,13 +141,15 @@ export function InvitationManagementPanel({
         <div className="mt-4 grid gap-3">
           {invitations.map((invitation) => (
             <div
-              className="rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+              className="rounded-xl border border-theme-border bg-theme-background/60 p-4"
               key={invitation.id}
             >
               <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                 <div>
-                  <p className="text-lg font-semibold text-white">{invitation.recipient?.name}</p>
-                  <p className="mt-1 text-sm text-slate-400">
+                  <p className="text-lg font-semibold text-theme-text">
+                    {invitation.recipient?.name}
+                  </p>
+                  <p className="mt-1 text-sm text-theme-muted">
                     {t('leagueDetail.invitations.status')}: {invitation.status}
                   </p>
                 </div>
@@ -160,17 +164,17 @@ export function InvitationManagementPanel({
                     : t('leagueDetail.invitations.delete')}
                 </button>
               </div>
-              <dl className="mt-4 grid gap-3 text-sm text-slate-300 md:grid-cols-3">
+              <dl className="mt-4 grid gap-3 text-sm text-theme-muted md:grid-cols-3">
                 <div>
-                  <dt className="text-slate-500">{t('leagueDetail.invitations.invitedRole')}</dt>
+                  <dt className="text-theme-muted">{t('leagueDetail.invitations.invitedRole')}</dt>
                   <dd>{t(`leagues.roles.${invitation.role.key}`)}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500">{t('leagueDetail.invitations.expires')}</dt>
+                  <dt className="text-theme-muted">{t('leagueDetail.invitations.expires')}</dt>
                   <dd>{formatDate(invitation.expires_at, t('leagueDetail.never'), language)}</dd>
                 </div>
                 <div>
-                  <dt className="text-slate-500">{t('leagueDetail.invitations.createdBy')}</dt>
+                  <dt className="text-theme-muted">{t('leagueDetail.invitations.createdBy')}</dt>
                   <dd>{invitation.creator?.name ?? t('leagueDetail.notAvailable')}</dd>
                 </div>
               </dl>

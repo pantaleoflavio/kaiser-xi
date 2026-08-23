@@ -59,14 +59,14 @@ export function FantasyTeamsPanel({
     }
   }
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
+    <section className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-white">{t('fantasyTeams.list.title')}</h2>
-          <p className="mt-1 text-sm text-slate-300">{t('fantasyTeams.list.description')}</p>
+          <h2 className="text-2xl font-semibold text-theme-text">{t('fantasyTeams.list.title')}</h2>
+          <p className="mt-1 text-sm text-theme-muted">{t('fantasyTeams.list.description')}</p>
         </div>
         {ownedTeam ? (
-          <span className="rounded-full border border-emerald-400/30 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
+          <span className="rounded-full border border-theme-primary/30 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-theme-accent">
             {t('fantasyTeams.list.youOwnTeam')}
           </span>
         ) : null}
@@ -88,19 +88,19 @@ export function FantasyTeamsPanel({
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           {teams.map((team) => (
             <Link
-              className="rounded-xl border border-slate-800 bg-slate-950/60 p-4 transition hover:border-emerald-400/40"
+              className="rounded-xl border border-theme-border bg-theme-background/60 p-4 transition hover:border-theme-primary/40"
               key={team.id}
               to={`/leagues/${league.id}/fantasy-teams/${team.id}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="font-semibold text-white">{team.name}</h3>
-                  <p className="mt-1 text-sm text-slate-400">
+                  <h3 className="font-semibold text-theme-text">{team.name}</h3>
+                  <p className="mt-1 text-sm text-theme-muted">
                     {t('fantasyTeams.list.owner', { name: team.owner.name })}
                   </p>
                 </div>
                 {team.is_owned_by_current_user ? (
-                  <span className="rounded-full border border-emerald-400/30 px-2 py-1 text-xs font-semibold text-emerald-200">
+                  <span className="rounded-full border border-theme-primary/30 px-2 py-1 text-xs font-semibold text-theme-accent">
                     {t('fantasyTeams.list.ownedByYou')}
                   </span>
                 ) : null}
@@ -116,11 +116,13 @@ export function FantasyTeamsPanel({
       ) : null}
       {!ownedTeam && !creationLocked ? (
         <form
-          className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-4"
+          className="mt-6 rounded-xl border border-theme-border bg-theme-background/60 p-4"
           onSubmit={submit}
         >
-          <h3 className="text-lg font-semibold text-white">{t('fantasyTeams.create.title')}</h3>
-          <p className="mt-1 text-sm text-slate-300">{t('fantasyTeams.create.description')}</p>
+          <h3 className="text-lg font-semibold text-theme-text">
+            {t('fantasyTeams.create.title')}
+          </h3>
+          <p className="mt-1 text-sm text-theme-muted">{t('fantasyTeams.create.description')}</p>
           {createError ? (
             <div className="mt-4">
               <ContentErrorPanel
@@ -131,10 +133,10 @@ export function FantasyTeamsPanel({
             </div>
           ) : null}
           <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto]">
-            <label className="text-sm text-slate-300">
+            <label className="text-sm text-theme-muted">
               {t('fantasyTeams.create.name')}
               <input
-                className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+                className="mt-1 w-full rounded-lg border border-theme-border bg-theme-background px-3 py-2 text-theme-text"
                 maxLength={100}
                 onChange={(e) => setName(e.target.value)}
                 placeholder={t('fantasyTeams.create.namePlaceholder')}
@@ -143,7 +145,7 @@ export function FantasyTeamsPanel({
               />
             </label>
             <button
-              className="self-end rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
+              className="self-end rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-60"
               disabled={isCreating}
               type="submit"
             >

@@ -22,7 +22,7 @@ export function RosterManagementPanel({
 }) {
   const { t } = useTranslation();
   if (!canManage)
-    return <p className="mt-4 text-sm text-slate-400">{t('roster.managementReadOnly')}</p>;
+    return <p className="mt-4 text-sm text-theme-muted">{t('roster.managementReadOnly')}</p>;
   return (
     <AssignPlayerForm
       leagueId={leagueId}

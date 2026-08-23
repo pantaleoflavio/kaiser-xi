@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Enums\UserTheme;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -20,6 +21,7 @@ class UpdateProfileRequest extends FormRequest
             'name' => ['sometimes', 'required', 'string', 'min:2', 'max:100'],
             'email' => ['sometimes', 'required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user()?->id)],
             'current_password' => ['required_with:email', 'string'],
+            'theme' => ['sometimes', 'required', 'string', Rule::enum(UserTheme::class)],
             'id' => ['prohibited'],
             'password' => ['prohibited'],
             'password_confirmation' => ['prohibited'],

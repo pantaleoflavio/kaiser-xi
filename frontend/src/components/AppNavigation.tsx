@@ -5,7 +5,7 @@ import { useAuth } from '../auth/useAuth';
 import { useTranslation } from '../i18n';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
-const navLinkClass = 'text-slate-300 transition hover:text-emerald-200';
+const navLinkClass = 'text-theme-muted transition hover:text-theme-accent';
 
 export function AppNavigation() {
   const { user, logout, isLoading } = useAuth();
@@ -18,9 +18,9 @@ export function AppNavigation() {
   }
 
   return (
-    <header className="border-b border-slate-800 bg-slate-900/70">
+    <header className="border-b border-theme-border bg-theme-surface/70">
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <Link to="/" className="text-xl font-bold text-emerald-300">
+        <Link to="/" className="text-xl font-bold text-theme-accent">
           {t('app.name')}
         </Link>
 
@@ -58,9 +58,9 @@ export function AppNavigation() {
 
           {user ? (
             <div className="flex items-center gap-4 text-sm">
-              <span className="hidden text-slate-300 sm:inline">{user.name}</span>
+              <span className="hidden text-theme-muted sm:inline">{user.name}</span>
               <button
-                className="rounded-md bg-slate-100 px-3 py-2 font-medium text-slate-950 disabled:opacity-60"
+                className="rounded-md bg-slate-100 px-3 py-2 font-medium text-theme-primary-foreground disabled:opacity-60"
                 disabled={isLoading}
                 onClick={handleLogout}
                 type="button"
