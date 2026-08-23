@@ -4,22 +4,22 @@ namespace App\Enums;
 
 enum UserTheme: string
 {
-    case ImperialCrimson = 'imperial-crimson';
-    case GoldenWall = 'golden-wall';
-    case RoyalStandard = 'royal-standard';
-    case NorthernFlame = 'northern-flame';
-    case WhiteCrown = 'white-crown';
-    case CatalanNight = 'catalan-night';
-    case RedStripes = 'red-stripes';
-    case LondonRed = 'london-red';
-    case SkyKingdom = 'sky-kingdom';
+    case BavarianRed = 'bavarian-red';
+    case WestphalianYellow = 'westphalian-yellow';
+    case Koenigsblau = 'koenigsblau';
+    case RhineRedBlack = 'rhine-red-black';
+    case BlancosWhite = 'blancos-white';
+    case BlaugranaNight = 'blaugrana-night';
+    case Colchonero = 'colchonero';
+    case GunnersRed = 'gunners-red';
+    case ManchesterSky = 'manchester-sky';
     case MerseyRed = 'mersey-red';
-    case BlackCrown = 'black-crown';
+    case VecchiaSignora = 'vecchia-signora';
     case NerazzurroNight = 'nerazzurro-night';
-    case Rossonero = 'rossonero';
-    case ImperialBurgundy = 'imperial-burgundy';
+    case MilanoRedBlack = 'milano-red-black';
+    case LaLupaRedGold = 'la-lupa-red-gold';
 
-    public const DEFAULT = self::ImperialCrimson;
+    public const DEFAULT = self::BavarianRed;
 
     public static function values(): array
     {

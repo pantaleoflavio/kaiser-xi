@@ -1,18 +1,18 @@
 export const themeIds = [
-  'imperial-crimson',
-  'golden-wall',
-  'royal-standard',
-  'northern-flame',
-  'white-crown',
-  'catalan-night',
-  'red-stripes',
-  'london-red',
-  'sky-kingdom',
+  'bavarian-red',
+  'westphalian-yellow',
+  'koenigsblau',
+  'rhine-red-black',
+  'blancos-white',
+  'blaugrana-night',
+  'colchonero',
+  'gunners-red',
+  'manchester-sky',
   'mersey-red',
-  'black-crown',
+  'vecchia-signora',
   'nerazzurro-night',
-  'rossonero',
-  'imperial-burgundy',
+  'milano-red-black',
+  'la-lupa-red-gold',
 ] as const;
 
 export type ThemeId = (typeof themeIds)[number];
@@ -23,26 +23,34 @@ export type Theme = {
   swatches: readonly [string, string, string];
 };
 
-export const defaultThemeId: ThemeId = 'imperial-crimson';
+export const defaultThemeId: ThemeId = 'bavarian-red';
 
 export const themes: readonly Theme[] = [
-  { id: 'imperial-crimson', name: 'Imperial Crimson', swatches: ['#be123c', '#fbbf24', '#18181b'] },
-  { id: 'golden-wall', name: 'Golden Wall', swatches: ['#a16207', '#facc15', '#1c1917'] },
-  { id: 'royal-standard', name: 'Royal Standard', swatches: ['#1d4ed8', '#fbbf24', '#111827'] },
-  { id: 'northern-flame', name: 'Northern Flame', swatches: ['#c2410c', '#38bdf8', '#172554'] },
-  { id: 'white-crown', name: 'White Crown', swatches: ['#334155', '#e2e8f0', '#0f172a'] },
-  { id: 'catalan-night', name: 'Catalan Night', swatches: ['#7e22ce', '#f59e0b', '#172554'] },
-  { id: 'red-stripes', name: 'Red Stripes', swatches: ['#b91c1c', '#f8fafc', '#1e293b'] },
-  { id: 'london-red', name: 'London Red', swatches: ['#be123c', '#f8fafc', '#172554'] },
-  { id: 'sky-kingdom', name: 'Sky Kingdom', swatches: ['#0369a1', '#7dd3fc', '#172554'] },
-  { id: 'mersey-red', name: 'Mersey Red', swatches: ['#b91c1c', '#2dd4bf', '#1c1917'] },
-  { id: 'black-crown', name: 'Black Crown', swatches: ['#3f3f46', '#facc15', '#09090b'] },
-  { id: 'nerazzurro-night', name: 'Nerazzurro Night', swatches: ['#1d4ed8', '#38bdf8', '#020617'] },
-  { id: 'rossonero', name: 'Rossonero', swatches: ['#b91c1c', '#a1a1aa', '#09090b'] },
+  { id: 'bavarian-red', name: 'Bavarian Red', swatches: ['#dc052d', '#ffffff', '#081f3d'] },
   {
-    id: 'imperial-burgundy',
-    name: 'Imperial Burgundy',
-    swatches: ['#9f1239', '#f59e0b', '#2e1065'],
+    id: 'westphalian-yellow',
+    name: 'Westphalian Yellow',
+    swatches: ['#facc15', '#09090b', '#ffffff'],
+  },
+  { id: 'koenigsblau', name: 'Königsblau', swatches: ['#004d9d', '#ffffff', '#101827'] },
+  { id: 'rhine-red-black', name: 'Rhine Red & Black', swatches: ['#d71920', '#09090b', '#f8fafc'] },
+  { id: 'blancos-white', name: 'Blancos White', swatches: ['#f8f5e9', '#c9a227', '#101b3d'] },
+  { id: 'blaugrana-night', name: 'Blaugrana Night', swatches: ['#143c8c', '#8a1538', '#d9a51c'] },
+  { id: 'colchonero', name: 'Colchonero', swatches: ['#d71920', '#ffffff', '#102a56'] },
+  { id: 'gunners-red', name: 'Gunners Red', swatches: ['#db0007', '#ffffff', '#14213d'] },
+  { id: 'manchester-sky', name: 'Manchester Sky', swatches: ['#7dd3fc', '#ffffff', '#102a43'] },
+  { id: 'mersey-red', name: 'Mersey Red', swatches: ['#c8102e', '#ffffff', '#171717'] },
+  { id: 'vecchia-signora', name: 'Vecchia Signora', swatches: ['#09090b', '#ffffff', '#a1a1aa'] },
+  { id: 'nerazzurro-night', name: 'Nerazzurro Night', swatches: ['#1261c9', '#05070b', '#60a5fa'] },
+  {
+    id: 'milano-red-black',
+    name: 'Milano Red & Black',
+    swatches: ['#c4122f', '#09090b', '#d4d4d8'],
+  },
+  {
+    id: 'la-lupa-red-gold',
+    name: 'La Lupa Red & Gold',
+    swatches: ['#8e1f2d', '#e3b341', '#18181b'],
   },
 ] as const;
 

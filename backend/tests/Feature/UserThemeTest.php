@@ -17,9 +17,9 @@ class UserThemeTest extends TestCase
         $user = User::factory()->create(['name' => 'Kaiser', 'email' => 'kaiser@example.com']);
 
         $this->actingAs($user, 'sanctum')
-            ->patchJson('/api/v1/auth/me', ['theme' => 'royal-standard'])
+            ->patchJson('/api/v1/auth/me', ['theme' => 'koenigsblau'])
             ->assertOk()
-            ->assertJsonPath('data.theme', 'royal-standard')
+            ->assertJsonPath('data.theme', 'koenigsblau')
             ->assertJsonPath('data.name', 'Kaiser')
             ->assertJsonPath('data.email', 'kaiser@example.com');
 
@@ -27,9 +27,9 @@ class UserThemeTest extends TestCase
             'id' => $user->id,
             'name' => 'Kaiser',
             'email' => 'kaiser@example.com',
-            'theme' => 'royal-standard',
+            'theme' => 'koenigsblau',
         ]);
-        $this->assertSame(UserTheme::RoyalStandard, $user->refresh()->theme);
+        $this->assertSame(UserTheme::Koenigsblau, $user->refresh()->theme);
     }
 
     public function test_unsupported_theme_is_rejected(): void
