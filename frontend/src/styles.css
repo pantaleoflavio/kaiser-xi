@@ -170,9 +170,9 @@
   --color-focus: #fda4af;
 }
 [data-theme='vecchia-signora'] {
-  --color-primary: #f4f4f5;
-  --color-primary-hover: #d4d4d8;
-  --color-primary-foreground: #09090b;
+  --color-primary: #0c0c0d;
+  --color-primary-hover: #626269;
+  --color-primary-foreground: #ffffff;
   --color-secondary: #a1a1aa;
   --color-accent: #d4d4d8;
   --color-background: #09090b;
