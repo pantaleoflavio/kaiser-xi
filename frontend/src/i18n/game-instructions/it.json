@@ -1,0 +1,250 @@
+{
+  "eyebrow": "Istruzioni di gioco",
+  "title": "Istruzioni di gioco",
+  "introduction": "Il manuale completo di Kaiser XI, dalla creazione della Lega alla risoluzione dei problemi.",
+  "contents": "Indice",
+  "chapter": "Capitolo {{number}}",
+  "details": "Come funziona",
+  "chapterNavigation": "Navigazione capitoli",
+  "backHome": "Torna alla home",
+  "chapters": {
+    "gettingStarted": {
+      "title": "Per iniziare",
+      "overview": "Crea un account, accedi e usa la dashboard per creare una lega o aprire un invito del tuo gruppo.",
+      "details": [
+        "Kaiser XI assegna calciatori reali alle Fantasy Team. Voto base ed eventi reali generano il punteggio fantasy di ogni Giornata, poi il tipo di Lega decide come usarlo. Your League. Your Rules.",
+        "Registrati con nome, email e password, accedi e apri la dashboard. Da lì puoi creare una Lega oppure, da autenticato, accettare un invito valido.",
+        "Chi crea diventa Commissioner e gestisce membri, squadre, regole, rose iniziali, competizione, Mercato e calcoli. Chi accetta entra come membro sotto le regole altrui e deve ricevere una Fantasy Team.",
+        "Dopo l’ingresso leggi League Rules: budget, rosa, Formazione, sostituzioni, punteggio, finestra di Mercato e Trade sono quelli salvati nella Lega, non quelli di una guida generica."
+      ],
+      "calloutLabel": "Nota",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "creatingLeague": {
+      "title": "Creare una lega",
+      "overview": "Una lega è uno spazio competitivo privato. Chi la crea diventa commissioner e sceglie competizione reale, tipo, nome e regole iniziali.",
+      "details": [
+        "Inserisci nome (massimo 255 caratteri) e descrizione facoltativa (massimo 5.000). Scegli soltanto una Competition/Season presente: determina Giornate, partite, giocatori registrati, ruoli e PlayerScore disponibili.",
+        "Scegli Classic, Head-to-Head o Formula One. Classic somma i punti fantasy (72 + 68 = 140). Head-to-Head crea incontri e con i default converte 65/66/72/78 in 0/1/2/3 gol, poi usa vittorie/pareggi/sconfitte. Formula One ordina ogni Giornata e assegna di default 25,18,15,12,10,8,6,4,2,1 punti posizione.",
+        "Imposta da 2 a 100 partecipanti: limita gli inviti accettati e prima dell’inizializzazione ogni membro deve avere una Fantasy Team.",
+        "Il budget iniziale predefinito è 500 crediti. Prezzi iniziali e acquisti lo riducono, gli svincoli validi rimborsano la percentuale e l’eventuale conguaglio Trade trasferisce crediti.",
+        "Imposta percentuale di rimborso, dimensione massima e limiti di portieri, difensori, centrocampisti e attaccanti. Prezzo 40 al 50% restituisce 20; i limiti ruolo devono poter contenere il totale.",
+        "Dopo la creazione sei Commissioner e vengono aggiunti i default, ma rose e campionato non sono creati automaticamente: invita, verifica tutte le regole, crea/assegna squadre e registra le rose."
+      ],
+      "calloutLabel": "Solo commissioner",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "buildingSquads": {
+      "title": "Creare le rose iniziali",
+      "overview": "Svolgete asta, buste chiuse o draft fuori da Kaiser XI. In seguito Kaiser XI registra giocatori, prezzi e rose concordati.",
+      "details": [
+        "Kaiser XI non esegue l’asta iniziale, le buste chiuse o il draft: sono soltanto metodi organizzativi suggeriti da svolgere OFFLINE.",
+        "Asta: nominate un giocatore, rilanciate esternamente, annotate vincitore e prezzo, poi consegnate l’elenco al Commissioner. È coinvolgente e centrata sul budget, ma richiede presenza e contabilità precisa.",
+        "Buste: inviate offerte private a un organizzatore entro una scadenza esterna; vince la più alta valida. Stabilite fuori da Kaiser XI come risolvere i pari. È flessibile, ma offerte e budget vanno riconciliati.",
+        "Draft: scegliete a turno in un ordine concordato. Ogni giocatore finirà in una sola squadra; anche se il budget è meno centrale, prezzi, budget, quantità e ruoli registrati devono rispettare Kaiser XI.",
+        "Sono quattro concetti distinti: allocazione offline → Squad Setup nell’app → Mercato stagionale dei liberi → Trade tra due squadre. Kaiser XI non impone regole esterne su rilanci, ordine o spareggi."
+      ],
+      "calloutLabel": "Attenzione",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "leagueOverview": {
+      "title": "Conoscere la lega",
+      "overview": "La panoramica collega membri, fantasy team, regole, Market, giornate, risultati e campionato configurato.",
+      "details": [
+        "Il riepilogo mostra nome, descrizione, Season, tipo, stato, capienza e ruolo. I controlli amministrativi compaiono solo al Commissioner.",
+        "Fantasy Teams apre proprietario, budget, rosa, ruoli e prezzi. League Rules mostra le regole effettive; il Commissioner modifica solo ciò che ciclo di vita e rose esistenti consentono.",
+        "Market elenca giocatori della Season liberi/assegnati e transazioni. Serve abilitazione, entrambe le date e ora corrente dentro la finestra.",
+        "Matchdays collega scadenza, Formazione, calcolo e risultati. Standings significa totale fantasy in Classic, classifica incontri in Head-to-Head, punti posizione cumulativi in Formula One; Head-to-Head ha anche Calendar.",
+        "Se manca una voce, verifica inizializzazione, proprietà della squadra, ruolo Commissioner, finestra Mercato e scadenza: navigazione e azioni dipendono volutamente dallo stato."
+      ],
+      "calloutLabel": "Nota",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "leagueRules": {
+      "title": "Regole della lega",
+      "overview": "Le Regole della lega sono le impostazioni effettive di rosa, formazione, panchina, sostituzioni e punteggio, non questa guida generale.",
+      "details": [
+        "Budget/rosa: budget iniziale, rimborso, massimo rosa e quattro limiti ruolo controllano ogni assegnazione. Rose esistenti impediscono riduzioni incompatibili; il budget iniziale non si riscrive liberamente dopo la creazione delle squadre.",
+        "Formazione: moduli predefiniti 3-4-3,3-5-2,4-3-3,4-4-2,4-5-1,5-3-2,5-4-1. Panchina esatta all’invio e limiti per ruolo. Sostituzioni massime non oltre la panchina.",
+        "Ordine sostituzioni: ordine panchina o priorità di ruolo. Senza cambio modulo ogni ingresso deve conservare il modulo inviato; se abilitato può risultare un altro modulo consentito con conteggi esatti.",
+        "Coefficienti default: gol +3, assist +1, giallo −0,5, rosso −1, autogol −2, rigore segnato +3, sbagliato −3, parato +3, gol subito −1. Un gol su rigore non riceve anche il bonus gol normale.",
+        "Bonus capitano reale solo per un contribuente segnato capitano; clean sheet solo per il portiere contribuente con flag registrato.",
+        "Modificatore difesa: portiere giocabile e almeno quattro difensori giocabili; media del voto portiere e dei tre migliori voti base difensori; si applica il bonus della soglia più alta raggiunta.",
+        "Head-to-Head: soglia primo gol e intervallo (default 66/6). Formula One: tabella punti posizione non crescente. Mercato/Trade: abilitazione, apertura, chiusura e conguaglio. Solo Commissioner, entro i vincoli del ciclo di vita, modifica."
+      ],
+      "calloutLabel": "Nota",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "championship": {
+      "title": "Configurazione campionato",
+      "overview": "Il commissioner configura il formato supportato e il calendario prima dell’inizializzazione, che crea la struttura usata da risultati e classifica.",
+      "details": [
+        "L’inizializzazione collega una sola volta i partecipanti definitivi alle Giornate future; creare la Lega non avvia la competizione. Solo il Commissioner può farlo.",
+        "Servono una Fantasy Team per ogni membro accettato, almeno due squadre e una Giornata futura della Season scelta. Regole e rose vanno controllate prima.",
+        "Classic e Formula One salvano partecipanti e inizio futuro; usano le Giornate restanti. Classic accumula punteggi team, Formula One ranghi e punti posizione.",
+        "Head-to-Head richiede inizio, numero di round robin e ordine supportato; genera gli incontri sulle Giornate future disponibili. Devono bastare e non può esistere già un calendario.",
+        "Checklist: inviti risolti, proprietari corretti, almeno due team, rose/budget validi, regole complete, inizio futuro corretto e Giornate sufficienti per Head-to-Head."
+      ],
+      "calloutLabel": "Solo commissioner",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "squadSetup": {
+      "title": "Configurazione rose iniziali",
+      "overview": "Dopo l’assegnazione esterna, un commissioner assegna in Kaiser XI ogni giocatore e prezzo concordato al fantasy team corretto.",
+      "details": [
+        "Il Commissioner crea le Fantasy Team, le assegna ai membri correnti corretti e registra ogni giocatore eleggibile con prezzo intero concordato offline.",
+        "Il prezzo viene salvato e sottratto. Un giocatore non può essere attivo in due squadre; vengono controllati budget, massimo rosa e limite del ruolo della sua registrazione Season.",
+        "Esempio: da 500, acquisti totali 430 lasciano 70. Il prezzo determina il rimborso futuro e resta col giocatore in un Trade.",
+        "Verifica per squadra proprietario, unicità, ruoli, prezzi, somme e budget non negativo. Un giocatore assente o ruolo discordante va riconciliato, non forzato.",
+        "Squad Setup registra lo stato iniziale: non conduce l’asta né apre il Mercato. Inizializza soltanto dopo la verifica completa."
+      ],
+      "calloutLabel": "Solo commissioner",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "market": {
+      "title": "Market",
+      "overview": "Il Market gestisce la rosa durante la stagione. Quando le regole lo consentono, puoi ingaggiare giocatori liberi e svincolare quelli in rosa.",
+      "details": [
+        "Il Commissioner abilita Trade Market e imposta apertura/chiusura. È aperto dall’istante iniziale incluso e chiuso da quello finale; fuori finestra firma, svincolo e Trade sono respinti.",
+        "La directory mostra registrazioni attive della Season e assegnazione. Il proprietario firma un libero con prezzo intero non negativo: con 35 e prezzo 12 restano 23.",
+        "Fallisce con Mercato chiuso, proprietario errato, giocatore non più libero/eleggibile, prezzo invalido, budget insufficiente, rosa piena o limite ruolo. Aggiorna dopo azioni concorrenti.",
+        "Svincolare termina l’assegnazione e libera il giocatore. Prezzo 40 al 50% restituisce 20 crediti (rimborso intero arrotondato dall’app). Controlla che la rosa restante possa fare la Formazione.",
+        "Non è l’asta iniziale offline. Solo il Commissioner gestisce finestra e cash; i Trade scambiano giocatori posseduti e richiedono la stessa finestra."
+      ],
+      "calloutLabel": "Attenzione",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "fantasyTeam": {
+      "title": "Il tuo fantasy team",
+      "overview": "La pagina della squadra mostra nome, proprietario, budget e rosa. Usala per verificare modifiche e prezzi.",
+      "details": [
+        "La pagina mostra nome, proprietario, budget residuo e rosa. Proprietario errato blocca Formazione e Mercato e va corretto dal Commissioner.",
+        "Il budget è corrente: assegnazioni/acquisti lo riducono, svincoli validi lo aumentano, conguagli accettati lo trasferiscono.",
+        "La rosa mostra giocatore, ruolo Season, prezzo, assegnazione e svincolo. Il prezzo guida il rimborso e resta nei Trade.",
+        "La rosa è il pool, non l’undici automatico: ogni Giornata scegli separatamente modulo, undici titolari e panchina ordinata. Gli svincolati non entrano in nuove bozze ma restano nella storia."
+      ],
+      "calloutLabel": "Nota",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "formation": {
+      "title": "Formazione",
+      "overview": "Per ogni giornata scegli un modulo consentito, completa titolari e panchina richiesta, quindi invia la formazione.",
+      "details": [
+        "Apri la Formazione della tua squadra per una Giornata eleggibile. Prima di starts_at puoi modificare; dall’inizio la scadenza blocca Salva e Invia.",
+        "Scegli un modulo consentito e sul pitch esattamente undici attivi con ruoli richiesti. Seleziona la panchina esatta entro i limiti; nessuno può essere titolare e riserva.",
+        "Ordina la panchina. Salva crea soltanto una bozza. Invia verifica modulo, undici, ruoli, panchina, unicità, rosa, proprietà, Season e scadenza, poi conferma con ora. Solo una Formazione confermata conta.",
+        "Scegliendo un modulo davvero diverso con titolari compare conferma: confermare cambia modulo, cancella i titolari e conserva la panchina; annullare non tocca la bozza. Serve a evitare un undici incompatibile.",
+        "Nel calcolo, ogni titolare non giocabile cerca riserve giocabili inutilizzate fino al massimo, secondo ordine panchina o priorità ruolo.",
+        "Senza cambio modulo il risultato deve rispettare quello originale; se abilitato può combaciare con altro modulo permesso. Senza candidato valido il titolare vale zero. Esempio: in 4-4-2 un difensore di panchina sostituisce il difensore assente; un centrocampista no senza un modulo finale consentito."
+      ],
+      "calloutLabel": "Attenzione",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "matchdays": {
+      "title": "Giornate",
+      "overview": "Le giornate raggruppano invio formazione, stato del calcolo e risultati pubblicati di un turno reale.",
+      "details": [
+        "Catena: Competition reale → Season → Matchday → partite reali → prestazioni → risultati fantasy. La Season limita tutti i dati.",
+        "Prima: numero, inizio/fine, appartenenza e link Formazione; invia prima dell’inizio. Durante: Formazioni bloccate e dati ancora parziali.",
+        "Solo PlayerScore giocabili contribuiscono; pending/non giocatori possono attivare sostituzioni. Dopo la fine il Commissioner autorizzato calcola una Giornata inizializzata.",
+        "Per risultati completi ogni team deve avere Formazione confermata; Head-to-Head necessita entrambi i punteggi. Dopo il calcolo si vedono totali, dettagli, sostituzioni e risultato di formato; le Giornate passate sono storia."
+      ],
+      "calloutLabel": "Nota",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "scoring": {
+      "title": "Punteggio",
+      "overview": "I totali seguono le regole di punteggio configurate. I dettagli spiegano i contributi; formazione e sostituzioni determinano chi conta.",
+      "details": [
+        "Voto base più eventi (gol, assist, cartellini, autogol, rigori, gol subiti) moltiplicati per coefficienti crea il fantasy score; clean sheet e capitano reale sono flag.",
+        "Default: +3,+1,−0,5,−1,−2,+3,−3,+3,−1. Un gol registrato come rigore non somma due bonus gol.",
+        "Contano soltanto titolari effettivi giocabili, incluse sostituzioni valide. Assenti irrisolti e panchinari inutilizzati valgono zero; poi si aggiungono bonus opzionali.",
+        "Difesa: portiere giocabile + almeno quattro difensori; media tra voto portiere e tre migliori voti base difensori; bonus della massima soglia raggiunta.",
+        "Esempio default: dieci giocatori 60,0; undicesimo 6,5 + gol 3 + assist 1 − giallo 0,5 = 10,0, base team 70. Capitano +0,5, portiere clean sheet +1, media difesa (6+6,5+7+6,5)/4=6,5 con +2: totale 73,5.",
+        "Consulta sempre i coefficienti della Lega; il dettaglio mostra contributori e bonus."
+      ],
+      "calloutLabel": "Nota",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "results": {
+      "title": "Risultati, classifica e calendario",
+      "overview": "Dopo il calcolo apri i risultati della giornata e usa classifica o calendario del campionato per seguire la stagione.",
+      "details": [
+        "La Giornata calcolata mostra totale e dettaglio: titolari originali, panchina, ingressi, sostituiti, non contribuenti e punti.",
+        "Base, bonus clean sheet e modificatore difesa sono separati; il capitano reale è nel dettaglio giocatore. La Formazione storica conserva l’invio.",
+        "Classic somma i punteggi fantasy inclusi, senza vittorie o premi posizione.",
+        "Head-to-Head converte in gol e registra vittoria/pareggio/sconfitta, giocate, V/P/S, gol, differenza e punti; Calendar mostra incontri generati.",
+        "Formula One ordina per punteggio, assegna punti posizione configurati e li accumula. Apri Giornate precedenti per la storia."
+      ],
+      "calloutLabel": "Nota",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "calculation": {
+      "title": "Calcola e ricalcola",
+      "overview": "I commissioner autorizzati calcolano una giornata quando dati e formazioni sono pronti. Il ricalcolo sostituisce punteggi e risultati con le regole attuali.",
+      "details": [
+        "Solo il Commissioner autorizzato può usare Calculate dopo la fine su una Giornata della competizione inizializzata; servono Formazioni confermate e dati giocabili sufficienti.",
+        "Calculate risolve cambi, crea score/dettagli, eventuali risultati Head-to-Head, classifica e timestamp. Dati mancanti, incompleti o duplicati non vengono inventati.",
+        "La storia non cambia automaticamente: correggere 6,5 in 7,0 dopo il calcolo richiede Recalculate esplicito.",
+        "Recalculate elimina in transazione i risultati derivati di Lega/Giornata e ricostruisce dettagli, risultati e classifiche da score e regole correnti; fonti e Formazioni restano.",
+        "Se i dati sono invalidi il tentativo fallisce e ripristina il risultato precedente. Usalo solo per correzioni reali e informa i manager."
+      ],
+      "calloutLabel": "Solo commissioner",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "transfers": {
+      "title": "Trasferimenti e scambi",
+      "overview": "Gli ingaggi del Market aggiungono giocatori liberi e gli svincoli li rimuovono. Gli scambi sono proposte tra fantasy team e cambiano le rose solo se accettati.",
+      "details": [
+        "Firma/svincolo sposta libero↔team; Trade propone lo scambio di un giocatore posseduto per parte. Entrambi richiedono Mercato aperto.",
+        "Scegli altra squadra, offerto e richiesto attivi/eleggibili. Niente team uguale o proposta pendente identica. Se cash è abilitato, indica intero non negativo e chi paga; con zero nessun pagatore.",
+        "Solo destinatario accetta/rifiuta; solo proponente annulla. Accetta ricontrolla finestra, pending/non scaduto, proprietà, registrazioni, limiti finali, cash e budget.",
+        "Accettazione chiude vecchie assegnazioni, scambia mantenendo prezzi e trasferisce cash. Rifiuto/annullo non tocca rose. Scaduto non è processabile e non scambia nulla.",
+        "Esempio: Lions offre difensore prezzo 20 per centrocampista Eagles prezzo 30 più 5 da Lions. Con requisiti validi i prezzi restano 20/30 e i budget cambiano −5/+5."
+      ],
+      "calloutLabel": "Attenzione",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "commissioner": {
+      "title": "Guida del commissioner",
+      "overview": "I commissioner gestiscono impostazioni, inviti, ruoli, rose iniziali, campionato, controlli Market e calcoli autorizzati.",
+      "details": [
+        "Sequenza: crea con Season/tipo/capienza corretti → verifica tutti i default → invita manager → assegna team.",
+        "Esegui allocazione esterna, registra giocatori/prezzi e verifica proprietari, unicità, budget, dimensione e ruoli team per team.",
+        "Inizializza con team per ogni membro, almeno due team e inizio futuro; Head-to-Head richiede Giornate sufficienti. Non è ripetibile liberamente.",
+        "Configura e comunica abilitazione, apertura, chiusura e cash. Le transazioni valide dei membri non richiedono approvazione singola.",
+        "Ricorda le scadenze; dopo fine e dati pronti usa Calculate. I dati reali sono amministrati dal back office autorizzato, non dai normali membri. Recalculate solo per correzioni spiegate.",
+        "Se un controllo manca verifica ruolo, ciclo di vita, inizializzazione, dati e finestra. Comunica sempre passi irreversibili e ricalcoli storici."
+      ],
+      "calloutLabel": "Solo commissioner",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "profile": {
+      "title": "Profilo e personalizzazione",
+      "overview": "Nelle impostazioni account puoi aggiornare profilo, password, tema e lingua senza modificare i dati della lega.",
+      "details": [
+        "Account modifica nome/email validi e univoci; il cambio password richiede password corrente e conferma della nuova.",
+        "Scegli inglese, tedesco o italiano: traduce interfaccia supportata e manuale, non nomi inseriti dagli utenti.",
+        "Scegli palette ispirate al calcio senza affiliazione dichiarata a club reali.",
+        "Lingua e tema sono personali: non cambiano regole, score, Mercato, aspetto altrui o risultati."
+      ],
+      "calloutLabel": "Nota",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    },
+    "faq": {
+      "title": "FAQ e risoluzione problemi",
+      "overview": "Se un’azione non è disponibile, controlla ruolo, stato lega, Market, scadenze, campi obbligatori, limiti rosa e budget.",
+      "details": [
+        "Invio Formazione: prima dell’inizio, team proprio, modulo consentito, undici attivi unici con ruoli esatti e panchina esatta entro limiti; Salva, poi Invia e verifica conferma. Titolari spariti: hai confermato cambio modulo; panchina resta, Annulla avrebbe preservato.",
+        "Modulo assente: non è abilitato. Firma/svincolo: controlla Mercato, proprietario, stato giocatore, prezzo/budget, massimo e ruolo.",
+        "Mercato: servono abilitazione e due date; ora ≥ apertura e < chiusura. Trade: controlla team/giocatori, duplicato, cash/pagatore/budget, ruoli finali, pending e scadenza; destinatario accetta/rifiuta, proponente annulla.",
+        "Trade scaduto non cambia nulla. Una correzione PlayerScore modifica la storia solo con Recalculate esplicito del Commissioner.",
+        "Inizializzazione: team per membro, due team, inizio futuro stessa Season, nessuna inizializzazione esistente e abbastanza Giornate Head-to-Head.",
+        "Titolare assente: cerca riserve giocabili inutilizzate nell’ordine fino al massimo; senza combinazione ruolo/modulo valida vale zero. Una riserva saltata era non giocabile, troppo in basso, oltre massimo o tatticamente invalida.",
+        "Niente difesa: servono opzione, portiere giocabile con voto, quattro difensori, tre voti e soglia. Niente clean sheet: opzione, portiere effettivo e flag clean sheet registrato."
+      ],
+      "calloutLabel": "Attenzione",
+      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+    }
+  }
+}

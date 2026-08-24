@@ -1,0 +1,251 @@
+{
+  "eyebrow": "Spielanleitung",
+  "title": "Spielanleitung",
+  "introduction": "Das vollständige Kaiser-XI-Handbuch – von der Ligaerstellung bis zur Fehlerbehebung.",
+  "contents": "Inhalt",
+  "chapter": "Kapitel {{number}}",
+  "details": "So funktioniert es",
+  "chapterNavigation": "Kapitelnavigation",
+  "backHome": "Zur Startseite",
+  "chapters": {
+    "gettingStarted": {
+      "title": "Erste Schritte",
+      "overview": "Erstelle ein Konto, melde dich an und nutze das Dashboard, um eine Liga zu erstellen oder eine Einladung deiner Gruppe zu öffnen.",
+      "details": [
+        "Kaiser XI ordnet reale Fußballspieler Fantasy Teams zu. Aus Grundnote und realen Ereignissen entsteht pro Spieltag ein Fantasy-Ergebnis, das je nach Ligatyp unterschiedlich in die Wertung eingeht. Your League. Your Rules.",
+        "Registriere dich mit Name, E-Mail und Passwort, melde dich an und öffne das Dashboard. Dort erstellst du eine Liga oder nimmst als angemeldeter Benutzer einen gültigen Einladungslink an.",
+        "Wer eine Liga erstellt, wird Commissioner und verwaltet Mitglieder, Teams, Regeln, Startkader, Wettbewerb, Markt und Berechnungen. Wer eine Einladung annimmt, wird Mitglied unter den Regeln dieses Commissioners und benötigt ein zugewiesenes Fantasy Team.",
+        "Lies nach dem Beitritt die Ligaregeln. Sie bestimmen Budget, Kader, Aufstellung, Wechsel, Wertung, Marktfenster und Trades; diese allgemeine Anleitung ersetzt die konkreten Regeln deiner Liga nicht."
+      ],
+      "calloutLabel": "Hinweis",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "creatingLeague": {
+      "title": "Eine Liga erstellen",
+      "overview": "Eine Liga ist ein privater Wettbewerbsraum. Der Ersteller wird Commissioner und wählt realen Wettbewerb, Ligatyp, Namen und Anfangsregeln.",
+      "details": [
+        "Trage einen Namen (maximal 255 Zeichen) und optional eine Beschreibung (maximal 5.000 Zeichen) ein. Wähle nur eine in der Liste vorhandene reale Competition/Season; sie bestimmt Spieltage, Spiele, registrierte Spieler, Rollen und Bewertungen.",
+        "Wähle Classic, Head-to-Head oder Formula One. Classic summiert Fantasy-Punkte (72 + 68 = 140). Head-to-Head erzeugt Paarungen und wandelt standardmäßig 65/66/72/78 Punkte in 0/1/2/3 Tore um; Sieg, Remis und Niederlage bilden die Tabelle. Formula One reiht Teams je Spieltag und vergibt standardmäßig 25, 18, 15, 12, 10, 8, 6, 4, 2, 1 Positionspunkte.",
+        "Setze 2 bis 100 maximale Teilnehmer. Das Limit gilt für angenommene Mitglieder; vor der Initialisierung braucht jedes Mitglied ein Fantasy Team.",
+        "Das Startbudget ist standardmäßig 500 Credits. Kaufpreise und Marktverpflichtungen ziehen Credits ab, gültige Entlassungen erstatten den festgelegten Anteil, und aktivierte Barausgleiche bei Trades übertragen Credits.",
+        "Lege Erstattungsprozentsatz, maximale Kadergröße und Limits für Torhüter, Verteidiger, Mittelfeldspieler und Stürmer fest. Kaufpreis 40 bei 50 % Erstattung ergibt 20 Credits. Rollenlimits müssen die Gesamtgröße ermöglichen.",
+        "Nach dem Erstellen bist du Commissioner. Standardregeln werden ergänzt, aber weder Kader verteilt noch der Wettbewerb initialisiert: zuerst einladen, alle Regeln prüfen, Teams anlegen und Startkader erfassen."
+      ],
+      "calloutLabel": "Nur für Commissioner",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "buildingSquads": {
+      "title": "Die ersten Kader zusammenstellen",
+      "overview": "Führt Auktion, verdeckte Gebote oder Draft außerhalb von Kaiser XI durch. Anschließend erfasst Kaiser XI die vereinbarten Spieler, Preise und Kader.",
+      "details": [
+        "Kaiser XI führt keine Startauktion, verdeckte Gebote oder Draft durch. Diese drei Methoden sind ausschließlich Vorschläge für eine Organisation außerhalb der Anwendung.",
+        "Auktion: Spieler nominieren, extern bieten, Gewinner und Preis notieren und die vollständige Liste später vom Commissioner erfassen lassen. Vorteil: lebendig und budgetorientiert; Nachteil: Anwesenheit und sorgfältige Buchführung.",
+        "Verdeckte Gebote: Angebote privat bis zu einer externen Frist abgeben; das höchste gültige Gebot gewinnt. Die Gruppe muss Gleichstände selbst regeln. Vorteil: flexibel; Nachteil: Angebote und Budgets müssen extern abgeglichen werden.",
+        "Draft: in vereinbarter Reihenfolge freie Spieler wählen. Ein Spieler darf am Ende nur einem Team gehören; auch bei geringerem Budgetfokus müssen Preise, Budget, Größe und Rollenlimits in Kaiser XI gültig sein.",
+        "Vier Dinge sind getrennt: externe Erstverteilung → Erfassung im Squad Setup → Markt für freie Spieler während der Saison → Trades zwischen zwei Teams. Kaiser XI erzwingt keine externen Nominierungs-, Gebots- oder Draftregeln."
+      ],
+      "calloutLabel": "Warnung",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "leagueOverview": {
+      "title": "Deine Liga verstehen",
+      "overview": "Die Ligaübersicht verbindet Mitglieder, Fantasy-Teams, Regeln, Market, Spieltage, Ergebnisse und die konfigurierte Meisterschaft.",
+      "details": [
+        "Die Ligaübersicht zeigt Name, Beschreibung, Season, Typ, Status, Kapazität und deine Rolle. Verwaltungsaktionen erscheinen nur dem Commissioner.",
+        "Fantasy Teams führt zu Besitzer, Restbudget, Kader, Rollen und Kaufpreisen. League Rules zeigt die wirksamen Regeln; Mitglieder lesen, Commissioner ändern sie nur soweit Lebenszyklus und bestehende Kader es erlauben.",
+        "Market zeigt saisonberechtigte freie und vergebene Spieler sowie Transaktionen und Trades. Er ist nur bei aktivierter Option, beiden Zeitpunkten und innerhalb des Zeitfensters offen.",
+        "Matchdays verbindet Frist, Aufstellung, Berechnungsstatus und Ergebnisse. Standings bedeutet in Classic Gesamt-Fantasy-Punkte, in Head-to-Head eine Matchtabelle und in Formula One kumulierte Positionspunkte; Head-to-Head besitzt außerdem einen Spielplan.",
+        "Fehlt ein Bereich oder eine Aktion, prüfe Initialisierung, Teambesitz, Commissioner-Rolle, Marktfenster und Spieltagsfrist. Die Navigation passt sich absichtlich Zustand und Berechtigung an."
+      ],
+      "calloutLabel": "Hinweis",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "leagueRules": {
+      "title": "Ligaregeln",
+      "overview": "Ligaregeln sind die wirksamen Kader-, Aufstellungs-, Bank-, Wechsel- und Wertungseinstellungen dieser Liga – nicht diese allgemeine Anleitung.",
+      "details": [
+        "Budget/Bestand: Startbudget, Erstattungsquote, Kadermaximum und vier Rollenlimits steuern jede Zuweisung. Bestehende Kader verhindern unvereinbare Senkungen; das Startbudget lässt sich nach vorhandenen Teams nicht beliebig umschreiben.",
+        "Aufstellung: Erlaubte Module sind standardmäßig 3-4-3, 3-5-2, 4-3-3, 4-4-2, 4-5-1, 5-3-2 und 5-4-1. Bankgröße ist bei Abgabe exakt, Rollenlimits gelten zusätzlich. Maximale Wechsel dürfen die Bankgröße nicht übersteigen.",
+        "Wechselreihenfolge ist Bankreihenfolge oder Rollenpriorität. Ohne Formationswechsel muss jedes Ersatzresultat das abgegebene Modul erhalten; mit aktivierter Änderung darf ein anderes erlaubtes Modul mit exakt passenden Rollenzahlen entstehen.",
+        "Spielerkoeffizienten: Tor +3, Assist +1, Gelb −0,5, Rot −1, Eigentor −2, Elfmeter verwandelt +3, verschossen −3, gehalten +3, Gegentor −1 sind Standardwerte. Ein Elfmetertor wird nicht zusätzlich als normales Tor belohnt.",
+        "Optionen: Real-Kapitän-Bonus zählt nur für beitragende reale Kapitäne; Zu-null-Bonus nur für den beitragenden Formationstorhüter mit gesetztem Clean-Sheet-Merkmal.",
+        "Abwehrmodifikator: ein spielbarer Torhüter und mindestens vier spielbare Verteidiger sind nötig. Gemittelt werden Torhüter-Grundnote plus die drei höchsten Verteidiger-Grundnoten; es gilt der Bonus der höchsten erreichten Schwelle.",
+        "Head-to-Head besitzt Schwelle für das erste Tor und Torintervall (Standard 66/6). Formula One besitzt eine nicht steigende Positionspunktetabelle. Markt/Trades benötigen Aktivierung, Öffnung, Schließung und optionalen Barausgleich; editieren darf nur der Commissioner im zulässigen Lebenszyklus."
+      ],
+      "calloutLabel": "Hinweis",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "championship": {
+      "title": "Meisterschaft konfigurieren",
+      "overview": "Der Commissioner konfiguriert das unterstützte Meisterschaftsformat und den Spielplan vor der Initialisierung. Dabei entsteht die Saisonstruktur für Ergebnisse und Tabelle.",
+      "details": [
+        "Initialisierung verbindet die endgültigen Teilnehmer einmalig mit zukünftigen Spieltagen; Ligaerstellung allein startet keinen Wettbewerb. Nur der Commissioner darf initialisieren.",
+        "Voraussetzungen: jedes angenommene Mitglied hat ein Fantasy Team, mindestens zwei Teams existieren, der Startspieltag gehört zur gewählten Season und liegt in der Zukunft. Regeln und Kader sollten vorher geprüft sein.",
+        "Classic und Formula One speichern Teilnehmer und einen zukünftigen Start; alle verbleibenden Season-Spieltage bilden den Wettbewerb. Classic summiert Teamwerte, Formula One erzeugt je Runde Rang- und Positionspunkte.",
+        "Head-to-Head benötigt Start, Anzahl Rundenturniere und unterstützte Reihenfolge. Kaiser XI erzeugt Paarungen auf genügend verfügbaren zukünftigen Season-Spieltagen; ein zweiter Spielplan ist nicht möglich.",
+        "Checkliste: Einladungen geklärt, jedes Mitglied korrektes Team, mindestens zwei Teams, Startkader und Budgets gültig, alle Wertungs-/Aufstellungs-/Marktregeln geprüft, richtiger zukünftiger Start und für Head-to-Head genügend Runden."
+      ],
+      "calloutLabel": "Nur für Commissioner",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "squadSetup": {
+      "title": "Erste Kader einrichten",
+      "overview": "Nach der externen Zuteilung weist ein Commissioner jeden vereinbarten Spieler samt Kaufpreis dem richtigen Fantasy-Team in Kaiser XI zu.",
+      "details": [
+        "Der Commissioner legt Fantasy Teams an, weist sie den richtigen aktuellen Mitgliedern zu und trägt nach der externen Verteilung jeden saisonberechtigten Spieler mit ganzzahligem Kaufpreis ein.",
+        "Der Preis wird gespeichert und vom Restbudget abgezogen. Ein Spieler kann in derselben Liga nur einmal aktiv sein; Budget, Kadermaximum und das Rollenlimit seiner Season-Registrierung werden geprüft.",
+        "Beispiel: von 500 Credits bleiben nach Käufen über 430 noch 70. Preise sind später Grundlage der Entlassungserstattung und bleiben beim Trade am Spieler.",
+        "Prüfe teamweise Besitzer, Spieler, eindeutige Zuordnung, Rollen, Preise, Summen und nicht negatives Budget. Unverfügbare Spieler oder abweichende Rollen müssen extern geklärt und dürfen nicht erzwungen werden.",
+        "Squad Setup dokumentiert nur den Startzustand, öffnet nicht den Markt und führt keine Auktion aus. Erst nach vollständiger Prüfung den Wettbewerb initialisieren."
+      ],
+      "calloutLabel": "Nur für Commissioner",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "market": {
+      "title": "Market",
+      "overview": "Der Market ist Kaiser XIs Bereich für Kaderänderungen während der Saison. Wenn die Regeln es erlauben, können freie Spieler verpflichtet und Kaderspieler entlassen werden.",
+      "details": [
+        "Der Commissioner muss den Trade Market aktivieren und Öffnungs- sowie Schließzeit setzen. Er ist ab Öffnung einschließlich und ab Schließung nicht mehr offen; außerhalb werden Verpflichtungen, Entlassungen und Trades abgelehnt.",
+        "Das Verzeichnis zeigt aktive Season-Registrierungen und ob ein Spieler frei oder einem Team zugewiesen ist. Zum Verpflichten wählt der Teambesitzer einen freien Spieler und einen nicht negativen ganzzahligen Preis. Bei 35 Credits und Preis 12 bleiben 23.",
+        "Eine Verpflichtung scheitert bei geschlossenem Markt, falschem Besitzer, nicht mehr freiem/berechtigtem Spieler, ungültigem Preis, zu wenig Budget, vollem Kader oder erreichtem Rollenlimit. Nach parallelen Aktionen aktualisieren.",
+        "Beim Entlassen endet die aktive Zuweisung und der Spieler wird frei. Kaufpreis 40 und 50 % geben 20 Credits zurück (ganzzahlige Erstattung nach Anwendungsrundung). Prüfe vorher, ob der verbleibende Kader eine Aufstellung ermöglicht.",
+        "Der Markt ist nicht die externe Startauktion. Zeitfenster und Barausgleich stellt nur der Commissioner ein; Trades tauschen bereits vergebene Spieler und benötigen dasselbe offene Fenster."
+      ],
+      "calloutLabel": "Warnung",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "fantasyTeam": {
+      "title": "Dein Fantasy-Team",
+      "overview": "Die Teamseite zeigt Name, Besitzer, Budget und Kader. Prüfe hier, ob Kaderänderungen und Preise korrekt erfasst wurden.",
+      "details": [
+        "Die Teamseite zeigt Name, Besitzer, Restbudget und Kader. Ein falscher Besitzer verhindert Aufstellungs- und Marktaktionen und muss vom Commissioner korrigiert werden.",
+        "Restbudget ist der aktuelle Wert: Zuweisungen/Verpflichtungen senken ihn, gültige Entlassungen erhöhen ihn und akzeptierte Barausgleiche übertragen Credits.",
+        "Kaderzeilen zeigen Spieler, Season-Rolle, Kaufpreis, Zuweisung und gegebenenfalls Entlassung. Kaufpreise bestimmen Erstattungen und bleiben bei Trades erhalten.",
+        "Der Kader ist nur der Auswahlpool. Für jeden Spieltag musst du daraus separat Modul, exakt elf passende Starter und die geordnete Bank abgeben. Entlassene Spieler sind nicht für neue Entwürfe wählbar, bleiben aber in historischen Aufstellungen sichtbar."
+      ],
+      "calloutLabel": "Hinweis",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "formation": {
+      "title": "Aufstellung",
+      "overview": "Wähle für jeden Spieltag ein erlaubtes Modul, besetze alle Startpositionen und die erforderliche Bank und reiche die Aufstellung ein.",
+      "details": [
+        "Öffne die Aufstellung deines eigenen Teams für einen berechtigten Spieltag. Vor starts_at kannst du bearbeiten; ab Start sperrt die harte Frist Speichern und Abgeben.",
+        "Wähle ein in den Ligaregeln erlaubtes Modul und auf dem Pitch genau elf aktive Spieler mit dessen exakten Rollenzahlen. Wähle außerdem exakt die Bankgröße innerhalb der Bank-Rollenlimits; niemand darf Starter und Ersatz zugleich sein.",
+        "Ordne die Bank bewusst. Speichern legt nur einen Entwurf ab. Abgeben prüft Modul, Elf, Rollen, Bank, Eindeutigkeit, aktiven Kader, Besitzer, Season und Frist und markiert dann bestätigt mit Abgabezeit. Nur bestätigte Aufstellungen zählen.",
+        "Bei einem wirklich anderen Modul und vorhandenen Startern erscheint eine Bestätigung. Bestätigen wechselt das Modul, löscht die Starter und erhält die Bank; Abbrechen lässt den Entwurf unverändert. Die Löschung verhindert eine ungültige Elf unter neuen Positionsanforderungen.",
+        "Bei der Berechnung werden nicht spielende Starter in Reihenfolge geprüft. Nur spielbare, noch unbenutzte Bankspieler innerhalb des Wechselmaximums kommen infrage; Bankreihenfolge oder Rollenpriorität bestimmt die Suche.",
+        "Ohne erlaubten Formationswechsel muss das ursprüngliche Modul gültig bleiben. Mit Erlaubnis darf das Resultat exakt einem anderen erlaubten Modul entsprechen. Findet sich kein Kandidat, bleibt der Starter ungelöst und zählt null. Beispiel: im 4-4-2 ersetzt ein spielbarer Bankverteidiger einen fehlenden Verteidiger; ein Mittelfeldspieler kann das ohne passende erlaubte Moduländerung nicht."
+      ],
+      "calloutLabel": "Warnung",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "matchdays": {
+      "title": "Spieltage",
+      "overview": "Spieltage bündeln Aufstellungsabgabe, Berechnungsstatus und veröffentlichte Ergebnisse einer Runde des realen Wettbewerbs.",
+      "details": [
+        "Beziehung: reale Competition → Season → Matchday → reale Spiele → Spielerleistungen → Fantasy-Ergebnisse. Die Season der Liga begrenzt alle verfügbaren Daten.",
+        "Vorher zeigt der Spieltag Nummer, Start/Ende, Wettbewerbszugehörigkeit und Aufstellungslink. Die Formation muss vor dem Start bestätigt sein.",
+        "Währenddessen sind Formationen gesperrt und Leistungsdaten können noch unvollständig sein. Nur als spielbar markierte PlayerScores zählen; ausstehende oder Nichtspieler können Bankwechsel auslösen.",
+        "Nach Ende darf ein autorisierter Commissioner einen Spieltag des initialisierten Wettbewerbs berechnen. Für vollständige Ergebnisse braucht jedes Team eine bestätigte Formation; Head-to-Head benötigt beide Teamwerte.",
+        "Danach zeigt die Seite Teamwerte, Beitragende, Wechsel und formatspezifische Resultate. Frühere Spieltage dienen als Historie und nicht zur nachträglichen Aufstellungsbearbeitung."
+      ],
+      "calloutLabel": "Hinweis",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "scoring": {
+      "title": "Wertung",
+      "overview": "Spielerwerte folgen den konfigurierten Wertungsregeln. Ergebnisdetails erklären Beiträge; Aufstellungs- und Wechselregeln bestimmen, wer zählt.",
+      "details": [
+        "Grundnote bewertet die reale Leistung. Ereigniszahlen für Tore, Assists, Karten, Eigentore, Elfmeter und Gegentore werden mit Ligakoeffizienten addiert; Clean Sheet und realer Kapitän sind Merkmale.",
+        "Standard: Tor +3, Assist +1, Gelb −0,5, Rot −1, Eigentor −2, Elfmeter verwandelt +3, verschossen −3, gehalten +3, Gegentor −1. Ein als Elfmeter erfasstes Tor erhält nicht beide Torboni.",
+        "Es zählen nur effektive spielbare Starter einschließlich gültiger Wechsel. Ungelöste Nichtspieler und unbenutzte Bank zählen null. Danach kommen aktivierter Kapitän-, Torhüter-Zu-null- und Abwehrbonus hinzu.",
+        "Abwehrbonus: spielbarer Torhüter plus mindestens vier spielbare Verteidiger; Mittel aus Torhüter-Grundnote und den drei höchsten Verteidiger-Grundnoten; Bonus der höchsten erreichten Schwelle. Ereignisbereinigte Fantasy-Werte werden nicht gemittelt.",
+        "Vollbeispiel mit Standards: Zehn Spieler ergeben 60,0. Spieler elf hat 6,5 + Tor 3 + Assist 1 − Gelb 0,5 = 10,0; Basis 70,0. Real-Kapitän +0,5, Torhüter-Clean-Sheet +1 und Abwehrschnitt (6,0+6,5+7,0+6,5)/4=6,5 mit Standardbonus +2 ergeben 73,5.",
+        "Lies immer die konkreten Ligakoeffizienten. Die Berechnung nutzt aktuelle Grundnoten/Ereignisse; im Ergebnisdetail siehst du Beitrag und optionale Boni."
+      ],
+      "calloutLabel": "Hinweis",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "results": {
+      "title": "Ergebnisse, Tabelle und Kalender",
+      "overview": "Öffne nach der Berechnung die Spieltagsergebnisse und nutze Tabelle oder Meisterschaftsspielplan, um die Saison zu verfolgen.",
+      "details": [
+        "Ein berechneter Spieltag zeigt Teamgesamtwert und Spieleraufschlüsselung: ursprüngliche Starter, Bank, tatsächlich eingewechselte Spieler, ersetzte Spieler, Nichtbeitragende und Punkte.",
+        "Basis/Spielerbeitrag, Torhüter-Clean-Sheet und Abwehrmodifikator sind nachvollziehbar; der reale Kapitänsbonus steht im beitragenden Spielerdetail. Historische Aufstellungen bewahren die bestätigte Auswahl.",
+        "Classic addiert die Fantasy-Teamwerte der enthaltenen Spieltage und rangiert nach der kumulierten Summe—ohne Siege oder Positionspreise.",
+        "Head-to-Head wandelt Paarwerte in Tore um und speichert Sieg/Remis/Niederlage sowie Spiele, S/U/N, Tore, Differenz und Tabellenpunkte. Der Calendar zeigt erzeugte Paarungen und Resultatstatus.",
+        "Formula One rangiert die Teamwerte pro Spieltag, vergibt konfiguriere Positionspunkte und summiert diese in der Meisterschaft. Öffne frühere Matchdays, um die jeweilige Historie zu prüfen."
+      ],
+      "calloutLabel": "Hinweis",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "calculation": {
+      "title": "Berechnen und neu berechnen",
+      "overview": "Berechtigte Commissioner berechnen einen Spieltag, wenn Daten und Aufstellungen bereit sind. Neuberechnung ersetzt Werte und Ergebnisse anhand aktueller Regeln.",
+      "details": [
+        "Nur ein autorisierter Commissioner kann nach dem Spieltagsende Calculate für einen Spieltag des initialisierten Wettbewerbs auslösen. Zuvor müssen bestätigte Formationen und ausreichende spielbare Bewertungen vorliegen.",
+        "Calculate löst Wechsel, berechnet Teamwerte/Details, erzeugt gegebenenfalls Head-to-Head-Resultate, aktualisiert die passende Tabelle und speichert den Berechnungszeitpunkt. Fehlende Aufstellungen oder ungültige/doppelte Quelldaten werden nicht erfunden.",
+        "Berechnete Historie ändert sich nicht still. Wird eine Grundnote nach einer Berechnung von 6,5 auf 7,0 korrigiert, bleibt das Resultat bestehen, bis der Commissioner ausdrücklich Recalculate nutzt.",
+        "Recalculate löscht innerhalb einer geschützten Transaktion die abgeleiteten Team- und Matchresultate dieser Liga/Runde und baut Details, Ergebnisse und Tabellen aus aktuellen Scores und wirksamen Regeln neu auf. Quelldaten und abgegebene Formationen bleiben unverändert.",
+        "Bei unvollständigen/ungültigen Daten scheitert der Neuaufbau und das frühere Resultat wird wiederhergestellt statt eines halben Zustands. Nur für echte Korrekturen verwenden und Mitglieder informieren."
+      ],
+      "calloutLabel": "Nur für Commissioner",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "transfers": {
+      "title": "Transfers und Trades",
+      "overview": "Market-Verpflichtungen holen freie Spieler, Entlassungen geben sie frei. Trades sind Vorschläge zwischen Fantasy-Teams und ändern Kader erst nach Annahme.",
+      "details": [
+        "Markt-Verpflichtung/Entlassung bewegt einen Spieler zwischen frei und Team. Ein Trade ist dagegen ein Vorschlag zum Tausch je eines bereits eigenen Spielers zweier verschiedener Teams; beides braucht den offenen Markt.",
+        "Der Vorschlag nennt Empfängerteam, angebotene und verlangte aktive saisonberechtigte Zuweisung. Identische offene Vorschläge sind unzulässig. Optional wird bei aktivierter Einstellung ein ganzzahliger Betrag und eines der beiden Teams als Zahler angegeben.",
+        "Nur der Empfänger akzeptiert oder lehnt ab; nur der Anbieter storniert. Beim Akzeptieren werden Marktfenster, Offen/Verfall, Besitzer, Registrierungen, neue Rollenlimits, Barausgleich und Zahlerbudget erneut geprüft.",
+        "Bei Annahme enden alte Zuweisungen, Spieler wechseln mit erhaltenem Kaufpreis, Credits werden gegebenenfalls übertragen und Status wird angenommen. Ablehnung/Storno ändert keinen Kader. Ein verfallener Vorschlag kann nicht verarbeitet werden und tauscht nichts.",
+        "Beispiel: Lions bieten Verteidiger (Preis 20) für Eagles-Mittelfeldspieler (Preis 30) plus 5 Credits von Lions. Bei offenem Markt, aktivem Cash, mindestens 5 Credits und gültigen Zielrollen wechseln Spieler, Preise bleiben 20/30, Lions −5 und Eagles +5."
+      ],
+      "calloutLabel": "Warnung",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "commissioner": {
+      "title": "Commissioner-Leitfaden",
+      "overview": "Commissioner verwalten Einstellungen, Einladungen, Rollen, erste Kader, Meisterschaft, Market-Steuerung und autorisierte Berechnungen.",
+      "details": [
+        "Ablauf: Liga mit richtiger Season/Typ/Kapazität erstellen → vollständige Standardregeln prüfen → Manager einladen → Teams zuweisen.",
+        "Startverteilung extern durchführen, danach jeden saisonberechtigten Spieler samt Preis erfassen und Besitzer, Eindeutigkeit, Budget, Größe und Rollen teamweise prüfen.",
+        "Erst bei Team für jedes Mitglied, mindestens zwei Teams und künftigem Season-Start initialisieren; Head-to-Head braucht genügend zukünftige Runden. Die Initialisierung ist nicht einfach wiederholbar.",
+        "Marktaktivierung, Öffnung, Schließung und Cash-Recht konfigurieren und kommunizieren. Gültige Mitgliedertransaktionen benötigen keine manuelle Einzelgenehmigung.",
+        "Vor jeder Frist erinnern; nach Ende und fertigen Daten Calculate ausführen. Reale Quelldaten verwalten autorisierte Backoffice-Administratoren, nicht gewöhnliche Ligamitglieder. Recalculate nur bei erklärter Korrektur.",
+        "Fehlt eine Commissioner-Aktion, prüfe Rolle, Lebenszyklus, Initialisierung, Pflichtdaten und Zeitfenster. Irreversible Schritte und historische Neuberechnungen immer allen Managern mitteilen."
+      ],
+      "calloutLabel": "Nur für Commissioner",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "profile": {
+      "title": "Profil und Personalisierung",
+      "overview": "In den Kontoeinstellungen änderst du Profildaten, Passwort, Design und Sprache, ohne Ligadaten zu verändern.",
+      "details": [
+        "Im Account kannst du den editierbaren Namen und die E-Mail ändern; Adresse muss gültig und eindeutig sein. Passwortänderung verlangt aktuelles Passwort sowie bestätigtes neues Passwort.",
+        "Wähle Englisch, Deutsch oder Italienisch. Dies übersetzt unterstützte Oberfläche und Anleitung, aber keine von Benutzern eingegebenen Liga-/Teamnamen.",
+        "Wähle eine der fußballinspirierten Farbpaletten; sie beanspruchen keine Zugehörigkeit zu realen Clubs.",
+        "Sprache und Theme sind persönliche Anzeigepräferenzen. Sie ändern weder Ligaregeln, Wertung, Markt, andere Benutzeroberflächen noch gespeicherte Resultate."
+      ],
+      "calloutLabel": "Hinweis",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    },
+    "faq": {
+      "title": "FAQ und Fehlerbehebung",
+      "overview": "Wenn eine Aktion nicht verfügbar ist, prüfe Rolle, Ligastatus, Market, Fristen, Pflichtfelder, Kadergrenzen und Budget.",
+      "details": [
+        "Aufstellung nicht abgebbar: vor Start, eigenes Team, erlaubtes Modul, elf eindeutige aktive Starter mit exakten Rollen und exakte Bank innerhalb Limits; speichern, dann abgeben und Bestätigung prüfen. Starter nach Modulwechsel weg: du hast die Sicherheitsabfrage bestätigt; Bank bleibt, Abbrechen hätte alles erhalten.",
+        "Modul fehlt: nur vom Commissioner erlaubte Module sind wählbar. Sign/Release scheitert meist an geschlossenem Markt, falschem Besitzer, geänderter Zuweisung, Preis/Budget, Kadermaximum oder Rollenlimit.",
+        "Markt fehlt: aktiviert plus beide Zeiten nötig; jetzt muss ≥ Öffnung und < Schließung sein. Trade scheitert zusätzlich an Teams/Spielern, Duplikat, Cash/Zahler/Budget, Zielrollen, Status oder Verfall; nur Empfänger akzeptiert/ablehnt, Anbieter storniert.",
+        "Verfallener Trade tauscht nichts. Korrigierte Bewertung ändert berechnete Historie erst durch ausdrückliches Recalculate des Commissioners.",
+        "Initialisierung scheitert ohne Team pro Mitglied, mindestens zwei Teams, zukünftigen Start derselben Season, bei bestehender Initialisierung oder zu wenigen Head-to-Head-Runden.",
+        "Nichtspieler: spielbare unbenutzte Bank wird in konfigurierter Reihenfolge bis zum Maximum gesucht. Kein rollen-/modulgültiger Kandidat bedeutet null; ein übersprungener Bankspieler war unspielbar, zu spät, über Maximum oder taktisch ungültig.",
+        "Kein Abwehrbonus: Option, spielbarer Torhüter samt Grundnote, vier spielbare Verteidiger, drei Verteidigernoten und erreichte Schwelle nötig. Kein Torhüter-Clean-Sheet: Option, beitragender Formationstorhüter und ausdrücklich gesetztes Clean-Sheet-Merkmal nötig."
+      ],
+      "calloutLabel": "Warnung",
+      "callout": "Änderungen werden gegen den aktuellen Ligastatus geprüft. Fehlt eine Aktion oder ist sie deaktiviert, prüfe Rolle und geltende Regeln."
+    }
+  }
+}
