@@ -36,7 +36,7 @@ export function AppNavigation() {
               {t('nav.home')}
             </Link>
 
-            <Link className={navLinkClass} to="/game-instruction">
+            <Link className={navLinkClass} to="/game-instructions">
               {t('nav.gameInstructions')}
             </Link>
 

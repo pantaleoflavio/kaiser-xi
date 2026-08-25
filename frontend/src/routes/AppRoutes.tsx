@@ -8,7 +8,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 import { HomePage } from '../pages/HomePage';
 import { LeagueDetailPage } from '../pages/LeagueDetailPage';
 import { LeaguesPage } from '../pages/LeaguesPage';
-import { GameInstructionsPage } from '../pages/GameInstructionsPage';
+import { GameInstructionsPage } from '../pages/game-instructions/GameInstructionsPage';
 import { FantasyTeamDetailPage } from '../pages/FantasyTeamDetailPage';
 import { CreateLeaguePage } from '../pages/CreateLeaguePage';
 import { InvitationsPage } from '../pages/InvitationsPage';

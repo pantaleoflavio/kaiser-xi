@@ -9,242 +9,274 @@
   "backHome": "Torna alla home",
   "chapters": {
     "gettingStarted": {
-      "title": "Per iniziare",
-      "overview": "Crea un account, accedi e usa la dashboard per creare una lega o aprire un invito del tuo gruppo.",
+      "title": "Primi passi",
+      "overview": "Kaiser XI è un fantasy football pensato per giocare con i tuoi amici creando leghe private e personalizzabili. Crea il tuo account, entra nella Dashboard e inizia creando una nuova Lega oppure unendoti a una Lega esistente tramite invito.",
       "details": [
-        "Kaiser XI assegna calciatori reali alle Fantasy Team. Voto base ed eventi reali generano il punteggio fantasy di ogni Giornata, poi il tipo di Lega decide come usarlo. Your League. Your Rules.",
-        "Registrati con nome, email e password, accedi e apri la dashboard. Da lì puoi creare una Lega oppure, da autenticato, accettare un invito valido.",
-        "Chi crea diventa Commissioner e gestisce membri, squadre, regole, rose iniziali, competizione, Mercato e calcoli. Chi accetta entra come membro sotto le regole altrui e deve ricevere una Fantasy Team.",
-        "Dopo l’ingresso leggi League Rules: budget, rosa, Formazione, sostituzioni, punteggio, finestra di Mercato e Trade sono quelli salvati nella Lega, non quelli di una guida generica."
+        "In Kaiser XI ogni partecipante gestisce una Fantasquadra composta da giocatori reali. Durante la stagione, le prestazioni dei giocatori determinano i punteggi delle Fantasquadre e l'andamento della competizione.",
+        "Per iniziare, crea un account inserendo nome, e-mail e password. Dopo aver effettuato l'accesso, la Dashboard sarà il tuo punto di partenza per accedere alle tue Leghe e alle principali funzioni dell'app.",
+        "Se vuoi organizzare una nuova competizione con i tuoi amici, crea una Lega. Diventerai il Commissioner e potrai configurarne le regole, invitare gli altri partecipanti e preparare il campionato.",
+        "Se invece un'altra persona ha già creato la Lega, puoi unirti tramite il suo invito. Una volta entrato, farai parte della Lega e potrai gestire la Fantasquadra che ti verrà assegnata.",
+        "Ogni Lega può avere configurazioni differenti. Prima di iniziare a giocare, consulta sempre le Regole della Lega per conoscere le impostazioni scelte dal Commissioner."
       ],
-      "calloutLabel": "Nota",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Your League. Your Rules.",
+      "callout": "Ogni gruppo può creare la propria esperienza di gioco scegliendo il tipo di Lega e configurando le regole che preferisce."
     },
     "creatingLeague": {
       "title": "Creare una lega",
-      "overview": "Una lega è uno spazio competitivo privato. Chi la crea diventa commissioner e sceglie competizione reale, tipo, nome e regole iniziali.",
+      "overview": "Una Lega è uno spazio competitivo privato in cui giocare con i tuoi amici. Chi la crea diventa Commissioner e ne definisce le caratteristiche principali e le regole iniziali.",
       "details": [
-        "Inserisci nome (massimo 255 caratteri) e descrizione facoltativa (massimo 5.000). Scegli soltanto una Competition/Season presente: determina Giornate, partite, giocatori registrati, ruoli e PlayerScore disponibili.",
-        "Scegli Classic, Head-to-Head o Formula One. Classic somma i punti fantasy (72 + 68 = 140). Head-to-Head crea incontri e con i default converte 65/66/72/78 in 0/1/2/3 gol, poi usa vittorie/pareggi/sconfitte. Formula One ordina ogni Giornata e assegna di default 25,18,15,12,10,8,6,4,2,1 punti posizione.",
-        "Imposta da 2 a 100 partecipanti: limita gli inviti accettati e prima dell’inizializzazione ogni membro deve avere una Fantasy Team.",
-        "Il budget iniziale predefinito è 500 crediti. Prezzi iniziali e acquisti lo riducono, gli svincoli validi rimborsano la percentuale e l’eventuale conguaglio Trade trasferisce crediti.",
-        "Imposta percentuale di rimborso, dimensione massima e limiti di portieri, difensori, centrocampisti e attaccanti. Prezzo 40 al 50% restituisce 20; i limiti ruolo devono poter contenere il totale.",
-        "Dopo la creazione sei Commissioner e vengono aggiunti i default, ma rose e campionato non sono creati automaticamente: invita, verifica tutte le regole, crea/assegna squadre e registra le rose."
+        "Inserisci un nome per la Lega e, se vuoi, una descrizione. Seleziona quindi la Competition/Season su cui vuoi giocare: la Lega utilizzerà i giocatori, le partite e le Giornate appartenenti alla stagione scelta.",
+        "Scegli la tipologia di Lega tra Classic, Head-to-Head e Formula One. In Classic i punti ottenuti dalle Fantasquadre nelle diverse Giornate vengono sommati. In Head-to-Head le Fantasquadre si affrontano direttamente: il punteggio fantasy viene convertito in gol e determina vittorie, pareggi e sconfitte. In Formula One, invece, le Fantasquadre vengono ordinate in ogni Giornata in base al punteggio ottenuto e ricevono punti in base alla posizione raggiunta.",
+        "Imposta il numero massimo di partecipanti, da 2 a 100. Questo valore stabilisce quante persone potranno prendere parte alla Lega. Per un'esperienza di gioco più semplice da organizzare, è consigliabile non superare indicativamente i 12 partecipanti.",
+        "Definisci il budget iniziale. Il valore predefinito è di 500 crediti e rappresenta il capitale iniziale a disposizione di ogni Fantasquadra per la gestione della propria rosa.",
+        "Configura la percentuale di rimborso in caso di svincolo, la dimensione massima della rosa e i limiti per portieri, difensori, centrocampisti e attaccanti. La percentuale di rimborso verrà spiegata più nel dettaglio nella sezione dedicata al Mercato.",
+        "Una volta creata la Lega, ne diventi il Commissioner. Kaiser XI aggiunge automaticamente le regole predefinite, ma la preparazione della Lega non è ancora conclusa: dovrai invitare i partecipanti, controllare ed eventualmente modificare le regole, creare e assegnare le Fantasquadre e registrare le rose iniziali."
       ],
-      "calloutLabel": "Solo commissioner",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Solo Commissioner",
+      "callout": "La creazione e la configurazione della Lega sono responsabilità del Commissioner. Prima di iniziare il campionato, assicurati che partecipanti, Fantasquadre, rose e regole siano stati configurati correttamente.",
+      "images": {
+        "createLeague1": {
+          "alt": "Creazione di una nuova Lega"
+        },
+        "createLeague2": {
+          "alt": "Configurazione delle regole iniziali della Lega"
+        },
+        "createLeague3": {
+          "alt": "Configurazione della rosa e dei limiti di ruolo"
+        }
+      }
     },
     "buildingSquads": {
       "title": "Creare le rose iniziali",
-      "overview": "Svolgete asta, buste chiuse o draft fuori da Kaiser XI. In seguito Kaiser XI registra giocatori, prezzi e rose concordati.",
+      "overview": "Prima di iniziare il campionato, i partecipanti devono decidere quali giocatori appartengono a ciascuna Fantasquadra. Kaiser XI non gestisce direttamente questa fase: potete organizzarla liberamente e successivamente il Commissioner inserirà nell'app le rose concordate.",
       "details": [
-        "Kaiser XI non esegue l’asta iniziale, le buste chiuse o il draft: sono soltanto metodi organizzativi suggeriti da svolgere OFFLINE.",
-        "Asta: nominate un giocatore, rilanciate esternamente, annotate vincitore e prezzo, poi consegnate l’elenco al Commissioner. È coinvolgente e centrata sul budget, ma richiede presenza e contabilità precisa.",
-        "Buste: inviate offerte private a un organizzatore entro una scadenza esterna; vince la più alta valida. Stabilite fuori da Kaiser XI come risolvere i pari. È flessibile, ma offerte e budget vanno riconciliati.",
-        "Draft: scegliete a turno in un ordine concordato. Ogni giocatore finirà in una sola squadra; anche se il budget è meno centrale, prezzi, budget, quantità e ruoli registrati devono rispettare Kaiser XI.",
-        "Sono quattro concetti distinti: allocazione offline → Squad Setup nell’app → Mercato stagionale dei liberi → Trade tra due squadre. Kaiser XI non impone regole esterne su rilanci, ordine o spareggi."
+        "Asta classica: a turno viene proposto un giocatore e i partecipanti fanno le proprie offerte. Chi offre di più acquista il giocatore al prezzo dell'offerta vincente. È il metodo più tradizionale e rende il budget iniziale particolarmente importante.",
+        "Buste chiuse: ogni partecipante prepara le proprie offerte senza conoscere quelle degli altri. Alla scadenza concordata, le offerte vengono confrontate e ogni giocatore viene assegnato secondo le regole stabilite dal gruppo, normalmente all'offerta più alta.",
+        "Draft: i partecipanti scelgono a turno un giocatore ancora disponibile seguendo un ordine prestabilito. In questo sistema il budget può avere un'importanza minore, a seconda delle regole decise dal gruppo.",
+        "Qualunque metodo scegliate, al termine dovrete avere una rosa definita per ogni Fantasquadra. Il Commissioner potrà quindi inserire i giocatori nelle rispettive squadre attraverso Kaiser XI.",
+        "Questa fase riguarda soltanto la creazione delle rose iniziali. Il Mercato durante il campionato e gli scambi tra Fantasquadre sono funzionalità separate."
       ],
-      "calloutLabel": "Attenzione",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Importante",
+      "callout": "Prima di iniziare, concordate tra tutti i partecipanti il metodo di assegnazione dei giocatori e le relative regole. Kaiser XI registrerà le rose risultanti, ma non gestirà l'asta, le buste chiuse o il draft."
     },
     "leagueOverview": {
       "title": "Conoscere la lega",
-      "overview": "La panoramica collega membri, fantasy team, regole, Market, giornate, risultati e campionato configurato.",
+      "overview": "La pagina della Lega è il punto di partenza per seguire il campionato e accedere a tutte le sue sezioni. Da qui puoi consultare le Fantasquadre, le regole, il Mercato, le Giornate, la classifica e tutte le altre funzioni disponibili nella tua Lega.",
       "details": [
-        "Il riepilogo mostra nome, descrizione, Season, tipo, stato, capienza e ruolo. I controlli amministrativi compaiono solo al Commissioner.",
-        "Fantasy Teams apre proprietario, budget, rosa, ruoli e prezzi. League Rules mostra le regole effettive; il Commissioner modifica solo ciò che ciclo di vita e rose esistenti consentono.",
-        "Market elenca giocatori della Season liberi/assegnati e transazioni. Serve abilitazione, entrambe le date e ora corrente dentro la finestra.",
-        "Matchdays collega scadenza, Formazione, calcolo e risultati. Standings significa totale fantasy in Classic, classifica incontri in Head-to-Head, punti posizione cumulativi in Formula One; Head-to-Head ha anche Calendar.",
-        "Se manca una voce, verifica inizializzazione, proprietà della squadra, ruolo Commissioner, finestra Mercato e scadenza: navigazione e azioni dipendono volutamente dallo stato."
+        "Fantasquadre: qui trovi tutte le Fantasquadre che partecipano alla Lega. Puoi consultare i loro proprietari, le rose e le principali informazioni di ciascuna squadra.",
+        "Regole della Lega: raccoglie tutte le regole con cui viene giocata la Lega, come composizione delle rose, moduli consentiti, panchina, sostituzioni, bonus e malus e le eventuali regole specifiche del tipo di campionato scelto.",
+        "Mercato: è la sezione dedicata alla gestione dei giocatori durante la stagione. Quando il Mercato è disponibile, permette di consultare i giocatori e gestire acquisti e svincoli secondo le regole configurate nella Lega.",
+        "Giornate: permette di seguire le diverse Giornate della stagione. Da qui puoi accedere alle formazioni, ai punteggi e ai risultati disponibili per ciascuna Giornata.",
+        "Classifica: mostra l'andamento del campionato. Il suo funzionamento dipende dal tipo di Lega scelto: Classic, Head-to-Head o Formula One.",
+        "Calendario: nelle Leghe Head-to-Head mostra gli incontri programmati tra le Fantasquadre.",
+        "La tua Fantasquadra: dalla tua squadra puoi controllare la rosa e preparare la formazione per le Giornate. Le sezioni successive di questa guida spiegano nel dettaglio come gestire rosa, formazione e panchina.",
+        "Il Commissioner dispone inoltre delle funzioni necessarie per amministrare la Lega, gestire i partecipanti e configurare il campionato. Queste operazioni sono spiegate nella sezione dedicata al Commissioner."
       ],
-      "calloutLabel": "Nota",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "In breve",
+      "callout": "Usa la pagina della Lega come punto centrale per muoverti tra tutte le attività del campionato. Alcune sezioni o azioni possono diventare disponibili solo quando la Lega raggiunge la fase necessaria."
     },
     "leagueRules": {
       "title": "Regole della lega",
-      "overview": "Le Regole della lega sono le impostazioni effettive di rosa, formazione, panchina, sostituzioni e punteggio, non questa guida generale.",
+      "overview": "Le Regole della Lega definiscono come viene giocata la competizione: composizione delle rose, moduli consentiti, panchina, sostituzioni, bonus, malus e impostazioni specifiche del tipo di campionato scelto.",
       "details": [
-        "Budget/rosa: budget iniziale, rimborso, massimo rosa e quattro limiti ruolo controllano ogni assegnazione. Rose esistenti impediscono riduzioni incompatibili; il budget iniziale non si riscrive liberamente dopo la creazione delle squadre.",
-        "Formazione: moduli predefiniti 3-4-3,3-5-2,4-3-3,4-4-2,4-5-1,5-3-2,5-4-1. Panchina esatta all’invio e limiti per ruolo. Sostituzioni massime non oltre la panchina.",
-        "Ordine sostituzioni: ordine panchina o priorità di ruolo. Senza cambio modulo ogni ingresso deve conservare il modulo inviato; se abilitato può risultare un altro modulo consentito con conteggi esatti.",
-        "Coefficienti default: gol +3, assist +1, giallo −0,5, rosso −1, autogol −2, rigore segnato +3, sbagliato −3, parato +3, gol subito −1. Un gol su rigore non riceve anche il bonus gol normale.",
-        "Bonus capitano reale solo per un contribuente segnato capitano; clean sheet solo per il portiere contribuente con flag registrato.",
-        "Modificatore difesa: portiere giocabile e almeno quattro difensori giocabili; media del voto portiere e dei tre migliori voti base difensori; si applica il bonus della soglia più alta raggiunta.",
-        "Head-to-Head: soglia primo gol e intervallo (default 66/6). Formula One: tabella punti posizione non crescente. Mercato/Trade: abilitazione, apertura, chiusura e conguaglio. Solo Commissioner, entro i vincoli del ciclo di vita, modifica."
+        "Rose e budget: il Commissioner può configurare il budget iniziale, la percentuale di rimborso in caso di svincolo, la dimensione massima della rosa e i limiti per portieri, difensori, centrocampisti e attaccanti. Questi valori determinano quali operazioni sulla rosa sono considerate valide.",
+        "Formazioni: la Lega stabilisce quali moduli possono essere utilizzati, la dimensione della panchina e i limiti di ruolo dei giocatori in panchina. Una formazione può essere inviata solo se rispetta le regole configurate.",
+        "Sostituzioni: il Commissioner può definire il numero massimo di sostituzioni e il criterio con cui vengono scelti i giocatori dalla panchina. A seconda della configurazione, le sostituzioni possono dover mantenere il modulo originale oppure possono permettere il passaggio a un altro modulo consentito.",
+        "Bonus e malus: la Lega può attribuire valori diversi agli eventi registrati per un giocatore, come gol, assist, cartellini, autogol, rigori segnati o sbagliati, rigori parati e gol subiti. Questi valori contribuiscono al punteggio fantasy del giocatore.",
+        "Bonus aggiuntivi: se abilitati, possono essere applicati bonus specifici come il bonus per il capitano reale e il bonus clean sheet del portiere.",
+        "Modificatore difesa: se attivo, il punteggio della squadra può ricevere un bonus aggiuntivo in base ai voti del portiere e dei migliori difensori schierati, secondo le soglie configurate nella Lega.",
+        "Regole specifiche del tipo di Lega: nelle Head-to-Head il Commissioner configura le soglie con cui i punti fantasy vengono convertiti in gol. Nelle Formula One configura invece quanti punti vengono assegnati alle diverse posizioni ottenute in ogni Giornata.",
+        "Mercato e Trade: le Regole della Lega includono anche le impostazioni relative alla disponibilità del Mercato e degli scambi, come apertura, chiusura e possibilità di utilizzare conguagli in crediti."
       ],
-      "calloutLabel": "Nota",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Solo Commissioner",
+      "callout": "Prima dell'inizio del campionato controlla con attenzione tutte le Regole della Lega. Alcune modifiche possono essere limitate dopo che sono state create le rose o avviata la competizione, per evitare configurazioni incompatibili con lo stato attuale della Lega."
     },
     "championship": {
-      "title": "Configurazione campionato",
-      "overview": "Il commissioner configura il formato supportato e il calendario prima dell’inizializzazione, che crea la struttura usata da risultati e classifica.",
+      "title": "Configurazione del campionato",
+      "overview": "Quando partecipanti, Fantasquadre, rose e regole sono pronti, il Commissioner può configurare e inizializzare il campionato. Questo passaggio prepara la competizione e determina come verranno utilizzate le Giornate della Season scelta.",
       "details": [
-        "L’inizializzazione collega una sola volta i partecipanti definitivi alle Giornate future; creare la Lega non avvia la competizione. Solo il Commissioner può farlo.",
-        "Servono una Fantasy Team per ogni membro accettato, almeno due squadre e una Giornata futura della Season scelta. Regole e rose vanno controllate prima.",
-        "Classic e Formula One salvano partecipanti e inizio futuro; usano le Giornate restanti. Classic accumula punteggi team, Formula One ranghi e punti posizione.",
-        "Head-to-Head richiede inizio, numero di round robin e ordine supportato; genera gli incontri sulle Giornate future disponibili. Devono bastare e non può esistere già un calendario.",
-        "Checklist: inviti risolti, proprietari corretti, almeno due team, rose/budget validi, regole complete, inizio futuro corretto e Giornate sufficienti per Head-to-Head."
+        "Prima di configurare il campionato, assicurati che tutti i partecipanti abbiano accettato l'invito e che a ciascuno sia stata assegnata una Fantasquadra. Devono essere presenti almeno due Fantasquadre e le rose e le regole della Lega dovrebbero essere già state controllate.",
+        "Scegli da quale Giornata futura della Season deve iniziare il campionato. Le Giornate precedenti non faranno parte della competizione della Lega, mentre quelle disponibili a partire dalla Giornata scelta verranno utilizzate per il proseguimento del campionato.",
+        "Nelle Leghe Classic, a partire dalla Giornata scelta vengono registrati i punteggi ottenuti dalle Fantasquadre. I punteggi delle diverse Giornate vengono progressivamente sommati per determinare la classifica.",
+        "Nelle Leghe Formula One vengono utilizzate le Giornate future disponibili. A ogni Giornata le Fantasquadre vengono ordinate in base al punteggio ottenuto e ricevono i punti posizione definiti nelle Regole della Lega.",
+        "Nelle Leghe Head-to-Head il Commissioner configura anche il numero di round robin. Kaiser XI utilizza le Giornate future disponibili per creare il calendario degli incontri tra le Fantasquadre, quindi devono esserci abbastanza Giornate per completare il formato scelto.",
+        "Controlla attentamente tutte le impostazioni prima di inizializzare il campionato. L'inizializzazione rappresenta il passaggio dalla preparazione della Lega alla competizione vera e propria e non deve essere confusa con la semplice creazione della Lega."
       ],
-      "calloutLabel": "Solo commissioner",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Prima di inizializzare",
+      "callout": "Verifica partecipanti, Fantasquadre, rose, regole e Giornata iniziale. Per una Lega Head-to-Head controlla anche che siano disponibili abbastanza Giornate per generare tutti gli incontri previsti."
     },
     "squadSetup": {
-      "title": "Configurazione rose iniziali",
-      "overview": "Dopo l’assegnazione esterna, un commissioner assegna in Kaiser XI ogni giocatore e prezzo concordato al fantasy team corretto.",
+      "title": "Configurazione delle rose iniziali",
+      "overview": "Dopo aver completato l'asta, le buste chiuse o il draft, il Commissioner deve riportare in Kaiser XI le rose concordate, assegnando ogni giocatore alla Fantasquadra corretta.",
       "details": [
-        "Il Commissioner crea le Fantasy Team, le assegna ai membri correnti corretti e registra ogni giocatore eleggibile con prezzo intero concordato offline.",
-        "Il prezzo viene salvato e sottratto. Un giocatore non può essere attivo in due squadre; vengono controllati budget, massimo rosa e limite del ruolo della sua registrazione Season.",
-        "Esempio: da 500, acquisti totali 430 lasciano 70. Il prezzo determina il rimborso futuro e resta col giocatore in un Trade.",
-        "Verifica per squadra proprietario, unicità, ruoli, prezzi, somme e budget non negativo. Un giocatore assente o ruolo discordante va riconciliato, non forzato.",
-        "Squad Setup registra lo stato iniziale: non conduce l’asta né apre il Mercato. Inizializza soltanto dopo la verifica completa."
+        "Per prima cosa assicurati che tutte le Fantasquadre siano state create e assegnate ai partecipanti corretti. Ogni membro della Lega deve avere la propria Fantasquadra prima di iniziare il campionato.",
+        "Apri la Fantasquadra che vuoi configurare e assegna i giocatori ottenuti durante la fase iniziale di costruzione delle rose. Per ogni giocatore inserisci anche il prezzo di acquisto concordato, quando previsto dal vostro metodo di assegnazione.",
+        "Il prezzo di acquisto viene sottratto dal budget disponibile della Fantasquadra. Ad esempio, con un budget iniziale di 500 crediti e acquisti complessivi per 430 crediti, resteranno 70 crediti disponibili.",
+        "Durante l'assegnazione Kaiser XI controlla che la rosa rispetti le regole della Lega, come budget disponibile, dimensione massima della rosa e limiti per ruolo. Lo stesso giocatore non può appartenere contemporaneamente a due Fantasquadre della stessa Lega.",
+        "Ripeti l'operazione per tutte le Fantasquadre e confronta il risultato con quanto stabilito durante l'asta, le buste chiuse o il draft. Prima di iniziare il campionato, verifica che ogni squadra abbia i giocatori corretti e che budget e limiti di ruolo siano rispettati.",
+        "La configurazione delle rose iniziali serve soltanto a registrare in Kaiser XI il risultato della fase di assegnazione dei giocatori. Non avvia automaticamente il Mercato e non sostituisce la successiva inizializzazione del campionato."
       ],
-      "calloutLabel": "Solo commissioner",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Solo Commissioner",
+      "callout": "Configura tutte le rose con attenzione prima di inizializzare il campionato. Correggere giocatori, prezzi o assegnazioni in questa fase è molto più semplice che intervenire quando la competizione è già iniziata."
     },
     "market": {
-      "title": "Market",
-      "overview": "Il Market gestisce la rosa durante la stagione. Quando le regole lo consentono, puoi ingaggiare giocatori liberi e svincolare quelli in rosa.",
+      "title": "Mercato",
+      "overview": "Il Mercato permette alle Fantasquadre di proporre scambi di giocatori durante i periodi stabiliti dal Commissioner. Gli scambi devono rispettare le Regole della Lega e i vincoli delle rose coinvolte.",
       "details": [
-        "Il Commissioner abilita Trade Market e imposta apertura/chiusura. È aperto dall’istante iniziale incluso e chiuso da quello finale; fuori finestra firma, svincolo e Trade sono respinti.",
-        "La directory mostra registrazioni attive della Season e assegnazione. Il proprietario firma un libero con prezzo intero non negativo: con 35 e prezzo 12 restano 23.",
-        "Fallisce con Mercato chiuso, proprietario errato, giocatore non più libero/eleggibile, prezzo invalido, budget insufficiente, rosa piena o limite ruolo. Aggiorna dopo azioni concorrenti.",
-        "Svincolare termina l’assegnazione e libera il giocatore. Prezzo 40 al 50% restituisce 20 crediti (rimborso intero arrotondato dall’app). Controlla che la rosa restante possa fare la Formazione.",
-        "Non è l’asta iniziale offline. Solo il Commissioner gestisce finestra e cash; i Trade scambiano giocatori posseduti e richiedono la stessa finestra."
+        "Il Commissioner decide se il Mercato è attivo e ne configura il periodo di apertura e chiusura. Gli scambi possono essere proposti soltanto quando il Mercato è aperto.",
+        "Durante il Mercato puoi proporre uno scambio a un'altra Fantasquadra della Lega, offrendo un tuo giocatore e richiedendo in cambio uno dei suoi giocatori.",
+        "I giocatori coinvolti non devono necessariamente avere lo stesso ruolo. Lo scambio è possibile se, una volta completato, entrambe le Fantasquadre continuano a rispettare i limiti della rosa e i limiti per ruolo definiti nelle Regole della Lega.",
+        "Ad esempio, puoi proporre lo scambio di un difensore con un centrocampista se, dopo lo scambio, entrambe le Fantasquadre rispettano ancora i rispettivi limiti di difensori e centrocampisti. Se una delle due rose superasse un limite previsto dalla Lega, lo scambio non sarebbe valido.",
+        "Il Commissioner può decidere se consentire anche un conguaglio in crediti. Quando questa opzione è attiva, oltre allo scambio dei giocatori puoi offrire dei crediti oppure richiederli alla Fantasquadra destinataria.",
+        "Esempio: proponi il giocatore A in cambio del giocatore B. Se i conguagli sono abilitati, puoi proporre A + 10 crediti per B oppure richiedere A in cambio di B + 10 crediti.",
+        "L'invio di una proposta non modifica immediatamente le rose. Lo scambio viene completato soltanto quando la proposta viene accettata e tutte le condizioni necessarie risultano valide. A quel punto i giocatori e l'eventuale conguaglio vengono trasferiti tra le due Fantasquadre.",
+        "Prima di proporre o accettare uno scambio, controlla la composizione delle due rose, i limiti per ruolo, il budget disponibile in caso di conguaglio e le Regole della Lega."
       ],
-      "calloutLabel": "Attenzione",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Mercato e Trade",
+      "callout": "Uno scambio può coinvolgere anche giocatori di ruoli diversi. Ciò che conta è che, dopo il Trade, entrambe le Fantasquadre continuino a rispettare i limiti della rosa e dei singoli ruoli stabiliti dalla Lega."
     },
     "fantasyTeam": {
-      "title": "Il tuo fantasy team",
-      "overview": "La pagina della squadra mostra nome, proprietario, budget e rosa. Usala per verificare modifiche e prezzi.",
+      "title": "La tua Fantasquadra",
+      "overview": "La pagina della Fantasquadra raccoglie tutte le informazioni sulla tua squadra: proprietario, budget disponibile e giocatori che compongono la rosa.",
       "details": [
-        "La pagina mostra nome, proprietario, budget residuo e rosa. Proprietario errato blocca Formazione e Mercato e va corretto dal Commissioner.",
-        "Il budget è corrente: assegnazioni/acquisti lo riducono, svincoli validi lo aumentano, conguagli accettati lo trasferiscono.",
-        "La rosa mostra giocatore, ruolo Season, prezzo, assegnazione e svincolo. Il prezzo guida il rimborso e resta nei Trade.",
-        "La rosa è il pool, non l’undici automatico: ogni Giornata scegli separatamente modulo, undici titolari e panchina ordinata. Gli svincolati non entrano in nuove bozze ma restano nella storia."
+        "Ogni partecipante della Lega possiede una Fantasquadra. Da questa pagina puoi controllare la composizione della tua rosa e le principali informazioni della squadra.",
+        "La rosa contiene tutti i giocatori assegnati alla Fantasquadra. Per ogni giocatore puoi vedere le informazioni principali, come ruolo e prezzo di acquisto registrato durante la configurazione della rosa.",
+        "Il budget mostra quanti crediti sono attualmente disponibili. Il valore iniziale dipende dalle Regole della Lega e viene ridotto dai prezzi dei giocatori assegnati alla rosa. Durante la stagione può inoltre cambiare in seguito a Trade che prevedono un conguaglio in crediti.",
+        "La rosa della Fantasquadra non corrisponde automaticamente alla formazione utilizzata in una Giornata. Prima di ogni Giornata devi scegliere, tra i giocatori della tua rosa, i titolari e la panchina rispettando le Regole della Lega. Dalla pagina della tua Fantasquadra puoi inoltre modificarne il nome e personalizzarlo come preferisci.",
+        "Durante il Mercato la composizione della Fantasquadra può cambiare attraverso i Trade conclusi con altre squadre. Dopo uno scambio, controlla sempre la nuova composizione della rosa e il budget disponibile prima di preparare la formazione successiva."
       ],
-      "calloutLabel": "Nota",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "La rosa e la Formazione sono diverse",
+      "callout": "La rosa comprende tutti i giocatori della tua Fantasquadra. La Formazione è invece la selezione di titolari e riserve che scegli per una specifica Giornata."
     },
     "formation": {
       "title": "Formazione",
-      "overview": "Per ogni giornata scegli un modulo consentito, completa titolari e panchina richiesta, quindi invia la formazione.",
+      "overview": "Per ogni Giornata scegli la Formazione con cui scenderà in campo la tua Fantasquadra: seleziona il modulo, gli 11 titolari e la panchina prima della scadenza.",
       "details": [
-        "Apri la Formazione della tua squadra per una Giornata eleggibile. Prima di starts_at puoi modificare; dall’inizio la scadenza blocca Salva e Invia.",
-        "Scegli un modulo consentito e sul pitch esattamente undici attivi con ruoli richiesti. Seleziona la panchina esatta entro i limiti; nessuno può essere titolare e riserva.",
-        "Ordina la panchina. Salva crea soltanto una bozza. Invia verifica modulo, undici, ruoli, panchina, unicità, rosa, proprietà, Season e scadenza, poi conferma con ora. Solo una Formazione confermata conta.",
-        "Scegliendo un modulo davvero diverso con titolari compare conferma: confermare cambia modulo, cancella i titolari e conserva la panchina; annullare non tocca la bozza. Serve a evitare un undici incompatibile.",
-        "Nel calcolo, ogni titolare non giocabile cerca riserve giocabili inutilizzate fino al massimo, secondo ordine panchina o priorità ruolo.",
-        "Senza cambio modulo il risultato deve rispettare quello originale; se abilitato può combaciare con altro modulo permesso. Senza candidato valido il titolare vale zero. Esempio: in 4-4-2 un difensore di panchina sostituisce il difensore assente; un centrocampista no senza un modulo finale consentito."
+        "Apri la sezione Formazione della Giornata che vuoi disputare. Puoi creare e modificare la Formazione fino all'inizio della Giornata; dopo la scadenza non sarà più possibile salvarla o inviarla.",
+        "Scegli uno dei moduli consentiti dalle Regole della Lega. Il modulo determina quanti difensori, centrocampisti e attaccanti devono essere schierati, mentre il portiere occupa sempre il proprio ruolo.",
+        "Seleziona dalla tua rosa esattamente 11 titolari rispettando il modulo scelto. Un giocatore schierato come titolare non può contemporaneamente essere inserito in panchina.",
+        "Completa quindi la panchina rispettando il numero di riserve e gli eventuali limiti per ruolo stabiliti nelle Regole della Lega. L'ordine dei giocatori in panchina può essere importante per determinare le sostituzioni automatiche.",
+        "Puoi salvare la Formazione come bozza e continuare a modificarla fino alla scadenza. Quando sei sicuro delle tue scelte, inviala per confermarla: soltanto una Formazione correttamente inviata viene utilizzata per il calcolo della Giornata.",
+        "Se cambi modulo dopo aver già selezionato i titolari, Kaiser XI ti chiede di confermare la modifica. Confermando, i titolari vengono rimossi perché potrebbero non essere più compatibili con il nuovo modulo, mentre la panchina viene mantenuta. Potrai quindi scegliere nuovamente gli 11 titolari.",
+        "Al termine della Giornata, se uno dei titolari non può contribuire al punteggio, Kaiser XI prova a sostituirlo automaticamente con un giocatore valido della panchina. Il numero massimo e il criterio delle sostituzioni dipendono dalle Regole della Lega.",
+        "Le sostituzioni possono seguire l'ordine della panchina oppure la priorità per ruolo, in base alle impostazioni della Lega. Se il cambio di modulo durante le sostituzioni non è consentito, la Formazione finale deve mantenere il modulo iniziale; se è consentito, le sostituzioni possono portare a un altro modulo tra quelli ammessi dalla Lega.",
+        "Se non esiste una riserva valida che possa sostituire un titolare, la sostituzione non viene effettuata e quel giocatore non contribuisce al punteggio della Fantasquadra."
       ],
-      "calloutLabel": "Attenzione",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Ricorda di inviarla",
+      "callout": "Salvare la Formazione come bozza non equivale a inviarla. Prima della scadenza controlla modulo, titolari, panchina e ordine delle riserve, quindi conferma definitivamente la Formazione."
     },
     "matchdays": {
       "title": "Giornate",
-      "overview": "Le giornate raggruppano invio formazione, stato del calcolo e risultati pubblicati di un turno reale.",
+      "overview": "Le Giornate rappresentano i singoli turni della competizione. Da questa sezione puoi seguire la Giornata corrente e consultare quelle già disputate.",
       "details": [
-        "Catena: Competition reale → Season → Matchday → partite reali → prestazioni → risultati fantasy. La Season limita tutti i dati.",
-        "Prima: numero, inizio/fine, appartenenza e link Formazione; invia prima dell’inizio. Durante: Formazioni bloccate e dati ancora parziali.",
-        "Solo PlayerScore giocabili contribuiscono; pending/non giocatori possono attivare sostituzioni. Dopo la fine il Commissioner autorizzato calcola una Giornata inizializzata.",
-        "Per risultati completi ogni team deve avere Formazione confermata; Head-to-Head necessita entrambi i punteggi. Dopo il calcolo si vedono totali, dettagli, sostituzioni e risultato di formato; le Giornate passate sono storia."
+        "Ogni Giornata corrisponde a un turno della Season su cui è basata la Lega. Prima dell'inizio puoi preparare e inviare la Formazione della tua Fantasquadra entro la scadenza prevista.",
+        "Durante la Giornata puoi consultare lo stato del turno e, quando disponibili, le informazioni relative alle Formazioni e ai punteggi.",
+        "Dopo il calcolo della Giornata puoi vedere i risultati ottenuti dalle Fantasquadre, i relativi punteggi e il dettaglio delle Formazioni utilizzate.",
+        "Le Giornate passate rimangono disponibili come storico della Lega. Puoi quindi tornare indietro e consultare risultati, punteggi e Formazioni delle Giornate già concluse.",
+        "Quando previsto dalla vista della Lega, puoi consultare anche le Formazioni e i risultati delle altre Fantasquadre, non soltanto quelli della tua squadra."
       ],
-      "calloutLabel": "Nota",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Storico della Lega",
+      "callout": "Usa la sezione Giornate per seguire il turno attuale e per rivedere ciò che è successo nelle Giornate precedenti."
     },
     "scoring": {
       "title": "Punteggio",
-      "overview": "I totali seguono le regole di punteggio configurate. I dettagli spiegano i contributi; formazione e sostituzioni determinano chi conta.",
+      "overview": "Il punteggio di una Fantasquadra nasce dalle prestazioni reali dei giocatori schierati. Kaiser XI parte dal voto base di ogni giocatore, applica i bonus e i malus previsti dalle Regole della Lega e considera soltanto i giocatori che contribuiscono effettivamente alla Formazione finale.",
       "details": [
-        "Voto base più eventi (gol, assist, cartellini, autogol, rigori, gol subiti) moltiplicati per coefficienti crea il fantasy score; clean sheet e capitano reale sono flag.",
-        "Default: +3,+1,−0,5,−1,−2,+3,−3,+3,−1. Un gol registrato come rigore non somma due bonus gol.",
-        "Contano soltanto titolari effettivi giocabili, incluse sostituzioni valide. Assenti irrisolti e panchinari inutilizzati valgono zero; poi si aggiungono bonus opzionali.",
-        "Difesa: portiere giocabile + almeno quattro difensori; media tra voto portiere e tre migliori voti base difensori; bonus della massima soglia raggiunta.",
-        "Esempio default: dieci giocatori 60,0; undicesimo 6,5 + gol 3 + assist 1 − giallo 0,5 = 10,0, base team 70. Capitano +0,5, portiere clean sheet +1, media difesa (6+6,5+7+6,5)/4=6,5 con +2: totale 73,5.",
-        "Consulta sempre i coefficienti della Lega; il dettaglio mostra contributori e bonus."
+        "Il punto di partenza è il voto base del giocatore, che rappresenta la valutazione della sua prestazione nella partita reale. I voti utilizzati da Kaiser XI derivano da più fonti calcistiche pubbliche e riconosciute e vengono combinati per ottenere un valore di riferimento.",
+        "Al voto base vengono applicati bonus e malus relativi agli eventi realmente registrati durante la partita. Tra gli eventi supportati rientrano gol, assist, cartellini gialli e rossi, autogol, rigori segnati, rigori sbagliati, rigori parati e gol subiti.",
+        "Con i valori predefiniti, un gol vale +3 punti, un assist +1, un cartellino giallo −0,5, un cartellino rosso −1, un autogol −2, un rigore segnato +3, un rigore sbagliato −3, un rigore parato +3 e un gol subito −1. Il Commissioner può modificare questi valori attraverso le Regole della Lega.",
+        "Il punteggio fantasy del singolo giocatore è quindi il risultato del voto base più i bonus e i malus applicabili. Ad esempio, un giocatore con voto 6,5 che segna un gol, realizza un assist e riceve un cartellino giallo ottiene, con i valori predefiniti: 6,5 + 3 + 1 − 0,5 = 10 punti.",
+        "Per il punteggio della Fantasquadra vengono considerati soltanto i giocatori che fanno parte della Formazione effettiva dopo l'applicazione delle eventuali sostituzioni. I giocatori rimasti inutilizzati in panchina non contribuiscono al totale.",
+        "Se un titolare non può contribuire al punteggio e viene sostituito validamente da un giocatore della panchina, sarà il sostituto a contribuire al totale della Fantasquadra. Se non esiste una sostituzione valida, quel posto non produce punti.",
+        "Alle prestazioni dei singoli giocatori possono aggiungersi bonus opzionali configurati nella Lega. Il bonus capitano viene applicato quando la relativa regola è attiva e il giocatore che contribuisce al punteggio è registrato come capitano reale. Il portiere può inoltre ricevere un bonus per il clean sheet quando questa opzione è attiva e la sua prestazione soddisfa le condizioni previste.",
+        "Se il modificatore difesa è attivo, Kaiser XI valuta il portiere e i difensori che contribuiscono effettivamente alla Formazione. Sono necessari un portiere valido e almeno quattro difensori. Vengono considerati il voto base del portiere e i tre migliori voti base dei difensori; dalla loro media viene determinato l'eventuale bonus secondo le soglie configurate nella Lega.",
+        "Esempio di modificatore difesa: il portiere ha voto 6,0 e i tre migliori difensori hanno 6,5, 7,0 e 6,5. La media è (6,0 + 6,5 + 7,0 + 6,5) / 4 = 6,5. Se nelle Regole della Lega la soglia 6,5 assegna +2 punti, la Fantasquadra riceve un bonus aggiuntivo di 2 punti.",
+        "Il totale della Fantasquadra è dato dalla somma dei punteggi dei giocatori che contribuiscono alla Formazione più gli eventuali bonus di squadra. Questo totale viene poi utilizzato in modo diverso a seconda del tipo di Lega: Classic, Head-to-Head o Formula One.",
+        "Consulta sempre le Regole della tua Lega prima della Giornata. Due Leghe con gli stessi giocatori e gli stessi voti reali possono ottenere risultati fantasy differenti se utilizzano coefficienti, bonus o modificatori diversi."
       ],
-      "calloutLabel": "Nota",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Il punteggio dipende dalla tua Lega",
+      "callout": "Il voto base rappresenta la prestazione reale del giocatore, ma il risultato fantasy dipende dalle Regole della Lega. Bonus, malus, capitano, clean sheet e modificatore difesa possono cambiare il punteggio finale."
     },
     "results": {
       "title": "Risultati, classifica e calendario",
-      "overview": "Dopo il calcolo apri i risultati della giornata e usa classifica o calendario del campionato per seguire la stagione.",
+      "overview": "Dopo il calcolo di una Giornata puoi consultare i risultati delle Fantasquadre e il dettaglio dei punteggi. La classifica utilizza questi risultati in modo diverso a seconda del tipo di Lega: Classic, Head-to-Head o Formula One.",
       "details": [
-        "La Giornata calcolata mostra totale e dettaglio: titolari originali, panchina, ingressi, sostituiti, non contribuenti e punti.",
-        "Base, bonus clean sheet e modificatore difesa sono separati; il capitano reale è nel dettaglio giocatore. La Formazione storica conserva l’invio.",
-        "Classic somma i punteggi fantasy inclusi, senza vittorie o premi posizione.",
-        "Head-to-Head converte in gol e registra vittoria/pareggio/sconfitta, giocate, V/P/S, gol, differenza e punti; Calendar mostra incontri generati.",
-        "Formula One ordina per punteggio, assegna punti posizione configurati e li accumula. Apri Giornate precedenti per la storia."
+        "Nei risultati della Giornata puoi vedere il punteggio totale ottenuto da ogni Fantasquadra e consultare il dettaglio della Formazione utilizzata. In questo modo puoi capire quali giocatori hanno contribuito al risultato e quali sostituzioni sono state applicate.",
+        "Il dettaglio del risultato permette di ricostruire il punteggio della Fantasquadra: mostra i contributi dei singoli giocatori e gli eventuali bonus previsti dalle Regole della Lega. Per comprendere come vengono calcolati questi valori consulta il capitolo Punteggio.",
+        "Nelle Leghe Classic, i punteggi fantasy ottenuti nelle diverse Giornate vengono sommati. La classifica generale ordina quindi le Fantasquadre in base al totale dei punti fantasy accumulati nel corso della stagione.",
+        "Nelle Leghe Head-to-Head, ogni Giornata mette di fronte due Fantasquadre. Il punteggio fantasy di ciascuna squadra viene convertito in gol secondo le soglie configurate nelle Regole della Lega e determina una vittoria, un pareggio o una sconfitta. La classifica tiene conto dei risultati degli incontri e delle relative statistiche.",
+        "Le Leghe Head-to-Head dispongono anche di un Calendario, dal quale puoi consultare gli incontri previsti tra le Fantasquadre nelle diverse Giornate e seguire l'andamento del campionato.",
+        "Nelle Leghe Formula One, le Fantasquadre vengono ordinate in ogni Giornata in base al punteggio fantasy ottenuto. A ciascuna posizione vengono assegnati i punti definiti nelle Regole della Lega e la classifica generale somma i punti posizione conquistati nel corso della stagione.",
+        "Puoi tornare alle Giornate precedenti per consultare i risultati e le Formazioni già calcolate. In questo modo risultati, classifica e calendario permettono di ricostruire e seguire l'intero andamento della Lega."
       ],
-      "calloutLabel": "Nota",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Il tipo di Lega determina la classifica",
+      "callout": "Il punteggio fantasy viene calcolato nello stesso contesto di gioco, ma viene utilizzato diversamente dal formato della Lega: viene accumulato in Classic, trasformato nel risultato di un incontro in Head-to-Head e convertito in punti posizione in Formula One."
     },
     "calculation": {
       "title": "Calcola e ricalcola",
-      "overview": "I commissioner autorizzati calcolano una giornata quando dati e formazioni sono pronti. Il ricalcolo sostituisce punteggi e risultati con le regole attuali.",
+      "overview": "Al termine di una Giornata, il Commissioner può avviare il calcolo dei risultati della Lega. Se successivamente vengono corretti o aggiornati dati che influenzano i punteggi, può essere necessario ricalcolare la Giornata.",
       "details": [
-        "Solo il Commissioner autorizzato può usare Calculate dopo la fine su una Giornata della competizione inizializzata; servono Formazioni confermate e dati giocabili sufficienti.",
-        "Calculate risolve cambi, crea score/dettagli, eventuali risultati Head-to-Head, classifica e timestamp. Dati mancanti, incompleti o duplicati non vengono inventati.",
-        "La storia non cambia automaticamente: correggere 6,5 in 7,0 dopo il calcolo richiede Recalculate esplicito.",
-        "Recalculate elimina in transazione i risultati derivati di Lega/Giornata e ricostruisce dettagli, risultati e classifiche da score e regole correnti; fonti e Formazioni restano.",
-        "Se i dati sono invalidi il tentativo fallisce e ripristina il risultato precedente. Usalo solo per correzioni reali e informa i manager."
+        "Il calcolo di una Giornata può essere avviato dal Commissioner quando la Giornata è terminata e i dati necessari per determinare i punteggi sono disponibili.",
+        "Premendo Calcola, Kaiser XI determina quali giocatori contribuiscono alle Formazioni, applica le eventuali sostituzioni e calcola i punteggi utilizzando i voti, i bonus, i malus e le Regole della Lega.",
+        "Una volta completato il calcolo, vengono generati i risultati della Giornata e aggiornate le informazioni necessarie alla classifica. Il risultato finale dipende dal tipo di Lega: Classic, Head-to-Head o Formula One.",
+        "Una Giornata già calcolata non cambia automaticamente se successivamente viene corretto un dato utilizzato per il punteggio. Ad esempio, se il voto di un giocatore viene corretto da 6,5 a 7,0, il risultato già pubblicato rimane invariato finché la Giornata non viene ricalcolata.",
+        "In questi casi il Commissioner può utilizzare Ricalcola. Kaiser XI esegue nuovamente il calcolo della Giornata utilizzando i dati e le Regole della Lega disponibili in quel momento e aggiorna di conseguenza punteggi, risultati e classifica.",
+        "Il ricalcolo può quindi essere necessario quando vengono corretti voti, bonus, malus o altri dati che influenzano il risultato della Giornata. Non è invece necessario ricalcolare una Giornata se non sono avvenute modifiche rilevanti ai dati utilizzati per il calcolo.",
+        "Prima di ricalcolare una Giornata già pubblicata, considera che i risultati e la classifica potrebbero cambiare. È quindi consigliabile utilizzare questa funzione soltanto quando è effettivamente necessaria una correzione."
       ],
-      "calloutLabel": "Solo commissioner",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
-    },
-    "transfers": {
-      "title": "Trasferimenti e scambi",
-      "overview": "Gli ingaggi del Market aggiungono giocatori liberi e gli svincoli li rimuovono. Gli scambi sono proposte tra fantasy team e cambiano le rose solo se accettati.",
-      "details": [
-        "Firma/svincolo sposta libero↔team; Trade propone lo scambio di un giocatore posseduto per parte. Entrambi richiedono Mercato aperto.",
-        "Scegli altra squadra, offerto e richiesto attivi/eleggibili. Niente team uguale o proposta pendente identica. Se cash è abilitato, indica intero non negativo e chi paga; con zero nessun pagatore.",
-        "Solo destinatario accetta/rifiuta; solo proponente annulla. Accetta ricontrolla finestra, pending/non scaduto, proprietà, registrazioni, limiti finali, cash e budget.",
-        "Accettazione chiude vecchie assegnazioni, scambia mantenendo prezzi e trasferisce cash. Rifiuto/annullo non tocca rose. Scaduto non è processabile e non scambia nulla.",
-        "Esempio: Lions offre difensore prezzo 20 per centrocampista Eagles prezzo 30 più 5 da Lions. Con requisiti validi i prezzi restano 20/30 e i budget cambiano −5/+5."
-      ],
-      "calloutLabel": "Attenzione",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Solo Commissioner",
+      "callout": "Calcola viene utilizzato per generare i risultati di una Giornata. Ricalcola serve invece ad aggiornare una Giornata già calcolata quando sono cambiati o sono stati corretti dati che possono influenzarne il risultato."
     },
     "commissioner": {
-      "title": "Guida del commissioner",
-      "overview": "I commissioner gestiscono impostazioni, inviti, ruoli, rose iniziali, campionato, controlli Market e calcoli autorizzati.",
+      "title": "Guida del Commissioner",
+      "overview": "Il Commissioner è il responsabile della gestione della Lega. Crea e configura la competizione, invita i partecipanti, gestisce le Fantasquadre e le Regole della Lega e supervisiona lo svolgimento della stagione.",
       "details": [
-        "Sequenza: crea con Season/tipo/capienza corretti → verifica tutti i default → invita manager → assegna team.",
-        "Esegui allocazione esterna, registra giocatori/prezzi e verifica proprietari, unicità, budget, dimensione e ruoli team per team.",
-        "Inizializza con team per ogni membro, almeno due team e inizio futuro; Head-to-Head richiede Giornate sufficienti. Non è ripetibile liberamente.",
-        "Configura e comunica abilitazione, apertura, chiusura e cash. Le transazioni valide dei membri non richiedono approvazione singola.",
-        "Ricorda le scadenze; dopo fine e dati pronti usa Calculate. I dati reali sono amministrati dal back office autorizzato, non dai normali membri. Recalculate solo per correzioni spiegate.",
-        "Se un controllo manca verifica ruolo, ciclo di vita, inizializzazione, dati e finestra. Comunica sempre passi irreversibili e ricalcoli storici."
+        "Quando crei una Lega ne diventi automaticamente il Commissioner. Prima di invitare gli altri partecipanti, controlla attentamente Season, tipo di Lega, numero massimo di partecipanti e Regole della Lega.",
+        "Invita i partecipanti alla Lega e verifica che ogni membro abbia la propria Fantasquadra. Il Commissioner può gestire i membri e le relative Fantasquadre attraverso gli strumenti amministrativi disponibili nella Lega.",
+        "Dopo aver completato l'assegnazione iniziale dei giocatori tramite asta, buste chiuse, draft o un altro metodo concordato dal gruppo, registra le rose in Kaiser XI. Controlla con attenzione giocatori, prezzi, budget e limiti di rosa prima di procedere.",
+        "Prima dell'inizio della competizione configura il campionato. Verifica che tutti i partecipanti e le Fantasquadre siano pronti e che le Regole della Lega siano definitive, quindi inizializza la competizione. Alcune configurazioni non potranno più essere modificate liberamente dopo questo momento.",
+        "Gestisci le Regole della Lega durante la stagione. Queste determinano, tra le altre cose, Formazioni, panchina, sostituzioni, bonus e malus, modificatori e modalità di calcolo dei risultati. Prima di modificarle, considera sempre l'impatto sulle Giornate successive.",
+        "Gestisci il Mercato decidendo se abilitarlo e stabilendo il periodo di apertura e chiusura. Se previsto, puoi inoltre consentire i conguagli in crediti negli scambi tra Fantasquadre.",
+        "Ricorda ai partecipanti le scadenze importanti, in particolare quelle per l'invio delle Formazioni e per il Mercato. Una comunicazione chiara delle Regole e delle scadenze evita gran parte dei problemi durante la stagione.",
+        "Al termine di una Giornata, quando i dati necessari sono disponibili, utilizza Calcola per generare punteggi e risultati. Se successivamente vengono corretti dati che influenzano una Giornata già calcolata, utilizza Ricalcola soltanto quando necessario.",
+        "Prima di effettuare modifiche importanti, inizializzare la competizione o ricalcolare una Giornata già pubblicata, verifica sempre le conseguenze per tutti i partecipanti. Il Commissioner ha più strumenti degli altri membri e ha quindi la responsabilità di mantenere la Lega coerente e comprensibile."
       ],
-      "calloutLabel": "Solo commissioner",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Il Commissioner gestisce la Lega",
+      "callout": "Prima dell'inizio della stagione controlla partecipanti, Fantasquadre, rose e Regole della Lega. Durante la competizione comunica le scadenze, gestisci il Mercato e utilizza Calcola e Ricalcola con attenzione."
     },
     "profile": {
       "title": "Profilo e personalizzazione",
-      "overview": "Nelle impostazioni account puoi aggiornare profilo, password, tema e lingua senza modificare i dati della lega.",
+      "overview": "Dalla sezione Profilo puoi gestire i dati del tuo account e personalizzare l'aspetto di Kaiser XI scegliendo lingua e palette grafica.",
       "details": [
-        "Account modifica nome/email validi e univoci; il cambio password richiede password corrente e conferma della nuova.",
-        "Scegli inglese, tedesco o italiano: traduce interfaccia supportata e manuale, non nomi inseriti dagli utenti.",
-        "Scegli palette ispirate al calcio senza affiliazione dichiarata a club reali.",
-        "Lingua e tema sono personali: non cambiano regole, score, Mercato, aspetto altrui o risultati."
+        "Puoi modificare le informazioni del tuo profilo, come nome ed e-mail. Le modifiche riguardano esclusivamente il tuo account e non modificano la tua Fantasquadra o le Leghe a cui partecipi.",
+        "Puoi modificare la password del tuo account. Per motivi di sicurezza viene richiesta la password attuale e la conferma della nuova password.",
+        "Kaiser XI è disponibile in italiano, inglese e tedesco. Cambiando lingua vengono tradotti l'interfaccia e le Istruzioni di gioco, mentre i contenuti inseriti dagli utenti, come nomi e descrizioni delle Leghe o delle Fantasquadre, rimangono invariati.",
+        "Puoi personalizzare l'aspetto dell'app scegliendo tra diverse palette grafiche ispirate al mondo del calcio. La palette modifica colori, sfondi, pulsanti e altri elementi dell'interfaccia.",
+        "Lingua e palette sono preferenze personali. Ogni utente può utilizzare la combinazione che preferisce senza modificare l'esperienza degli altri partecipanti.",
+        "Le impostazioni del Profilo non modificano le Regole della Lega, i punteggi, le Formazioni, il Mercato, la classifica o qualsiasi altro dato di gioco."
       ],
-      "calloutLabel": "Nota",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "La personalizzazione è personale",
+      "callout": "Lingua e palette modificano soltanto la tua esperienza nell'app. Gli altri partecipanti possono utilizzare impostazioni diverse senza alcun effetto sulla Lega."
     },
     "faq": {
-      "title": "FAQ e risoluzione problemi",
-      "overview": "Se un’azione non è disponibile, controlla ruolo, stato lega, Market, scadenze, campi obbligatori, limiti rosa e budget.",
+      "title": "FAQ e risoluzione dei problemi",
+      "overview": "Qui trovi le risposte ai problemi più comuni che possono verificarsi durante l'utilizzo di Kaiser XI.",
       "details": [
-        "Invio Formazione: prima dell’inizio, team proprio, modulo consentito, undici attivi unici con ruoli esatti e panchina esatta entro limiti; Salva, poi Invia e verifica conferma. Titolari spariti: hai confermato cambio modulo; panchina resta, Annulla avrebbe preservato.",
-        "Modulo assente: non è abilitato. Firma/svincolo: controlla Mercato, proprietario, stato giocatore, prezzo/budget, massimo e ruolo.",
-        "Mercato: servono abilitazione e due date; ora ≥ apertura e < chiusura. Trade: controlla team/giocatori, duplicato, cash/pagatore/budget, ruoli finali, pending e scadenza; destinatario accetta/rifiuta, proponente annulla.",
-        "Trade scaduto non cambia nulla. Una correzione PlayerScore modifica la storia solo con Recalculate esplicito del Commissioner.",
-        "Inizializzazione: team per membro, due team, inizio futuro stessa Season, nessuna inizializzazione esistente e abbastanza Giornate Head-to-Head.",
-        "Titolare assente: cerca riserve giocabili inutilizzate nell’ordine fino al massimo; senza combinazione ruolo/modulo valida vale zero. Una riserva saltata era non giocabile, troppo in basso, oltre massimo o tatticamente invalida.",
-        "Niente difesa: servono opzione, portiere giocabile con voto, quattro difensori, tre voti e soglia. Niente clean sheet: opzione, portiere effettivo e flag clean sheet registrato."
+        "Perché non riesco a inviare la Formazione? Controlla che la Giornata non sia già iniziata, che tu stia modificando la tua Fantasquadra, che il modulo sia consentito e che titolari e panchina rispettino le Regole della Lega. Ricorda inoltre che salvare una bozza non equivale a inviare definitivamente la Formazione.",
+        "Perché i miei titolari sono scomparsi dopo aver cambiato modulo? Se cambi modulo dopo aver già selezionato i titolari, Kaiser XI chiede una conferma. Confermando, i titolari vengono azzerati perché potrebbero non essere compatibili con il nuovo modulo; la panchina rimane invece invariata.",
+        "Perché non trovo un determinato modulo? Ogni Lega può decidere quali moduli consentire. Se un modulo non è disponibile, significa che non è stato abilitato nelle Regole della Lega.",
+        "Perché non posso proporre uno scambio? Verifica che il Mercato sia aperto e che la proposta rispetti le Regole della Lega. Dopo lo scambio, entrambe le Fantasquadre devono continuare a rispettare dimensione della rosa e limiti per ruolo. Se è previsto un conguaglio in crediti, deve inoltre esserci budget sufficiente.",
+        "Cosa succede quando una proposta di Trade scade? Una proposta scaduta non può più essere accettata, rifiutata o annullata e non modifica giocatori o budget delle Fantasquadre.",
+        "Perché una correzione al voto di un giocatore non ha modificato un risultato già pubblicato? Le Giornate già calcolate non vengono riscritte automaticamente. Se una correzione influenza il risultato, il Commissioner deve utilizzare Ricalcola.",
+        "Perché il Commissioner non riesce a inizializzare il campionato? Prima dell'inizializzazione devono essere soddisfatti i requisiti della Lega, come la presenza delle Fantasquadre necessarie e una Giornata futura valida. Nelle Head-to-Head devono inoltre essere disponibili abbastanza Giornate per creare il calendario.",
+        "Cosa succede se un mio titolare non gioca? Kaiser XI prova ad applicare una sostituzione utilizzando la panchina e le Regole della Lega. Se non esiste una sostituzione valida, quel giocatore non contribuirà al punteggio.",
+        "Perché un giocatore della panchina non è entrato? Potrebbe non essere valido per la sostituzione, essere oltre il numero massimo di cambi oppure non consentire una Formazione compatibile con le Regole della Lega.",
+        "Perché non ho ricevuto il modificatore difesa? Il modificatore deve essere attivo e devono essere soddisfatte le condizioni previste, tra cui un portiere valido e almeno quattro difensori che contribuiscono alla Formazione.",
+        "Perché il mio portiere non ha ricevuto il bonus clean sheet? Il bonus deve essere abilitato nelle Regole della Lega e il portiere deve contribuire effettivamente alla Formazione con un clean sheet registrato."
       ],
-      "calloutLabel": "Attenzione",
-      "callout": "Le modifiche sono convalidate rispetto allo stato attuale. Se un comando manca o è disabilitato, controlla ruolo e regole applicabili."
+      "calloutLabel": "Hai ancora domande?",
+      "callout": "Se non trovi qui la risposta che cerchi, visita il forum della community Kaiser XI per fare domande, confrontarti con altri giocatori e consultare le discussioni già aperte.",
+      "forumLink": "Vai al forum Kaiser XI"
     }
   }
 }

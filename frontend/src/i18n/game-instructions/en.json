@@ -9,277 +9,274 @@
   "backHome": "Back to home",
   "chapters": {
     "gettingStarted": {
-      "title": "Getting Started",
-      "overview": "Kaiser XI turns real football performances into a private fantasy competition whose format and rules are chosen by your group.",
+      "title": "First Steps",
+      "overview": "Kaiser XI is a fantasy football game for private and customizable leagues with your friends. Create your account, open the dashboard, and get started by creating a new league or joining an existing one via invitation.",
       "details": [
-        "In Kaiser XI, real football players are assigned to Fantasy Teams. For every Matchday, the recorded base rating and match events produce each player’s fantasy score; the eligible players in a submitted formation then produce the Fantasy Team score. That score is used differently in Classic Championship, Head-to-Head, and Formula One leagues.",
-        "Register with your name, email address, and password, then sign in. The dashboard is the starting point for leagues and invitations; authentication is only the doorway, while all competition work happens inside a league.",
-        "To create a league, choose Create League and complete the setup. You become its Commissioner: you invite managers, maintain membership and rules, record initial squads, initialize the competition, configure the Market, and calculate completed Matchdays.",
-        "To join, open a valid invitation link while signed in and accept it. You enter the inviter’s league as a member under that Commissioner’s configuration; accepting does not make you Commissioner, and the participant limit must not already be full.",
-        "After joining, check whether a Fantasy Team has been assigned to you. Your League Rules determine budgets, roster limits, formations, substitutions, scoring, Market windows, and trades, so read them before selecting a lineup.",
-        "Your League. Your Rules. means that Kaiser XI supplies the competition framework while each league’s saved settings decide how that group plays. The general manual explains the controls; the League Rules page is authoritative for your particular league."
+        "In Kaiser XI, each participant manages a fantasy team made up of real-life soccer players. Throughout the season, the performances of these players determine the fantasy teams' points and thus the course of the competition.",
+        "First, create an account with your name, email address, and a password. After logging in, the dashboard is your starting point for accessing your leagues and the app's main features.",
+        "If you want to organize a new competition with your friends, create a league. You will become the Commissioner and can configure the rules, invite other participants, and prepare for the championship.",
+        "If someone else has already created the league, you can join via invitation. You will then be a member of the league and can manage your assigned fantasy team.",
+        "Each league can be configured differently. Before you start playing, you should therefore read the league rules and familiarize yourself with the settings chosen by the Commissioner."
       ],
-      "calloutLabel": "Note",
-      "callout": "Begin by opening the dashboard, then either create one league or accept the invitation supplied by its Commissioner."
+      "calloutLabel": "Your League. Your Rules.",
+      "callout": "Each group can create their own player experience by selecting a league type and configuring the desired rules."
     },
     "creatingLeague": {
       "title": "Creating a League",
-      "overview": "League creation links one private fantasy league to one real competition Season and establishes its identity, format, capacity, and starting roster rules.",
+      "overview": "A League is a private competitive space where you can play with your friends. The person who creates it becomes the Commissioner and defines its main characteristics and initial rules.",
       "details": [
-        "Enter a required League name (up to 255 characters) and, optionally, a description (up to 5,000 characters). Use the description for group context, not for rules that should be enforced: enforceable rules belong in League Rules.",
-        "Select one of the Seasons actually listed in the form. Each entry shows its real competition and Season. This choice fixes the Matchdays, real matches, registered players, roles, and PlayerScores available to the league; it is therefore much more than a display label. Kaiser XI only offers Seasons already configured in the application.",
-        "Choose the League type. In Classic Championship, teams are ranked by the cumulative fantasy points from calculated championship Matchdays: for example, scores of 72 and 68 give 140 total. In Head-to-Head, generated fixtures pair teams; default thresholds convert 65 points to 0 goals, 66 to 1, 72 to 2, and 78 to 3, then wins/draws/losses and goals determine the table. In Formula One, teams are ranked each Matchday and receive configured position points—by default 25, 18, 15, 12, 10, 8, 6, 4, 2, 1—which accumulate in the championship table.",
-        "Set Maximum participants from 2 to 100. It limits accepted memberships and matters before initialization because every league member must have a Fantasy Team. Head-to-Head scheduling also needs the final set of participating teams.",
-        "Creation then asks for the initial roster rules. Initial budget defaults to 500 credits: each Fantasy Team starts with that remaining budget, purchase prices consume it, Market signings consume more, releases return the configured refund, and an enabled trade cash adjustment transfers credits. Credits have no external monetary value.",
-        "Set the release refund percentage from 0 to 100. Refunds use the recorded purchase price: a player bought for 40 with a 50% refund returns 20 credits on release. Set maximum squad size and separate goalkeeper, defender, midfielder, and forward limits; the combined role limits must be capable of supporting the maximum.",
-        "After creation, defaults are installed for formations, bench, substitutions, scoring, and Market/trades. You arrive in the new league as Commissioner, but creation does not allocate squads or initialize a championship. Invite managers, review all League Rules, create/assign Fantasy Teams, and record the agreed squads next."
+        "Enter a name for the League and, if you want, an optional description. Then select the Competition/Season you want to play: the League will use the players, matches and Matchdays belonging to the selected season.",
+        "Choose the League type between Classic, Head-to-Head and Formula One. In Classic, the points earned by Fantasy Teams across the different Matchdays are added together. In Head-to-Head, Fantasy Teams face each other directly: the fantasy score is converted into goals and determines wins, draws and losses. In Formula One, Fantasy Teams are ranked on each Matchday according to their score and receive points based on their finishing position.",
+        "Set the maximum number of participants, from 2 to 100. This determines how many people can take part in the League. For an easier-to-manage playing experience, it is generally recommended not to exceed around 12 participants.",
+        "Set the initial budget. The default value is 500 credits and represents the starting funds available to each Fantasy Team for managing its squad.",
+        "Configure the release refund percentage, maximum squad size and limits for goalkeepers, defenders, midfielders and forwards. The release refund percentage is explained in more detail in the Market section.",
+        "Once the League has been created, you become its Commissioner. Kaiser XI automatically adds the default rules, but the League setup is not yet complete: you will need to invite the participants, review and optionally adjust the rules, create and assign the Fantasy Teams, and register the initial squads."
       ],
       "calloutLabel": "Commissioner only",
-      "callout": "The creator is the Commissioner. Choose the Season and league type carefully; competition initialization later locks important structural choices."
+      "callout": "Creating and configuring the League is the Commissioner's responsibility. Before starting the championship, make sure that participants, Fantasy Teams, squads and rules have all been configured correctly.",
+      "images": {
+        "createLeague1": {
+          "alt": "Creating a new League"
+        },
+        "createLeague2": {
+          "alt": "Configuring the League's initial rules"
+        },
+        "createLeague3": {
+          "alt": "Configuring squad and role limits"
+        }
+      }
     },
     "buildingSquads": {
       "title": "Building the Initial Squads",
-      "overview": "Kaiser XI does not run an initial auction, sealed-bid contest, or draft. Organize that decision offline, then record its agreed outcome in Squad Setup.",
+      "overview": "Before the championship begins, the participants must decide which players belong to each Fantasy Team. Kaiser XI does not manage this phase directly: you can organize it however you prefer, and the Commissioner will then enter the agreed squads into the app.",
       "details": [
-        "Traditional auction: gather the managers, nominate one eligible player at a time, let the group bid, and record the winner and purchase value. Continue under whatever external nomination and tie rules your group agrees, then give the Commissioner the final team/player/price list. It is lively and makes the budget central, but requires everyone to attend and accurate bookkeeping.",
-        "Sealed bids: managers privately send bids to an agreed organizer by an external deadline. The highest valid bid wins; Kaiser XI does not receive the bids or break ties, so agree an external tie rule in advance. This method is flexible and private, but the organizer must reconcile simultaneous bids and budgets before entry.",
-        "Draft: agree a selection order and take turns choosing unassigned players. Each player can ultimately be active on only one Fantasy Team in the league. A draft can make bidding less central, but every recorded purchase price and final squad must still respect the Kaiser XI budget, overall size, and role limits.",
-        "Before entry, normalize the offline record: one owner per Fantasy Team, one team per player, a whole-number purchase price for every assignment, and totals within the initial budget. Confirm that each player is registered for the league’s selected Season and has the expected role.",
-        "Keep four concepts separate: the offline initial allocation decides who should own whom; Initial Squad Setup reproduces that agreement in Kaiser XI; the in-season Market signs free players and releases owned players during an open window; Trades exchange players between two existing Fantasy Teams.",
-        "None of the suggested offline methods adds hidden rules to Kaiser XI. Your group may choose its own nomination order, bid increments, tie-break, draft order, or timer, but Kaiser XI validates only the squad, role, uniqueness, price, and budget rules it actually stores."
+        "Traditional auction: a player is nominated and participants place their bids. The highest bidder acquires the player for the winning price. This is the most traditional method and makes the initial budget particularly important.",
+        "Sealed bids: each participant prepares their offers without knowing the bids made by the others. At the agreed deadline, the bids are compared and each player is assigned according to the rules established by the group, normally to the highest bidder.",
+        "Draft: participants take turns selecting an available player according to a predefined order. With this system, the budget may be less important depending on the rules chosen by the group.",
+        "Whichever method you choose, each Fantasy Team must have a defined squad at the end of the process. The Commissioner can then assign the players to their respective teams in Kaiser XI.",
+        "This phase concerns only the creation of the initial squads. The in-season Market and Trades between Fantasy Teams are separate features."
       ],
-      "calloutLabel": "Warning",
-      "callout": "Do not look for an Auction, Bids, or Draft button. Preserve the offline results and let the Commissioner enter them accurately."
+      "calloutLabel": "Important",
+      "callout": "Before starting, make sure all participants agree on the player allocation method and its rules. Kaiser XI records the resulting squads but does not run the auction, sealed bids or draft."
     },
     "leagueOverview": {
       "title": "Understanding Your League",
-      "overview": "The league area combines a summary with navigation whose available destinations depend on league type, membership, ownership, and initialization state.",
+      "overview": "The League page is the starting point for following the championship and accessing all of its sections. From here you can view Fantasy Teams, League Rules, the Market, Matchdays, standings and the other features available in your League.",
       "details": [
-        "Start on the league summary to confirm the League name, description, selected competition/Season, type, status, capacity, and your role. Commissioners also see administrative controls that ordinary members do not.",
-        "Fantasy Teams lists the league’s teams and links to each detail page. A team page shows its owner, remaining budget, roster, player roles, purchase prices, and permitted management actions. A member needs an assigned team before submitting formations or proposing team-to-team trades.",
-        "League Rules shows the effective saved settings. Commissioners may edit settings while lifecycle and compatibility checks allow it; members can use the page as the definitive reference for this league.",
-        "Market lists Season-eligible players and whether they are free or assigned, plus signing, releasing, Market configuration, and trade proposals when those controls are available. The Market must be enabled, have both timestamps, and be inside its opening-inclusive/closing-exclusive window for roster transactions.",
-        "Matchdays lists the real Season rounds relevant to the initialized competition. Open one for its time window, formation link, calculation state, and—after calculation—team or fixture results and player detail.",
-        "Standings appears for initialized competition formats and reflects calculated results: cumulative fantasy points in Classic, match table records in Head-to-Head, or cumulative position points in Formula One. Head-to-Head also exposes its generated Calendar/fixtures; Classic and Formula One use championship Matchdays from the selected starting round onward.",
-        "If a destination or action is missing, first check initialization, whether you own a Fantasy Team, whether you are Commissioner, whether the Market is open, and whether the Matchday deadline has passed. Absence is often an intentional state or permission restriction."
+        "Fantasy Teams: here you can find all Fantasy Teams participating in the League. You can view their owners, squads and the main information about each team.",
+        "League Rules: contains the rules used by the League, including squad composition, allowed formations, bench rules, substitutions, bonuses and penalties, as well as any rules specific to the selected League type.",
+        "Market: this section is used to manage players during the season. When the Market is available, you can view players and manage signings and releases according to the League configuration.",
+        "Matchdays: lets you follow the different Matchdays of the season. From here you can access formations, scores and available results for each Matchday.",
+        "Standings: shows the progress of the championship. How the standings work depends on the selected League type: Classic, Head-to-Head or Formula One.",
+        "Calendar: in Head-to-Head Leagues, this shows the scheduled fixtures between Fantasy Teams.",
+        "Your Fantasy Team: from your team you can check your squad and prepare your formation for each Matchday. The following sections of this guide explain squad, formation and bench management in detail.",
+        "The Commissioner also has access to the functions required to administer the League, manage participants and configure the championship. These operations are explained in the dedicated Commissioner section."
       ],
-      "calloutLabel": "Note",
-      "callout": "Use this chapter as a map; later chapters describe each workflow and its validation in detail."
+      "calloutLabel": "In short",
+      "callout": "Use the League page as the central point for navigating all championship activities. Some sections or actions may become available only when the League reaches the required stage."
     },
     "leagueRules": {
       "title": "League Rules",
-      "overview": "League Rules are the enforceable configuration for roster construction, formations, automatic substitutions, scoring, league-type conversion, and the transaction window.",
+      "overview": "League Rules define how the competition is played: squad composition, allowed formations, bench, substitutions, bonuses, penalties and settings specific to the selected League type.",
       "details": [
-        "Roster and money: initial budget seeds every new Fantasy Team; release refund percentage determines the purchase-price share returned on release; maximum roster players caps the squad; and four role limits cap goalkeepers, defenders, midfielders, and forwards. Existing squads prevent a Commissioner from lowering limits below their current contents, and initial budget cannot be rewritten once teams exist in an unsupported way.",
-        "Formation and bench: Allowed modules are selected from 3-4-3, 3-5-2, 4-3-3, 4-4-2, 4-5-1, 5-3-2, and 5-4-1 by default. Bench size is exact at submission, and role limits cap how many bench players of each role may be chosen.",
-        "Substitutions: Maximum substitutions cannot exceed bench size. Bench order tries playable reserves in the saved order; role priority moves same-role candidates ahead of others. If formation changes are disabled, every replacement must preserve the submitted module. If enabled, Kaiser XI may use another allowed module whose final role counts are valid.",
-        "Player scoring coefficients separately configure goals, assists, yellow cards, red cards, own goals, penalties scored, penalties missed, penalties saved, and goals conceded. Defaults are +3, +1, -0.5, -1, -2, +3, -3, +3, and -1 respectively. A penalty goal uses the penalty-scored value rather than receiving both penalty and ordinary-goal bonuses.",
-        "Optional scoring: Real-captain bonus adds its configured points to a contributing player marked captain of his real club. Goalkeeper clean-sheet bonus adds its value only to a contributing goalkeeper whose performance has clean sheet recorded. Neither switch changes the underlying base rating.",
-        "Defense modifier requires an effective, playable goalkeeper and at least four effective, playable defenders. Kaiser XI takes the three highest available defender base ratings, adds the goalkeeper base rating, averages those four ratings, then applies the bonus for the highest configured threshold reached. Event-adjusted fantasy scores are not used for this average.",
-        "Head-to-Head only: First goal threshold gives goal one; each complete goal interval above it adds another. With 66 and 6, 65.5 is 0, 66 is 1, 71.5 remains 1, and 72 is 2. Formula One only: the position-points map awards the configured non-increasing whole-number points after each Matchday ranking.",
-        "Market/trades: the Commissioner enables the Trade Market, sets opening and closing date-times, and chooses whether cash adjustments are allowed. The Market is closed unless all three availability conditions are satisfied. Trade proposals use the same window. Rules may be edited only by an authorized Commissioner and structural settings become locked or compatibility-limited as the league progresses."
+        "Squads and budget: the Commissioner can configure the initial budget, the release refund percentage, the maximum squad size and the limits for goalkeepers, defenders, midfielders and forwards. These values determine which squad operations are considered valid.",
+        "Formations: the League defines which formations can be used, the bench size and the role limits for bench players. A formation can only be submitted if it complies with the configured rules.",
+        "Substitutions: the Commissioner can define the maximum number of substitutions and the criteria used to select players from the bench. Depending on the configuration, substitutions may need to preserve the original formation or may allow switching to another permitted formation.",
+        "Bonuses and penalties: the League can assign different values to events recorded for a player, such as goals, assists, cards, own goals, penalties scored or missed, penalties saved and goals conceded. These values contribute to the player's fantasy score.",
+        "Additional bonuses: if enabled, specific bonuses can be applied, such as the real captain bonus and the goalkeeper clean-sheet bonus.",
+        "Defense modifier: if enabled, the team score can receive an additional bonus based on the ratings of the goalkeeper and the best defenders in the lineup, according to the thresholds configured in the League.",
+        "League-type-specific rules: in Head-to-Head Leagues, the Commissioner configures the thresholds used to convert fantasy points into goals. In Formula One Leagues, the Commissioner instead configures how many championship points are awarded for each Matchday finishing position.",
+        "Market and Trades: League Rules also include settings related to Market and Trade availability, such as opening and closing times and whether credit adjustments can be used in Trades."
       ],
       "calloutLabel": "Commissioner only",
-      "callout": "Review every section before entering squads and initializing. A displayed default is a real rule and will be enforced."
+      "callout": "Before the championship begins, review all League Rules carefully. Some settings may become restricted after squads have been created or the competition has started, in order to prevent configurations that are incompatible with the current League state."
     },
     "championship": {
       "title": "Championship Configuration",
-      "overview": "Initialization freezes the participating Fantasy Teams and connects them to future Matchdays; league creation alone does not start competitive play.",
+      "overview": "Once participants, Fantasy Teams, squads and rules are ready, the Commissioner can configure and initialize the championship. This step prepares the competition and determines how the Matchdays of the selected Season will be used.",
       "details": [
-        "Only a Commissioner can initialize. First ensure every accepted league member owns a Fantasy Team, there are at least two teams, and the desired starting Matchday belongs to the selected Season and has not started.",
-        "For Classic and Formula One, choose one future starting Matchday and initialize once. Kaiser XI records all current Fantasy Teams as championship participants; eligible championship rounds run from that starting Matchday through the remaining Season Matchdays.",
-        "For Head-to-Head, configure a future start, the number of round robins, and the leg order supported by the setup screen. Kaiser XI generates the round-robin Fantasy fixtures onto available Season Matchdays. The available future Matchdays must be sufficient for the requested schedule, and a schedule cannot be initialized twice.",
-        "Classic creates no pairwise fixtures: each participant’s calculated team score contributes directly to its cumulative championship total. Formula One also creates no pairwise fixtures: each included Matchday ranks participating teams and converts rank to configured position points. Head-to-Head creates the actual pairings used for match goals and table records.",
-        "Initialization is separate so the Commissioner can finish membership, teams, squads, and rules before making the competition structure official. A late member without a team blocks readiness, and teams added after the participant snapshot are not silently inserted.",
-        "After initialization, do not expect a reset button. The same competition cannot be initialized again, the start must stay in the future at initialization time, and lifecycle-protected structural settings can no longer be freely changed.",
-        "Checklist: all invitations resolved; every member has exactly the intended team; at least two teams; offline allocations entered and verified; budgets and role limits valid; scoring, lineup, Market, Head-to-Head thresholds, or Formula One points reviewed; correct future start selected; enough Matchdays available for a Head-to-Head schedule."
+        "Before configuring the championship, make sure that all participants have accepted their invitations and that each of them has been assigned a Fantasy Team. At least two Fantasy Teams must be present, and the League squads and rules should already have been reviewed.",
+        "Choose the future Matchday from which the championship should begin. Earlier Matchdays will not be part of the League competition, while the available Matchdays starting from the selected one will be used as the championship progresses.",
+        "In Classic Leagues, the scores earned by Fantasy Teams are recorded starting from the selected Matchday. Scores from the different Matchdays are progressively added together to determine the standings.",
+        "In Formula One Leagues, the available future Matchdays are used. On each Matchday, Fantasy Teams are ranked according to their score and receive the position points defined in the League Rules.",
+        "In Head-to-Head Leagues, the Commissioner also configures the number of round robins. Kaiser XI uses the available future Matchdays to create the fixture calendar between Fantasy Teams, so enough Matchdays must be available to complete the selected format.",
+        "Review all settings carefully before initializing the championship. Initialization marks the transition from League preparation to the actual competition and should not be confused with simply creating the League."
       ],
-      "calloutLabel": "Commissioner only",
-      "callout": "Initialization is a one-time structural action. Verify participants and the selected future Matchday before confirming."
+      "calloutLabel": "Before initialization",
+      "callout": "Check participants, Fantasy Teams, squads, rules and the starting Matchday. For a Head-to-Head League, also make sure that enough Matchdays are available to generate all required fixtures."
     },
     "squadSetup": {
       "title": "Initial Squad Setup",
-      "overview": "The Commissioner reproduces the offline allocation by creating/assigning Fantasy Teams and recording each player with the agreed purchase price.",
+      "overview": "After completing the auction, sealed bids or draft, the Commissioner must record the agreed squads in Kaiser XI by assigning each player to the correct Fantasy Team.",
       "details": [
-        "Create the required Fantasy Teams and assign each to the correct current league member. Team names identify the competitors; ownership controls who can submit that team’s formations and use member transaction actions.",
-        "Open each Fantasy Team and add only players eligible for the league’s selected Season. Record the agreed whole-number purchase price. Kaiser XI marks the assignment active and deducts that price from the team’s remaining budget.",
-        "A player cannot be actively assigned to two Fantasy Teams in the same league. A signing also fails if the team lacks credits, has reached maximum roster size, or has reached that player’s goalkeeper/defender/midfielder/forward limit.",
-        "Use the role provided by the player’s active Season registration; it is not an arbitrary roster label. If an offline list names an unavailable player or a different role, reconcile it before proceeding rather than forcing an unsupported assignment.",
-        "Compare every team’s remaining budget with the offline ledger. With a 500-credit start and purchases totaling 430, 70 remains. Purchase values matter later because releases refund a percentage of that stored value, while trades preserve the exchanged players’ purchase values.",
-        "Before declaring setup complete, verify every accepted member has the correct team; every intended player appears once; names, roles, and prices match the record; no player remains on the wrong team; roster totals and per-role totals comply; and no budget is negative.",
-        "Initial setup records the starting state; it does not run the offline allocation and does not open the Market. Initialize the championship only after the participant/team readiness checks succeed and your group has reviewed the saved rules."
+        "First, make sure that all Fantasy Teams have been created and assigned to the correct participants. Every League member should have their own Fantasy Team before the championship begins.",
+        "Open the Fantasy Team you want to configure and assign the players obtained during the initial squad-building process. For each player, also enter the agreed purchase price when this applies to the allocation method used by your group.",
+        "The purchase price is deducted from the Fantasy Team's available budget. For example, with an initial budget of 500 credits and total purchases of 430 credits, 70 credits remain available.",
+        "During assignment, Kaiser XI checks that the squad complies with the League Rules, including available budget, maximum squad size and role limits. The same player cannot belong to two Fantasy Teams in the same League at the same time.",
+        "Repeat the process for every Fantasy Team and compare the result with what was agreed during the auction, sealed bids or draft. Before starting the championship, verify that every team contains the correct players and that budgets and role limits are respected.",
+        "Initial Squad Setup only records the result of the player-allocation phase in Kaiser XI. It does not automatically open the Market and it does not replace the later championship initialization."
       ],
       "calloutLabel": "Commissioner only",
-      "callout": "Keep the offline allocation sheet beside you and verify one Fantasy Team at a time before initialization."
+      "callout": "Configure every squad carefully before initializing the championship. Correcting players, prices or assignments at this stage is much easier than making changes after the competition has already started."
     },
     "market": {
       "title": "Market",
-      "overview": "The Market is the in-season transaction area for Season-eligible free and assigned players; it is distinct from the offline initial allocation.",
+      "overview": "The Market allows Fantasy Teams to propose player trades during the periods established by the Commissioner. Trades must comply with the League Rules and the squad restrictions of the teams involved.",
       "details": [
-        "The Commissioner must enable the Trade Market and provide both opening and closing date-times. It is open at the opening instant and closes at the closing instant. Outside that interval—or if any configuration is missing—signings, releases, and trade actions are rejected.",
-        "Use the directory to search/filter eligible players and inspect assignment status. A free player has no active assignment in this league; an assigned player shows the Fantasy Team that owns him. Eligibility comes from an active registration in the league’s Season.",
-        "To sign, the owner of a Fantasy Team chooses a free player and enters a non-negative whole-number price. On success, the player is assigned, the price is saved, and the same number of credits is deducted. Example: a team with 35 credits signs for 12 and has 23 left.",
-        "A signing fails if the Market is closed, you do not own the acting team, the player is no longer free/eligible, the price is invalid, the budget is insufficient, the roster is full, or that role limit is reached. Refresh if another manager may have acted first.",
-        "To release, choose one of your active roster assignments and confirm. The assignment ends and the player becomes free. The refund is based on its stored purchase price and the league percentage; with price 40 and refund 50%, 20 credits return. Integer credits use the application’s rounded refund result.",
-        "A release can be rejected when the Market is closed, the assignment is no longer active or yours, or the action would conflict with current validation. Releasing can leave fewer players for a valid formation, so inspect the next Matchday lineup before confirming.",
-        "Market timestamps and cash-trade permission are Commissioner settings; ordinary managers cannot extend the window. Trades are proposals between already-owned players and are covered separately, although they require this same Market to be open."
+        "The Commissioner decides whether the Market is active and configures its opening and closing period. Trades can only be proposed while the Market is open.",
+        "During the Market, you can propose a trade to another Fantasy Team in the League by offering one of your players and requesting one of their players in return.",
+        "The players involved do not necessarily need to have the same role. A trade is possible as long as, once completed, both Fantasy Teams continue to comply with the squad size and role limits defined in the League Rules.",
+        "For example, you can propose trading a defender for a midfielder if, after the trade, both Fantasy Teams still comply with their respective defender and midfielder limits. If either squad would exceed a League limit, the trade would not be valid.",
+        "The Commissioner can decide whether credit adjustments are also allowed. When this option is enabled, in addition to exchanging players you can offer credits or request credits from the receiving Fantasy Team.",
+        "Example: you offer player A in exchange for player B. If credit adjustments are enabled, you can offer A + 10 credits for B, or request A in exchange for B + 10 credits.",
+        "Sending a proposal does not immediately modify the squads. The trade is completed only when the proposal is accepted and all required conditions are valid. At that point, the players and any credit adjustment are transferred between the two Fantasy Teams.",
+        "Before proposing or accepting a trade, check the composition of both squads, their role limits, the available budget when credits are involved and the League Rules."
       ],
-      "calloutLabel": "Warning",
-      "callout": "A listed player may cease to be available before confirmation. Successful server validation, not an old directory view, determines ownership."
+      "calloutLabel": "Market and Trades",
+      "callout": "A trade can also involve players with different roles. What matters is that, after the Trade, both Fantasy Teams continue to comply with the squad and individual role limits established by the League."
     },
     "fantasyTeam": {
       "title": "Your Fantasy Team",
-      "overview": "The Fantasy Team page is the durable squad record; a Matchday Formation is a separate, time-limited selection drawn from that active roster.",
+      "overview": "The Fantasy Team page brings together all the information about your team: owner, available budget and the players in your squad.",
       "details": [
-        "Confirm team name and owner first. Your ownership determines lineup and Market/trade permissions; contact the Commissioner if the wrong member is attached.",
-        "The budget summary shows remaining credits, not the original allowance or a prediction. Initial assignments and Market signings reduce it, qualifying releases refund it, and accepted cash-adjusted trades transfer it.",
-        "The roster lists active and, where presented, historical assignments with player identity, Season role, purchase price, assignment time, and release state. Purchase price is relevant for refund calculations and remains attached when players are exchanged in a trade.",
-        "Use available actions to update a permitted team name or, when the Market is open and you own the team, manage eligible roster transactions. Commissioner-only setup controls or actions belonging to another owner are not shown to ordinary members.",
-        "Your roster is a pool, not the automatic starting XI. For every eligible Matchday, open Formation and explicitly choose an allowed module, exactly eleven starters matching its roles, and the required ordered bench.",
-        "A player released after an earlier formation was submitted remains part of that historical submitted snapshot, but cannot be selected from the active roster for a new draft. Always review current roster totals before the deadline."
+        "Each League participant has a Fantasy Team. From this page, you can check your squad composition and the main information about your team.",
+        "The squad contains all players assigned to the Fantasy Team. For each player, you can see key information such as their role and the purchase price recorded during the initial squad setup.",
+        "The budget shows how many credits are currently available. Its initial value depends on the League Rules and is reduced by the prices of the players assigned to the squad. During the season, it can also change as a result of Trades that include a credit adjustment.",
+        "Your Fantasy Team squad does not automatically represent the Formation used for a Matchday. Before each Matchday, you must select the starters and bench players from your squad while respecting the League Rules. From your Fantasy Team page, you can also change its name and personalize it as you prefer.",
+        "During the Market, the composition of your Fantasy Team can change through Trades completed with other teams. After a Trade, always check your updated squad and available budget before preparing your next Formation."
       ],
-      "calloutLabel": "Note",
-      "callout": "Remaining budget buys flexibility, but only a complete role-balanced roster can produce a valid Matchday formation."
+      "calloutLabel": "Squad and Formation are different",
+      "callout": "Your squad contains all players belonging to your Fantasy Team. Your Formation is the selection of starters and substitutes you choose for a specific Matchday."
     },
     "formation": {
       "title": "Formation",
-      "overview": "A Formation is the saved and then submitted Matchday lineup. Build it before the Matchday starts; only a confirmed submission is used in calculation.",
+      "overview": "For each Matchday, choose the Formation your Fantasy Team will use: select the formation, the 11 starters and the bench before the deadline.",
       "details": [
-        "Open an eligible Matchday and its Formation for the Fantasy Team you own. The deadline is the Matchday start time. Before then you may build a draft; at or after it the editor is locked and late save/submit attempts are rejected.",
-        "Choose one module allowed by this League Rules page. The pitch shows the role structure—for example, 4-4-2 requires one goalkeeper, four defenders, four midfielders, and two forwards. Select exactly eleven active roster players matching every required role.",
-        "Select exactly the configured bench size without exceeding its per-role limits. A player cannot be both starter and reserve. Order the bench deliberately: position is used directly in bench-order mode and still resolves ties/order within substitution logic.",
-        "Save stores a valid draft for later editing but does not make it count. Submit validates the module, eleven starters, required role counts, exact bench, bench role limits, unique active roster assignments, ownership, Season eligibility, and deadline; success marks the Formation confirmed with a submission time.",
-        "After submission the Formation is read-only. Calculation ignores unsubmitted drafts. Check the submitted view rather than assuming that a successful earlier Save was a submission.",
-        "Module change safety: selecting the same module changes nothing. If starters exist and you choose a genuinely different module, Kaiser XI asks for confirmation. Confirming changes the module and clears all starters but preserves the bench; canceling leaves the entire draft untouched. Clearing is necessary because the new positional requirements could make the old XI invalid.",
-        "Automatic substitutions run only during result calculation. Each non-playing starter is considered in starter order. Kaiser XI tries playable unused bench players according to bench order or role priority, never exceeds maximum substitutions, and accepts a candidate only if the resulting eleven exactly matches the submitted module—or another allowed module when formation changes on substitution are enabled.",
-        "Example: in a submitted 4-4-2, one defender has no playable score. With a playable defender first on the bench and substitutions available, that defender enters. If only a midfielder is available and formation changes are disabled, nobody enters; the missing starter contributes nothing. If changes are enabled, the midfielder enters only when the resulting role counts match another allowed module."
+        "Open the Formation section for the Matchday you want to play. You can create and modify your Formation until the Matchday begins; after the deadline, it can no longer be saved or submitted.",
+        "Choose one of the formations allowed by the League Rules. The selected formation determines how many defenders, midfielders and forwards must be fielded, while the goalkeeper always occupies the goalkeeper position.",
+        "Select exactly 11 starters from your squad while respecting the chosen formation. A player selected as a starter cannot also be included on the bench.",
+        "Then complete the bench according to the required number of substitutes and any role limits defined in the League Rules. The order of the players on the bench can be important for determining automatic substitutions.",
+        "You can save the Formation as a draft and continue modifying it until the deadline. Once you are satisfied with your choices, submit it to confirm it: only a correctly submitted Formation is used when calculating the Matchday.",
+        "If you change the formation after already selecting your starters, Kaiser XI asks you to confirm the change. If confirmed, the starters are removed because they may no longer be compatible with the new formation, while the bench is preserved. You can then select your 11 starters again.",
+        "At the end of the Matchday, if one of your starters cannot contribute to the score, Kaiser XI attempts to replace that player automatically with a valid player from the bench. The maximum number and substitution criteria depend on the League Rules.",
+        "Substitutions can follow the bench order or role priority, depending on the League settings. If formation changes during substitutions are not allowed, the final Formation must preserve the original formation; if they are allowed, substitutions may result in another formation permitted by the League.",
+        "If no valid substitute can replace a starter, the substitution is not made and that player does not contribute to the Fantasy Team's score."
       ],
-      "calloutLabel": "Warning",
-      "callout": "Save is not Submit. Confirm the submitted state before the deadline, and treat bench order as a competitive decision."
+      "calloutLabel": "Remember to submit it",
+      "callout": "Saving your Formation as a draft is not the same as submitting it. Before the deadline, check your formation, starters, bench and substitute order, then confirm your Formation."
     },
     "matchdays": {
       "title": "Matchdays",
-      "overview": "A Matchday connects one real competition round to formations, real performances, and the derived fantasy result.",
+      "overview": "Matchdays represent the individual rounds of the competition. From this section, you can follow the current Matchday and review those that have already been played.",
       "details": [
-        "The hierarchy is Real Competition → Season → Matchday → Real Matches → registered-player performances → Fantasy results. A league’s Season selection determines which branch of this hierarchy it can use.",
-        "Before a Matchday, the page shows its number and start/end times, eligibility in the initialized competition, and the Formation action when you own a participating team. Build and submit before starts_at; the start is the hard lineup deadline.",
-        "During the Matchday, submitted formations are locked while real matches and performance data are completed. Kaiser XI does not offer live lineup edits, and a partial data view should not be treated as a final fantasy result.",
-        "A PlayerScore becomes usable when its recorded status is playable and has the needed score data. Non-playing or pending records do not contribute and may trigger bench substitution resolution.",
-        "After the Matchday end, an authorized Commissioner can Calculate when the Matchday belongs to the initialized competition. Every participating team needs a confirmed submitted Formation for a complete set of team results; Head-to-Head fixtures also need both team scores.",
-        "After calculation, the Matchday exposes calculated team totals, detailed contributors and substitutions, and the format-specific results. Use previous Matchdays for historical submitted formations and published results rather than editing them."
+        "Each Matchday corresponds to a round of the Season on which the League is based. Before it begins, you can prepare and submit your Fantasy Team's Formation before the deadline.",
+        "During the Matchday, you can follow the status of the round and, when available, view information related to Formations and scores.",
+        "After the Matchday has been calculated, you can view the results of the Fantasy Teams, their scores and the details of the Formations that were used.",
+        "Past Matchdays remain available as part of the League history. You can go back and review results, scores and Formations from previously completed Matchdays.",
+        "Where supported by the League view, you can also inspect the Formations and results of other Fantasy Teams, not only your own."
       ],
-      "calloutLabel": "Note",
-      "callout": "The start time closes formations; the end time opens manual calculation. They serve different purposes."
+      "calloutLabel": "League history",
+      "callout": "Use the Matchdays section to follow the current round and review what happened in previous Matchdays."
     },
     "scoring": {
       "title": "Scoring",
-      "overview": "Scoring proceeds from a recorded base rating and events to a player fantasy score, then sums the effective eleven and optional team bonuses.",
+      "overview": "A Fantasy Team's score is based on the real performances of the players in its lineup. Kaiser XI starts from each player's base rating, applies the bonuses and penalties defined by the League Rules, and counts only the players who effectively contribute to the final Formation.",
       "details": [
-        "Base rating is the source assessment of the real performance. Events are counts for goals, assists, yellow cards, red cards, own goals, penalties scored, penalties missed, penalties saved, and goals conceded; clean sheet and real-captain state are flags. Final fantasy score is base rating plus each event count multiplied by the League Rule coefficient.",
-        "Default coefficients are goal +3, assist +1, yellow -0.5, red -1, own goal -2, penalty scored +3, penalty missed -3, penalty saved +3, and goal conceded -1. A goal that is also recorded as a scored penalty receives the penalty value instead of an additional ordinary-goal value, preventing double counting.",
-        "Only effective, playable starters count: submitted starters who played plus valid automatic substitutes. A non-playing unresolved starter and unused bench player contribute zero. The Fantasy Team Matchday score is their player fantasy scores plus enabled real-captain, goalkeeper clean-sheet, and defense-modifier bonuses.",
-        "Real-captain bonus is awarded to every contributing performance marked as captain of the player’s real club, using the league’s configured value. Goalkeeper clean-sheet bonus requires the contributing player’s Formation role to be goalkeeper and clean sheet to be recorded; the switch and value must both be configured.",
-        "Defense modifier uses base ratings only. It requires one effective playable goalkeeper and at least four effective playable defenders. Take the three highest defender base ratings, combine them with the goalkeeper rating, divide by four, and apply the bonus at the highest configured threshold not above the average. Missing ratings or fewer qualifying players mean no modifier.",
-        "Complete example with default event coefficients: ten effective players have final fantasy scores totaling 60.0. The eleventh has base 6.5, one ordinary goal, one assist, and one yellow: 6.5 + 3 + 1 - 0.5 = 10.0, so base team points are 70.0. If that player is real captain with an enabled +0.5 bonus, the goalkeeper has an enabled +1 clean-sheet bonus, and defense base ratings 6.0, 6.5, 7.0 plus goalkeeper 6.5 average 6.5 and earn the default +2 threshold, the final team score is 73.5.",
-        "The stored PlayerScore may also contain a source final score, but league calculation applies the league’s current event coefficients to the recorded rating/events. Inspect the result breakdown to see which players counted and which optional bonuses were added."
+        "The starting point is the player's base rating, which represents the evaluation of their performance in the real match. The ratings used by Kaiser XI are derived from multiple recognized public football sources and are combined to obtain a reference value.",
+        "Bonuses and penalties are then applied to the base rating according to the events recorded during the real match. Supported events include goals, assists, yellow and red cards, own goals, penalties scored, penalties missed, penalties saved and goals conceded.",
+        "With the default values, a goal is worth +3 points, an assist +1, a yellow card −0.5, a red card −1, an own goal −2, a scored penalty +3, a missed penalty −3, a saved penalty +3 and a goal conceded −1. The Commissioner can change these values through the League Rules.",
+        "A player's fantasy score is therefore the base rating plus the applicable bonuses and penalties. For example, a player with a 6.5 rating who scores a goal, provides an assist and receives a yellow card scores, with the default values: 6.5 + 3 + 1 − 0.5 = 10 points.",
+        "Only players who are part of the effective Formation after substitutions are considered for the Fantasy Team score. Players who remain unused on the bench do not contribute to the total.",
+        "If a starter cannot contribute and is validly replaced by a bench player, the substitute contributes to the Fantasy Team total instead. If no valid substitution is available, that position produces no points.",
+        "Optional League bonuses can also be added to individual player performances. The captain bonus is applied when the corresponding rule is enabled and the contributing player is recorded as the real captain. A goalkeeper may also receive a clean-sheet bonus when that option is enabled and the required conditions are met.",
+        "If the defense modifier is enabled, Kaiser XI evaluates the goalkeeper and defenders who effectively contribute to the Formation. A valid goalkeeper and at least four defenders are required. The goalkeeper's base rating and the three highest defender base ratings are averaged, and the applicable bonus is determined by the thresholds configured in the League.",
+        "Defense modifier example: the goalkeeper has a rating of 6.0 and the three highest-rated defenders have 6.5, 7.0 and 6.5. The average is (6.0 + 6.5 + 7.0 + 6.5) / 4 = 6.5. If the League Rules award +2 points at the 6.5 threshold, the Fantasy Team receives an additional 2-point bonus.",
+        "The Fantasy Team total is the sum of the scores contributed by the effective Formation plus any applicable team bonuses. This total is then used differently depending on the League type: Classic, Head-to-Head or Formula One.",
+        "Always check your League Rules before a Matchday. Two Leagues using the same players and the same real-world ratings can produce different fantasy results if their coefficients, bonuses or modifiers are configured differently."
       ],
-      "calloutLabel": "Note",
-      "callout": "Always read the coefficients in your League Rules; the numerical example uses defaults and explicitly stated optional bonuses."
+      "calloutLabel": "Scoring depends on your League",
+      "callout": "The base rating represents the player's real performance, but the fantasy result depends on the League Rules. Bonuses, penalties, captain, clean sheet and the defense modifier can all affect the final score."
     },
     "results": {
       "title": "Results, Standings and Calendar",
-      "overview": "Calculated Matchdays preserve the submitted lineup, effective substitutions, team score, and the competition-format interpretation of that score.",
+      "overview": "After a Matchday has been calculated, you can view the Fantasy Team results and detailed scores. The standings use these results differently depending on the League type: Classic, Head-to-Head or Formula One.",
       "details": [
-        "Open a calculated Matchday to see each Fantasy Team total and player breakdown. The historical Formation distinguishes original starters, bench players, substitutes actually used, the player replaced, non-contributors, and each counted player’s points.",
-        "Team totals separate base/player contribution from the goalkeeper clean-sheet bonus and defense modifier; real-captain points appear in the contributing player’s detail. This lets you reconcile the final number with Scoring and automatic substitutions.",
-        "Classic standings rank championship participants by cumulative calculated Fantasy Team points across included Matchdays. A Matchday score is not converted into a win or position award; it simply adds to the championship total.",
-        "Head-to-Head results convert each paired team’s fantasy points into goals using the League Rules. The result becomes win, draw, or loss. The table records played, wins, draws, losses, goals for/against, goal difference, and league points, with configured standings tie-break ordering applied by Kaiser XI.",
-        "Formula One ranks the Matchday’s calculated teams by fantasy score and then deterministic tie handling. Each position receives the configured position points, and the championship standings sum those awards across included Matchdays.",
-        "The Head-to-Head Calendar shows generated fixtures by round/Matchday and their result state. For Classic and Formula One, browse the championship Matchday list from the initialized starting round. Open an earlier round to inspect its immutable submitted Formation and last calculated result."
+        "The Matchday results show the total score achieved by each Fantasy Team and allow you to inspect the Formation used. This lets you see which players contributed to the result and which substitutions were applied.",
+        "The result details allow you to reconstruct the Fantasy Team's score by showing the contributions of individual players and any bonuses defined by the League Rules. For an explanation of how these values are calculated, see the Scoring chapter.",
+        "In Classic Leagues, the fantasy scores earned across the different Matchdays are added together. The overall standings therefore rank Fantasy Teams according to the total fantasy points accumulated during the season.",
+        "In Head-to-Head Leagues, each Matchday places two Fantasy Teams against each other. Each team's fantasy score is converted into goals according to the thresholds configured in the League Rules and determines a win, draw or loss. The standings track the match results and the corresponding statistics.",
+        "Head-to-Head Leagues also include a Calendar where you can view the scheduled fixtures between Fantasy Teams across the different Matchdays and follow the progress of the championship.",
+        "In Formula One Leagues, Fantasy Teams are ranked on each Matchday according to their fantasy score. Each position receives the number of points defined in the League Rules, and the overall standings accumulate the position points earned throughout the season.",
+        "You can return to previous Matchdays to review already calculated results and Formations. Together, results, standings and the calendar allow you to follow and reconstruct the complete history of the League."
       ],
-      "calloutLabel": "Note",
-      "callout": "The same team fantasy score has three different competitive meanings; always interpret it through the league type."
+      "calloutLabel": "The League type determines the standings",
+      "callout": "The fantasy score is calculated within the same game context, but each League format uses it differently: it is accumulated in Classic, converted into a match result in Head-to-Head and converted into position points in Formula One."
     },
     "calculation": {
       "title": "Calculate and Recalculate",
-      "overview": "Calculate materializes derived fantasy results after a Matchday; using it again explicitly rebuilds those results from the current source data and rules.",
+      "overview": "At the end of a Matchday, the Commissioner can start the calculation of the League results. If data affecting the scores is later corrected or updated, the Matchday may need to be recalculated.",
       "details": [
-        "Only an authorized Commissioner sees the action. It becomes available after the Matchday end, and only for a Matchday belonging to the initialized championship or generated Head-to-Head schedule.",
-        "Before Calculate, ensure participating teams submitted confirmed Formations and the relevant PlayerScores are complete/playable. Calculation resolves substitutions, computes every submitted team’s score and detail, builds Head-to-Head match results when applicable, refreshes the appropriate standings, and records the league/Matchday calculation time.",
-        "A missing submitted Formation prevents that team score from being created and can make a Head-to-Head fixture impossible to finalize. Invalid duplicate or incomplete source records also cause calculation to fail rather than fabricate points.",
-        "Already derived results do not silently follow later data corrections. Example: a player was recorded as 6.5 and the Matchday was calculated; the source is corrected to 7.0. The published fantasy result remains at the calculated value until the Commissioner deliberately calculates again using Recalculate.",
-        "Recalculate deletes that league’s existing derived Fantasy Match results and Team Matchday scores for the round inside one protected operation, then rebuilds team details, format-specific results, and standings using current PlayerScores and current effective League Rules. Source data and submitted Formations are not rewritten.",
-        "Use Recalculate only after a genuine correction to performance data or a supported rule correction that should affect history. Because standings may change, tell managers why it is being done.",
-        "If rebuilding encounters invalid/incomplete data, the operation fails and its transaction restores the prior derived result rather than leaving a half-rebuilt Matchday. Correct the underlying data or missing submission, then retry."
+        "The Commissioner can calculate a Matchday once it has ended and the data required to determine the scores is available.",
+        "When Calculate is selected, Kaiser XI determines which players contribute to the Formations, applies any required substitutions and calculates the scores using ratings, bonuses, penalties and the League Rules.",
+        "Once the calculation is complete, the Matchday results are generated and the information required for the standings is updated. The final outcome depends on the League type: Classic, Head-to-Head or Formula One.",
+        "A Matchday that has already been calculated does not change automatically if data used for its score is later corrected. For example, if a player's rating is corrected from 6.5 to 7.0, the published result remains unchanged until the Matchday is recalculated.",
+        "In these situations, the Commissioner can use Recalculate. Kaiser XI calculates the Matchday again using the data and League Rules available at that time and updates the scores, results and standings accordingly.",
+        "Recalculation may therefore be necessary when ratings, bonuses, penalties or other data affecting the Matchday result are corrected. There is no need to recalculate a Matchday when no relevant data used by the calculation has changed.",
+        "Before recalculating an already published Matchday, remember that its results and the standings may change. This function should therefore be used only when a correction is actually required."
       ],
       "calloutLabel": "Commissioner only",
-      "callout": "Calculation is explicit and historical corrections are explicit. Kaiser XI does not silently rewrite calculated competition history."
-    },
-    "transfers": {
-      "title": "Transfers and Trades",
-      "overview": "Market sign/release actions move players between free status and one team; Trades exchange one owned player from each of two Fantasy Teams.",
-      "details": [
-        "Both workflows require the League Market to be enabled and currently inside its opening/closing window. A member must own a Fantasy Team. Signing/releasing is described in Market; it is not called a Trade proposal.",
-        "To propose a Trade, choose another current Fantasy Team, one active player you offer, and one active player you request. The teams must differ, both players must still belong to the expected teams and be Season-eligible, and an identical pending proposal cannot already exist.",
-        "If cash adjustments are enabled, add a non-negative whole number of credits and identify which of the two teams pays. With zero cash, no payer is specified. The service does not permit cash when the setting is disabled.",
-        "The recipient can Accept or Reject a pending proposal; only the proposer can Cancel it. Accepting rechecks everything at that moment—the open window, pending/unexpired state, ownership, registrations, each resulting role limit, cash configuration, and payer budget—because rosters may have changed since proposal.",
-        "On acceptance, the two old assignments end, replacement assignments move the players while preserving their purchase prices, any cash moves between remaining budgets, and the proposal becomes accepted. Rejection or cancellation changes only proposal status and no roster/budget.",
-        "An expired proposal cannot be accepted, rejected, or cancelled through pending actions; it makes no roster change. Expiration is a time restriction on the proposal, not an automatic player exchange.",
-        "Example: Lions offer a defender bought for 20 to Eagles for a midfielder bought for 30, with Lions paying 5 credits. If cash is enabled, Lions have at least 5 credits, the Market is open, and both post-swap role counts are valid, acceptance exchanges the players, keeps their 20/30 purchase values, subtracts 5 from Lions, and adds 5 to Eagles."
-      ],
-      "calloutLabel": "Warning",
-      "callout": "A proposal is not a reservation. Acceptance always validates current ownership, budget, role limits, expiry, and Market state again."
+      "callout": "Calculate is used to generate the results of a Matchday. Recalculate is used to update an already calculated Matchday when data that can affect its result has been changed or corrected."
     },
     "commissioner": {
       "title": "Commissioner Guide",
-      "overview": "The Commissioner operates the league’s membership, enforced rules, recorded starting state, competition lifecycle, Market window, and explicit result calculation.",
+      "overview": "The Commissioner is responsible for managing the League. They create and configure the competition, invite participants, manage Fantasy Teams and League Rules, and oversee the League throughout the season.",
       "details": [
-        "Create the league with the correct Season, type, name, description, capacity, budget, refund, and roster limits. Then inspect all default League Rules, including lineup, scoring, type-specific, and Market/trade settings.",
-        "Create invitations for managers and share their links securely. Monitor pending/accepted membership, capacity, and assigned league roles; ensure each accepted member receives the intended Fantasy Team before initialization.",
-        "Run the auction/bids/draft externally, create the Fantasy Teams, record every eligible player and purchase price, and reconcile remaining budgets, uniqueness, roster size, and role totals. Kaiser XI records rather than conducts this initial allocation.",
-        "Initialize only after readiness: every member has a team, at least two teams exist, the correct future Season Matchday is selected, and Head-to-Head has enough future rounds for its configured schedule. Initialization cannot simply be repeated.",
-        "Configure Market enablement, opening, closing, and cash-adjustment permission. During operation, the Commissioner does not need to manually approve valid member signings/releases/trades, but should communicate windows and avoid changing compatible rules unexpectedly.",
-        "For each Matchday, remind managers before the start deadline. Real match, registration, and PlayerScore administration is exposed to authorized back-office administrators rather than ordinary league members; Commissioners calculate only once the round has ended and data is ready.",
-        "Operational sequence: Create League → invite managers → configure rules → complete the external allocation → create/assign teams and enter squads → verify readiness → initialize championship/schedule → configure/open the Market → monitor Matchdays → Calculate → Recalculate only for communicated corrections.",
-        "Commissioner-only actions are protected even if a member knows the route. When a control is absent, verify Commissioner role, lifecycle, initialized state, required data, and relevant future/open time window before treating it as an error."
+        "When you create a League, you automatically become its Commissioner. Before inviting other participants, carefully check the Season, League type, maximum number of participants and League Rules.",
+        "Invite participants to the League and make sure that every member has their own Fantasy Team. The Commissioner can manage members and their Fantasy Teams through the administrative tools available in the League.",
+        "After completing the initial player allocation through an auction, sealed bids, draft or another method agreed upon by the group, register the squads in Kaiser XI. Carefully check players, prices, budgets and squad limits before proceeding.",
+        "Before the competition begins, configure the championship. Make sure that all participants and Fantasy Teams are ready and that the League Rules are final, then initialize the competition. Some settings can no longer be freely changed after this point.",
+        "Manage the League Rules throughout the season. Among other things, they determine Formations, the bench, substitutions, bonuses and penalties, modifiers and how results are calculated. Before changing them, always consider the impact on future Matchdays.",
+        "Manage the Market by deciding whether it is enabled and setting its opening and closing period. Where supported, you can also allow credit adjustments in trades between Fantasy Teams.",
+        "Remind participants about important deadlines, especially those for submitting Formations and using the Market. Clear communication of the Rules and deadlines helps prevent most problems during the season.",
+        "At the end of a Matchday, once the required data is available, use Calculate to generate scores and results. If data affecting an already calculated Matchday is later corrected, use Recalculate only when necessary.",
+        "Before making important changes, initializing the competition or recalculating an already published Matchday, always consider the consequences for all participants. The Commissioner has more management tools than other members and is therefore responsible for keeping the League consistent and understandable."
       ],
-      "calloutLabel": "Commissioner only",
-      "callout": "Use a checklist and communicate irreversible initialization, transaction windows, and every historical recalculation to all managers."
+      "calloutLabel": "The Commissioner manages the League",
+      "callout": "Before the season begins, check participants, Fantasy Teams, squads and League Rules. During the competition, communicate deadlines, manage the Market and use Calculate and Recalculate carefully."
     },
     "profile": {
       "title": "Profile and Personalization",
-      "overview": "Account settings change your identity, sign-in security, language, and personal visual appearance without changing competition data.",
+      "overview": "From the Profile section, you can manage your account information and personalize the appearance of Kaiser XI by choosing your language and color palette.",
       "details": [
-        "Open Account to review the signed-in profile. Update the editable name and email fields and save; validation prevents an invalid address or one already used by another account.",
-        "Use the password form to change your password when needed. Enter the current password and the required new-password confirmation; this is separate from profile details.",
-        "Choose English, German, or Italian from the language selector. The choice changes supported interface and Game Instructions text for your browser; it does not translate user-entered League or Fantasy Team names.",
-        "Choose among the available football-inspired color palettes. They are visual themes only and do not claim affiliation with real football clubs.",
-        "Language and theme are personal preferences. Changing them does not alter League Rules, scoring, Market state, another user’s appearance, or any saved Matchday result.",
-        "If a preference appears unchanged, reload after confirming it was saved and verify you are using the same browser/account storage. Competition actions never depend on palette choice."
+        "You can update your profile information, such as your name and email address. These changes affect only your account and do not modify your Fantasy Team or the Leagues you participate in.",
+        "You can change your account password. For security reasons, your current password and confirmation of the new password are required.",
+        "Kaiser XI is available in Italian, English and German. Changing the language translates the interface and Game Instructions, while user-created content, such as League or Fantasy Team names and descriptions, remains unchanged.",
+        "You can personalize the appearance of the app by choosing from different football-inspired color palettes. The selected palette changes colors, backgrounds, buttons and other interface elements.",
+        "Language and palette are personal preferences. Each user can choose their preferred combination without changing the experience of other participants.",
+        "Profile settings do not modify the League Rules, scores, Formations, Market, standings or any other game data."
       ],
-      "calloutLabel": "Note",
-      "callout": "Personalization changes how Kaiser XI looks to you, not how your league works."
+      "calloutLabel": "Personalization is personal",
+      "callout": "Language and palette affect only your experience in the app. Other participants can use different settings without affecting the League."
     },
     "faq": {
       "title": "FAQ and Troubleshooting",
-      "overview": "Most blocked actions follow a specific deadline, ownership, lifecycle, budget, eligibility, or roster validation. Use the messages and checks below before retrying.",
+      "overview": "Here you can find answers to the most common issues you may encounter while using Kaiser XI.",
       "details": [
-        "Why can’t I submit my Formation? It must be before the Matchday start, belong to your team, use an allowed module, contain exactly eleven unique active starters with exact module roles, and contain the exact bench size within role limits. Save first if no Formation exists; then Submit and verify confirmed state.",
-        "Why did starters disappear after changing module? You confirmed a genuinely different module. Kaiser XI deliberately clears starters because their role counts may not fit; the bench stays. Canceling the dialog would have preserved the draft.",
-        "Why can’t I select this module? Only modules enabled in this league’s rules are offered. Ask the Commissioner before lifecycle locks, or choose an available module.",
-        "Why can’t I sign or release? The Market may be closed; you may not own the team; the player/assignment may have changed; a signing price may exceed budget; or size/role limits may be reached. Releases refund only after a valid active assignment is released.",
-        "Why is the Market unavailable? Enablement alone is insufficient: the Commissioner must set both times, current time must be at/after opening and strictly before closing, and your membership/team permissions must allow the action.",
-        "Why can’t I propose or accept a Trade? Check open Market, team ownership, different teams, active Season-eligible players, duplicate status, cash setting/payer/budget, resulting role limits, and that the proposal remains pending and unexpired. Only recipient accepts/rejects; only proposer cancels.",
-        "What happens when a Trade expires? It cannot be processed and exchanges nothing. Create a fresh valid proposal during an open Market if both managers still agree.",
-        "Why didn’t a corrected PlayerScore change a result, and when should Recalculate be used? Calculated history is a snapshot. After correcting 6.5 to 7.0, a Commissioner must explicitly Recalculate that completed initialized Matchday; use it only for real corrections because results and standings are rebuilt.",
-        "Why can’t the Commissioner initialize? Every accepted member needs a Fantasy Team, at least two teams are required, the start must be a future Matchday in the selected Season, initialization must not already exist, and Head-to-Head needs enough future Matchdays for its schedule.",
-        "What happens when a starter does not play? Calculation searches playable unused bench players in the configured order, within maximum substitutions, and accepts only a role/module-valid result. If none fits, the starter stays unresolved and contributes zero.",
-        "Why wasn’t a bench player used? He may lack a playable score, be behind another valid reserve, exceed maximum substitutions, or make the role counts invalid. Cross-role replacement requires formation changes on substitution and a resulting allowed module.",
-        "Why no defense modifier? You need the option enabled, an effective playable goalkeeper with a base rating, at least four effective playable defenders, and base ratings for the best three; their four-rating average must reach a configured threshold.",
-        "Why no goalkeeper clean-sheet bonus? The option must be enabled, the player must contribute as Formation goalkeeper, and the PlayerScore must explicitly record clean sheet. Merely conceding zero in a display is not a substitute for that recorded flag."
+        "Why can't I submit my Formation? Check that the Matchday has not already started, that you are editing your own Fantasy Team, that the selected formation is allowed and that starters and bench comply with the League Rules. Also remember that saving a draft is not the same as submitting the Formation.",
+        "Why did my starters disappear after changing formation? If you change formation after selecting starters, Kaiser XI asks for confirmation. If you confirm, the starters are cleared because they may no longer be compatible with the new formation, while the bench is preserved.",
+        "Why can't I find a specific formation? Each League can decide which formations are allowed. If a formation is not available, it has not been enabled in the League Rules.",
+        "Why can't I propose a Trade? Make sure the Market is open and that the proposal complies with the League Rules. After the Trade, both Fantasy Teams must still respect squad size and role limits. If a credit adjustment is included, sufficient budget must also be available.",
+        "What happens when a Trade proposal expires? An expired proposal can no longer be accepted, rejected or cancelled and does not modify the players or budgets of either Fantasy Team.",
+        "Why didn't a corrected player rating change an already published result? Calculated Matchdays are not rewritten automatically. If a correction affects the result, the Commissioner must use Recalculate.",
+        "Why can't the Commissioner initialize the championship? Before initialization, the League requirements must be satisfied, including the required Fantasy Teams and a valid future Matchday. Head-to-Head Leagues also require enough Matchdays to generate the fixture calendar.",
+        "What happens if one of my starters does not play? Kaiser XI attempts to apply a substitution using the bench and the League Rules. If no valid substitution exists, that player will not contribute to the score.",
+        "Why wasn't a bench player used? The player may not have been valid for the substitution, may have been beyond the maximum number of substitutions or may not have allowed a Formation compatible with the League Rules.",
+        "Why didn't I receive the defense modifier? The modifier must be enabled and its conditions must be met, including a valid goalkeeper and at least four defenders contributing to the Formation.",
+        "Why didn't my goalkeeper receive the clean-sheet bonus? The bonus must be enabled in the League Rules and the goalkeeper must effectively contribute to the Formation with a recorded clean sheet."
       ],
-      "calloutLabel": "Warning",
-      "callout": "Do not work around a validation failure by guessing. Recheck the League Rules and current state; ask the Commissioner only for actions that are actually Commissioner-controlled."
+      "calloutLabel": "Still have questions?",
+      "callout": "If you cannot find the answer you need here, visit the Kaiser XI community forum to ask questions, talk with other players and browse existing discussions.",
+      "forumLink": "Visit the Kaiser XI forum"
     }
   }
 }
