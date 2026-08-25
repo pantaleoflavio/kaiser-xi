@@ -77,6 +77,9 @@ const MatchdayDetailPage = lazy(() =>
 const MatchdayListPage = lazy(() =>
   import('../pages/MatchdayListPage').then((module) => ({ default: module.MatchdayListPage })),
 );
+const PlayerProfilePage = lazy(() =>
+  import('../pages/PlayerProfilePage').then((module) => ({ default: module.PlayerProfilePage })),
+);
 const RegisterPage = lazy(() =>
   import('../pages/RegisterPage').then((module) => ({ default: module.RegisterPage })),
 );
@@ -101,6 +104,7 @@ export function AppRoutes() {
           <Route path="account" element={<AccountPage />} />
           <Route path="leagues" element={<LeaguesPage />} />
           <Route path="invitations" element={<InvitationsPage />} />
+          <Route path="players/:playerId" element={<PlayerProfilePage />} />
           <Route path="leagues/create" element={<CreateLeaguePage />} />
           <Route path="leagues/:leagueId" element={<LeagueDetailPage />} />
           <Route path="leagues/:leagueId/rules" element={<LeagueRulesPage />} />

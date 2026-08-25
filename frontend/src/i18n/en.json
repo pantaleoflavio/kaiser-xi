@@ -1018,5 +1018,51 @@
       "noCash": "No cash adjustment",
       "acceptConfirmation": "Accepting this trade will immediately exchange the players between the two fantasy teams and apply the configured cash adjustment."
     }
+  },
+  "playerProfile": {
+    "title": "Player profile",
+    "loading": "Loading player profile...",
+    "errorTitle": "Unable to load player profile",
+    "error": "The player profile could not be loaded.",
+    "seasonRequired": "A Season must be selected.",
+    "back": "Back to dashboard",
+    "club": "Real club",
+    "role": "Role",
+    "shirtNumber": "Shirt number",
+    "season": "Season",
+    "statistics": "Season statistics",
+    "history": "Matchday history",
+    "emptyTitle": "No appearances",
+    "empty": "There are no confirmed performances with a rating in this Season.",
+    "notAvailable": "—",
+    "matchday": "Matchday {{number}}",
+    "opponent": "Opponent",
+    "opponentUnknown": "Opponent not available",
+    "rating": "Rating",
+    "fields": {
+      "appearances": "Appearances",
+      "average_rating": "Average rating",
+      "goals": "Goals",
+      "assists": "Assists",
+      "yellow_cards": "Yellow cards",
+      "red_cards": "Red cards",
+      "own_goals": "Own goals",
+      "penalties_scored": "Penalties scored",
+      "penalties_missed": "Penalties missed",
+      "penalties_saved": "Penalties saved",
+      "goals_conceded": "Goals conceded",
+      "clean_sheets": "Clean sheets",
+      "captain_appearances": "Captain appearances"
+    },
+    "status": {
+      "played": "Played",
+      "did_not_play": "Did not play",
+      "pending": "Pending",
+      "no_data": "No data"
+    },
+    "venue": {
+      "home": "Home",
+      "away": "Away"
+    }
   }
 }

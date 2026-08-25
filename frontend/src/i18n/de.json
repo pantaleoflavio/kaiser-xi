@@ -1018,5 +1018,51 @@
       "noCash": "Kein Geldausgleich",
       "acceptConfirmation": "Durch die Annahme werden die Spieler sofort zwischen den beiden Fantasy-Teams getauscht und der festgelegte Geldausgleich angewendet."
     }
+  },
+  "playerProfile": {
+    "title": "Spielerprofil",
+    "loading": "Spielerprofil wird geladen ...",
+    "errorTitle": "Spielerprofil kann nicht geladen werden",
+    "error": "Das Spielerprofil konnte nicht geladen werden.",
+    "seasonRequired": "Eine Saison muss ausgewählt werden.",
+    "back": "Zurück zum Dashboard",
+    "club": "Verein",
+    "role": "Position",
+    "shirtNumber": "Trikotnummer",
+    "season": "Saison",
+    "statistics": "Saisonstatistik",
+    "history": "Spieltagsverlauf",
+    "emptyTitle": "Keine Einsätze",
+    "empty": "In dieser Saison gibt es keine bestätigten Leistungen mit Bewertung.",
+    "notAvailable": "—",
+    "matchday": "Spieltag {{number}}",
+    "opponent": "Gegner",
+    "opponentUnknown": "Gegner nicht verfügbar",
+    "rating": "Bewertung",
+    "fields": {
+      "appearances": "Einsätze",
+      "average_rating": "Durchschnittsbewertung",
+      "goals": "Tore",
+      "assists": "Vorlagen",
+      "yellow_cards": "Gelbe Karten",
+      "red_cards": "Rote Karten",
+      "own_goals": "Eigentore",
+      "penalties_scored": "Verwandelte Elfmeter",
+      "penalties_missed": "Verschossene Elfmeter",
+      "penalties_saved": "Gehaltene Elfmeter",
+      "goals_conceded": "Gegentore",
+      "clean_sheets": "Zu-null-Spiele",
+      "captain_appearances": "Einsätze als Kapitän"
+    },
+    "status": {
+      "played": "Gespielt",
+      "did_not_play": "Nicht gespielt",
+      "pending": "Ausstehend",
+      "no_data": "Keine Daten"
+    },
+    "venue": {
+      "home": "Heim",
+      "away": "Auswärts"
+    }
   }
 }

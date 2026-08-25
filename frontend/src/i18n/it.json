@@ -970,5 +970,51 @@
       "noCash": "Nessun conguaglio",
       "acceptConfirmation": "Accettando, i giocatori verranno scambiati immediatamente tra le due fantasquadre e verrà applicato il conguaglio configurato."
     }
+  },
+  "playerProfile": {
+    "title": "Profilo giocatore",
+    "loading": "Caricamento del profilo giocatore...",
+    "errorTitle": "Impossibile caricare il profilo",
+    "error": "Non è stato possibile caricare il profilo del giocatore.",
+    "seasonRequired": "È necessario selezionare una stagione.",
+    "back": "Torna alla dashboard",
+    "club": "Club",
+    "role": "Ruolo",
+    "shirtNumber": "Numero di maglia",
+    "season": "Stagione",
+    "statistics": "Statistiche stagionali",
+    "history": "Storico giornate",
+    "emptyTitle": "Nessuna presenza",
+    "empty": "Non ci sono prestazioni confermate con voto in questa stagione.",
+    "notAvailable": "—",
+    "matchday": "Giornata {{number}}",
+    "opponent": "Avversario",
+    "opponentUnknown": "Avversario non disponibile",
+    "rating": "Voto",
+    "fields": {
+      "appearances": "Presenze",
+      "average_rating": "Voto medio",
+      "goals": "Gol",
+      "assists": "Assist",
+      "yellow_cards": "Cartellini gialli",
+      "red_cards": "Cartellini rossi",
+      "own_goals": "Autogol",
+      "penalties_scored": "Rigori segnati",
+      "penalties_missed": "Rigori sbagliati",
+      "penalties_saved": "Rigori parati",
+      "goals_conceded": "Gol subiti",
+      "clean_sheets": "Porte inviolate",
+      "captain_appearances": "Presenze da capitano"
+    },
+    "status": {
+      "played": "Ha giocato",
+      "did_not_play": "Non ha giocato",
+      "pending": "In attesa",
+      "no_data": "Nessun dato"
+    },
+    "venue": {
+      "home": "Casa",
+      "away": "Trasferta"
+    }
   }
 }

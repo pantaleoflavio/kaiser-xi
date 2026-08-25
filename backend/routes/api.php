@@ -1,30 +1,31 @@
 <?php
 
-use App\Http\Controllers\Api\V1\AcceptLeagueInvitationController;
-use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\CalculateMatchdayController;
-use App\Http\Controllers\Api\V1\ClassicChampionshipController;
-use App\Http\Controllers\Api\V1\ClassicMatchdayController;
-use App\Http\Controllers\Api\V1\EligiblePlayerController;
-use App\Http\Controllers\Api\V1\EmailVerificationController;
-use App\Http\Controllers\Api\V1\FantasyTeamController;
-use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
-use App\Http\Controllers\Api\V1\FormationController;
-use App\Http\Controllers\Api\V1\HeadToHeadScheduleController;
-use App\Http\Controllers\Api\V1\LeagueController;
-use App\Http\Controllers\Api\V1\LeagueInvitationController;
-use App\Http\Controllers\Api\V1\LeagueMemberController;
-use App\Http\Controllers\Api\V1\LeagueSettingController;
-use App\Http\Controllers\Api\V1\LeagueTypeController;
-use App\Http\Controllers\Api\V1\MarketController;
-use App\Http\Controllers\Api\V1\MarketPlayerController;
-use App\Http\Controllers\Api\V1\MarketTradeController;
-use App\Http\Controllers\Api\V1\MatchdayController;
-use App\Http\Controllers\Api\V1\SeasonController;
-use App\Http\Controllers\Api\V1\StandingController;
-use App\Http\Controllers\Api\V1\TeamMatchdayScoreController;
 use App\Models\FantasyTeam;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\LeagueController;
+use App\Http\Controllers\Api\V1\MarketController;
+use App\Http\Controllers\Api\V1\SeasonController;
+use App\Http\Controllers\Api\V1\MatchdayController;
+use App\Http\Controllers\Api\V1\StandingController;
+use App\Http\Controllers\Api\V1\FormationController;
+use App\Http\Controllers\Api\V1\LeagueTypeController;
+use App\Http\Controllers\Api\V1\FantasyTeamController;
+use App\Http\Controllers\Api\V1\MarketTradeController;
+use App\Http\Controllers\Api\V1\LeagueMemberController;
+use App\Http\Controllers\Api\V1\MarketPlayerController;
+use App\Http\Controllers\Api\V1\LeagueSettingController;
+use App\Http\Controllers\Api\V1\PlayerProfileController;
+use App\Http\Controllers\Api\V1\EligiblePlayerController;
+use App\Http\Controllers\Api\V1\ClassicMatchdayController;
+use App\Http\Controllers\Api\V1\LeagueInvitationController;
+use App\Http\Controllers\Api\V1\CalculateMatchdayController;
+use App\Http\Controllers\Api\V1\EmailVerificationController;
+use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
+use App\Http\Controllers\Api\V1\TeamMatchdayScoreController;
+use App\Http\Controllers\Api\V1\HeadToHeadScheduleController;
+use App\Http\Controllers\Api\V1\ClassicChampionshipController;
+use App\Http\Controllers\Api\V1\AcceptLeagueInvitationController;
 
 Route::prefix('v1')->group(function (): void {
     Route::get('/health', static fn() => response()->json([
@@ -51,6 +52,7 @@ Route::prefix('v1')->group(function (): void {
     });
 
     Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
+        Route::get('/players/{player}', PlayerProfileController::class)->name('api.v1.players.show');
         Route::get('/invitations', [AcceptLeagueInvitationController::class, 'index'])->name('api.v1.invitations.index');
         Route::post('/invitations/{invitation}/accept', [AcceptLeagueInvitationController::class, 'accept'])->name('api.v1.invitations.accept');
         Route::post('/invitations/{invitation}/reject', [AcceptLeagueInvitationController::class, 'reject'])->name('api.v1.invitations.reject');
