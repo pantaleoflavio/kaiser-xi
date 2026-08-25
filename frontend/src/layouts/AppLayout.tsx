@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { AppNavigation } from '../components/AppNavigation';
+import { LoadingState } from '../components/LoadingState';
 
 export function AppLayout() {
   return (
@@ -7,7 +9,9 @@ export function AppLayout() {
       <AppNavigation />
 
       <main className="mx-auto max-w-5xl px-6 py-10">
-        <Outlet />
+        <Suspense fallback={<LoadingState />}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   );

@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\UpdatePasswordRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
+use App\Http\Requests\Auth\DeleteAccountRequest;
 use App\Http\Resources\Auth\UserResource;
 use App\Models\User;
 use App\Services\Auth\LoginUserService;
