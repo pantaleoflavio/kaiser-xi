@@ -2,12 +2,12 @@
 
 namespace App\Services\Player;
 
-use App\Enums\PlayerScoreStatus;
-use App\Models\Matchday;
 use App\Models\Player;
-use App\Models\PlayerScore;
-use App\Models\PlayerSeasonRegistration;
 use App\Models\Season;
+use App\Models\Matchday;
+use App\Models\PlayerScore;
+use App\Enums\PlayerScoreStatus;
+use App\Models\PlayerSeasonRegistration;
 use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
@@ -39,7 +39,7 @@ class BuildPlayerProfile
             ->selectRaw('COALESCE(SUM(goals), 0) AS goals, COALESCE(SUM(assists), 0) AS assists, COALESCE(SUM(yellow_cards), 0) AS yellow_cards, COALESCE(SUM(red_cards), 0) AS red_cards')
             ->selectRaw('COALESCE(SUM(own_goals), 0) AS own_goals, COALESCE(SUM(penalties_scored), 0) AS penalties_scored, COALESCE(SUM(penalties_missed), 0) AS penalties_missed')
             ->selectRaw('COALESCE(SUM(penalties_saved), 0) AS penalties_saved, COALESCE(SUM(goals_conceded), 0) AS goals_conceded')
-            ->selectRaw('COALESCE(SUM(CASE WHEN clean_sheet = 1 THEN 1 ELSE 0 END), 0) AS clean_sheets, COALESCE(SUM(CASE WHEN is_captain = 1 THEN 1 ELSE 0 END), 0) AS captain_appearances')
+            ->selectRaw('COALESCE(SUM(CASE WHEN clean_sheet IS TRUE THEN 1 ELSE 0 END), 0) AS clean_sheets, COALESCE(SUM(CASE WHEN is_captain IS TRUE THEN 1 ELSE 0 END), 0) AS captain_appearances')
             ->firstOrFail();
 
         $matchdays = Matchday::query()

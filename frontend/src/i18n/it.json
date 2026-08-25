@@ -1016,5 +1016,32 @@
       "home": "Casa",
       "away": "Trasferta"
     }
+  },
+  "playerMatchday": {
+    "details": "Dettagli giocatore",
+    "matchday": "Giornata {{number}}",
+    "rating": "Voto",
+    "fantasyScore": "Punteggio fantasy",
+    "contribution": "Contributo",
+    "close": "Chiudi",
+    "error": "Impossibile caricare i dettagli del giocatore.",
+    "status": {
+      "pending": "In attesa",
+      "did_not_play": "Non ha giocato",
+      "no_data": "Nessun dato"
+    },
+    "components": {
+      "goal": "Gol",
+      "assist": "Assist",
+      "yellow_card": "Cartellino giallo",
+      "red_card": "Cartellino rosso",
+      "own_goal": "Autogol",
+      "penalty_scored": "Rigore segnato",
+      "penalty_missed": "Rigore sbagliato",
+      "penalty_saved": "Rigore parato",
+      "goal_conceded": "Gol subito",
+      "clean_sheet_bonus": "Bonus porta inviolata",
+      "captain_bonus": "Bonus capitano"
+    }
   }
 }

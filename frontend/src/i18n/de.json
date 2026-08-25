@@ -1064,5 +1064,32 @@
       "home": "Heim",
       "away": "Auswärts"
     }
+  },
+  "playerMatchday": {
+    "details": "Spielerdetails",
+    "matchday": "Spieltag {{number}}",
+    "rating": "Bewertung",
+    "fantasyScore": "Fantasy-Punktzahl",
+    "contribution": "Beitrag",
+    "close": "Schließen",
+    "error": "Spielerdetails konnten nicht geladen werden.",
+    "status": {
+      "pending": "Ausstehend",
+      "did_not_play": "Nicht gespielt",
+      "no_data": "Keine Daten"
+    },
+    "components": {
+      "goal": "Tor",
+      "assist": "Vorlage",
+      "yellow_card": "Gelbe Karte",
+      "red_card": "Rote Karte",
+      "own_goal": "Eigentor",
+      "penalty_scored": "Elfmeter verwandelt",
+      "penalty_missed": "Elfmeter verschossen",
+      "penalty_saved": "Elfmeter gehalten",
+      "goal_conceded": "Gegentor",
+      "clean_sheet_bonus": "Zu-null-Bonus",
+      "captain_bonus": "Kapitänsbonus"
+    }
   }
 }

@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
 use App\Http\Controllers\Api\V1\TeamMatchdayScoreController;
 use App\Http\Controllers\Api\V1\HeadToHeadScheduleController;
 use App\Http\Controllers\Api\V1\ClassicChampionshipController;
+use App\Http\Controllers\Api\V1\PlayerMatchdayDetailsController;
 use App\Http\Controllers\Api\V1\AcceptLeagueInvitationController;
 
 Route::prefix('v1')->group(function (): void {
@@ -89,6 +90,8 @@ Route::prefix('v1')->group(function (): void {
 
         Route::get('/{league}/matchdays', [MatchdayController::class, 'index'])
             ->name('api.v1.leagues.matchdays.index')->middleware('can:view,league');
+        Route::get('/{league}/players/{player}/matchdays/{matchday}', PlayerMatchdayDetailsController::class)
+            ->name('api.v1.leagues.players.matchdays.show')->withoutScopedBindings()->middleware('can:view,league');
         Route::post('/{league}/matchdays/{matchday}/calculate', CalculateMatchdayController::class)
             ->name('api.v1.leagues.matchdays.calculate')->withoutScopedBindings()
             ->middleware('can:calculateMatchday,league');

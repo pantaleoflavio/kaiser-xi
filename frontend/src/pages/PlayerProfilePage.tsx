@@ -7,7 +7,7 @@ import { ContentErrorPanel } from '../components/feedback/ContentErrorPanel';
 import { ContentEmptyPanel } from '../components/feedback/ContentEmptyPanel';
 import { useTranslation } from '../i18n';
 
-const summaryFields = [
+const outfieldSummaryFields = [
   'appearances',
   'average_rating',
   'goals',
@@ -19,7 +19,18 @@ const summaryFields = [
   'penalties_missed',
   'captain_appearances',
 ] as const;
-const goalkeeperFields = ['clean_sheets', 'penalties_saved', 'goals_conceded'] as const;
+const goalkeeperSummaryFields = [
+  'appearances',
+  'average_rating',
+  'clean_sheets',
+  'goals_conceded',
+  'penalties_saved',
+  'yellow_cards',
+  'red_cards',
+  'goals',
+  'assists',
+  'captain_appearances',
+] as const;
 
 export function PlayerProfilePage() {
   const { playerId = '' } = useParams();
@@ -46,10 +57,8 @@ export function PlayerProfilePage() {
     );
   const data = profile.data?.data;
   if (!data) return null;
-  const fields =
-    data.registration.role.key === 'goalkeeper'
-      ? [...summaryFields, ...goalkeeperFields]
-      : summaryFields;
+  const isGoalkeeper = data.registration.role.key === 'goalkeeper';
+  const fields = isGoalkeeper ? goalkeeperSummaryFields : outfieldSummaryFields;
   const hasPerformances = data.statistics.appearances > 0;
 
   return (
@@ -125,14 +134,33 @@ export function PlayerProfilePage() {
                     {t('playerProfile.rating')}:{' '}
                     <b className="text-theme-text">{day.base_rating}</b>
                   </span>
-                  <span>
-                    {t('playerProfile.fields.goals')}:{' '}
-                    <b className="text-theme-text">{day.goals}</b>
-                  </span>
-                  <span>
-                    {t('playerProfile.fields.assists')}:{' '}
-                    <b className="text-theme-text">{day.assists}</b>
-                  </span>
+                  {isGoalkeeper ? (
+                    <>
+                      <span>
+                        {t('playerProfile.fields.clean_sheets')}:{' '}
+                        <b className="text-theme-text">{day.clean_sheet ? 1 : 0}</b>
+                      </span>
+                      <span>
+                        {t('playerProfile.fields.goals_conceded')}:{' '}
+                        <b className="text-theme-text">{day.goals_conceded}</b>
+                      </span>
+                      <span>
+                        {t('playerProfile.fields.penalties_saved')}:{' '}
+                        <b className="text-theme-text">{day.penalties_saved}</b>
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span>
+                        {t('playerProfile.fields.goals')}:{' '}
+                        <b className="text-theme-text">{day.goals}</b>
+                      </span>
+                      <span>
+                        {t('playerProfile.fields.assists')}:{' '}
+                        <b className="text-theme-text">{day.assists}</b>
+                      </span>
+                    </>
+                  )}
                   <span>
                     {t('playerProfile.fields.yellow_cards')}:{' '}
                     <b className="text-theme-text">{day.yellow_cards}</b>

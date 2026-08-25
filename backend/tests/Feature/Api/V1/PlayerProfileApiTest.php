@@ -64,6 +64,7 @@ class PlayerProfileApiTest extends TestCase
             ->assertJsonPath('data.statistics.goals', 1)
             ->assertJsonPath('data.statistics.assists', 2)
             ->assertJsonPath('data.statistics.penalties_saved', 1)
+            ->assertJsonPath('data.statistics.goals_conceded', 1)
             ->assertJsonPath('data.statistics.clean_sheets', 1)
             ->assertJsonPath('data.statistics.captain_appearances', 1)
             ->assertJsonPath('data.matchdays.0.status', 'played')

@@ -1064,5 +1064,32 @@
       "home": "Home",
       "away": "Away"
     }
+  },
+  "playerMatchday": {
+    "details": "Player details",
+    "matchday": "Matchday {{number}}",
+    "rating": "Rating",
+    "fantasyScore": "Fantasy score",
+    "contribution": "Contribution",
+    "close": "Close",
+    "error": "Unable to load player details.",
+    "status": {
+      "pending": "Pending",
+      "did_not_play": "Did not play",
+      "no_data": "No data"
+    },
+    "components": {
+      "goal": "Goal",
+      "assist": "Assist",
+      "yellow_card": "Yellow card",
+      "red_card": "Red card",
+      "own_goal": "Own goal",
+      "penalty_scored": "Penalty scored",
+      "penalty_missed": "Penalty missed",
+      "penalty_saved": "Penalty saved",
+      "goal_conceded": "Goal conceded",
+      "clean_sheet_bonus": "Clean sheet bonus",
+      "captain_bonus": "Captain bonus"
+    }
   }
 }

@@ -2,25 +2,25 @@
 
 namespace Tests\Feature\Api\V1;
 
-use App\Models\FantasyTeam;
-use App\Models\FantasyTeamPlayer;
+use Tests\TestCase;
+use App\Models\User;
+use App\Models\League;
+use App\Models\Player;
+use App\Models\Matchday;
 use App\Models\Formation;
+use App\Models\LeagueRole;
+use App\Models\PlayerRole;
+use App\Models\SeasonClub;
+use App\Models\FantasyTeam;
+use App\Models\PlayerScore;
+use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Carbon;
 use App\Models\FormationModule;
 use App\Models\FormationPlayer;
-use App\Models\League;
-use App\Models\LeagueRole;
-use App\Models\Matchday;
-use App\Models\Player;
-use App\Models\PlayerRole;
-use App\Models\PlayerScore;
-use App\Models\PlayerSeasonRegistration;
-use App\Models\SeasonClub;
+use App\Models\FantasyTeamPlayer;
 use App\Models\TeamMatchdayScore;
-use App\Models\User;
+use App\Models\PlayerSeasonRegistration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Carbon;
-use Laravel\Sanctum\Sanctum;
-use Tests\TestCase;
 
 class TeamMatchdayScoreApiTest extends TestCase
 {
@@ -86,7 +86,8 @@ class TeamMatchdayScoreApiTest extends TestCase
             ->assertJsonPath('data.result.points', '7.00')
             ->assertJsonPath('data.formation.players.0.replaced_by_player.id', $incoming->player_id)
             ->assertJsonPath('data.formation.players.1.used_as_substitute', true)
-            ->assertJsonPath('data.formation.players.1.player_score.final_score', '6.50')
+            ->assertJsonPath('data.formation.players.1.player_score.base_rating', '6.50')
+            ->assertJsonMissingPath('data.formation.players.1.player_score.final_score')
             ->assertJsonPath('data.formation.players.1.player_score.is_real_captain', true)
             ->assertJsonPath('data.formation.players.2.effective_contribution', '0.00');
 

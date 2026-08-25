@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Services\scoring;
 
-use App\Models\League;
-use App\Models\LeagueSetting;
-use App\Models\PlayerScore;
-use App\Services\Scoring\PlayerFantasyScoreCalculator;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\League;
+use App\Models\PlayerScore;
+use App\Models\LeagueSetting;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Services\Scoring\PlayerFantasyScoreCalculator;
 
 class PlayerFantasyScoreCalculatorTest extends TestCase
 {
@@ -59,5 +59,50 @@ class PlayerFantasyScoreCalculatorTest extends TestCase
         $score = new PlayerScore(['base_rating' => 0, 'goals' => 1, 'penalties_scored' => 1, 'goals_conceded' => 3]);
 
         $this->assertSame(-100, app(PlayerFantasyScoreCalculator::class)->calculateCents($score, $league));
+    }
+
+    public function test_breakdown_is_the_single_source_used_by_the_numeric_calculation(): void
+    {
+        $league = League::factory()->create();
+        $score = new PlayerScore([
+            'base_rating' => 6.5,
+            'goals' => 3,
+            'penalties_scored' => 1,
+            'assists' => 2,
+            'yellow_cards' => 1,
+            'red_cards' => 1,
+            'own_goals' => 1,
+            'penalties_missed' => 1,
+            'penalties_saved' => 1,
+            'goals_conceded' => 2,
+        ]);
+        $calculator = app(PlayerFantasyScoreCalculator::class);
+        $breakdown = $calculator->breakdown($score, $league);
+
+        $this->assertSame($breakdown['fantasy_score_cents'], $calculator->calculateCents($score, $league));
+        $this->assertSame(650, $breakdown['base_rating_cents']);
+        $this->assertSame(
+            ['goal', 'penalty_scored', 'assist', 'yellow_card', 'red_card', 'own_goal', 'penalty_missed', 'penalty_saved', 'goal_conceded'],
+            array_column($breakdown['components'], 'type'),
+        );
+        $this->assertSame(2, $breakdown['components'][0]['count']);
+        $this->assertSame(1, $breakdown['components'][1]['count']);
+    }
+
+    public function test_breakdown_omits_zero_count_events_but_keeps_events_with_zero_coefficients(): void
+    {
+        $league = League::factory()->create();
+        $league->settings()->create([
+            'key' => LeagueSetting::ASSIST_BONUS,
+            'value' => LeagueSetting::decimalPayload(0),
+        ]);
+        $breakdown = app(PlayerFantasyScoreCalculator::class)->breakdown(
+            new PlayerScore(['base_rating' => 7, 'assists' => 1]),
+            $league,
+        );
+
+        $this->assertCount(1, $breakdown['components']);
+        $this->assertSame('assist', $breakdown['components'][0]['type']);
+        $this->assertSame(0, $breakdown['components'][0]['total_cents']);
     }
 }
