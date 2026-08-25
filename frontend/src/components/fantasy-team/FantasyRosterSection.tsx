@@ -8,6 +8,7 @@ import { RosterManagementPanel } from './RosterManagementPanel';
 type FieldErrors = { player_id?: string; purchase_price?: string };
 export function FantasyRosterSection({
   leagueId,
+  seasonId,
   players,
   canManage,
   success,
@@ -21,6 +22,7 @@ export function FantasyRosterSection({
   onRelease,
 }: {
   leagueId: string;
+  seasonId: number;
   players: RosterPlayer[];
   canManage: boolean;
   success: string | null;
@@ -54,6 +56,7 @@ export function FantasyRosterSection({
       {!error ? (
         <FantasyRosterList
           players={players}
+          seasonId={seasonId}
           canManage={canManage}
           releasingPlayerId={releasingPlayerId}
           onRelease={onRelease}

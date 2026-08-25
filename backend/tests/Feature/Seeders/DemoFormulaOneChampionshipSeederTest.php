@@ -9,14 +9,15 @@ use App\Models\FormationPlayer;
 use App\Models\League;
 use App\Models\Matchday;
 use App\Models\PlayerScore;
+use App\Models\Season;
 use App\Models\Standing;
 use App\Models\TeamMatchdayScore;
 use App\Models\User;
 use Database\Seeders\DemoFormulaOneChampionshipSeeder;
-use Database\Seeders\DemoHeadToHeadResultsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Seeders\Concerns\SeedsDemoFoundation;
 use Tests\TestCase;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class DemoFormulaOneChampionshipSeederTest extends TestCase
 {
@@ -106,44 +107,137 @@ class DemoFormulaOneChampionshipSeederTest extends TestCase
     {
         $this->seedDemoFoundation();
         $this->seed(DemoFormulaOneChampionshipSeeder::class);
-        $this->seed(DemoHeadToHeadResultsSeeder::class);
 
-        $league = League::query()->where('slug', DemoFormulaOneChampionshipSeeder::LEAGUE_SLUG)->firstOrFail();
-        $teams = $league->fantasyTeams()->orderBy('id')->get();
-        $matchdays = Matchday::query()->where('season_id', $league->season_id)->orderBy('number')->get();
-        $owner = User::query()->where('email', DemoFormulaOneChampionshipSeeder::TEAMS[1][0])->firstOrFail();
-        $member = User::query()->where('email', DemoFormulaOneChampionshipSeeder::TEAMS[2][0])->firstOrFail();
+        $unrelatedSeason = Season::factory()->create();
 
-        $response = $this->actingAs($member)->getJson("/api/v1/leagues/{$league->id}/matchdays")->assertOk();
-        $this->assertSame($matchdays->pluck('id')->all(), $response->json('data.*.id'));
-        $this->assertSame(['past', 'past', 'past', 'current', 'upcoming', 'upcoming', 'upcoming', 'upcoming'], $response->json('data.*.championship_state'));
-        $h2h = League::query()->where('slug', DemoHeadToHeadResultsSeeder::LEAGUE_SLUG)->firstOrFail();
-        $this->assertEmpty(array_intersect(
-            Matchday::query()->where('season_id', $h2h->season_id)->pluck('id')->all(),
+        $unrelatedMatchdays = Matchday::factory()
+            ->count(2)
+            ->state(new Sequence(
+                ['number' => 1],
+                ['number' => 2],
+            ))
+            ->create([
+                'season_id' => $unrelatedSeason->id,
+            ]);
+
+        $league = League::query()
+            ->where('slug', DemoFormulaOneChampionshipSeeder::LEAGUE_SLUG)
+            ->firstOrFail();
+
+        $teams = $league->fantasyTeams()
+            ->orderBy('id')
+            ->get();
+
+        $matchdays = Matchday::query()
+            ->where('season_id', $league->season_id)
+            ->orderBy('number')
+            ->get();
+
+        $owner = User::query()
+            ->where('email', DemoFormulaOneChampionshipSeeder::TEAMS[1][0])
+            ->firstOrFail();
+
+        $member = User::query()
+            ->where('email', DemoFormulaOneChampionshipSeeder::TEAMS[2][0])
+            ->firstOrFail();
+
+        $response = $this->actingAs($member)
+            ->getJson("/api/v1/leagues/{$league->id}/matchdays")
+            ->assertOk();
+
+        $this->assertSame(
+            $matchdays->pluck('id')->all(),
             $response->json('data.*.id'),
-        ));
+        );
 
-        $past = $this->getJson("/api/v1/leagues/{$league->id}/matchdays/{$matchdays->get(1)->id}/championship-results")
-            ->assertOk()->assertJsonCount(6, 'data.teams');
-        $this->assertContains('missing_formation', $past->json('data.teams.*.result_status'));
-        $this->assertNotContains(null, $past->json('data.teams.*.finishing_position'));
-        $this->assertNotContains(null, $past->json('data.teams.*.championship_points'));
+        $this->assertSame(
+            ['past', 'past', 'past', 'current', 'upcoming', 'upcoming', 'upcoming', 'upcoming'],
+            $response->json('data.*.championship_state'),
+        );
 
-        $current = $this->getJson("/api/v1/leagues/{$league->id}/matchdays/{$matchdays->get(3)->id}/championship-results")
-            ->assertOk()->assertJsonCount(6, 'data.teams');
-        $this->assertSame(1, collect($current->json('data.teams'))->where('formation_submitted', true)->count());
-        $this->assertSame([null], array_values(array_unique($current->json('data.teams.*.finishing_position'))));
-        $this->assertSame([null], array_values(array_unique($current->json('data.teams.*.championship_points'))));
+        $this->assertEmpty(
+            array_intersect(
+                $unrelatedMatchdays->pluck('id')->all(),
+                $response->json('data.*.id'),
+            ),
+        );
+
+        $past = $this
+            ->getJson(
+                "/api/v1/leagues/{$league->id}/matchdays/{$matchdays->get(1)->id}/championship-results",
+            )
+            ->assertOk()
+            ->assertJsonCount(6, 'data.teams');
+
+        $this->assertContains(
+            'missing_formation',
+            $past->json('data.teams.*.result_status'),
+        );
+
+        $this->assertNotContains(
+            null,
+            $past->json('data.teams.*.finishing_position'),
+        );
+
+        $this->assertNotContains(
+            null,
+            $past->json('data.teams.*.championship_points'),
+        );
+
+        $current = $this
+            ->getJson(
+                "/api/v1/leagues/{$league->id}/matchdays/{$matchdays->get(3)->id}/championship-results",
+            )
+            ->assertOk()
+            ->assertJsonCount(6, 'data.teams');
+
+        $this->assertSame(
+            1,
+            collect($current->json('data.teams'))
+                ->where('formation_submitted', true)
+                ->count(),
+        );
+
+        $this->assertSame(
+            [null],
+            array_values(
+                array_unique($current->json('data.teams.*.finishing_position')),
+            ),
+        );
+
+        $this->assertSame(
+            [null],
+            array_values(
+                array_unique($current->json('data.teams.*.championship_points')),
+            ),
+        );
 
         $draftUrl = "/api/v1/leagues/{$league->id}/matchdays/{$matchdays->get(3)->id}/fantasy-teams/{$teams->get(1)->id}/formation";
-        $this->actingAs($owner)->getJson($draftUrl)->assertOk();
-        $this->actingAs($member)->getJson($draftUrl)->assertNotFound();
+
+        $this->actingAs($owner)
+            ->getJson($draftUrl)
+            ->assertOk();
+
+        $this->actingAs($member)
+            ->getJson($draftUrl)
+            ->assertNotFound();
+
         $submittedUrl = "/api/v1/leagues/{$league->id}/matchdays/{$matchdays->get(3)->id}/fantasy-teams/{$teams->first()->id}/formation";
-        $this->getJson($submittedUrl)->assertOk();
+
+        $this->getJson($submittedUrl)
+            ->assertOk();
+
         $pastFormationUrl = "/api/v1/leagues/{$league->id}/matchdays/{$matchdays->first()->id}/fantasy-teams/{$teams->first()->id}/formation";
-        $this->getJson($pastFormationUrl)->assertOk();
-        $this->getJson("/api/v1/leagues/{$league->id}/matchdays/{$matchdays->first()->id}/fantasy-teams/{$teams->first()->id}/score")
-            ->assertOk()->assertJsonPath('data.result.points', '82.00');
+
+        $this->getJson($pastFormationUrl)
+            ->assertOk();
+
+        $this
+            ->getJson(
+                "/api/v1/leagues/{$league->id}/matchdays/{$matchdays->first()->id}/fantasy-teams/{$teams->first()->id}/score",
+            )
+            ->assertOk()
+            ->assertJsonPath('data.result.points', '82.00');
     }
 
     /** @return array<string, int> */

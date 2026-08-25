@@ -43,7 +43,19 @@ class PlayerScoreFactory extends Factory
     public function pending(): static
     {
         return $this->state(fn(): array => [
+            'base_rating' => null,
             'final_score' => null,
+            'goals' => 0,
+            'assists' => 0,
+            'yellow_cards' => 0,
+            'red_cards' => 0,
+            'own_goals' => 0,
+            'penalties_scored' => 0,
+            'penalties_missed' => 0,
+            'penalties_saved' => 0,
+            'goals_conceded' => 0,
+            'clean_sheet' => false,
+            'is_captain' => false,
             'status' => PlayerScoreStatus::Pending,
         ]);
     }
@@ -54,10 +66,21 @@ class PlayerScoreFactory extends Factory
         return $this->state(fn(): array => ['is_captain' => true]);
     }
 
-    public function confirmed(float $finalScore = 6.00): static
+    public function confirmed(float $baseRating = 6.00): static
     {
         return $this->state(fn(): array => [
-            'final_score' => $finalScore,
+            'base_rating' => $baseRating,
+            'final_score' => null,
+            'goals' => 0,
+            'assists' => 0,
+            'yellow_cards' => 0,
+            'red_cards' => 0,
+            'own_goals' => 0,
+            'penalties_scored' => 0,
+            'penalties_missed' => 0,
+            'penalties_saved' => 0,
+            'goals_conceded' => 0,
+            'clean_sheet' => false,
             'status' => PlayerScoreStatus::Confirmed,
         ]);
     }
@@ -67,6 +90,17 @@ class PlayerScoreFactory extends Factory
         return $this->state(fn(): array => [
             'base_rating' => null,
             'final_score' => null,
+            'goals' => 0,
+            'assists' => 0,
+            'yellow_cards' => 0,
+            'red_cards' => 0,
+            'own_goals' => 0,
+            'penalties_scored' => 0,
+            'penalties_missed' => 0,
+            'penalties_saved' => 0,
+            'goals_conceded' => 0,
+            'clean_sheet' => false,
+            'is_captain' => false,
             'status' => PlayerScoreStatus::DidNotPlay,
         ]);
     }

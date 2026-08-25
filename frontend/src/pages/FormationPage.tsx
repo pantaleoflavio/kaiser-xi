@@ -137,7 +137,9 @@ export function FormationPage() {
           {formatDate(matchday.deadline, t('leagueDetail.notAvailable'), language)}
         </p>
       </header>
-      {showHistorical && result.data ? <HistoricalFormationView data={result.data.data} /> : null}
+      {showHistorical && result.data ? (
+        <HistoricalFormationView data={result.data.data} leagueId={leagueId} />
+      ) : null}
       {showSubmittedFormation && submittedFormation ? (
         <SubmittedFormationView formation={submittedFormation} />
       ) : null}

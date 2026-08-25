@@ -44,10 +44,17 @@ export const formationKeys = {
 };
 
 export const teamMatchdayResultKeys = {
+  player: (leagueId: string, playerId: number, matchdayId: number, formationId: number) =>
+    ['player-matchday-details', leagueId, playerId, matchdayId, formationId] as const,
   classic: (leagueId: string | number, matchdayId: string | number) =>
     ['classic-matchday-results', String(leagueId), String(matchdayId)] as const,
   formulaOne: (leagueId: string | number, matchdayId: string | number) =>
     ['formula-one-matchday-results', String(leagueId), String(matchdayId)] as const,
   detail: (leagueId: string | number, matchdayId: string | number, teamId: string | number) =>
     ['team-matchday-result', String(leagueId), String(matchdayId), String(teamId)] as const,
+};
+
+export const playerKeys = {
+  profile: (playerId: string, seasonId: string) =>
+    ['players', playerId, 'profile', seasonId] as const,
 };

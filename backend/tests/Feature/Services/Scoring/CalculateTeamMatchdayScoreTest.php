@@ -37,7 +37,7 @@ class CalculateTeamMatchdayScoreTest extends TestCase
         $this->seedReferenceData();
     }
 
-    public function test_scores_playable_starters_from_final_score_and_ignores_unused_bench(): void
+    public function test_scores_playable_starters_from_authoritative_ratings_and_ignores_unused_bench(): void
     {
         [$formation, $starters, $bench] = $this->formation(['defender']);
         foreach ($starters as $index => $assignment) {
@@ -154,14 +154,21 @@ class CalculateTeamMatchdayScoreTest extends TestCase
             $role = $this->registrations[$assignment]->playerRole->key;
             $raw = $role === 'goalkeeper' ? 6.5 : ($role === 'defender' ? array_shift($defenderVotes) : 5.0);
             $this->score($formation, $assignment, 10.0, rawVote: $raw);
+            PlayerScore::query()
+                ->where('player_season_registration_id', $this->registrations[$assignment]->id)
+                ->where('matchday_id', $formation->matchday_id)
+                ->update(['goals' => 1]);
         }
 
         $first = $this->calculator()->calculate($formation->fantasyTeam->fresh(), $formation->matchday);
         $second = $this->calculator()->calculate($formation->fantasyTeam->fresh(), $formation->matchday);
 
         $this->assertSame('2.00', $first->defense_modifier_points); // (6.5 + 7 + 6.5 + 6) / 4 = 6.5
-        $this->assertSame('112.00', $first->points);
-        $this->assertSame('112.00', $second->points);
+        // Base ratings total 60, eleven goals add 33, and the defense modifier
+        // adds 2. The modifier therefore demonstrably uses ratings, not the
+        // higher (rating + goal) fantasy contributions.
+        $this->assertSame('95.00', $first->points);
+        $this->assertSame('95.00', $second->points);
         $this->assertSame(1, TeamMatchdayScore::query()->count());
     }
 
@@ -302,7 +309,7 @@ class CalculateTeamMatchdayScoreTest extends TestCase
     {
         PlayerScore::query()->updateOrCreate(
             ['player_season_registration_id' => $this->registrations[$assignment]->id, 'matchday_id' => $formation->matchday_id],
-            ['status' => PlayerScoreStatus::Confirmed, 'base_rating' => $rawVote ?? $points, 'final_score' => $points, 'is_captain' => $captain, 'clean_sheet' => $cleanSheet],
+            ['status' => PlayerScoreStatus::Confirmed, 'base_rating' => $rawVote ?? $points, 'final_score' => null, 'is_captain' => $captain, 'clean_sheet' => $cleanSheet],
         );
     }
 
