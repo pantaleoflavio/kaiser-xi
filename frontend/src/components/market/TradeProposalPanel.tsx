@@ -54,7 +54,7 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
           <div className="space-y-2">
             {values.length ? (
               values.map((trade) => (
-                <article key={trade.id} className="rounded-xl border border-slate-800 p-4">
+                <article key={trade.id} className="rounded-xl border border-theme-border p-4">
                   <p>
                     {trade.proposing_fantasy_team.name}: {trade.offered_player.name} →{' '}
                     {trade.receiving_fantasy_team.name}: {trade.requested_player.name}
@@ -64,13 +64,13 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
                       {trade.cash_from_fantasy_team.name}: {trade.cash_amount}
                     </p>
                   ) : null}
-                  <p className="text-sm text-slate-400">
+                  <p className="text-sm text-theme-muted">
                     {trade.status} · {new Date(trade.created_at).toLocaleDateString()}
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {trade.capabilities.can_accept ? (
                       <button
-                        className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-lg bg-theme-primary px-4 py-2 text-sm font-semibold text-theme-primary-foreground transition hover:bg-theme-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-focus focus-visible:ring-offset-2 focus-visible:ring-offset-theme-background disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={isTransitionPending}
                         onClick={() => {
                           if (window.confirm(t('market.trades.acceptConfirmation')))
@@ -87,7 +87,7 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
                     ) : null}
                     {trade.capabilities.can_reject ? (
                       <button
-                        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-theme-text transition hover:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 focus-visible:ring-offset-2 focus-visible:ring-offset-theme-background disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={isTransitionPending}
                         onClick={() => transitionTrade(trade, 'reject')}
                         type="button"
@@ -101,7 +101,7 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
                     ) : null}
                     {trade.capabilities.can_cancel ? (
                       <button
-                        className="rounded-lg border border-red-400/50 bg-red-950/30 px-4 py-2 text-sm font-semibold text-red-100 transition hover:border-red-300/70 hover:bg-red-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-lg border border-red-400/50 bg-red-950/30 px-4 py-2 text-sm font-semibold text-red-100 transition hover:border-red-300/70 hover:bg-red-950/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 focus-visible:ring-offset-2 focus-visible:ring-offset-theme-background disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={isTransitionPending}
                         onClick={() => transitionTrade(trade, 'cancel')}
                         type="button"
@@ -117,7 +117,7 @@ export function TradeProposalPanel({ leagueId }: { leagueId: string }) {
                 </article>
               ))
             ) : (
-              <p className="text-slate-400">{t('market.trades.empty')}</p>
+              <p className="text-theme-muted">{t('market.trades.empty')}</p>
             )}
           </div>
         </div>

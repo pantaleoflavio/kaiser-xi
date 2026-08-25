@@ -2,7 +2,7 @@
 
 ## Overview
 
-FantaMeister is organized around two independent but connected domains:
+Kaiser XI is organized around two independent but connected domains:
 
 * the **Real Football Domain**, which models real-world football competitions;
 * the **Fantasy Domain**, which models user-created fantasy leagues.
@@ -14,7 +14,7 @@ The separation between these domains allows the platform to support multiple com
 # High-level architecture
 
 ```text
-                  FantaMeister
+                    Kaiser XI
                         │
         ┌───────────────┴────────────────┐
         │                                │
@@ -197,3 +197,18 @@ The architecture is intended to support future modules including:
 * multiple fantasy competition formats.
 
 These features build upon the existing domain model without requiring structural changes.
+
+# UI themes
+
+Kaiser XI palettes are applied through semantic CSS variables on
+`html[data-theme]`. The typed frontend registry in `frontend/src/theme/themes.ts`
+contains every selectable ID, display name, and preview swatch. **Imperial
+Crimson** is the default because its restrained dark surfaces retain the Kaiser
+XI character while keeping content and controls readable before authentication.
+
+An authenticated selection is validated with `Rule::enum(App\Enums\UserTheme::class)`
+and stored in the nullable `users.theme` column defined in the original users
+migration. Missing or invalid values resolve
+to the default and are never read from local storage. To add a curated palette,
+add the same stable ID to both registries, define all semantic variables in
+`frontend/src/styles.css`, verify WCAG AA contrast, and add its preview metadata.

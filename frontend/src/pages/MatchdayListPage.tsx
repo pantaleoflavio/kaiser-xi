@@ -64,8 +64,8 @@ export function MatchdayListPage() {
         )}
       />
       <div>
-        <h1 className="text-3xl font-bold text-white">{t('matchdays.title')}</h1>
-        <p className="mt-2 text-slate-300">{t('matchdays.description')}</p>
+        <h1 className="text-3xl font-bold text-theme-text">{t('matchdays.title')}</h1>
+        <p className="mt-2 text-theme-muted">{t('matchdays.description')}</p>
       </div>
       {isHeadToHead && !scheduleInitialized ? (
         <div className="rounded-xl border border-amber-500/40 bg-amber-950/20 p-5 text-amber-100">
@@ -98,7 +98,7 @@ export function MatchdayListPage() {
           ))}
         </div>
       ) : (
-        <p className="rounded-xl bg-slate-900/70 p-5 text-slate-300">
+        <p className="rounded-xl bg-theme-surface/70 p-5 text-theme-muted">
           {t('formation.noMatchdays')}
         </p>
       )}

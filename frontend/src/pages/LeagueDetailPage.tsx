@@ -37,12 +37,15 @@ export function LeagueDetailPage() {
 
   return (
     <section className="space-y-6">
-      <Link className="text-sm font-semibold text-emerald-300 hover:text-emerald-200" to="/leagues">
+      <Link
+        className="text-sm font-semibold text-theme-accent hover:text-theme-accent"
+        to="/leagues"
+      >
         {t('leagueDetail.backToLeagues')}
       </Link>
       {navigationState?.success ? (
         <div
-          className="rounded-xl border border-emerald-400/30 bg-emerald-950/30 p-4 text-sm text-emerald-100"
+          className="rounded-xl border border-theme-primary/30 bg-emerald-950/30 p-4 text-sm text-emerald-100"
           role="status"
         >
           {navigationState.success}
@@ -66,32 +69,32 @@ export function LeagueDetailPage() {
           <LeagueSummary league={league} />
           <div className="grid gap-4 md:grid-cols-2">
             <Link
-              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
+              className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5 transition hover:border-theme-primary/40"
               to={`/leagues/${leagueId}/matchdays`}
             >
-              <h2 className="text-xl font-semibold text-white">
+              <h2 className="text-xl font-semibold text-theme-text">
                 {t('leagueNavigation.matchdays')}
               </h2>
-              <p className="mt-2 text-sm text-slate-300">
+              <p className="mt-2 text-sm text-theme-muted">
                 {t('leagueNavigation.matchdaysDescription')}
               </p>
             </Link>
             {['head_to_head', 'classic', 'formula_one'].includes(league.type.key) ? (
               <Link
-                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
+                className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5 transition hover:border-theme-primary/40"
                 to={`/leagues/${leagueId}/standings`}
               >
-                <h2 className="text-xl font-semibold text-white">{t('standings.title')}</h2>
-                <p className="mt-2 text-sm text-slate-300">{t('standings.description')}</p>
+                <h2 className="text-xl font-semibold text-theme-text">{t('standings.title')}</h2>
+                <p className="mt-2 text-sm text-theme-muted">{t('standings.description')}</p>
               </Link>
             ) : null}
             {league.type.key === 'head_to_head' ? (
               <Link
-                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
+                className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5 transition hover:border-theme-primary/40"
                 to={`/leagues/${leagueId}/head-to-head-schedule`}
               >
-                <h2 className="text-xl font-semibold text-white">{t('h2h.title')}</h2>
-                <p className="mt-2 text-sm text-slate-300">
+                <h2 className="text-xl font-semibold text-theme-text">{t('h2h.title')}</h2>
+                <p className="mt-2 text-sm text-theme-muted">
                   {scheduleQuery.data?.data.initialized
                     ? t('h2h.startedFrom', {
                         matchday:
@@ -102,7 +105,7 @@ export function LeagueDetailPage() {
                       })
                     : t('h2h.notStarted')}
                 </p>
-                <span className="mt-4 inline-block text-sm font-semibold text-emerald-300">
+                <span className="mt-4 inline-block text-sm font-semibold text-theme-accent">
                   {scheduleQuery.data?.data.initialized
                     ? t('h2h.viewSchedule')
                     : t('h2h.configureStart')}
@@ -111,56 +114,60 @@ export function LeagueDetailPage() {
             ) : null}
             {league.type.key === 'classic' ? (
               <Link
-                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5"
+                className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5"
                 to={`/leagues/${leagueId}/classic-championship`}
               >
-                <h2 className="text-xl font-semibold text-white">{t('classic.title')}</h2>
-                <p className="mt-2 text-sm text-slate-300">
+                <h2 className="text-xl font-semibold text-theme-text">{t('classic.title')}</h2>
+                <p className="mt-2 text-sm text-theme-muted">
                   {league.competition_initialized ? t('classic.started') : t('classic.notStarted')}
                 </p>
               </Link>
             ) : null}
             {league.type.key === 'formula_one' ? (
               <Link
-                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5"
+                className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5"
                 to={`/leagues/${leagueId}/formula-one-championship`}
               >
-                <h2 className="text-xl font-semibold text-white">
+                <h2 className="text-xl font-semibold text-theme-text">
                   {t('formulaOne.initializationTitle')}
                 </h2>
-                <p className="mt-2 text-sm text-slate-300">
+                <p className="mt-2 text-sm text-theme-muted">
                   {league.competition_initialized ? t('classic.started') : t('classic.notStarted')}
                 </p>
               </Link>
             ) : null}
             <Link
-              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
+              className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5 transition hover:border-theme-primary/40"
               to={`/leagues/${leagueId}/rules`}
             >
-              <h2 className="text-xl font-semibold text-white">{t('leagueNavigation.rules')}</h2>
-              <p className="mt-2 text-sm text-slate-300">
+              <h2 className="text-xl font-semibold text-theme-text">
+                {t('leagueNavigation.rules')}
+              </h2>
+              <p className="mt-2 text-sm text-theme-muted">
                 {t('leagueNavigation.rulesDescription')}
               </p>
             </Link>
             <Link
-              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 transition hover:border-emerald-400/40"
+              className="rounded-2xl border border-theme-border bg-theme-surface/70 p-5 transition hover:border-theme-primary/40"
               to={
                 myTeam
                   ? `/leagues/${leagueId}/fantasy-teams/${myTeam.id}`
                   : `/leagues/${leagueId}/fantasy-teams`
               }
             >
-              <h2 className="text-xl font-semibold text-white">
+              <h2 className="text-xl font-semibold text-theme-text">
                 {myTeam ? t('leagueNavigation.myTeam') : t('leagueNavigation.fantasyTeams')}
               </h2>
-              <p className="mt-2 text-sm text-slate-300">
+              <p className="mt-2 text-sm text-theme-muted">
                 {myTeam ? myTeam.name : t('leagueNavigation.teamsDescription')}
               </p>
             </Link>
           </div>
-          <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-            <h2 className="text-2xl font-semibold text-white">{t('leagueDetail.members.title')}</h2>
-            <p className="mt-1 text-sm text-slate-300">{t('leagueDetail.members.description')}</p>
+          <section className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
+            <h2 className="text-2xl font-semibold text-theme-text">
+              {t('leagueDetail.members.title')}
+            </h2>
+            <p className="mt-1 text-sm text-theme-muted">{t('leagueDetail.members.description')}</p>
 
             <LeagueMemberList league={league} />
           </section>

@@ -1,6 +1,7 @@
 {
   "app": {
-    "name": "FantaMeister"
+    "name": " Kaiser XI",
+    "tagline": "Your League. Your Rules."
   },
   "common": {
     "loading": "Caricamento...",
@@ -26,7 +27,7 @@
   "auth": {
     "login": {
       "title": "Accedi",
-      "description": "Usa le credenziali del tuo account FantaMeister.",
+      "description": "Usa le credenziali del tuo account  Kaiser XI.",
       "email": "Email",
       "password": "Password",
       "submit": "Accedi",
@@ -69,12 +70,13 @@
     "rules": "Regole",
     "leagues": "Leghe",
     "invitations": "Inviti",
-    "account": "Account"
+    "account": "Account",
+    "gameInstructions": "Istruzioni di gioco"
   },
   "home": {
     "eyebrow": "Fantasy football a modo tuo",
     "title": "Crea mondi di fantasy football privati su più competizioni.",
-    "description": "FantaMeister è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
+    "description": " Kaiser XI è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
     "cta": {
       "login": "Accedi",
       "register": "Registrati",
@@ -92,7 +94,7 @@
       },
       "leagues": {
         "title": "Leghe private",
-        "description": "Crea o unisciti a leghe private per il tuo gruppo e tieni ogni stagione in un unico spazio FantaMeister."
+        "description": "Crea o unisciti a leghe private per il tuo gruppo e tieni ogni stagione in un unico spazio  Kaiser XI."
       },
       "teams": {
         "title": "Gestione fantasy team",
@@ -579,7 +581,7 @@
   "account": {
     "eyebrow": "Account",
     "title": "Il tuo account",
-    "description": "Visualizza e aggiorna i dati del tuo account FantaMeister.",
+    "description": "Visualizza e aggiorna i dati del tuo account  Kaiser XI.",
     "fields": {
       "name": "Nome",
       "email": "Email",
@@ -611,12 +613,22 @@
       "conflict": "L’aggiornamento dell’account è in conflitto con i dati attuali.",
       "validation": "Correggi i campi dell’account evidenziati.",
       "generic": "Impossibile aggiornare l’account."
+    },
+    "theme": {
+      "title": "Tema colore",
+      "description": "Scegli la palette Kaiser XI per il tuo account.",
+      "selected": "Selezionato",
+      "error": "Impossibile salvare il tema."
     }
   },
   "formation": {
     "title": "Formazione della giornata",
     "description": "Scegli modulo, titolari e panchina ordinata per la giornata selezionata.",
     "module": "Modulo",
+    "moduleChange": {
+      "message": "Cambiando modulo, la formazione titolare selezionata verrà cancellata.",
+      "confirm": "Cambia modulo"
+    },
     "starters": "Titolari",
     "bench": "Panchina",
     "matchday": "Giornata",

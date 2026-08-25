@@ -22,10 +22,10 @@ export function EligiblePlayerFilters({
   const { t } = useTranslation();
   return (
     <div className="grid gap-3 sm:grid-cols-3">
-      <label className="text-sm text-slate-300" htmlFor="eligible-player-search">
+      <label className="text-sm text-theme-muted" htmlFor="eligible-player-search">
         {t('roster.eligible.search')}
         <input
-          className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-theme-border bg-theme-background px-3 py-2 text-theme-text"
           id="eligible-player-search"
           onChange={(e) => onSearch(e.target.value)}
           placeholder={t('roster.eligible.searchPlaceholder')}
@@ -33,10 +33,10 @@ export function EligiblePlayerFilters({
           value={search}
         />
       </label>
-      <label className="text-sm text-slate-300" htmlFor="eligible-player-role">
+      <label className="text-sm text-theme-muted" htmlFor="eligible-player-role">
         {t('roster.eligible.role')}
         <select
-          className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-theme-border bg-theme-background px-3 py-2 text-theme-text"
           id="eligible-player-role"
           onChange={(e) => onRole(e.target.value)}
           value={role}
@@ -49,10 +49,10 @@ export function EligiblePlayerFilters({
           ))}
         </select>
       </label>
-      <label className="text-sm text-slate-300" htmlFor="eligible-player-club">
+      <label className="text-sm text-theme-muted" htmlFor="eligible-player-club">
         {t('roster.eligible.club')}
         <select
-          className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-theme-border bg-theme-background px-3 py-2 text-theme-text"
           id="eligible-player-club"
           onChange={(e) => onClub(e.target.value)}
           value={clubId}

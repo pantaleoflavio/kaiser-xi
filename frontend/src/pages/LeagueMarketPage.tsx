@@ -53,11 +53,11 @@ export function LeagueMarketPage() {
   return (
     <section className="space-y-6">
       <LeagueNavigation leagueId={leagueId} />
-      <h1 className="text-3xl font-bold text-white">{t('market.title')}</h1>
+      <h1 className="text-3xl font-bold text-theme-text">{t('market.title')}</h1>
       {tradeSent ? (
         <p
           role="status"
-          className="rounded-lg border border-emerald-500/30 bg-emerald-950/30 p-3 text-emerald-100"
+          className="rounded-lg border border-theme-primary/30 bg-emerald-950/30 p-3 text-emerald-100"
         >
           {t('market.trades.sent')}
         </p>
@@ -70,7 +70,7 @@ export function LeagueMarketPage() {
         <h2 className="text-xl font-bold">{t('market.directory')}</h2>
         <div className="flex flex-wrap gap-3">
           <input
-            className="rounded-lg border border-slate-700 bg-slate-900 p-2"
+            className="rounded-lg border border-theme-border bg-theme-surface p-2"
             placeholder={t('market.search')}
             value={search}
             onChange={(e) => {
@@ -79,7 +79,7 @@ export function LeagueMarketPage() {
             }}
           />
           <select
-            className="rounded-lg border border-slate-700 bg-slate-900 p-2"
+            className="rounded-lg border border-theme-border bg-theme-surface p-2"
             value={role}
             onChange={(e) => {
               setRole(e.target.value);
@@ -93,7 +93,7 @@ export function LeagueMarketPage() {
             <option value="forward">{t('formation.roles.forward')}</option>
           </select>
           <select
-            className="rounded-lg border border-slate-700 bg-slate-900 p-2"
+            className="rounded-lg border border-theme-border bg-theme-surface p-2"
             value={state}
             onChange={(e) => {
               setState(e.target.value);
@@ -121,7 +121,7 @@ export function LeagueMarketPage() {
         )}
         <div className="flex justify-end gap-2">
           <button
-            className="rounded-lg border border-slate-600 bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:border-slate-800 disabled:text-slate-500 disabled:opacity-60"
+            className="rounded-lg border border-slate-600 bg-theme-surface px-4 py-2 text-sm font-semibold text-theme-text transition hover:border-slate-500 hover:bg-theme-muted-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2 focus-visible:ring-offset-theme-background disabled:cursor-not-allowed disabled:border-theme-border disabled:text-theme-muted disabled:opacity-60"
             disabled={page === 1}
             onClick={() => setPage((p) => p - 1)}
             type="button"
@@ -129,7 +129,7 @@ export function LeagueMarketPage() {
             {t('common.previous')}
           </button>
           <button
-            className="rounded-lg border border-slate-600 bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:border-slate-800 disabled:text-slate-500 disabled:opacity-60"
+            className="rounded-lg border border-slate-600 bg-theme-surface px-4 py-2 text-sm font-semibold text-theme-text transition hover:border-slate-500 hover:bg-theme-muted-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:ring-offset-2 focus-visible:ring-offset-theme-background disabled:cursor-not-allowed disabled:border-theme-border disabled:text-theme-muted disabled:opacity-60"
             disabled={!players.data?.links.next}
             onClick={() => setPage((p) => p + 1)}
             type="button"

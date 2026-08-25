@@ -35,12 +35,12 @@ export function FantasyRosterSection({
 }) {
   const { t } = useTranslation();
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-      <h2 className="text-2xl font-semibold text-white">{t('roster.title')}</h2>
-      <p className="mt-1 text-sm text-slate-300">{t('roster.description')}</p>
+    <section className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
+      <h2 className="text-2xl font-semibold text-theme-text">{t('roster.title')}</h2>
+      <p className="mt-1 text-sm text-theme-muted">{t('roster.description')}</p>
       {success ? (
         <p
-          className="mt-4 rounded-xl border border-emerald-400/30 bg-emerald-950/30 p-4 text-sm text-emerald-100"
+          className="mt-4 rounded-xl border border-theme-primary/30 bg-emerald-950/30 p-4 text-sm text-emerald-100"
           role="status"
         >
           {success}

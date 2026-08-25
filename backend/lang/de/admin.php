@@ -5,7 +5,7 @@ return [
         'label' => 'Sprache',
         'locales' => ['en' => 'Englisch', 'de' => 'Deutsch', 'it' => 'Italienisch'],
     ],
-    'panel' => ['title' => 'FantaMeister Admin'],
+    'panel' => ['title' => 'Kaiser XI Admin'],
     'player_scores' => [
         'bulk_delete_warning' => 'Das Löschen von Bewertungen kann die historische Nachvollziehbarkeit beeinträchtigen. Bestehende Ligaergebnisse werden nicht neu berechnet.',
         'captain' => 'Kapitän',

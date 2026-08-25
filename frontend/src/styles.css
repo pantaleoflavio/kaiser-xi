@@ -1,1 +1,428 @@
 @import 'tailwindcss';
+
+@theme inline {
+  --color-theme-primary: var(--color-primary);
+  --color-theme-primary-hover: var(--color-primary-hover);
+  --color-theme-primary-foreground: var(--color-primary-foreground);
+  --color-theme-secondary: var(--color-secondary);
+  --color-theme-accent: var(--color-accent);
+  --color-theme-background: var(--color-background);
+  --color-theme-surface: var(--color-surface);
+  --color-theme-muted-surface: var(--color-surface-muted);
+  --color-theme-text: var(--color-text);
+  --color-theme-muted: var(--color-text-muted);
+  --color-theme-border: var(--color-border);
+  --color-theme-focus: var(--color-focus);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+:root,
+[data-theme='bavarian-red'] {
+  --color-primary: #c8102e;
+  --color-primary-hover: #a50d26;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #5b8fc9;
+  --color-background: #111c2e;
+  --color-surface: #101f31;
+  --color-surface-muted: #1a2c42;
+  --color-text: #f8fafc;
+  --color-text-muted: #bac7d6;
+  --color-border: #52657a;
+  --color-focus: #93c5fd;
+}
+
+[data-theme='westphalian-yellow'] {
+  --color-primary: #facc15;
+  --color-primary-hover: #eab308;
+  --color-primary-foreground: #171717;
+  --color-secondary: #f8fafc;
+  --color-accent: #fde047;
+    --color-background: #0c0c0b;
+  --color-surface: #181816;
+  --color-surface-muted: #272620;
+  --color-text: #fafafa;
+  --color-text-muted: #c9c8bf;
+  --color-border: #66645b;
+  --color-focus: #fde047;
+}
+
+[data-theme='koenigsblau'] {
+  --color-primary: #075fbd;
+  --color-primary-hover: #064f9e;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #60a5fa;
+  --color-background: #07101e;
+  --color-surface: #101b2c;
+  --color-surface-muted: #1a2940;
+  --color-text: #f8fafc;
+  --color-text-muted: #bac7d8;
+  --color-border: #526780;
+  --color-focus: #93c5fd;
+}
+
+[data-theme='rhine-red-black'] {
+  --color-primary: #c91c24;
+  --color-primary-hover: #a8171e;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+ --color-accent: #ef6b70;
+  --color-background: #09090a;
+  --color-surface: #171719;
+  --color-surface-muted: #27272a;
+  --color-text: #fafafa;
+  --color-text-muted: #c7c7cc;
+  --color-border: #63636a;
+  --color-focus: #fca5a5;
+}
+
+[data-theme='blancos-white'] {
+  --color-primary: #101b3d;
+  --color-primary-hover: #1b2a52;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #d4af37;
+  --color-accent: #e5c75d;
+  --color-background: #0a1024;
+  --color-surface: #141c34;
+  --color-surface-muted: #202a45;
+  --color-text: #fffdf5;
+  --color-text-muted: #c9c9c4;
+  --color-border: #62697b;
+  --color-focus: #f1d675;
+}
+
+[data-theme='blaugrana-night'] {
+  --color-primary: #9f1239;
+  --color-primary-hover: #881337;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #2456a6;
+  --color-accent: #d9a51c;
+  --color-background: #070e20;
+  --color-surface: #111a31;
+  --color-surface-muted: #202944;
+  --color-text: #f8fafc;
+  --color-text-muted: #bbc4d5;
+  --color-border: #59657c;
+  --color-focus: #f4cc5e;
+}
+
+[data-theme='colchonero'] {
+  --color-primary: #c8102e;
+  --color-primary-hover: #a50d26;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #466fa9;
+  --color-background: #081326;
+  --color-surface: #121e33;
+  --color-surface-muted: #202d43;
+  --color-text: #f8fafc;
+  --color-text-muted: #bcc7d5;
+  --color-border: #57677c;
+  --color-focus: #fca5a5;
+}
+
+[data-theme='gunners-red'] {
+  --color-primary: #c8102e;
+  --color-primary-hover: #a50d26;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #6f8eb8;
+  --color-background: #0b1220;
+  --color-surface: #151e2d;
+  --color-surface-muted: #222d3e;
+  --color-text: #f8fafc;
+  --color-text-muted: #bec8d5;
+  --color-border: #5b6878;
+  --color-focus: #fca5a5;
+}
+
+[data-theme='manchester-sky'] {
+  --color-primary: #075985;
+  --color-primary-hover: #0c4a6e;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #bae6fd;
+  --color-background: #081522;
+  --color-surface: #112231;
+  --color-surface-muted: #1d3345;
+  --color-text: #f8fafc;
+  --color-text-muted: #bdd0dc;
+  --color-border: #557184;
+  --color-focus: #bae6fd;
+}
+
+[data-theme='mersey-red'] {
+    --color-primary: #c8102e;
+  --color-primary-hover: #a50d26;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f8fafc;
+  --color-accent: #ef6b7d;
+  --color-background: #0c0b0c;
+  --color-surface: #1a1719;
+  --color-surface-muted: #2b2528;
+  --color-text: #fafafa;
+  --color-text-muted: #cec5c8;
+  --color-border: #6c6064;
+  --color-focus: #fda4af;
+}
+[data-theme='vecchia-signora'] {
+  --color-primary: #18181b;
+  --color-primary-hover: #3f3f46;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #a1a1aa;
+  --color-accent: #d4d4d8;
+  --color-background: #09090b;
+  --color-surface: #18181b;
+  --color-surface-muted: #27272a;
+  --color-text: #fafafa;
+  --color-text-muted: #c4c4ca;
+  --color-border: #64646c;
+  --color-focus: #e4e4e7;
+}
+
+[data-theme='nerazzurro-night'] {
+  --color-primary: #1769d2;
+  --color-primary-hover: #1258b2;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #05070b;
+  --color-accent: #60a5fa;
+  --color-background: #050910;
+  --color-surface: #0d1624;
+  --color-surface-muted: #17263a;
+  --color-text: #f8fafc;
+  --color-text-muted: #b9c8da;
+  --color-border: #4e6680;
+  --color-focus: #93c5fd;
+}
+
+[data-theme='milano-red-black'] {
+  --color-primary: #a50e2d;
+  --color-primary-hover: #7f0b22;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #d4d4d8;
+  --color-accent: #ef6a7d;
+  --color-background: #09090a;
+  --color-surface: #181719;
+  --color-surface-muted: #292629;
+  --color-text: #fafafa;
+  --color-text-muted: #cbc5ca;
+  --color-border: #696168;
+  --color-focus: #fda4af;
+}
+
+[data-theme='la-lupa-red-gold'] {
+  --color-primary: #a02639;
+  --color-primary-hover: #851f30;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #e3b341;
+  --color-accent: #f0cc6b;
+  --color-background: #120b0d;
+  --color-surface: #211417;
+  --color-surface-muted: #342126;
+  --color-text: #fffaf5;
+  --color-text-muted: #d3c3bf;
+  --color-border: #755e5e;
+  --color-focus: #f0cc6b;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+::selection {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+.formation-pitch-wrapper {
+  width: 100%;
+}
+.formation-pitch {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  min-height: 30rem;
+  border: 2px solid rgb(255 255 255 / 55%);
+  border-radius: 1rem;
+  background: linear-gradient(90deg, rgb(255 255 255 / 3%) 50%, transparent 50%), #173f35;
+  background-size: 25% 100%;
+  color: #fff;
+}
+.formation-pitch-markings {
+  position: absolute;
+  inset: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 55%);
+  pointer-events: none;
+}
+.formation-halfway {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid rgb(255 255 255 / 55%);
+}
+.formation-center-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18%;
+  aspect-ratio: 1;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+}
+.formation-penalty-area,
+.formation-goal-area {
+  position: absolute;
+  left: 50%;
+  border: 1px solid rgb(255 255 255 / 55%);
+  transform: translateX(-50%);
+}
+.formation-penalty-area {
+  width: 55%;
+  height: 13%;
+}
+.formation-goal-area {
+  width: 25%;
+  height: 5%;
+}
+.formation-penalty-area-top,
+.formation-goal-area-top {
+  top: -1px;
+}
+.formation-penalty-area-bottom,
+.formation-goal-area-bottom {
+  bottom: -1px;
+}
+.formation-lines {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  min-height: 30rem;
+  height: 100%;
+  padding: 1.5rem 1rem;
+}
+.formation-line {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: clamp(0.2rem, 1.5vw, 1rem);
+}
+.formation-player {
+  display: flex;
+  width: min(8.5rem, 18%);
+  min-width: 0;
+  min-height: 2.75rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 0.6rem;
+  background: rgb(9 13 22 / 82%);
+  padding: 0.35rem 0.3rem;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
+}
+.formation-player-interactive {
+  cursor: pointer;
+  font: inherit;
+}
+.formation-player-interactive:hover {
+  border-color: var(--color-accent);
+  background: var(--color-surface);
+}
+.formation-player-interactive:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.formation-player-name {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: clamp(0.7rem, 2.2vw, 0.9rem);
+  font-weight: 700;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.formation-player-detail,
+.formation-player-status {
+  font-size: 0.68rem;
+  line-height: 1.1;
+  color: #dbeafe;
+}
+.formation-player-status {
+  color: #fde68a;
+}
+.formation-empty-line {
+  border: 1px dashed rgb(255 255 255 / 50%);
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.65rem;
+  background: rgb(9 13 22 / 35%);
+  font-size: 0.75rem;
+  color: rgb(255 255 255 / 80%);
+}
+.formation-bench {
+  margin-top: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--color-surface) 75%, transparent);
+  padding: 1rem;
+}
+.formation-bench-title {
+  margin: 0 0 0.75rem;
+  color: var(--color-text);
+  font-size: 1rem;
+}
+.formation-bench-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.formation-bench-player {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.4rem;
+}
+.formation-bench-player .formation-player {
+  width: 100%;
+}
+.formation-bench-order {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+@media (max-width: 480px) {
+  .formation-pitch {
+    min-height: 27rem;
+    border-radius: 0.75rem;
+  }
+  .formation-lines {
+    min-height: 27rem;
+    padding: 1rem 0.35rem;
+  }
+  .formation-line {
+    gap: 0.15rem;
+  }
+  .formation-player {
+    width: 19%;
+    min-height: 2.65rem;
+    padding-inline: 0.15rem;
+  }
+}

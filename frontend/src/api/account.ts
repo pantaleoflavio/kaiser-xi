@@ -1,11 +1,13 @@
 import { apiClient } from './client';
 import type { ResourceResponse } from '../types/api';
 import type { User } from '../types/auth';
+import type { ThemeId } from '../theme/themes';
 
 export type UpdateProfilePayload = {
   name?: string;
   email?: string;
   current_password?: string;
+  theme?: ThemeId;
 };
 
 export type UpdatePasswordPayload = {
@@ -15,9 +17,7 @@ export type UpdatePasswordPayload = {
 };
 
 export const accountApi = {
-  updateProfile: async (
-    payload: UpdateProfilePayload,
-  ): Promise<User> => {
+  updateProfile: async (payload: UpdateProfilePayload): Promise<User> => {
     const response = await apiClient<ResourceResponse<User>>('/auth/me', {
       method: 'PATCH',
       body: JSON.stringify(payload),

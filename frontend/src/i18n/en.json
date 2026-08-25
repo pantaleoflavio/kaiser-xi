@@ -1,6 +1,7 @@
 {
   "app": {
-    "name": "FantaMeister"
+    "name": "Kaiser XI",
+    "tagline": "Your League. Your Rules."
   },
   "common": {
     "loading": "Loading...",
@@ -26,7 +27,7 @@
   "auth": {
     "login": {
       "title": "Login",
-      "description": "Use your FantaMeister account credentials.",
+      "description": "Use your Kaiser XI account credentials.",
       "email": "Email",
       "password": "Password",
       "submit": "Login",
@@ -69,10 +70,11 @@
     "rules": "Rules",
     "leagues": "Leagues",
     "invitations": "Invitations",
-    "account": "Account"
+    "account": "Account",
+    "gameInstructions": "Game Instructions"
   },
   "home": {
-    "eyebrow": "Fantasy football your way",
+    "eyebrow": "Your League. Your Rules.",
     "title": "Build private fantasy-football worlds across competitions.",
     "description": "Create or join private leagues and manage fantasy teams with friends.",
     "cta": {
@@ -106,11 +108,11 @@
   },
   "rules": {
     "eyebrow": "Rules and guide",
-    "title": "How FantaMeister works",
+    "title": "How Kaiser XI works",
     "description": "A quick guide to leagues, teams, and matchday play.",
     "sections": {
       "overview": {
-        "title": "What is FantaMeister?",
+        "title": "What is  Kaiser XI?",
         "description": "A multi-competition fantasy-football platform for private groups."
       },
       "leagues": {
@@ -627,7 +629,7 @@
   "account": {
     "eyebrow": "Account",
     "title": "Your account",
-    "description": "View and update your FantaMeister account details.",
+    "description": "View and update your  Kaiser XI account details.",
     "fields": {
       "name": "Name",
       "email": "Email",
@@ -659,12 +661,22 @@
       "conflict": "The account update conflicts with current account data.",
       "validation": "Please correct the highlighted account fields.",
       "generic": "Unable to update your account."
+    },
+    "theme": {
+      "title": "Color theme",
+      "description": "Choose the Kaiser XI palette used across your account.",
+      "selected": "Selected",
+      "error": "The theme could not be saved. Your previous theme was restored."
     }
   },
   "formation": {
     "title": "Matchday formation",
     "description": "Choose your module, starters, and ordered bench for the selected matchday.",
     "module": "Formation module",
+    "moduleChange": {
+      "message": "Changing formation will clear your selected starting lineup.",
+      "confirm": "Change formation"
+    },
     "starters": "Starters",
     "bench": "Bench",
     "matchday": "Matchday",

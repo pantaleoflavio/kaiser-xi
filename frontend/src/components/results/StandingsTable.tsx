@@ -53,7 +53,7 @@ export function StandingsTable({
           const current = standing.fantasy_team.id === currentTeamId;
           return (
             <article
-              className={`rounded-xl border p-4 ${current ? 'border-emerald-400/50 bg-emerald-950/20' : 'border-slate-800 bg-slate-900/70'}`}
+              className={`rounded-xl border p-4 ${current ? 'border-theme-primary/50 bg-emerald-950/20' : 'border-theme-border bg-theme-surface/70'}`}
               key={standing.fantasy_team.id}
               aria-label={
                 current
@@ -62,17 +62,17 @@ export function StandingsTable({
               }
             >
               <div className="flex items-center gap-3">
-                <span className="text-xl font-bold text-emerald-300">{standing.position}</span>
-                <h2 className="font-semibold text-white">{standing.fantasy_team.name}</h2>
+                <span className="text-xl font-bold text-theme-accent">{standing.position}</span>
+                <h2 className="font-semibold text-theme-text">{standing.fantasy_team.name}</h2>
                 {current ? (
-                  <span className="text-xs text-emerald-200">{t('standings.you')}</span>
+                  <span className="text-xs text-theme-accent">{t('standings.you')}</span>
                 ) : null}
               </div>
               <dl className="mt-3 grid grid-cols-3 gap-3 text-center">
                 {labels.map(([label, field]) => (
                   <div key={field}>
-                    <dt className="text-xs text-slate-400">{t(`standings.${label}Short`)}</dt>
-                    <dd className="font-semibold text-white">{value(standing, field)}</dd>
+                    <dt className="text-xs text-theme-muted">{t(`standings.${label}Short`)}</dt>
+                    <dd className="font-semibold text-theme-text">{value(standing, field)}</dd>
                   </div>
                 ))}
               </dl>
@@ -80,9 +80,9 @@ export function StandingsTable({
           );
         })}
       </div>
-      <div className="hidden overflow-hidden rounded-xl border border-slate-800 md:block">
+      <div className="hidden overflow-hidden rounded-xl border border-theme-border md:block">
         <table className="w-full border-collapse text-sm">
-          <thead className="bg-slate-800/80 text-slate-300">
+          <thead className="bg-theme-muted-surface/80 text-theme-muted">
             <tr>
               <th className="px-3 py-3 text-left" scope="col">
                 {t('standings.positionShort')}
@@ -107,21 +107,21 @@ export function StandingsTable({
               const current = standing.fantasy_team.id === currentTeamId;
               return (
                 <tr
-                  className={`border-t border-slate-800 ${current ? 'bg-emerald-950/30' : 'bg-slate-900/70'}`}
+                  className={`border-t border-theme-border ${current ? 'bg-emerald-950/30' : 'bg-theme-surface/70'}`}
                   key={standing.fantasy_team.id}
                 >
-                  <td className="px-3 py-3 font-semibold text-emerald-300">{standing.position}</td>
-                  <th className="px-3 py-3 text-left font-semibold text-white" scope="row">
+                  <td className="px-3 py-3 font-semibold text-theme-accent">{standing.position}</td>
+                  <th className="px-3 py-3 text-left font-semibold text-theme-text" scope="row">
                     {standing.fantasy_team.name}
                     {current ? (
-                      <span className="ml-2 text-xs font-normal text-emerald-200">
+                      <span className="ml-2 text-xs font-normal text-theme-accent">
                         ({t('standings.you')})
                       </span>
                     ) : null}
                   </th>
                   {labels.map(([, field]) => (
                     <td
-                      className={`px-2 py-3 text-center ${field === 'points' ? 'font-bold text-white' : 'text-slate-200'}`}
+                      className={`px-2 py-3 text-center ${field === 'points' ? 'font-bold text-theme-text' : 'text-theme-text'}`}
                       key={field}
                     >
                       {value(standing, field)}

@@ -47,7 +47,7 @@ export function LeagueMemberList({ league }: { league: League }) {
   const removeMutation = useMutation({
     mutationFn: (member: LeagueMember) => leaguesApi.removeMember(league.id, member.id),
     onSuccess: async (_, member) => {
-    queryClient.setQueryData(
+      queryClient.setQueryData(
         leagueMemberKeys.league(league.id),
         (current: typeof membersQuery.data) =>
           current
@@ -71,7 +71,7 @@ export function LeagueMemberList({ league }: { league: League }) {
     mutationFn: ({ member, role }: { member: LeagueMember; role: ManageableLeagueRole }) =>
       leaguesApi.updateMemberRole(league.id, member.id, role),
     onSuccess: async (response, variables) => {
-    queryClient.setQueryData(
+      queryClient.setQueryData(
         leagueMemberKeys.league(league.id),
         (current: typeof membersQuery.data) =>
           current
@@ -111,7 +111,7 @@ export function LeagueMemberList({ league }: { league: League }) {
     (member.role.key === 'participant' || member.role.key === 'co_commissioner');
 
   if (membersQuery.isLoading) {
-    return <p className="mt-4 text-sm text-slate-300">{t('leagueDetail.members.loading')}</p>;
+    return <p className="mt-4 text-sm text-theme-muted">{t('leagueDetail.members.loading')}</p>;
   }
 
   if (membersQuery.isError) {
@@ -129,7 +129,7 @@ export function LeagueMemberList({ league }: { league: League }) {
         <p
           className={`mt-4 rounded-lg border p-3 text-sm ${
             feedback.type === 'success'
-              ? 'border-emerald-500/30 bg-emerald-950/40 text-emerald-100'
+              ? 'border-theme-primary/30 bg-emerald-950/40 text-emerald-100'
               : 'border-red-500/30 bg-red-950/40 text-red-100'
           }`}
           role={feedback.type === 'success' ? 'status' : 'alert'}
@@ -139,16 +139,16 @@ export function LeagueMemberList({ league }: { league: League }) {
       ) : null}
 
       {members.length === 0 ? (
-        <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 p-5 text-center">
-          <h3 className="font-semibold text-white">{t('leagueDetail.members.emptyTitle')}</h3>
-          <p className="mt-2 text-sm text-slate-300">
+        <div className="mt-4 rounded-xl border border-theme-border bg-theme-background/60 p-5 text-center">
+          <h3 className="font-semibold text-theme-text">{t('leagueDetail.members.emptyTitle')}</h3>
+          <p className="mt-2 text-sm text-theme-muted">
             {t('leagueDetail.members.emptyDescription')}
           </p>
         </div>
       ) : (
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           {members.map((member) => (
-        <LeagueMemberCard
+            <LeagueMemberCard
               canChangeRole={canChangeRole(member)}
               canRemove={canRemove(member)}
               key={member.id}
@@ -174,16 +174,16 @@ export function LeagueMemberList({ league }: { league: League }) {
         <div
           aria-labelledby="member-action-title"
           aria-modal="true"
-          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/80 p-4"
+          className="fixed inset-0 z-50 grid place-items-center bg-theme-background/80 p-4"
           role="dialog"
         >
-          <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 shadow-2xl">
-            <h3 className="text-xl font-semibold text-white" id="member-action-title">
+          <div className="w-full max-w-lg rounded-2xl border border-theme-border bg-theme-surface p-6 shadow-2xl">
+            <h3 className="text-xl font-semibold text-theme-text" id="member-action-title">
               {pending.kind === 'remove'
                 ? t('leagueDetail.members.management.remove.title')
                 : t(`leagueDetail.members.management.role.${pending.role}.title`)}
             </h3>
-            <p className="mt-3 text-slate-200">
+            <p className="mt-3 text-theme-text">
               {pending.kind === 'remove'
                 ? t('leagueDetail.members.management.remove.confirmation', {
                     name: pending.member.name,
@@ -197,13 +197,13 @@ export function LeagueMemberList({ league }: { league: League }) {
                   })}
             </p>
             {pending.kind === 'remove' ? (
-              <p className="mt-3 text-sm text-slate-400">
+              <p className="mt-3 text-sm text-theme-muted">
                 {t('leagueDetail.members.management.remove.preservation')}
               </p>
             ) : null}
             <div className="mt-6 flex justify-end gap-3">
               <button
-                className="rounded-lg border border-slate-600 px-4 py-2 font-semibold text-slate-200"
+                className="rounded-lg border border-slate-600 px-4 py-2 font-semibold text-theme-text"
                 disabled={isSubmitting}
                 onClick={() => setPending(null)}
                 type="button"
@@ -211,7 +211,7 @@ export function LeagueMemberList({ league }: { league: League }) {
                 {t('common.cancel')}
               </button>
               <button
-                className={`rounded-lg px-4 py-2 font-semibold text-white disabled:opacity-60 ${
+                className={`rounded-lg px-4 py-2 font-semibold text-theme-text disabled:opacity-60 ${
                   pending.kind === 'remove' ? 'bg-red-600' : 'bg-cyan-700'
                 }`}
                 disabled={isSubmitting}

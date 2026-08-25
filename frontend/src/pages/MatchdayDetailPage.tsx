@@ -140,38 +140,38 @@ export function MatchdayDetailPage() {
       />
       <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label={t('results.matchdayResults')}>
         <Link
-          className="text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+          className="text-sm font-semibold text-theme-accent hover:text-theme-accent"
           to={`/leagues/${leagueId}/matchdays`}
         >
           {t('matchdays.backToMatchdays')}
         </Link>
         {league.data?.data.type.key === 'head_to_head' ? (
           <Link
-            className="text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+            className="text-sm font-semibold text-theme-accent hover:text-theme-accent"
             to={`/leagues/${leagueId}/standings`}
           >
             {t('standings.title')}
           </Link>
         ) : null}
       </nav>
-      <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-        <p className="text-sm font-semibold uppercase tracking-wide text-emerald-300">
+      <article className="rounded-2xl border border-theme-border bg-theme-surface/70 p-6">
+        <p className="text-sm font-semibold uppercase tracking-wide text-theme-accent">
           {t(`matchdays.${matchday.championship_state ?? (open ? 'current' : 'past')}`)}
         </p>
-        <h1 className="mt-2 text-3xl font-bold text-white">
+        <h1 className="mt-2 text-3xl font-bold text-theme-text">
           {matchday.name || t('formation.matchdayNumber', { number: matchday.number })}
         </h1>
         <dl className="mt-5 grid gap-4 sm:grid-cols-2">
           <div>
-            <dt className="text-sm text-slate-400">{t('formation.deadline')}</dt>
-            <dd className="mt-1 text-white">
+            <dt className="text-sm text-theme-muted">{t('formation.deadline')}</dt>
+            <dd className="mt-1 text-theme-text">
               {formatDate(matchday.deadline, t('leagueDetail.notAvailable'), language)}
             </dd>
           </div>
         </dl>
         {open && matchday.formation_allowed && myTeam && scheduled ? (
           <Link
-            className="mt-6 inline-block rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-slate-950"
+            className="mt-6 inline-block rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground"
             to={`/leagues/${leagueId}/matchdays/${matchday.id}/fantasy-teams/${myTeam.id}/formation`}
           >
             {t('matchdays.openFormation')}
@@ -179,7 +179,7 @@ export function MatchdayDetailPage() {
         ) : null}
         {calculationFeedback ? (
           <p
-            className={`mt-4 rounded-lg p-3 text-sm ${calculationFeedback.type === 'success' ? 'bg-emerald-950 text-emerald-200' : 'bg-red-950 text-red-200'}`}
+            className={`mt-4 rounded-lg p-3 text-sm ${calculationFeedback.type === 'success' ? 'bg-emerald-950 text-theme-accent' : 'bg-red-950 text-red-200'}`}
             role={calculationFeedback.type === 'success' ? 'status' : 'alert'}
           >
             {calculationFeedback.message}
@@ -187,7 +187,7 @@ export function MatchdayDetailPage() {
         ) : null}
         {matchday.can_calculate || matchday.can_recalculate ? (
           <button
-            className="mt-6 rounded-lg bg-amber-400 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60"
+            className="mt-6 rounded-lg bg-amber-400 px-4 py-2 font-semibold text-theme-primary-foreground disabled:opacity-60"
             disabled={calculation.isPending}
             onClick={() => {
               const recalculating = Boolean(matchday.can_recalculate);

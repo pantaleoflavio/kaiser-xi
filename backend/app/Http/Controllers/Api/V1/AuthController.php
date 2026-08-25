@@ -73,8 +73,8 @@ class AuthController extends Controller
     public function updateProfile(UpdateProfileRequest $request): UserResource
     {
         $user = $request->user();
-        $validated = $request->safe()->only(['name', 'email']);
-
+        $validated = $request->safe()->only(['name', 'email', 'theme']);
+        
         if (array_key_exists('email', $validated) && $validated['email'] !== $user->email) {
             $validated['email_verified_at'] = null;
         }

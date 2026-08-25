@@ -1,9 +1,17 @@
 import { useSyncExternalStore } from 'react';
 import de from './de.json';
 import en from './en.json';
+import deGameInstructions from './game-instructions/de.json';
+import enGameInstructions from './game-instructions/en.json';
+import itGameInstructions from './game-instructions/it.json';
 import it from './it.json';
 
 const messages = { en, de, it } as const;
+const gameInstructions = {
+  en: enGameInstructions,
+  de: deGameInstructions,
+  it: itGameInstructions,
+} as const;
 const LANGUAGE_STORAGE_KEY = 'fantameister_language';
 
 export type Language = keyof typeof messages;
@@ -35,6 +43,20 @@ function getByPath(obj: unknown, path: string): string | undefined {
   }, obj) as string | undefined;
 }
 
+function getListByPath(obj: unknown, path: string): string[] | undefined {
+  const value = path.split('.').reduce<unknown>((acc, part) => {
+    if (acc && typeof acc === 'object' && part in (acc as Record<string, unknown>)) {
+      return (acc as Record<string, unknown>)[part];
+    }
+
+    return undefined;
+  }, obj);
+
+  return Array.isArray(value) && value.every((item) => typeof item === 'string')
+    ? value
+    : undefined;
+}
+
 function interpolate(message: string, params: TranslationParams = {}) {
   return message.replace(/{{\s*(\w+)\s*}}/g, (_, key: string) => String(params[key] ?? ''));
 }
@@ -62,9 +84,18 @@ export function setLanguage(language: Language) {
 export function useTranslation() {
   const language = useSyncExternalStore(subscribe, getStoredLanguage, () => 'en' as Language);
 
-    return {
+  return {
     language,
     setLanguage,
     t: (key: string, params?: TranslationParams) => translate(language, key, params),
+    tGameInstructions: (key: string, params?: TranslationParams) => {
+      const message =
+        getByPath(gameInstructions[language], key) ?? getByPath(gameInstructions.en, key) ?? key;
+      return interpolate(message, params);
+    },
+    tGameInstructionsList: (key: string) =>
+      getListByPath(gameInstructions[language], key) ??
+      getListByPath(gameInstructions.en, key) ??
+      [],
   };
 }
