@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "Kaiser XI",
-    "tagline": "Deine Liga. Deine Regeln."
+    "tagline": "Your League. Your Rules."
   },
   "common": {
     "loading": "Wird geladen...",
@@ -70,7 +70,8 @@
     "rules": "Regeln",
     "leagues": "Ligen",
     "invitations": "Einladungen",
-    "account": "Konto"
+    "account": "Konto",
+    "gameInstructions": "Spielanleitung"
   },
   "home": {
     "eyebrow": "Deine Liga. Deine Regeln.",

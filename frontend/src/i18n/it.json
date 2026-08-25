@@ -1,7 +1,7 @@
 {
   "app": {
     "name": " Kaiser XI",
-    "tagline": "La tua lega. Le tue regole."
+    "tagline": "Your League. Your Rules."
   },
   "common": {
     "loading": "Caricamento...",
@@ -70,7 +70,8 @@
     "rules": "Regole",
     "leagues": "Leghe",
     "invitations": "Inviti",
-    "account": "Account"
+    "account": "Account",
+    "gameInstructions": "Istruzioni di gioco"
   },
   "home": {
     "eyebrow": "Fantasy football a modo tuo",

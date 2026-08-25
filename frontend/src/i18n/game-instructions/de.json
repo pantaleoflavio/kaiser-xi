@@ -1,0 +1,282 @@
+{
+  "eyebrow": "Spielanleitung",
+  "title": "Spielanleitung",
+  "introduction": "Das vollständige Kaiser-XI-Handbuch – von der Ligaerstellung bis zur Fehlerbehebung.",
+  "contents": "Inhalt",
+  "chapter": "Kapitel {{number}}",
+  "details": "So funktioniert es",
+  "chapterNavigation": "Kapitelnavigation",
+  "backHome": "Zur Startseite",
+  "chapters": {
+    "gettingStarted": {
+      "title": "Erste Schritte",
+      "overview": "Kaiser XI ist ein Fantasy-Football-Spiel für private und individuell konfigurierbare Ligen mit deinen Freunden. Erstelle dein Konto, öffne das Dashboard und starte, indem du eine neue Liga erstellst oder einer bestehenden Liga über eine Einladung beitrittst.",
+      "details": [
+        "In Kaiser XI verwaltet jeder Teilnehmer ein Fantasy Team aus realen Fußballspielern. Im Laufe der Saison bestimmen die Leistungen dieser Spieler die Punkte der Fantasy Teams und damit den Verlauf des Wettbewerbs.",
+        "Erstelle zunächst ein Konto mit deinem Namen, deiner E-Mail-Adresse und einem Passwort. Nach der Anmeldung ist das Dashboard dein Ausgangspunkt für den Zugriff auf deine Ligen und die wichtigsten Funktionen der App.",
+        "Wenn du einen neuen Wettbewerb mit deinen Freunden organisieren möchtest, erstelle eine Liga. Du wirst zum Commissioner und kannst die Regeln konfigurieren, weitere Teilnehmer einladen und die Meisterschaft vorbereiten.",
+        "Wenn bereits jemand anderes die Liga erstellt hat, kannst du ihr über eine Einladung beitreten. Anschließend bist du Mitglied der Liga und kannst das dir zugewiesene Fantasy Team verwalten.",
+        "Jede Liga kann unterschiedlich konfiguriert sein. Bevor du mit dem Spielen beginnst, solltest du deshalb die Liga-Regeln lesen und dich mit den vom Commissioner gewählten Einstellungen vertraut machen."
+      ],
+      "calloutLabel": "Your League. Your Rules.",
+      "callout": "Jede Gruppe kann ihr eigenes Spielerlebnis gestalten, indem sie einen Liga-Typ auswählt und die gewünschten Regeln konfiguriert."
+    },
+    "creatingLeague": {
+      "title": "Eine Liga erstellen",
+      "overview": "Eine Liga ist ein privater Wettbewerb, in dem du mit deinen Freunden spielen kannst. Wer die Liga erstellt, wird zum Commissioner und legt ihre wichtigsten Eigenschaften und die anfänglichen Regeln fest.",
+      "details": [
+        "Gib einen Namen für die Liga und optional eine Beschreibung ein. Wähle anschließend die Competition/Season aus, in der ihr spielen möchtet: Die Liga verwendet die Spieler, Spiele und Spieltage der ausgewählten Saison.",
+        "Wähle den Liga-Typ zwischen Classic, Head-to-Head und Formula One. Bei Classic werden die Punkte der Fantasy Teams aus den einzelnen Spieltagen addiert. Bei Head-to-Head treten die Fantasy Teams direkt gegeneinander an: Die Fantasy-Punkte werden in Tore umgerechnet und bestimmen Sieg, Unentschieden oder Niederlage. Bei Formula One werden die Fantasy Teams an jedem Spieltag anhand ihrer erzielten Punkte platziert und erhalten entsprechend ihrer Position Meisterschaftspunkte.",
+        "Lege die maximale Teilnehmerzahl zwischen 2 und 100 fest. Dieser Wert bestimmt, wie viele Personen an der Liga teilnehmen können. Für einen leichter zu organisierenden Spielbetrieb empfiehlt es sich, ungefähr 12 Teilnehmer nicht zu überschreiten.",
+        "Lege das Startbudget fest. Der Standardwert beträgt 500 Credits und stellt das anfängliche Guthaben dar, das jedem Fantasy Team für die Verwaltung seines Kaders zur Verfügung steht.",
+        "Konfiguriere den Prozentsatz der Rückerstattung bei einer Spielerfreigabe, die maximale Kadergröße sowie die Limits für Torhüter, Verteidiger, Mittelfeldspieler und Stürmer. Die Rückerstattung bei Spielerfreigaben wird im Kapitel zum Markt genauer erklärt.",
+        "Nach der Erstellung der Liga wirst du zum Commissioner. Kaiser XI fügt automatisch die Standardregeln hinzu, die Vorbereitung der Liga ist damit jedoch noch nicht abgeschlossen: Du musst die Teilnehmer einladen, die Regeln überprüfen und gegebenenfalls anpassen, die Fantasy Teams erstellen und zuweisen sowie die Startkader erfassen."
+      ],
+      "calloutLabel": "Nur für Commissioner",
+      "callout": "Die Erstellung und Konfiguration der Liga liegt in der Verantwortung des Commissioners. Bevor die Meisterschaft beginnt, solltest du sicherstellen, dass Teilnehmer, Fantasy Teams, Kader und Regeln vollständig und korrekt eingerichtet sind.",
+      "images": {
+        "createLeague1": {
+          "alt": "Erstellung einer neuen Liga"
+        },
+        "createLeague2": {
+          "alt": "Konfiguration der anfänglichen Liga-Regeln"
+        },
+        "createLeague3": {
+          "alt": "Konfiguration der Kader- und Positionslimits"
+        }
+      }
+    },
+    "buildingSquads": {
+      "title": "Die ersten Kader zusammenstellen",
+      "overview": "Bevor die Meisterschaft beginnt, müssen die Teilnehmer festlegen, welche Spieler zu welchem Fantasy Team gehören. Kaiser XI verwaltet diese Phase nicht direkt: Ihr könnt sie frei organisieren und anschließend trägt der Commissioner die vereinbarten Kader in die App ein.",
+      "details": [
+        "Klassische Auktion: Ein Spieler wird aufgerufen und die Teilnehmer geben ihre Gebote ab. Wer am meisten bietet, erhält den Spieler zum entsprechenden Preis. Dies ist die klassische Variante, bei der das Startbudget eine besonders wichtige Rolle spielt.",
+        "Verdeckte Gebote: Jeder Teilnehmer gibt seine Angebote ab, ohne die Gebote der anderen zu kennen. Zum vereinbarten Zeitpunkt werden die Angebote verglichen und die Spieler nach den zuvor festgelegten Regeln der Gruppe vergeben, normalerweise an den Höchstbietenden.",
+        "Draft: Die Teilnehmer wählen in einer vorher festgelegten Reihenfolge abwechselnd einen noch verfügbaren Spieler aus. Bei diesem System kann das Budget – abhängig von den Regeln der Gruppe – eine geringere Rolle spielen.",
+        "Unabhängig von der gewählten Methode muss am Ende jedes Fantasy Team einen festgelegten Kader haben. Anschließend kann der Commissioner die Spieler in Kaiser XI den jeweiligen Teams zuweisen.",
+        "Diese Phase betrifft ausschließlich die Zusammenstellung der Startkader. Der Markt während der Saison und Trades zwischen Fantasy Teams sind davon getrennte Funktionen."
+      ],
+      "calloutLabel": "Wichtig",
+      "callout": "Legt vor dem Start gemeinsam fest, wie die Spieler verteilt werden und welche Regeln dafür gelten. Kaiser XI erfasst anschließend die entstandenen Kader, führt aber weder Auktion noch verdeckte Gebote oder Draft selbst durch."
+    },
+    "leagueOverview": {
+      "title": "Deine Liga kennenlernen",
+      "overview": "Die Liga-Seite ist der zentrale Ausgangspunkt, um die Meisterschaft zu verfolgen und auf alle Bereiche der Liga zuzugreifen. Von hier aus erreichst du die Fantasy Teams, die Liga-Regeln, den Markt, die Spieltage, die Tabelle und alle weiteren verfügbaren Funktionen.",
+      "details": [
+        "Fantasy Teams: hier findest du alle Fantasy Teams, die an der Liga teilnehmen. Du kannst ihre Besitzer, Kader und die wichtigsten Informationen zu den einzelnen Teams einsehen.",
+        "Liga-Regeln: hier findest du alle Regeln, nach denen die Liga gespielt wird, darunter Kaderzusammensetzung, erlaubte Formationen, Bankregeln, Auswechslungen, Boni und Mali sowie die spezifischen Regeln des gewählten Liga-Typs.",
+        "Markt: dieser Bereich dient zur Verwaltung der Spieler während der Saison. Wenn der Markt verfügbar ist, kannst du Spieler einsehen sowie Verpflichtungen und Freigaben gemäß den Regeln der Liga durchführen.",
+        "Spieltage: hier kannst du die einzelnen Spieltage der Saison verfolgen. Du erhältst Zugriff auf Formationen, Punkte und verfügbare Ergebnisse des jeweiligen Spieltags.",
+        "Tabelle: zeigt den aktuellen Stand der Meisterschaft. Wie die Tabelle berechnet wird, hängt vom gewählten Liga-Typ ab: Classic, Head-to-Head oder Formula One.",
+        "Kalender: in Head-to-Head-Ligen werden hier die angesetzten Begegnungen zwischen den Fantasy Teams angezeigt.",
+        "Dein Fantasy Team: über dein Team kannst du deinen Kader kontrollieren und deine Formation für die Spieltage aufstellen. Die folgenden Abschnitte dieser Anleitung erklären die Verwaltung von Kader, Formation und Bank ausführlich.",
+        "Der Commissioner verfügt zusätzlich über die notwendigen Funktionen zur Verwaltung der Liga, der Teilnehmer und der Meisterschaft. Diese Aufgaben werden im entsprechenden Commissioner-Kapitel ausführlich erklärt."
+      ],
+      "calloutLabel": "Kurz gesagt",
+      "callout": "Nutze die Liga-Seite als zentrale Anlaufstelle für alle Aktivitäten der Meisterschaft. Einige Bereiche oder Aktionen werden möglicherweise erst verfügbar, wenn die Liga die dafür erforderliche Phase erreicht hat."
+    },
+    "leagueRules": {
+      "title": "Liga-Regeln",
+      "overview": "Die Liga-Regeln bestimmen, wie der Wettbewerb gespielt wird: Kaderzusammensetzung, erlaubte Formationen, Bank, Auswechslungen, Boni, Mali und Einstellungen, die vom gewählten Liga-Typ abhängen.",
+      "details": [
+        "Kader und Budget: Der Commissioner kann das Startbudget, den Prozentsatz der Rückerstattung bei einer Spielerfreigabe, die maximale Kadergröße sowie die Limits für Torhüter, Verteidiger, Mittelfeldspieler und Stürmer konfigurieren. Diese Werte bestimmen, welche Kaderaktionen zulässig sind.",
+        "Formationen: Die Liga legt fest, welche Formationen verwendet werden dürfen, wie groß die Bank ist und welche Positionslimits für Bankspieler gelten. Eine Formation kann nur eingereicht werden, wenn sie den konfigurierten Regeln entspricht.",
+        "Auswechslungen: Der Commissioner kann die maximale Anzahl an Auswechslungen und das Kriterium festlegen, nach dem Spieler von der Bank ausgewählt werden. Je nach Konfiguration müssen Auswechslungen entweder die ursprüngliche Formation beibehalten oder dürfen zu einer anderen erlaubten Formation führen.",
+        "Boni und Mali: Die Liga kann für verschiedene Ereignisse eines Spielers unterschiedliche Werte festlegen, zum Beispiel für Tore, Assists, Karten, Eigentore, verwandelte oder verschossene Elfmeter, gehaltene Elfmeter und Gegentore. Diese Werte fließen in den Fantasy-Punktestand des Spielers ein.",
+        "Zusätzliche Boni: Wenn aktiviert, können besondere Boni angewendet werden, zum Beispiel der Bonus für den realen Kapitän und der Clean-Sheet-Bonus für den Torhüter.",
+        "Abwehrmodifikator: Wenn aktiviert, kann die Mannschaft zusätzliche Punkte erhalten, abhängig von den Bewertungen des Torhüters und der besten aufgestellten Verteidiger sowie den in der Liga konfigurierten Schwellenwerten.",
+        "Spezifische Regeln nach Liga-Typ: In Head-to-Head-Ligen konfiguriert der Commissioner die Schwellenwerte, mit denen Fantasy-Punkte in Tore umgerechnet werden. In Formula-One-Ligen legt der Commissioner stattdessen fest, wie viele Meisterschaftspunkte für die jeweilige Platzierung an einem Spieltag vergeben werden.",
+        "Markt und Trades: Zu den Liga-Regeln gehören außerdem Einstellungen zur Verfügbarkeit von Markt und Trades, zum Beispiel Öffnungs- und Schließzeiten sowie die Möglichkeit, bei Trades Credits als Ausgleich einzusetzen."
+      ],
+      "calloutLabel": "Nur für Commissioner",
+      "callout": "Überprüfe vor Beginn der Meisterschaft alle Liga-Regeln sorgfältig. Einige Einstellungen können eingeschränkt sein, nachdem Kader erstellt wurden oder der Wettbewerb begonnen hat, damit keine Konfiguration entsteht, die mit dem aktuellen Liga-Status unvereinbar ist."
+    },
+    "championship": {
+      "title": "Meisterschaft konfigurieren",
+      "overview": "Sobald Teilnehmer, Fantasy Teams, Kader und Regeln vorbereitet sind, kann der Commissioner die Meisterschaft konfigurieren und initialisieren. Dieser Schritt bereitet den Wettbewerb vor und bestimmt, wie die Spieltage der ausgewählten Season verwendet werden.",
+      "details": [
+        "Bevor du die Meisterschaft konfigurierst, stelle sicher, dass alle Teilnehmer ihre Einladungen angenommen haben und jedem Teilnehmer ein Fantasy Team zugewiesen wurde. Es müssen mindestens zwei Fantasy Teams vorhanden sein. Außerdem sollten die Kader und Liga-Regeln bereits überprüft worden sein.",
+        "Wähle den zukünftigen Spieltag aus, ab dem die Meisterschaft beginnen soll. Frühere Spieltage gehören nicht zum Wettbewerb der Liga. Die verfügbaren Spieltage ab dem ausgewählten Start werden für den weiteren Verlauf der Meisterschaft verwendet.",
+        "In Classic-Ligen werden ab dem ausgewählten Spieltag die Punkte der Fantasy Teams erfasst. Die Punkte der einzelnen Spieltage werden fortlaufend addiert und bestimmen die Tabelle.",
+        "In Formula-One-Ligen werden die verfügbaren zukünftigen Spieltage verwendet. An jedem Spieltag werden die Fantasy Teams anhand ihrer erzielten Punkte platziert und erhalten die in den Liga-Regeln festgelegten Positionspunkte.",
+        "In Head-to-Head-Ligen konfiguriert der Commissioner zusätzlich die Anzahl der Round Robins. Kaiser XI verwendet die verfügbaren zukünftigen Spieltage, um den Spielplan zwischen den Fantasy Teams zu erstellen. Daher müssen genügend Spieltage für das gewählte Format verfügbar sein.",
+        "Überprüfe alle Einstellungen sorgfältig, bevor du die Meisterschaft initialisierst. Mit der Initialisierung wechselt die Liga von der Vorbereitungsphase zum eigentlichen Wettbewerb. Sie ist daher nicht mit der bloßen Erstellung einer Liga gleichzusetzen."
+      ],
+      "calloutLabel": "Vor der Initialisierung",
+      "callout": "Überprüfe Teilnehmer, Fantasy Teams, Kader, Regeln und den Startspieltag. Stelle bei einer Head-to-Head-Liga zusätzlich sicher, dass genügend Spieltage verfügbar sind, um alle vorgesehenen Begegnungen zu erstellen."
+    },
+    "squadSetup": {
+      "title": "Startkader konfigurieren",
+      "overview": "Nach Abschluss von Auktion, verdeckten Geboten oder Draft muss der Commissioner die vereinbarten Kader in Kaiser XI erfassen und jeden Spieler dem richtigen Fantasy Team zuweisen.",
+      "details": [
+        "Stelle zunächst sicher, dass alle Fantasy Teams erstellt und den richtigen Teilnehmern zugewiesen wurden. Jedes Liga-Mitglied sollte vor Beginn der Meisterschaft ein eigenes Fantasy Team besitzen.",
+        "Öffne das Fantasy Team, das du konfigurieren möchtest, und weise ihm die Spieler zu, die während der anfänglichen Kaderzusammenstellung erworben wurden. Trage für jeden Spieler außerdem den vereinbarten Kaufpreis ein, wenn dies bei der von eurer Gruppe verwendeten Methode vorgesehen ist.",
+        "Der Kaufpreis wird vom verfügbaren Budget des Fantasy Teams abgezogen. Bei einem Startbudget von 500 Credits und Gesamtausgaben von 430 Credits bleiben beispielsweise 70 Credits übrig.",
+        "Bei der Zuweisung prüft Kaiser XI, ob der Kader die Liga-Regeln einhält, darunter verfügbares Budget, maximale Kadergröße und Positionslimits. Derselbe Spieler kann nicht gleichzeitig zwei Fantasy Teams derselben Liga gehören.",
+        "Wiederhole den Vorgang für alle Fantasy Teams und vergleiche das Ergebnis mit den während Auktion, verdeckten Geboten oder Draft vereinbarten Kadern. Überprüfe vor Beginn der Meisterschaft, ob jedes Team die richtigen Spieler enthält und Budget sowie Positionslimits eingehalten werden.",
+        "Die Konfiguration der Startkader dient ausschließlich dazu, das Ergebnis der anfänglichen Spielerzuweisung in Kaiser XI zu erfassen. Sie öffnet nicht automatisch den Markt und ersetzt nicht die spätere Initialisierung der Meisterschaft."
+      ],
+      "calloutLabel": "Nur für Commissioner",
+      "callout": "Konfiguriere alle Kader sorgfältig, bevor du die Meisterschaft initialisierst. Spieler, Preise oder Zuweisungen lassen sich in dieser Phase deutlich einfacher korrigieren als nach dem Start des Wettbewerbs."
+    },
+    "market": {
+      "title": "Markt",
+      "overview": "Der Markt ermöglicht es Fantasy Teams, während der vom Commissioner festgelegten Zeiträume Spielertausche vorzuschlagen. Trades müssen die Liga-Regeln und die Kaderbeschränkungen der beteiligten Teams einhalten.",
+      "details": [
+        "Der Commissioner entscheidet, ob der Markt aktiv ist, und legt den Zeitraum für Öffnung und Schließung fest. Trades können nur vorgeschlagen werden, solange der Markt geöffnet ist.",
+        "Während der Markt geöffnet ist, kannst du einem anderen Fantasy Team der Liga einen Trade vorschlagen, indem du einen deiner Spieler anbietest und im Gegenzug einen Spieler des anderen Teams anforderst.",
+        "Die beteiligten Spieler müssen nicht zwingend dieselbe Position haben. Ein Trade ist möglich, solange beide Fantasy Teams nach seinem Abschluss weiterhin die in den Liga-Regeln festgelegte Kadergröße und die Positionslimits einhalten.",
+        "Du kannst beispielsweise einen Verteidiger gegen einen Mittelfeldspieler tauschen, wenn beide Fantasy Teams danach weiterhin ihre jeweiligen Limits für Verteidiger und Mittelfeldspieler einhalten. Würde einer der beiden Kader dadurch ein Liga-Limit überschreiten, wäre der Trade nicht zulässig.",
+        "Der Commissioner kann festlegen, ob zusätzlich ein Ausgleich in Credits erlaubt ist. Wenn diese Option aktiviert ist, kannst du neben dem Spielertausch Credits anbieten oder Credits vom anderen Fantasy Team verlangen.",
+        "Beispiel: Du bietest Spieler A im Tausch gegen Spieler B an. Wenn ein Ausgleich in Credits erlaubt ist, kannst du A + 10 Credits für B anbieten oder A gegen B + 10 Credits verlangen.",
+        "Das Absenden eines Vorschlags verändert die Kader nicht sofort. Der Trade wird erst abgeschlossen, wenn der Vorschlag angenommen wurde und alle erforderlichen Bedingungen erfüllt sind. Anschließend werden die Spieler und ein eventueller Ausgleich in Credits zwischen den beiden Fantasy Teams übertragen.",
+        "Prüfe vor dem Vorschlagen oder Annehmen eines Trades die Zusammensetzung beider Kader, die Positionslimits, das verfügbare Budget bei einem Ausgleich in Credits und die Liga-Regeln."
+      ],
+      "calloutLabel": "Markt und Trades",
+      "callout": "Ein Trade kann auch Spieler unterschiedlicher Positionen umfassen. Entscheidend ist, dass beide Fantasy Teams nach dem Trade weiterhin die von der Liga festgelegten Kader- und Positionslimits einhalten."
+    },
+    "fantasyTeam": {
+      "title": "Dein Fantasy Team",
+      "overview": "Auf der Seite deines Fantasy Teams findest du alle wichtigen Informationen zu deiner Mannschaft: Besitzer, verfügbares Budget und die Spieler deines Kaders.",
+      "details": [
+        "Jeder Teilnehmer der Liga besitzt ein Fantasy Team. Auf dieser Seite kannst du die Zusammensetzung deines Kaders und die wichtigsten Informationen zu deinem Team überprüfen.",
+        "Der Kader enthält alle Spieler, die deinem Fantasy Team zugewiesen sind. Für jeden Spieler werden wichtige Informationen wie Position und der bei der ursprünglichen Kaderkonfiguration erfasste Kaufpreis angezeigt.",
+        "Das Budget zeigt, wie viele Credits aktuell verfügbar sind. Der Startwert wird durch die Liga-Regeln bestimmt und durch die Preise der dem Kader zugewiesenen Spieler reduziert. Während der Saison kann sich das Budget außerdem durch Trades mit einem Ausgleich in Credits verändern.",
+        "Der Kader deines Fantasy Teams entspricht nicht automatisch der Formation für einen Spieltag. Vor jedem Spieltag wählst du aus deinem Kader die Startspieler und die Bank aus und musst dabei die Liga-Regeln einhalten. Auf der Seite deines Fantasy Teams kannst du außerdem den Teamnamen ändern und nach deinen Wünschen anpassen.",
+        "Während des Marktes kann sich die Zusammensetzung deines Fantasy Teams durch abgeschlossene Trades mit anderen Teams verändern. Überprüfe nach einem Trade immer deinen aktualisierten Kader und das verfügbare Budget, bevor du die nächste Formation erstellst."
+      ],
+      "calloutLabel": "Kader und Formation sind nicht dasselbe",
+      "callout": "Der Kader umfasst alle Spieler deines Fantasy Teams. Die Formation ist dagegen die Auswahl aus Startspielern und Ersatzspielern, die du für einen bestimmten Spieltag festlegst."
+    },
+    "formation": {
+      "title": "Aufstellung",
+      "overview": "Für jeden Spieltag legst du die Aufstellung deines Fantasy Teams fest: Wähle rechtzeitig vor der Deadline das Spielsystem, die 11 Startspieler und die Ersatzbank.",
+      "details": [
+        "Öffne die Aufstellung für den Spieltag, den du bestreiten möchtest. Bis zum Beginn des Spieltags kannst du deine Aufstellung erstellen und ändern. Nach der Deadline kann sie nicht mehr gespeichert oder eingereicht werden.",
+        "Wähle eines der in den Liga-Regeln erlaubten Spielsysteme. Das gewählte System bestimmt, wie viele Verteidiger, Mittelfeldspieler und Stürmer aufgestellt werden müssen; der Torwart besetzt immer die Torwartposition.",
+        "Wähle aus deinem Kader genau 11 Startspieler aus und beachte dabei das gewählte Spielsystem. Ein Spieler, der als Startspieler aufgestellt ist, kann nicht gleichzeitig auf der Ersatzbank stehen.",
+        "Stelle anschließend die Ersatzbank entsprechend der vorgeschriebenen Anzahl an Ersatzspielern und den in den Liga-Regeln festgelegten Positionslimits zusammen. Die Reihenfolge der Spieler auf der Bank kann für die automatischen Auswechslungen entscheidend sein.",
+        "Du kannst die Aufstellung zunächst als Entwurf speichern und sie bis zur Deadline weiter bearbeiten. Wenn du mit deiner Auswahl zufrieden bist, reichst du sie zur Bestätigung ein. Nur eine korrekt eingereichte Aufstellung wird bei der Berechnung des Spieltags berücksichtigt.",
+        "Wenn du das Spielsystem änderst, nachdem du bereits Startspieler ausgewählt hast, fordert Kaiser XI eine Bestätigung an. Bestätigst du die Änderung, werden die Startspieler entfernt, da sie möglicherweise nicht mehr zum neuen System passen; die Ersatzbank bleibt erhalten. Anschließend kannst du deine 11 Startspieler neu auswählen.",
+        "Kann einer deiner Startspieler am Ende des Spieltags nicht zur Wertung beitragen, versucht Kaiser XI, ihn automatisch durch einen gültigen Spieler von der Ersatzbank zu ersetzen. Die maximale Anzahl und die Kriterien der Auswechslungen richten sich nach den Liga-Regeln.",
+        "Auswechslungen können je nach Liga-Einstellung der Reihenfolge auf der Ersatzbank oder einer Positionspriorität folgen. Sind Systemwechsel bei Auswechslungen nicht erlaubt, muss die endgültige Aufstellung das ursprüngliche Spielsystem beibehalten. Sind sie erlaubt, können die Auswechslungen zu einem anderen in der Liga zugelassenen Spielsystem führen.",
+        "Steht kein gültiger Ersatzspieler für einen Startspieler zur Verfügung, findet keine Auswechslung statt und dieser Spieler trägt nicht zur Punktzahl des Fantasy Teams bei."
+      ],
+      "calloutLabel": "Vergiss das Einreichen nicht",
+      "callout": "Das Speichern der Aufstellung als Entwurf ist nicht dasselbe wie das Einreichen. Überprüfe vor der Deadline Spielsystem, Startspieler, Ersatzbank und Reihenfolge der Ersatzspieler und bestätige anschließend deine Aufstellung."
+    },
+    "matchdays": {
+      "title": "Spieltage",
+      "overview": "Die Spieltage stellen die einzelnen Runden des Wettbewerbs dar. In diesem Bereich kannst du den aktuellen Spieltag verfolgen und bereits abgeschlossene Spieltage einsehen.",
+      "details": [
+        "Jeder Spieltag entspricht einer Runde der Season, auf der die Liga basiert. Vor Beginn kannst du die Aufstellung deines Fantasy Teams vorbereiten und innerhalb der vorgesehenen Frist einreichen.",
+        "Während des Spieltags kannst du den aktuellen Stand der Runde verfolgen und, sobald verfügbar, Informationen zu Aufstellungen und Punkten einsehen.",
+        "Nach der Berechnung des Spieltags kannst du die Ergebnisse der Fantasy Teams, ihre Punkte und die Details der verwendeten Aufstellungen ansehen.",
+        "Vergangene Spieltage bleiben als Teil der Liga-Historie verfügbar. Du kannst daher frühere Ergebnisse, Punkte und Aufstellungen jederzeit erneut aufrufen.",
+        "Sofern die entsprechende Ansicht verfügbar ist, kannst du außerdem die Aufstellungen und Ergebnisse anderer Fantasy Teams einsehen und nicht nur die deiner eigenen Mannschaft."
+      ],
+      "calloutLabel": "Liga-Historie",
+      "callout": "Nutze den Bereich Spieltage, um den aktuellen Spieltag zu verfolgen und frühere Runden noch einmal anzusehen."
+    },
+    "scoring": {
+      "title": "Punktewertung",
+      "overview": "Die Punktzahl eines Fantasy Teams basiert auf den realen Leistungen der aufgestellten Spieler. Kaiser XI beginnt mit der Grundbewertung jedes Spielers, berücksichtigt die in den Liga-Regeln festgelegten Boni und Mali und wertet nur die Spieler, die tatsächlich zur endgültigen Aufstellung beitragen.",
+      "details": [
+        "Ausgangspunkt ist die Grundbewertung des Spielers. Sie stellt die Bewertung seiner Leistung im realen Spiel dar. Die von Kaiser XI verwendeten Bewertungen stammen aus mehreren anerkannten öffentlichen Fußballquellen und werden zu einem Referenzwert zusammengeführt.",
+        "Auf die Grundbewertung werden anschließend Boni und Mali für die im realen Spiel registrierten Ereignisse angewendet. Dazu gehören Tore, Assists, gelbe und rote Karten, Eigentore, verwandelte Elfmeter, verschossene Elfmeter, gehaltene Elfmeter und Gegentore.",
+        "Mit den Standardwerten zählt ein Tor +3 Punkte, ein Assist +1, eine gelbe Karte −0,5, eine rote Karte −1, ein Eigentor −2, ein verwandelter Elfmeter +3, ein verschossener Elfmeter −3, ein gehaltener Elfmeter +3 und ein Gegentor −1. Der Commissioner kann diese Werte über die Liga-Regeln ändern.",
+        "Der Fantasy-Punktestand eines Spielers ergibt sich somit aus seiner Grundbewertung sowie den anwendbaren Boni und Mali. Beispiel: Ein Spieler mit einer Bewertung von 6,5 erzielt ein Tor, gibt einen Assist und erhält eine gelbe Karte. Mit den Standardwerten ergibt sich: 6,5 + 3 + 1 − 0,5 = 10 Punkte.",
+        "Für die Punktzahl des Fantasy Teams zählen nur die Spieler, die nach Anwendung der Auswechslungen tatsächlich Teil der wirksamen Aufstellung sind. Nicht eingesetzte Bankspieler tragen nicht zur Gesamtpunktzahl bei.",
+        "Kann ein Startspieler nicht zur Wertung beitragen und wird er durch einen gültigen Bankspieler ersetzt, zählt stattdessen der Ersatzspieler. Steht kein gültiger Ersatz zur Verfügung, entstehen für diese Position keine Punkte.",
+        "Zusätzlich können optionale Liga-Boni angewendet werden. Der Kapitänsbonus gilt, wenn die entsprechende Regel aktiviert ist und der zur Wertung beitragende Spieler als realer Kapitän registriert wurde. Ein Torhüter kann außerdem einen Clean-Sheet-Bonus erhalten, wenn diese Option aktiviert ist und die erforderlichen Bedingungen erfüllt sind.",
+        "Ist der Abwehrmodifikator aktiviert, bewertet Kaiser XI den Torhüter und die Verteidiger, die tatsächlich zur Aufstellung beitragen. Erforderlich sind ein gültiger Torhüter und mindestens vier Verteidiger. Berücksichtigt werden die Grundbewertung des Torhüters sowie die drei besten Grundbewertungen der Verteidiger. Aus deren Durchschnitt ergibt sich der Bonus gemäß den in der Liga festgelegten Schwellenwerten.",
+        "Beispiel für den Abwehrmodifikator: Der Torhüter hat die Bewertung 6,0 und die drei besten Verteidiger 6,5, 7,0 und 6,5. Der Durchschnitt beträgt (6,0 + 6,5 + 7,0 + 6,5) / 4 = 6,5. Gewähren die Liga-Regeln bei einer Schwelle von 6,5 einen Bonus von +2 Punkten, erhält das Fantasy Team zusätzlich 2 Punkte.",
+        "Die Gesamtpunktzahl des Fantasy Teams besteht aus der Summe der Punkte aller Spieler der wirksamen Aufstellung sowie möglichen zusätzlichen Team-Boni. Wie diese Gesamtpunktzahl anschließend verwendet wird, hängt vom Liga-Typ ab: Classic, Head-to-Head oder Formula One.",
+        "Prüfe vor jedem Spieltag die Regeln deiner Liga. Zwei Ligen mit denselben Spielern und denselben realen Bewertungen können unterschiedliche Fantasy-Ergebnisse erzeugen, wenn sie verschiedene Koeffizienten, Boni oder Modifikatoren verwenden."
+      ],
+      "calloutLabel": "Die Wertung hängt von deiner Liga ab",
+      "callout": "Die Grundbewertung beschreibt die reale Leistung des Spielers, das Fantasy-Ergebnis wird jedoch durch die Liga-Regeln bestimmt. Boni, Mali, Kapitän, Clean Sheet und Abwehrmodifikator können die endgültige Punktzahl verändern."
+    },
+    "results": {
+      "title": "Ergebnisse, Tabelle und Spielplan",
+      "overview": "Nach der Berechnung eines Spieltags kannst du die Ergebnisse der Fantasy Teams und die detaillierten Punktzahlen einsehen. Wie diese Ergebnisse für die Tabelle verwendet werden, hängt vom Liga-Typ ab: Classic, Head-to-Head oder Formula One.",
+      "details": [
+        "In den Ergebnissen eines Spieltags siehst du die Gesamtpunktzahl jedes Fantasy Teams und kannst die verwendete Aufstellung im Detail ansehen. So kannst du nachvollziehen, welche Spieler zum Ergebnis beigetragen haben und welche Auswechslungen vorgenommen wurden.",
+        "Die Ergebnisdetails zeigen, wie sich die Punktzahl des Fantasy Teams zusammensetzt: Du siehst die Beiträge der einzelnen Spieler sowie mögliche Boni gemäß den Liga-Regeln. Wie diese Werte berechnet werden, wird im Kapitel Punktewertung erklärt.",
+        "In Classic-Ligen werden die an den einzelnen Spieltagen erzielten Fantasy-Punkte addiert. Die Gesamttabelle ordnet die Fantasy Teams daher nach der Summe der im Laufe der Saison gesammelten Fantasy-Punkte.",
+        "In Head-to-Head-Ligen treten an jedem Spieltag zwei Fantasy Teams gegeneinander an. Die Fantasy-Punktzahl jedes Teams wird anhand der in den Liga-Regeln festgelegten Schwellenwerte in Tore umgerechnet und führt zu Sieg, Unentschieden oder Niederlage. Die Tabelle berücksichtigt die Ergebnisse der Begegnungen und die dazugehörigen Statistiken.",
+        "Head-to-Head-Ligen verfügen außerdem über einen Spielplan. Dort kannst du die angesetzten Begegnungen zwischen den Fantasy Teams für die verschiedenen Spieltage einsehen und den Verlauf der Meisterschaft verfolgen.",
+        "In Formula-One-Ligen werden die Fantasy Teams an jedem Spieltag anhand ihrer Fantasy-Punktzahl platziert. Für jede Position werden die in den Liga-Regeln festgelegten Punkte vergeben. Die Gesamttabelle summiert die im Laufe der Saison erzielten Positionspunkte.",
+        "Du kannst jederzeit zu vergangenen Spieltagen zurückkehren und bereits berechnete Ergebnisse und Aufstellungen einsehen. Ergebnisse, Tabelle und Spielplan ermöglichen es dir so, den gesamten Verlauf der Liga nachzuvollziehen."
+      ],
+      "calloutLabel": "Der Liga-Typ bestimmt die Tabelle",
+      "callout": "Die Fantasy-Punktzahl wird im gleichen Spielkontext berechnet, aber je nach Liga-Format unterschiedlich verwendet: In Classic wird sie summiert, in Head-to-Head in ein Spielergebnis umgerechnet und in Formula One in Positionspunkte umgewandelt."
+    },
+    "calculation": {
+      "title": "Berechnen und neu berechnen",
+      "overview": "Nach dem Ende eines Spieltags kann der Commissioner die Ergebnisse der Liga berechnen. Werden später Daten korrigiert oder aktualisiert, die Einfluss auf die Punkte haben, kann eine Neuberechnung des Spieltags erforderlich sein.",
+      "details": [
+        "Der Commissioner kann einen Spieltag berechnen, sobald dieser beendet ist und die für die Ermittlung der Punkte erforderlichen Daten verfügbar sind.",
+        "Mit Berechnen ermittelt Kaiser XI, welche Spieler tatsächlich zur Aufstellung beitragen, berücksichtigt gegebenenfalls Auswechslungen und berechnet die Punkte anhand von Bewertungen, Boni, Mali und den Liga-Regeln.",
+        "Nach Abschluss der Berechnung werden die Ergebnisse des Spieltags erstellt und die für die Tabelle erforderlichen Informationen aktualisiert. Das endgültige Ergebnis hängt vom Liga-Typ ab: Classic, Head-to-Head oder Formula One.",
+        "Ein bereits berechneter Spieltag ändert sich nicht automatisch, wenn später ein für die Wertung verwendeter Wert korrigiert wird. Wird beispielsweise die Bewertung eines Spielers von 6,5 auf 7,0 korrigiert, bleibt das bereits veröffentlichte Ergebnis unverändert, bis der Spieltag neu berechnet wird.",
+        "In solchen Fällen kann der Commissioner Neu berechnen verwenden. Kaiser XI berechnet den Spieltag erneut anhand der zu diesem Zeitpunkt verfügbaren Daten und Liga-Regeln und aktualisiert entsprechend Punkte, Ergebnisse und Tabelle.",
+        "Eine Neuberechnung kann daher notwendig sein, wenn Bewertungen, Boni, Mali oder andere für das Ergebnis relevante Daten korrigiert wurden. Haben sich keine relevanten Daten geändert, ist eine Neuberechnung nicht erforderlich.",
+        "Bevor ein bereits veröffentlichter Spieltag neu berechnet wird, sollte berücksichtigt werden, dass sich dadurch Ergebnisse und Tabelle ändern können. Diese Funktion sollte daher nur verwendet werden, wenn tatsächlich eine Korrektur erforderlich ist."
+      ],
+      "calloutLabel": "Nur Commissioner",
+      "callout": "Berechnen wird verwendet, um die Ergebnisse eines Spieltags zu erstellen. Neu berechnen dient dazu, einen bereits berechneten Spieltag zu aktualisieren, wenn Daten geändert oder korrigiert wurden, die das Ergebnis beeinflussen können."
+    },
+    "commissioner": {
+      "title": "Commissioner-Leitfaden",
+      "overview": "Der Commissioner ist für die Verwaltung der Liga verantwortlich. Er erstellt und konfiguriert den Wettbewerb, lädt Teilnehmer ein, verwaltet Fantasy Teams und Liga-Regeln und begleitet die Liga während der gesamten Saison.",
+      "details": [
+        "Wenn du eine Liga erstellst, wirst du automatisch ihr Commissioner. Bevor du weitere Teilnehmer einlädst, solltest du Season, Liga-Typ, maximale Teilnehmerzahl und Liga-Regeln sorgfältig überprüfen.",
+        "Lade die Teilnehmer zur Liga ein und stelle sicher, dass jedes Mitglied ein eigenes Fantasy Team besitzt. Der Commissioner kann Mitglieder und ihre Fantasy Teams über die administrativen Funktionen der Liga verwalten.",
+        "Nachdem die ursprüngliche Spielerverteilung durch Auktion, verdeckte Gebote, Draft oder eine andere innerhalb der Gruppe vereinbarte Methode abgeschlossen wurde, erfasst du die Kader in Kaiser XI. Überprüfe Spieler, Preise, Budgets und Kaderlimits sorgfältig, bevor du fortfährst.",
+        "Konfiguriere vor Beginn des Wettbewerbs die Meisterschaft. Stelle sicher, dass alle Teilnehmer und Fantasy Teams bereit sind und die Liga-Regeln endgültig festgelegt wurden, und initialisiere anschließend den Wettbewerb. Einige Einstellungen können danach nicht mehr frei geändert werden.",
+        "Verwalte die Liga-Regeln während der Saison. Sie bestimmen unter anderem Aufstellungen, Ersatzbank, Auswechslungen, Boni und Mali, Modifikatoren sowie die Berechnung der Ergebnisse. Berücksichtige vor Änderungen immer deren Auswirkungen auf zukünftige Spieltage.",
+        "Verwalte den Markt, indem du entscheidest, ob er aktiviert ist, und seinen Öffnungs- und Schließungszeitraum festlegst. Falls vorgesehen, kannst du außerdem einen Ausgleich in Credits bei Trades zwischen Fantasy Teams erlauben.",
+        "Erinnere die Teilnehmer an wichtige Fristen, insbesondere für das Einreichen der Aufstellungen und den Markt. Eine klare Kommunikation der Regeln und Fristen verhindert viele Probleme während der Saison.",
+        "Verwende nach Ende eines Spieltags Berechnen, sobald die erforderlichen Daten verfügbar sind, um Punkte und Ergebnisse zu erstellen. Werden später Daten korrigiert, die einen bereits berechneten Spieltag beeinflussen, verwende Neu berechnen nur dann, wenn es tatsächlich erforderlich ist.",
+        "Prüfe vor wichtigen Änderungen, vor der Initialisierung des Wettbewerbs oder vor der Neuberechnung eines bereits veröffentlichten Spieltags immer die Auswirkungen auf alle Teilnehmer. Der Commissioner verfügt über mehr Verwaltungsfunktionen als andere Mitglieder und trägt daher die Verantwortung dafür, dass die Liga konsistent und nachvollziehbar bleibt."
+      ],
+      "calloutLabel": "Der Commissioner verwaltet die Liga",
+      "callout": "Überprüfe vor Saisonbeginn Teilnehmer, Fantasy Teams, Kader und Liga-Regeln. Kommuniziere während des Wettbewerbs wichtige Fristen, verwalte den Markt und verwende Berechnen und Neu berechnen mit Bedacht."
+    },
+    "profile": {
+      "title": "Profilil und Personalisierung",
+      "overview": "Im Profilbereich kannst du deine Kontodaten verwalten und das Erscheinungsbild von Kaiser XI durch die Auswahl von Sprache und Farbpalette personalisieren.",
+      "details": [
+        "Du kannst deine Profilinformationen wie Name und E-Mail-Adresse ändern. Diese Änderungen betreffen ausschließlich dein Konto und verändern weder dein Fantasy Team noch die Ligen, an denen du teilnimmst.",
+        "Du kannst das Passwort deines Kontos ändern. Aus Sicherheitsgründen werden dafür dein aktuelles Passwort und die Bestätigung des neuen Passworts benötigt.",
+        "Kaiser XI ist auf Italienisch, Englisch und Deutsch verfügbar. Wenn du die Sprache änderst, werden die Benutzeroberfläche und die Spielanleitung übersetzt. Von Benutzern erstellte Inhalte wie Namen und Beschreibungen von Ligen oder Fantasy Teams bleiben unverändert.",
+        "Du kannst das Erscheinungsbild der App mit verschiedenen vom Fußball inspirierten Farbpaletten personalisieren. Die gewählte Palette verändert Farben, Hintergründe, Buttons und weitere Elemente der Benutzeroberfläche.",
+        "Sprache und Farbpalette sind persönliche Einstellungen. Jeder Benutzer kann seine bevorzugte Kombination verwenden, ohne die Darstellung für andere Teilnehmer zu verändern.",
+        "Die Profileinstellungen haben keinen Einfluss auf Liga-Regeln, Punkte, Aufstellungen, Markt, Tabelle oder andere Spieldaten."
+      ],
+      "calloutLabel": "Personalisierung ist persönlich",
+      "callout": "Sprache und Farbpalette verändern nur deine eigene Darstellung der App. Andere Teilnehmer können andere Einstellungen verwenden, ohne dass dies Auswirkungen auf die Liga hat."
+    },
+    "faq": {
+      "title": "FAQ und Problemlösungen",
+      "overview": "Hier findest du Antworten auf die häufigsten Fragen und Probleme bei der Nutzung von Kaiser XI.",
+      "details": [
+        "Warum kann ich meine Aufstellung nicht einreichen? Prüfe, ob der Spieltag noch nicht begonnen hat, ob du dein eigenes Fantasy Team bearbeitest, ob das gewählte Spielsystem erlaubt ist und ob Startspieler und Bank den Liga-Regeln entsprechen. Denke außerdem daran, dass das Speichern eines Entwurfs nicht dem Einreichen der Aufstellung entspricht.",
+        "Warum sind meine Startspieler nach einem Systemwechsel verschwunden? Wenn du das Spielsystem änderst, nachdem bereits Startspieler ausgewählt wurden, fordert Kaiser XI eine Bestätigung an. Wenn du bestätigst, werden die Startspieler entfernt, da sie möglicherweise nicht mehr zum neuen System passen. Die Ersatzbank bleibt erhalten.",
+        "Warum finde ich ein bestimmtes Spielsystem nicht? Jede Liga kann festlegen, welche Spielsysteme erlaubt sind. Ist ein System nicht verfügbar, wurde es in den Liga-Regeln nicht aktiviert.",
+        "Warum kann ich keinen Trade vorschlagen? Prüfe, ob der Markt geöffnet ist und ob der Vorschlag die Liga-Regeln einhält. Nach dem Trade müssen beide Fantasy Teams weiterhin Kadergröße und Positionslimits erfüllen. Bei einem Ausgleich in Credits muss außerdem ausreichend Budget vorhanden sein.",
+        "Was passiert, wenn ein Trade-Vorschlag abläuft? Ein abgelaufener Vorschlag kann nicht mehr angenommen, abgelehnt oder storniert werden und verändert weder Spieler noch Budget der beteiligten Fantasy Teams.",
+        "Warum hat eine korrigierte Spielerbewertung ein bereits veröffentlichtes Ergebnis nicht verändert? Bereits berechnete Spieltage werden nicht automatisch neu geschrieben. Beeinflusst eine Korrektur das Ergebnis, muss der Commissioner Neu berechnen verwenden.",
+        "Warum kann der Commissioner die Meisterschaft nicht initialisieren? Vor der Initialisierung müssen die Voraussetzungen der Liga erfüllt sein, darunter die erforderlichen Fantasy Teams und ein gültiger zukünftiger Spieltag. In Head-to-Head-Ligen müssen außerdem genügend Spieltage für den Spielplan verfügbar sein.",
+        "Was passiert, wenn einer meiner Startspieler nicht spielt? Kaiser XI versucht anhand der Ersatzbank und der Liga-Regeln eine gültige Auswechslung vorzunehmen. Gibt es keinen gültigen Ersatz, trägt dieser Spieler nicht zur Punktzahl bei.",
+        "Warum wurde ein Spieler von meiner Ersatzbank nicht eingesetzt? Der Spieler war möglicherweise nicht für die Auswechslung geeignet, lag außerhalb der maximal erlaubten Anzahl an Wechseln oder hätte keine mit den Liga-Regeln kompatible Aufstellung ermöglicht.",
+        "Warum habe ich keinen Abwehrmodifikator erhalten? Der Modifikator muss aktiviert sein und seine Voraussetzungen müssen erfüllt werden, darunter ein gültiger Torhüter und mindestens vier Verteidiger, die zur Aufstellung beitragen.",
+        "Warum hat mein Torhüter keinen Clean-Sheet-Bonus erhalten? Der Bonus muss in den Liga-Regeln aktiviert sein und der Torhüter muss tatsächlich zur Aufstellung beitragen und ein registriertes Clean Sheet besitzen."
+      ],
+      "calloutLabel": "Noch Fragen?",
+      "callout": "Wenn du hier keine passende Antwort findest, besuche das Kaiser-XI-Community-Forum. Dort kannst du Fragen stellen, dich mit anderen Spielern austauschen und bereits vorhandene Diskussionen durchsuchen.",
+      "forumLink": "Zum Kaiser-XI-Forum"
+    }
+  }
+}
