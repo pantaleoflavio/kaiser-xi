@@ -65,6 +65,20 @@ class ExecuteCsvImportJobTest extends TestCase
         $this->assertSame(ImportStatus::Ready, $import->refresh()->status);
     }
 
+    public function test_outer_transaction_commit_dispatches_import_job_once(): void
+    {
+        Queue::fake();
+        $import = $this->readyImport("code,name,type\ncommit,Commit,custom\n");
+
+        DB::beginTransaction();
+        app(CsvImportService::class)->queue($import);
+        Queue::assertNothingPushed();
+        DB::commit();
+
+        Queue::assertPushed(ExecuteCsvImportJob::class, 1);
+        $this->assertSame(ImportStatus::Queued, $import->refresh()->status);
+    }
+
     public function test_job_executes_real_import_and_is_idempotent(): void
     {
         Queue::fake();

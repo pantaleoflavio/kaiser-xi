@@ -23,7 +23,8 @@ class PlayerScoreRealCaptainTest extends TestCase
         $score = PlayerScore::factory()->captain()->confirmed(7.0)->create();
 
         $this->assertTrue($score->is_captain);
-        $this->assertSame('7.00', $score->final_score);
+        $this->assertSame('7.00', $score->base_rating);
+        $this->assertNull($score->final_score);
         $this->assertTrue($score->isPlayable());
     }
 }

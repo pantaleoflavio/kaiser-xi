@@ -78,7 +78,9 @@ class CsvImportService
             }
 
             $locked->update(['status' => ImportStatus::Queued]);
-            ExecuteCsvImportJob::dispatch($locked->getKey())->afterCommit();
+            DB::afterCommit(function () use ($locked): void {
+                ExecuteCsvImportJob::dispatch($locked->getKey());
+            });
 
             return true;
         });

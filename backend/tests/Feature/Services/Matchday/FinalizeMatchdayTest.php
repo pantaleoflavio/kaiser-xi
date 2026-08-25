@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Services\Matchday;
 
-use App\Enums\PlayerScoreStatus;
 use App\Events\MatchdayReadyForCalculation;
 use App\Jobs\FinalizeMatchdayJob;
 use App\Models\FantasyMatch;
@@ -46,7 +45,7 @@ class FinalizeMatchdayTest extends TestCase
     {
         $season = Season::factory()->create();
         $matchday = Matchday::factory()->create(['season_id' => $season->id]);
-        [$firstLeague, $firstMatch, $firstHomeScore] = $this->headToHeadFixture($season, $matchday, 70, 60);
+        [$firstLeague, $firstMatch, $firstHomeScores] = $this->headToHeadFixture($season, $matchday, 70, 60);
         [$secondLeague, $secondMatch] = $this->headToHeadFixture($season, $matchday, 60, 70);
         $finalizer = app(FinalizeMatchday::class);
 
@@ -61,7 +60,7 @@ class FinalizeMatchdayTest extends TestCase
         $finalizer->finalize($matchday);
         $this->assertSame($counts, $this->aggregateCounts());
 
-        $firstHomeScore->update(['final_score' => 60]);
+        $firstHomeScores->each->update(['base_rating' => 6]);
         $finalizer->finalize($matchday);
 
         $this->assertSame('60.00', $firstMatch->fresh()->result->home_points);
@@ -176,7 +175,7 @@ class FinalizeMatchdayTest extends TestCase
         (new FinalizeMatchdayJob($matchday->id))->handle(app(FinalizeMatchday::class));
     }
 
-    /** @return array{League, FantasyMatch, PlayerScore} */
+    /** @return array{League, FantasyMatch, \Illuminate\Support\Collection<int, PlayerScore>} */
     private function headToHeadFixture(Season $season, Matchday $matchday, float $homePoints, float $awayPoints): array
     {
         $league = League::factory()->create([
@@ -190,7 +189,7 @@ class FinalizeMatchdayTest extends TestCase
 
             return FantasyTeam::factory()->forLeagueAndUser($league, $user)->create();
         });
-        $homeScore = $this->submittedFormation($league, $teams[0], $matchday, $homePoints);
+        $homeScores = $this->submittedFormation($league, $teams[0], $matchday, $homePoints);
         $this->submittedFormation($league, $teams[1], $matchday, $awayPoints);
         $match = FantasyMatch::factory()->create([
             'league_id' => $league->id,
@@ -199,10 +198,11 @@ class FinalizeMatchdayTest extends TestCase
             'away_fantasy_team_id' => $teams[1]->id,
         ]);
 
-        return [$league, $match, $homeScore];
+        return [$league, $match, $homeScores];
     }
 
-    private function submittedFormation(League $league, FantasyTeam $team, Matchday $matchday, float $points): PlayerScore
+    /** @return \Illuminate\Support\Collection<int, PlayerScore> */
+    private function submittedFormation(League $league, FantasyTeam $team, Matchday $matchday, float $points): \Illuminate\Support\Collection
     {
         $player = Player::factory()->create();
         $role = PlayerRole::query()->where('key', 'forward')->firstOrFail();
@@ -233,12 +233,37 @@ class FinalizeMatchdayTest extends TestCase
             'position_index' => 1,
         ]);
 
-        return PlayerScore::factory()->create([
-            'player_season_registration_id' => $registration->id,
-            'matchday_id' => $matchday->id,
-            'status' => PlayerScoreStatus::Confirmed,
-            'final_score' => $points,
-        ]);
+        $scores = collect();
+        for ($index = 1; $index <= 10; $index++) {
+            if ($index > 1) {
+                $player = Player::factory()->create();
+                $registration = PlayerSeasonRegistration::factory()->create([
+                    'player_id' => $player->id,
+                    'season_club_id' => SeasonClub::factory()->create(['season_id' => $league->season_id])->id,
+                    'player_role_id' => $role->id,
+                ]);
+                $assignment = FantasyTeamPlayer::factory()->create([
+                    'league_id' => $league->id,
+                    'fantasy_team_id' => $team->id,
+                    'player_id' => $player->id,
+                ]);
+                FormationPlayer::factory()->create([
+                    'formation_id' => $formation->id,
+                    'fantasy_team_player_id' => $assignment->id,
+                    'player_id' => $player->id,
+                    'player_role_id' => $role->id,
+                    'slot_type' => 'starter',
+                    'position_index' => $index,
+                ]);
+            }
+
+            $scores->push(PlayerScore::factory()->confirmed($points / 10)->create([
+                'player_season_registration_id' => $registration->id,
+                'matchday_id' => $matchday->id,
+            ]));
+        }
+
+        return $scores;
     }
 
     /** @return array{int, int, int, int} */

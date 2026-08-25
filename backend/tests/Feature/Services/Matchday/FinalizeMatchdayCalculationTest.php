@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Services\Matchday;
 
-use App\Enums\PlayerScoreStatus;
 use App\Http\Controllers\Api\V1\MatchdayController;
 use App\Models\FantasyMatch;
 use App\Models\FantasyTeam;
@@ -51,12 +50,14 @@ class FinalizeMatchdayCalculationTest extends TestCase
         $this->finalizer()->calculate($league, $matchday);
 
         $scoreId = TeamMatchdayScore::query()->sole()->id;
-        $detailId = TeamMatchdayScoreDetail::query()->sole()->id;
+        $detailIds = TeamMatchdayScoreDetail::query()->pluck('id')->all();
         $this->assertSame('70.00', TeamMatchdayScore::query()->sole()->points);
         $this->assertSame('70.00', Standing::query()->sole()->fantasy_points_total);
         $this->assertDatabaseCount('league_matchday_calculations', 1);
 
-        $playerScore->update(['final_score' => 82]);
+        // Correct one player's source performance with four open-play goals:
+        // 70 base points + (4 * the League's 3-point goal bonus) = 82.
+        $playerScore->update(['goals' => 4]);
         $this->assertSame('70.00', TeamMatchdayScore::query()->sole()->points);
         $this->assertSame('70.00', Standing::query()->sole()->fantasy_points_total);
 
@@ -65,9 +66,9 @@ class FinalizeMatchdayCalculationTest extends TestCase
         $this->assertSame('82.00', TeamMatchdayScore::query()->sole()->points);
         $this->assertSame('82.00', Standing::query()->sole()->fantasy_points_total);
         $this->assertNotSame($scoreId, TeamMatchdayScore::query()->sole()->id);
-        $this->assertNotSame($detailId, TeamMatchdayScoreDetail::query()->sole()->id);
+        $this->assertSame([], array_intersect($detailIds, TeamMatchdayScoreDetail::query()->pluck('id')->all()));
         $this->assertDatabaseCount('team_matchday_scores', 1);
-        $this->assertDatabaseCount('team_matchday_score_details', 1);
+        $this->assertDatabaseCount('team_matchday_score_details', 10);
         $this->assertDatabaseCount('standings', 1);
         $this->assertDatabaseCount('league_matchday_calculations', 1);
         $this->assertSourceRowsRemain($league, $matchday, $team, $formation, $formationPlayer, $playerScore, $assignment);
@@ -101,7 +102,7 @@ class FinalizeMatchdayCalculationTest extends TestCase
         $this->assertSame([3, 0], Standing::query()->where('league_id', $league->id)->orderBy('fantasy_team_id')->pluck('points_total')->all());
         $this->assertDatabaseCount('fantasy_match_results', 1);
         $this->assertDatabaseCount('team_matchday_scores', 2);
-        $this->assertDatabaseCount('team_matchday_score_details', 2);
+        $this->assertDatabaseCount('team_matchday_score_details', 20);
         $this->assertSourceRowsRemain($league, $matchday, $home, $homeFormation, $homePlayer, $homeScore, $homeAssignment);
     }
 
@@ -127,7 +128,7 @@ class FinalizeMatchdayCalculationTest extends TestCase
         $this->assertSame([$winner->id, $runnerUp->id], $standings->pluck('fantasy_team_id')->all());
         $this->assertSame([40, 20], $standings->pluck('championship_points')->all());
         $this->assertDatabaseCount('team_matchday_scores', 2);
-        $this->assertDatabaseCount('team_matchday_score_details', 2);
+        $this->assertDatabaseCount('team_matchday_score_details', 20);
         $this->assertDatabaseCount('standings', 2);
         $this->assertSourceRowsRemain($league, $matchday, $winner, $formation, $formationPlayer, $playerScore, $assignment);
     }
@@ -267,12 +268,39 @@ class FinalizeMatchdayCalculationTest extends TestCase
             'slot_type' => 'starter',
             'position_index' => 1,
         ]);
-        $score = PlayerScore::factory()->create([
-            'player_season_registration_id' => $registration->id,
-            'matchday_id' => $matchday->id,
-            'status' => PlayerScoreStatus::Confirmed,
-            'final_score' => $points,
-        ]);
+        $score = null;
+        // Ten playable performances make the requested team total from base
+        // ratings. The first row is returned so recalculation tests can correct
+        // an authoritative event without touching provider final_score data.
+        for ($index = 1; $index <= 10; $index++) {
+            if ($index > 1) {
+                $player = Player::factory()->create();
+                $registration = PlayerSeasonRegistration::factory()->create([
+                    'player_id' => $player->id,
+                    'season_club_id' => SeasonClub::factory()->create(['season_id' => $league->season_id])->id,
+                    'player_role_id' => $role->id,
+                ]);
+                $assignmentForRow = FantasyTeamPlayer::factory()->create([
+                    'league_id' => $league->id,
+                    'fantasy_team_id' => $team->id,
+                    'player_id' => $player->id,
+                ]);
+                FormationPlayer::factory()->create([
+                    'formation_id' => $formation->id,
+                    'fantasy_team_player_id' => $assignmentForRow->id,
+                    'player_id' => $player->id,
+                    'player_role_id' => $role->id,
+                    'slot_type' => 'starter',
+                    'position_index' => $index,
+                ]);
+            }
+
+            $row = PlayerScore::factory()->confirmed($points / 10)->create([
+                'player_season_registration_id' => $registration->id,
+                'matchday_id' => $matchday->id,
+            ]);
+            $score ??= $row;
+        }
 
         return [$team, $formation, $formationPlayer, $score, $assignment];
     }

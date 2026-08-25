@@ -35,6 +35,10 @@ class PlayerFantasyScoreCalculator
         ];
         $components = [];
         foreach ($definitions as [$type, $count, $coefficient]) {
+            // Decimal/integer database casts are not guaranteed to hydrate zero as
+            // the integer 0. Inclusion is based on the event count, never on its
+            // coefficient (a League may deliberately configure a zero coefficient).
+            $count = (int) $count;
             if ($count === 0) continue;
             $coefficientCents = $this->cents($coefficient);
             $components[] = compact('type', 'count') + [
