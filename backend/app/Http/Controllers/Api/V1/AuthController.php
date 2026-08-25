@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Services\Auth\DeleteAccountService;
 
 class AuthController extends Controller
 {
@@ -27,6 +28,7 @@ class AuthController extends Controller
         private readonly RegisterUserService $registerUserService,
         private readonly LoginUserService $loginUserService,
         private readonly LogoutUserService $logoutUserService,
+        private readonly DeleteAccountService $deleteAccountService,
     ) {}
 
     public function register(RegisterRequest $request): JsonResponse
@@ -74,12 +76,15 @@ class AuthController extends Controller
     {
         $user = $request->user();
         $validated = $request->safe()->only(['name', 'email', 'theme']);
-        
+
         if (array_key_exists('email', $validated) && $validated['email'] !== $user->email) {
             $validated['email_verified_at'] = null;
         }
 
         $user->forceFill($validated)->save();
+        if (array_key_exists('email_verified_at', $validated)) {
+            $user->sendEmailVerificationNotification();
+        }
 
         return new UserResource($user->refresh()->load('roles'));
     }
@@ -89,8 +94,16 @@ class AuthController extends Controller
         $request->user()->forceFill([
             'password' => $request->string('password')->toString(),
         ])->save();
+        $request->user()->tokens()->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function deleteAccount(DeleteAccountRequest $request): JsonResponse
+    {
+        $this->deleteAccountService->execute($request->user());
+
+        return response()->json(['message' => 'Account deleted.']);
     }
 
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
@@ -104,6 +117,7 @@ class AuthController extends Controller
     {
         $status = Password::reset($request->validated(), function (User $user, string $password): void {
             $user->forceFill(['password' => $password, 'remember_token' => Str::random(60)])->save();
+            $user->tokens()->delete();
             event(new PasswordReset($user));
         });
 

@@ -34,7 +34,8 @@
       "submitting": "Anmeldung läuft...",
       "noAccount": "Noch kein Konto?",
       "registerLink": "Registrieren",
-      "error": "Anmeldung nicht möglich."
+      "error": "Anmeldung nicht möglich.",
+      "forgotPassword": "Passwort vergessen?"
     },
     "register": {
       "title": "Konto erstellen",
@@ -49,6 +50,36 @@
       "loginLink": "Anmelden",
       "passwordsMustMatch": "Passwörter müssen übereinstimmen.",
       "error": "Registrierung nicht möglich."
+    },
+    "forgot": {
+      "title": "Passwort vergessen",
+      "description": "Gib deine E-Mail-Adresse ein, um einen Link zum Zurücksetzen zu erhalten.",
+      "success": "Falls das Konto existiert, wurde ein Link gesendet.",
+      "error": "Der Link konnte nicht angefordert werden.",
+      "submit": "Link senden",
+      "submitting": "Wird gesendet...",
+      "back": "Zurück zur Anmeldung"
+    },
+    "reset": {
+      "title": "Neues Passwort wählen",
+      "success": "Dein Passwort wurde zurückgesetzt. Du kannst dich jetzt anmelden.",
+      "error": "Das Passwort konnte nicht zurückgesetzt werden.",
+      "submit": "Passwort zurücksetzen",
+      "submitting": "Wird zurückgesetzt...",
+      "login": "Zur Anmeldung"
+    },
+    "verify": {
+      "title": "E-Mail bestätigen",
+      "description": "Wir haben einen Bestätigungslink gesendet an",
+      "sent": "Bestätigungs-E-Mail wurde gesendet.",
+      "error": "Die E-Mail konnte nicht erneut gesendet werden.",
+      "resend": "Bestätigungs-E-Mail erneut senden",
+      "sending": "Wird gesendet..."
+    },
+    "verified": {
+      "title": "E-Mail bestätigt",
+      "description": "Deine E-Mail-Adresse wurde erfolgreich bestätigt.",
+      "continue": "Weiter zu Kaiser XI"
     }
   },
   "dashboard": {
@@ -667,6 +698,14 @@
       "description": "Wähle die Kaiser-XI-Farbpalette für dein Konto.",
       "selected": "Ausgewählt",
       "error": "Das Farbschema konnte nicht gespeichert werden."
+    },
+    "delete": {
+      "title": "Gefahrenbereich",
+      "description": "Beim Löschen wird deine Identität dauerhaft anonymisiert. Historische Ligaergebnisse bleiben erhalten. Gib dein Passwort ein.",
+      "confirm": "Konto dauerhaft anonymisieren? Dies kann nicht rückgängig gemacht werden.",
+      "submit": "Konto löschen",
+      "deleting": "Wird gelöscht...",
+      "error": "Das Konto konnte nicht gelöscht werden."
     }
   },
   "formation": {

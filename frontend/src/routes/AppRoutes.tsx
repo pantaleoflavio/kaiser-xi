@@ -22,6 +22,10 @@ import { HeadToHeadSchedulePage } from '../pages/HeadToHeadSchedulePage';
 import { LeagueStandingsPage } from '../pages/LeagueStandingsPage';
 import { ClassicChampionshipPage } from '../pages/ClassicChampionshipPage';
 import { LeagueMarketPage } from '../pages/LeagueMarketPage';
+import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
+import { ResetPasswordPage } from '../pages/ResetPasswordPage';
+import { VerifyEmailPage } from '../pages/VerifyEmailPage';
+import { EmailVerifiedPage } from '../pages/EmailVerifiedPage';
 
 export function AppRoutes() {
   return (
@@ -30,6 +34,8 @@ export function AppRoutes() {
         <Route index element={<HomePage />} />
         <Route path="game-instructions" element={<GameInstructionsPage />} />
         <Route path="rules" element={<Navigate to="/game-instructions" replace />} />
+        <Route path="verify-email" element={<VerifyEmailPage />} />
+        <Route path="email-verified" element={<EmailVerifiedPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="account" element={<AccountPage />} />
@@ -67,6 +73,8 @@ export function AppRoutes() {
         <Route element={<GuestRoute />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
