@@ -20,6 +20,8 @@ class RegisterUserService
             'password' => Hash::make($attributes['password']),
         ]);
 
+        $user->sendEmailVerificationNotification();
+
         $userRole = Role::query()->where('name', 'user')->firstOrFail();
         $user->roles()->syncWithoutDetaching([$userRole->id]);
 

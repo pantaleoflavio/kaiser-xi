@@ -2,11 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Models\FantasyTeam;
+use App\Models\League;
+use App\Models\LeagueStatus;
 use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\GlobalAdminSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
@@ -74,6 +79,116 @@ class AuthTest extends TestCase
             'Authorization' => "Bearer {$token}",
         ])->assertUnauthorized();
     }
+
+    public function test_registration_creates_unverified_user_and_sends_verification(): void
+    {
+        Notification::fake();
+        Role::create(['name' => 'user']);
+        $this->postJson('/api/v1/auth/register', ['name' => 'New User', 'email' => 'new@example.com', 'password' => 'password123', 'password_confirmation' => 'password123'])->assertCreated()->assertJsonPath('user.email_verified_at', null);
+        $user = User::firstWhere('email', 'new@example.com');
+        $this->assertNull($user->email_verified_at);
+        Notification::assertSentTo($user, VerifyEmail::class);
+    }
+
+    public function test_signed_email_verification_succeeds(): void
+    {
+        $user = User::factory()->unverified()->create();
+        $url = URL::temporarySignedRoute('verification.verify', now()->addMinute(), ['user' => $user->id, 'hash' => sha1($user->email)]);
+        $this->get($url)->assertRedirect();
+        $this->assertNotNull($user->refresh()->email_verified_at);
+    }
+
+    public function test_unverified_user_cannot_access_application_endpoints(): void
+    {
+        $user = User::factory()->unverified()->create();
+        $this->actingAs($user, 'sanctum')->getJson('/api/v1/seasons')->assertForbidden();
+        $this->actingAs($user, 'sanctum')->getJson('/api/v1/auth/me')->assertOk();
+    }
+
+    public function test_sensitive_auth_routes_are_rate_limited(): void
+    {
+        $user = User::factory()->unverified()->create(['password' => Hash::make('password123')]);
+        foreach (range(1, 5) as $_) $this->postJson('/api/v1/auth/login', ['email' => $user->email, 'password' => 'wrong']);
+        $this->postJson('/api/v1/auth/login', ['email' => $user->email, 'password' => 'wrong'])->assertTooManyRequests();
+
+        foreach (range(1, 3) as $_) $this->postJson('/api/v1/auth/forgot-password', ['email' => 'absent@example.com']);
+        $this->postJson('/api/v1/auth/forgot-password', ['email' => 'absent@example.com'])->assertTooManyRequests();
+    }
+
+    public function test_verification_resend_is_rate_limited(): void
+    {
+        Notification::fake();
+        $user = User::factory()->unverified()->create();
+        foreach (range(1, 3) as $_) $this->actingAs($user, 'sanctum')->postJson('/api/v1/auth/email/verification-notification')->assertOk();
+        $this->actingAs($user, 'sanctum')->postJson('/api/v1/auth/email/verification-notification')->assertTooManyRequests();
+    }
+
+    public function test_password_reset_and_change_revoke_all_tokens(): void
+    {
+        Notification::fake();
+        $user = User::factory()->create(['email' => 'revoke@example.com', 'password' => Hash::make('password123')]);
+        $user->createToken('one');
+        $user->createToken('two');
+        $this->postJson('/api/v1/auth/forgot-password', ['email' => $user->email]);
+        $token = null;
+        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use (&$token) {
+            $token = $notification->token;
+            return true;
+        });
+        $this->postJson('/api/v1/auth/reset-password', ['token' => $token, 'email' => $user->email, 'password' => 'newpassword123', 'password_confirmation' => 'newpassword123'])->assertOk();
+        $this->assertCount(0, $user->tokens()->get());
+
+        $token = $user->createToken('current')->plainTextToken;
+        $this->withToken($token)->putJson('/api/v1/auth/me/password', ['current_password' => 'newpassword123', 'password' => 'thirdpassword123', 'password_confirmation' => 'thirdpassword123'])->assertNoContent();
+        $this->assertCount(0, $user->tokens()->get());
+    }
+
+    public function test_normal_account_is_anonymized_and_tokens_revoked(): void
+    {
+        $user = User::factory()->create(['email' => 'personal@example.com', 'name' => 'Personal Name', 'password' => Hash::make('password123')]);
+        $token = $user->createToken('current')->plainTextToken;
+        $this->withToken($token)->deleteJson('/api/v1/auth/me', ['current_password' => 'password123', 'confirmation' => true])->assertOk();
+        $user->refresh();
+        $this->assertSame('Deleted user', $user->name);
+        $this->assertStringEndsWith('@deleted.invalid', $user->email);
+        $this->assertCount(0, $user->tokens()->get());
+        $this->postJson('/api/v1/auth/login', ['email' => 'personal@example.com', 'password' => 'password123'])->assertUnprocessable();
+    }
+
+    public function test_active_league_commissioner_must_resolve_ownership_before_deletion(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('password123')]);
+        League::factory()->for($user, 'commissioner')->create();
+        $token = $user->createToken('current')->plainTextToken;
+
+        $this->withToken($token)->deleteJson('/api/v1/auth/me', ['current_password' => 'password123', 'confirmation' => true])
+            ->assertUnprocessable()->assertJsonValidationErrors('account');
+        $this->assertSame($user->email, $user->refresh()->email);
+    }
+
+    public function test_completed_league_history_remains_after_commissioner_anonymization(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('password123')]);
+        $status = LeagueStatus::query()->create(['key' => LeagueStatus::COMPLETED, 'label' => 'Completed']);
+        $league = League::factory()->for($user, 'commissioner')->create(['league_status_id' => $status->id]);
+        $team = FantasyTeam::factory()->for($league)->for($user)->create();
+        $token = $user->createToken('current')->plainTextToken;
+
+        $this->withToken($token)->deleteJson('/api/v1/auth/me', ['current_password' => 'password123', 'confirmation' => true])->assertOk();
+        $this->assertDatabaseHas('leagues', ['id' => $league->id, 'commissioner_user_id' => $user->id]);
+        $this->assertDatabaseHas('fantasy_teams', ['id' => $team->id, 'user_id' => $user->id]);
+    }
+
+    public function test_expired_sanctum_token_is_rejected(): void
+    {
+        config(['sanctum.expiration' => 1]);
+        $user = User::factory()->create();
+        $token = $user->createToken('expired')->plainTextToken;
+        $user->tokens()->update(['created_at' => now()->subMinutes(2)]);
+        $this->app['auth']->forgetGuards();
+        $this->withToken($token)->getJson('/api/v1/auth/me')->assertUnauthorized();
+    }
+
 
     public function test_global_admin_seed_exists(): void
     {

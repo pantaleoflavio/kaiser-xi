@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\CalculateMatchdayController;
 use App\Http\Controllers\Api\V1\ClassicChampionshipController;
 use App\Http\Controllers\Api\V1\ClassicMatchdayController;
 use App\Http\Controllers\Api\V1\EligiblePlayerController;
+use App\Http\Controllers\Api\V1\EmailVerificationController;
 use App\Http\Controllers\Api\V1\FantasyTeamController;
 use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
 use App\Http\Controllers\Api\V1\FormationController;
@@ -33,20 +34,23 @@ Route::prefix('v1')->group(function (): void {
 
     // Authentication routes
     Route::prefix('auth')->group(function (): void {
-        Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/login', [AuthController::class, 'login']);
-        Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+        Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:3,1');
+        Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+        Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,1');
+        Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1');
+        Route::get('/verify-email/{user}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
 
         Route::middleware('auth:sanctum')->group(function (): void {
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::get('/me', [AuthController::class, 'me']);
             Route::patch('/me', [AuthController::class, 'updateProfile']);
             Route::put('/me/password', [AuthController::class, 'updatePassword']);
+            Route::delete('/me', [AuthController::class, 'deleteAccount']);
+            Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
         });
     });
 
-    Route::middleware('auth:sanctum')->group(function (): void {
+    Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
         Route::get('/invitations', [AcceptLeagueInvitationController::class, 'index'])->name('api.v1.invitations.index');
         Route::post('/invitations/{invitation}/accept', [AcceptLeagueInvitationController::class, 'accept'])->name('api.v1.invitations.accept');
         Route::post('/invitations/{invitation}/reject', [AcceptLeagueInvitationController::class, 'reject'])->name('api.v1.invitations.reject');
@@ -56,7 +60,7 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/league-types', [LeagueTypeController::class, 'index'])->name('api.v1.league-types.index');
     });
 
-    Route::prefix('leagues')->middleware('auth:sanctum')->scopeBindings()->group(function (): void {
+    Route::prefix('leagues')->middleware(['auth:sanctum', 'verified'])->scopeBindings()->group(function (): void {
         // League routes
         Route::get('/', [LeagueController::class, 'index']);
         Route::post('/', [LeagueController::class, 'store']);

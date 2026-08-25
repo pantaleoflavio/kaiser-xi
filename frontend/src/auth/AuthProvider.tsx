@@ -21,6 +21,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('kaiser-xi:unauthorized', clearSession);
+    return () => window.removeEventListener('kaiser-xi:unauthorized', clearSession);
+  }, [clearSession]);
+
   const refreshUser = useCallback(async () => {
     if (!getStoredToken()) return;
 

@@ -50,7 +50,8 @@ return [
     |
     */
 
-    'expiration' => null,
+    // Eight hours limits exposure of browser-stored bearer tokens.
+    'expiration' => (int) env('SANCTUM_TOKEN_EXPIRATION', 480),
 
     /*
     |--------------------------------------------------------------------------

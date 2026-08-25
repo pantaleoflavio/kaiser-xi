@@ -8,6 +8,8 @@ use App\Models\League;
 use App\Models\LeagueMembership;
 use App\Models\Role;
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -20,9 +22,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 #[Fillable(['name', 'email', 'password', 'theme'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmailContract
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, MustVerifyEmail, Notifiable;
 
     protected function casts(): array
     {
@@ -31,6 +33,11 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
             'theme' => UserTheme::class,
         ];
+    }
+
+    public function commissionedLeagues(): HasMany
+    {
+        return $this->hasMany(League::class, 'commissioner_user_id');
     }
 
     public function leagues(): BelongsToMany

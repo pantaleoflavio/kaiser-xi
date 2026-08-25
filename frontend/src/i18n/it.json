@@ -34,7 +34,8 @@
       "submitting": "Accesso in corso...",
       "noAccount": "Non hai un account?",
       "registerLink": "Registrati",
-      "error": "Impossibile accedere."
+      "error": "Impossibile accedere.",
+      "forgotPassword": "Password dimenticata?"
     },
     "register": {
       "title": "Crea account",
@@ -49,6 +50,36 @@
       "loginLink": "Accedi",
       "passwordsMustMatch": "Le password devono coincidere.",
       "error": "Impossibile registrarsi."
+    },
+    "forgot": {
+      "title": "Password dimenticata",
+      "description": "Inserisci il tuo indirizzo email per ricevere il link di reimpostazione.",
+      "success": "Se l’account esiste, è stato inviato un link.",
+      "error": "Impossibile richiedere il link.",
+      "submit": "Invia link",
+      "submitting": "Invio...",
+      "back": "Torna al login"
+    },
+    "reset": {
+      "title": "Scegli una nuova password",
+      "success": "La password è stata reimpostata. Ora puoi accedere.",
+      "error": "Impossibile reimpostare la password.",
+      "submit": "Reimposta password",
+      "submitting": "Reimpostazione...",
+      "login": "Vai al login"
+    },
+    "verify": {
+      "title": "Verifica la tua email",
+      "description": "Abbiamo inviato un link di verifica a",
+      "sent": "Email di verifica inviata.",
+      "error": "Impossibile reinviare l’email.",
+      "resend": "Reinvia email di verifica",
+      "sending": "Invio..."
+    },
+    "verified": {
+      "title": "Email verificata",
+      "description": "Il tuo indirizzo email è stato verificato.",
+      "continue": "Continua su Kaiser XI"
     }
   },
   "dashboard": {
@@ -619,6 +650,14 @@
       "description": "Scegli la palette Kaiser XI per il tuo account.",
       "selected": "Selezionato",
       "error": "Impossibile salvare il tema."
+    },
+    "delete": {
+      "title": "Zona pericolosa",
+      "description": "L’eliminazione anonimizza permanentemente la tua identità. I risultati storici restano. Inserisci la password.",
+      "confirm": "Anonimizzare permanentemente l’account? L’azione è irreversibile.",
+      "submit": "Elimina account",
+      "deleting": "Eliminazione...",
+      "error": "Impossibile eliminare l’account."
     }
   },
   "formation": {

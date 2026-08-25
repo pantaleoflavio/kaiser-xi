@@ -2,6 +2,7 @@ import { AccountProfileForm } from '../components/account/AccountProfileForm';
 import { AccountSummary } from '../components/account/AccountSummary';
 import { ChangePasswordForm } from '../components/account/ChangePasswordForm';
 import { useAuth } from '../auth/useAuth';
+import { DeleteAccountForm } from '../components/account/DeleteAccountForm';
 import { ThemeSelector } from '../components/account/ThemeSelector';
 
 export function AccountPage() {
@@ -15,6 +16,7 @@ export function AccountPage() {
       <AccountProfileForm />
       <ThemeSelector />
       <ChangePasswordForm />
+      <DeleteAccountForm />
     </div>
   );
 }

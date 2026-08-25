@@ -56,7 +56,10 @@ export async function apiClient<T>(path: string, options: ApiRequestOptions = {}
   const body = contentType?.includes('application/json') ? await response.json() : null;
 
   if (!response.ok) {
-    if (response.status === 401) clearStoredToken();
+    if (response.status === 401) {
+      clearStoredToken();
+      window.dispatchEvent(new Event('kaiser-xi:unauthorized'));
+    }
     const errorBody = body as ApiErrorResponse | null;
     throw new ApiError(
       errorBody?.message ?? `Request failed with status ${response.status}`,

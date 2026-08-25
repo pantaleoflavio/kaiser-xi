@@ -26,6 +26,12 @@ export const accountApi = {
     return response.data;
   },
 
+  deleteAccount: (current_password: string) =>
+    apiClient<{ message: string }>('/auth/me', {
+      method: 'DELETE',
+      body: JSON.stringify({ current_password, confirmation: true }),
+    }),
+
   updatePassword: (payload: UpdatePasswordPayload) =>
     apiClient<void>('/auth/me/password', {
       method: 'PUT',

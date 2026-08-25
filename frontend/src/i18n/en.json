@@ -34,7 +34,8 @@
       "submitting": "Logging in...",
       "noAccount": "No account?",
       "registerLink": "Register",
-      "error": "Unable to login."
+      "error": "Unable to login.",
+      "forgotPassword": "Forgot password?"
     },
     "register": {
       "title": "Create account",
@@ -49,6 +50,36 @@
       "loginLink": "Login",
       "passwordsMustMatch": "Passwords must match.",
       "error": "Unable to register."
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "description": "Enter your email address to receive a password-reset link.",
+      "success": "If the account exists, a reset link has been sent.",
+      "error": "Unable to request a reset link.",
+      "submit": "Send reset link",
+      "submitting": "Sending...",
+      "back": "Back to login"
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "success": "Your password has been reset. You can now log in.",
+      "error": "Unable to reset the password.",
+      "submit": "Reset password",
+      "submitting": "Resetting...",
+      "login": "Continue to login"
+    },
+    "verify": {
+      "title": "Verify your email",
+      "description": "We sent a verification link to",
+      "sent": "Verification email sent.",
+      "error": "Unable to resend verification email.",
+      "resend": "Resend verification email",
+      "sending": "Sending..."
+    },
+    "verified": {
+      "title": "Email verified",
+      "description": "Your email address has been verified successfully.",
+      "continue": "Continue to Kaiser XI"
     }
   },
   "dashboard": {
@@ -667,6 +698,14 @@
       "description": "Choose the Kaiser XI palette used across your account.",
       "selected": "Selected",
       "error": "The theme could not be saved. Your previous theme was restored."
+    },
+    "delete": {
+      "title": "Danger zone",
+      "description": "Deleting your account permanently anonymizes your identity. Historical league results remain. Enter your password to continue.",
+      "confirm": "Permanently anonymize your account? This cannot be undone.",
+      "submit": "Delete account",
+      "deleting": "Deleting...",
+      "error": "Unable to delete account."
     }
   },
   "formation": {
