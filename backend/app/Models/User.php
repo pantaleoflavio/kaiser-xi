@@ -20,7 +20,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password', 'theme'])]
+#[Fillable(['name', 'email', 'password', 'theme', 'privacy_acknowledged_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, MustVerifyEmailContract
 {
@@ -30,6 +30,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmailContr
     {
         return [
             'email_verified_at' => 'datetime',
+            'privacy_acknowledged_at' => 'datetime',
             'password' => 'hashed',
             'theme' => UserTheme::class,
         ];

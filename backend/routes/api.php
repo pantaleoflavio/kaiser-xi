@@ -45,6 +45,7 @@ Route::prefix('v1')->group(function (): void {
         Route::middleware('auth:sanctum')->group(function (): void {
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::get('/me', [AuthController::class, 'me']);
+            Route::post('/privacy-acknowledgement', [AuthController::class, 'acknowledgePrivacy']);
             Route::patch('/me', [AuthController::class, 'updateProfile']);
             Route::put('/me/password', [AuthController::class, 'updatePassword']);
             Route::delete('/me', [AuthController::class, 'deleteAccount']);
@@ -52,7 +53,7 @@ Route::prefix('v1')->group(function (): void {
         });
     });
 
-    Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
+    Route::middleware(['auth:sanctum', 'privacy.acknowledged', 'verified'])->group(function (): void {
         Route::get('/players/{player}', PlayerProfileController::class)->name('api.v1.players.show');
         Route::get('/invitations', [AcceptLeagueInvitationController::class, 'index'])->name('api.v1.invitations.index');
         Route::post('/invitations/{invitation}/accept', [AcceptLeagueInvitationController::class, 'accept'])->name('api.v1.invitations.accept');
@@ -63,7 +64,7 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/league-types', [LeagueTypeController::class, 'index'])->name('api.v1.league-types.index');
     });
 
-    Route::prefix('leagues')->middleware(['auth:sanctum', 'verified'])->scopeBindings()->group(function (): void {
+    Route::prefix('leagues')->middleware(['auth:sanctum', 'privacy.acknowledged', 'verified'])->scopeBindings()->group(function (): void {
         // League routes
         Route::get('/', [LeagueController::class, 'index']);
         Route::post('/', [LeagueController::class, 'store']);

@@ -29,16 +29,35 @@ class AuthTest extends TestCase
             'email' => 'mario@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
+            'privacy_acknowledged' => true,
         ]);
         $response->assertCreated()->assertJsonPath('user.email', 'mario@example.com');
+        $response->assertJsonPath('user.privacy_acknowledged', true);
+        $this->assertNotNull(User::firstWhere('email', 'mario@example.com')->privacy_acknowledged_at);
     }
 
     public function test_registered_user_receives_default_role(): void
     {
         $role = Role::create(['name' => 'user']);
-        $this->postJson('/api/v1/auth/register', ['name' => 'A', 'email' => 'a@example.com', 'password' => 'password123', 'password_confirmation' => 'password123']);
+        $this->postJson('/api/v1/auth/register', ['name' => 'A', 'email' => 'a@example.com', 'password' => 'password123', 'password_confirmation' => 'password123', 'privacy_acknowledged' => true]);
         $user = User::where('email', 'a@example.com')->firstOrFail();
         $this->assertTrue($user->roles->contains($role));
+    }
+
+    public function test_registration_requires_privacy_acknowledgement_without_persisting_consent(): void
+    {
+        Role::create(['name' => 'user']);
+
+        $this->postJson('/api/v1/auth/register', [
+            'name' => 'No Acknowledgement',
+            'email' => 'missing@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ])->assertUnprocessable()->assertJsonValidationErrors('privacy_acknowledged');
+
+        $this->assertDatabaseMissing('users', ['email' => 'missing@example.com']);
+        $this->assertTrue(\Illuminate\Support\Facades\Schema::hasColumn('users', 'privacy_acknowledged_at'));
+        $this->assertFalse(\Illuminate\Support\Facades\Schema::hasColumn('users', 'marketing_consent'));
     }
 
     public function test_user_can_login_and_logout_and_me(): void
@@ -80,11 +99,48 @@ class AuthTest extends TestCase
         ])->assertUnauthorized();
     }
 
+    public function test_legacy_user_must_acknowledge_privacy_before_gameplay(): void
+    {
+        $user = User::factory()->withoutPrivacyAcknowledgement()->create();
+        $token = $user->createToken('legacy')->plainTextToken;
+
+        $this->withToken($token)->getJson('/api/v1/seasons')
+            ->assertForbidden()
+            ->assertJsonPath('code', 'privacy_acknowledgement_required');
+
+        // Account/auth infrastructure remains usable, so the state cannot deadlock.
+        $this->withToken($token)->getJson('/api/v1/auth/me')
+            ->assertOk()
+            ->assertJsonPath('data.privacy_acknowledged', false);
+
+        $this->withToken($token)->postJson('/api/v1/auth/privacy-acknowledgement', [
+            'privacy_acknowledged' => true,
+        ])->assertOk()->assertJsonPath('data.privacy_acknowledged', true);
+
+        $this->assertNotNull($user->refresh()->privacy_acknowledged_at);
+        $this->withToken($token)->getJson('/api/v1/seasons')->assertOk();
+    }
+
+    public function test_unverified_unacknowledged_user_can_resolve_privacy_and_logout_without_loop(): void
+    {
+        $user = User::factory()->unverified()->withoutPrivacyAcknowledgement()->create();
+        $token = $user->createToken('legacy')->plainTextToken;
+
+        $this->withToken($token)->getJson('/api/v1/seasons')
+            ->assertForbidden()
+            ->assertJsonPath('code', 'privacy_acknowledgement_required');
+        $this->withToken($token)->postJson('/api/v1/auth/privacy-acknowledgement', [
+            'privacy_acknowledged' => true,
+        ])->assertOk();
+        $this->withToken($token)->getJson('/api/v1/seasons')->assertForbidden();
+        $this->withToken($token)->postJson('/api/v1/auth/logout')->assertOk();
+    }
+
     public function test_registration_creates_unverified_user_and_sends_verification(): void
     {
         Notification::fake();
         Role::create(['name' => 'user']);
-        $this->postJson('/api/v1/auth/register', ['name' => 'New User', 'email' => 'new@example.com', 'password' => 'password123', 'password_confirmation' => 'password123'])->assertCreated()->assertJsonPath('user.email_verified_at', null);
+        $this->postJson('/api/v1/auth/register', ['name' => 'New User', 'email' => 'new@example.com', 'password' => 'password123', 'password_confirmation' => 'password123', 'privacy_acknowledged' => true])->assertCreated()->assertJsonPath('user.email_verified_at', null);
         $user = User::firstWhere('email', 'new@example.com');
         $this->assertNull($user->email_verified_at);
         Notification::assertSentTo($user, VerifyEmail::class);
@@ -151,6 +207,7 @@ class AuthTest extends TestCase
         $user->refresh();
         $this->assertSame('Deleted user', $user->name);
         $this->assertStringEndsWith('@deleted.invalid', $user->email);
+        $this->assertNull($user->privacy_acknowledged_at);
         $this->assertCount(0, $user->tokens()->get());
         $this->postJson('/api/v1/auth/login', ['email' => 'personal@example.com', 'password' => 'password123'])->assertUnprocessable();
     }

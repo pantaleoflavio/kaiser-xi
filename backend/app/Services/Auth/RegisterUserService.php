@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class RegisterUserService
 {
     /**
-     * @param  array{name:string,email:string,password:string}  $attributes
+     * @param  array{name:string,email:string,password:string,privacy_acknowledged:bool}  $attributes
      * @return array{token:string,user:User}
      */
     public function execute(array $attributes): array
@@ -18,6 +18,7 @@ class RegisterUserService
             'name' => $attributes['name'],
             'email' => $attributes['email'],
             'password' => Hash::make($attributes['password']),
+            'privacy_acknowledged_at' => now(),
         ]);
 
         $user->sendEmailVerificationNotification();

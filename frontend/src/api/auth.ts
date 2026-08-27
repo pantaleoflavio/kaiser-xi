@@ -39,6 +39,15 @@ export const authApi = {
   resendVerification: () =>
     apiClient<{ message: string }>('/auth/email/verification-notification', { method: 'POST' }),
 
+  acknowledgePrivacy: async (): Promise<User> => {
+    const response = await apiClient<ResourceResponse<User>>('/auth/privacy-acknowledgement', {
+      method: 'POST',
+      body: JSON.stringify({ privacy_acknowledged: true }),
+    });
+
+    return response.data;
+  },
+
   logout: () =>
     apiClient<{ message: string }>('/auth/logout', {
       method: 'POST',

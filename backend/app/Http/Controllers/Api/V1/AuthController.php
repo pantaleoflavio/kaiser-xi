@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\AcknowledgePrivacyRequest;
+use App\Http\Requests\Auth\DeleteAccountRequest;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\UpdatePasswordRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
-use App\Http\Requests\Auth\DeleteAccountRequest;
 use App\Http\Resources\Auth\UserResource;
 use App\Models\User;
+use App\Services\Auth\DeleteAccountService;
 use App\Services\Auth\LoginUserService;
 use App\Services\Auth\LogoutUserService;
 use App\Services\Auth\RegisterUserService;
@@ -21,7 +23,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use App\Services\Auth\DeleteAccountService;
 
 class AuthController extends Controller
 {
@@ -66,6 +67,13 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logged out.',
         ]);
+    }
+
+    public function acknowledgePrivacy(AcknowledgePrivacyRequest $request): UserResource
+    {
+        $request->user()->forceFill(['privacy_acknowledged_at' => now()])->save();
+
+        return new UserResource($request->user()->refresh()->load('roles'));
     }
 
     public function me(Request $request): UserResource
