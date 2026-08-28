@@ -32,6 +32,7 @@ class DeleteAccountService
                 'name' => 'Deleted user',
                 'email' => 'deleted-' . Str::uuid() . '@deleted.invalid',
                 'email_verified_at' => null,
+                'privacy_acknowledged_at' => null,
                 'password' => Hash::make(Str::random(64)),
                 'remember_token' => null,
                 'theme' => null,

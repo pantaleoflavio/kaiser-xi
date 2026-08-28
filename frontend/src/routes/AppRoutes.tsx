@@ -89,6 +89,17 @@ const ResetPasswordPage = lazy(() =>
 const VerifyEmailPage = lazy(() =>
   import('../pages/VerifyEmailPage').then((module) => ({ default: module.VerifyEmailPage })),
 );
+const PrivacyPage = lazy(() =>
+  import('../pages/PrivacyPage').then((module) => ({ default: module.PrivacyPage })),
+);
+const ImprintPage = lazy(() =>
+  import('../pages/ImprintPage').then((module) => ({ default: module.ImprintPage })),
+);
+const PrivacyAcknowledgementPage = lazy(() =>
+  import('../pages/PrivacyAcknowledgementPage').then((module) => ({
+    default: module.PrivacyAcknowledgementPage,
+  })),
+);
 
 export function AppRoutes() {
   return (
@@ -99,6 +110,9 @@ export function AppRoutes() {
         <Route path="rules" element={<Navigate to="/game-instructions" replace />} />
         <Route path="verify-email" element={<VerifyEmailPage />} />
         <Route path="email-verified" element={<EmailVerifiedPage />} />
+        <Route path="privacy" element={<PrivacyPage />} />
+        <Route path="impressum" element={<ImprintPage />} />
+        <Route path="privacy-acknowledgement" element={<PrivacyAcknowledgementPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="account" element={<AccountPage />} />

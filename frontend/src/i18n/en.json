@@ -49,7 +49,9 @@
       "alreadyRegistered": "Already registered?",
       "loginLink": "Login",
       "passwordsMustMatch": "Passwords must match.",
-      "error": "Unable to register."
+      "error": "Unable to register.",
+      "privacyPrefix": "I have read the",
+      "privacySuffix": "."
     },
     "forgot": {
       "title": "Forgot password",
@@ -1091,5 +1093,79 @@
       "clean_sheet_bonus": "Clean sheet bonus",
       "captain_bonus": "Captain bonus"
     }
+  },
+  "legal": {
+    "privacyTitle": "Privacy Policy",
+    "imprintTitle": "Impressum",
+    "navigationLabel": "Legal information",
+    "updated": "Version: 25 August 2026",
+    "pendingValue": "This information is being finalized before launch.",
+    "controllerTitle": "Controller and contact",
+    "controllerIntro": "The natural person operating Kaiser XI is the controller. The verified identity and contact details will be published here before production launch.",
+    "hosting": "Application hosting",
+    "database": "Database hosting",
+    "email": "Transactional email service",
+    "authority": "Competent supervisory authority",
+    "privacy": {
+      "scope": {
+        "title": "Scope",
+        "body": "This policy explains the processing in the free, non-monetized Kaiser XI fantasy-football application. There is no advertising, analytics, behavioral tracking, marketing, newsletter, sale of personal data, premium service, or payment processing."
+      },
+      "data": {
+        "title": "Data we process",
+        "body": "Registration stores your display name, email address, a one-way password hash (never the plaintext password), email-verification time, Privacy Policy acknowledgement time, selected theme, roles, and account timestamps. Security functions store access-token hashes and expiry/use timestamps; password-reset email and token data are stored temporarily. Requests may also produce ordinary server and security logs such as IP address, time, requested path, and user agent, according to the final hosting configuration."
+      },
+      "purposes": {
+        "title": "Purposes and legal bases",
+        "body": "We process account, authentication, verification, reset, security, and requested game data to provide the service and perform the user relationship (Article 6(1)(b) GDPR). Proportionate abuse prevention, service security, and necessary operational logs rely on legitimate interests in secure operation (Article 6(1)(f) GDPR). Legal obligations apply where required (Article 6(1)(c) GDPR). The registration checkbox only acknowledges reading this policy; it is not consent to essential processing."
+      },
+      "game": {
+        "title": "League and game data",
+        "body": "We store League memberships and roles, invitations, Fantasy Teams and names, player assignments, budgets, formations and submissions, trades and their status, matchday scores, standings, results, and competition history. These data are shown to authorized League participants as needed to run the game."
+      },
+      "storage": {
+        "title": "Device storage",
+        "body": "The web client stores the authentication bearer token and language choice in localStorage. The token is necessary to keep you signed in; language storage remembers your requested setting. A temporary League-creation identifier uses sessionStorage and is removed after the flow. The application does not use IndexedDB and does not set analytics or advertising cookies. Server/admin sessions may use a strictly necessary session cookie where that interface is used. No consent banner is used because no non-essential tracking storage is present."
+      },
+      "recipients": {
+        "title": "Recipients and processors",
+        "body": "Data are disclosed only to authorized League participants where the game requires it and to infrastructure processors needed for hosting, database operation, and transactional verification/password-reset email. Final providers, locations, contracts, and subprocessors must be verified and configured before launch."
+      },
+      "retention": {
+        "title": "Retention",
+        "body": "Account and game data are retained while the account and competitions require them. Verification and reset tokens expire under the configured security periods; access tokens expire or are revoked. Operational log retention will follow the final provider configuration and security need. Legal retention duties may override these criteria where applicable."
+      },
+      "deletion": {
+        "title": "Account deletion and anonymization",
+        "body": "Deletion irreversibly replaces direct account identifiers with a random deleted-account address and generic name, clears verification, theme, remember token, roles, password-reset data, and access tokens, and replaces the password hash so credentials stop working. Historical League and game records may remain linked to the anonymized user record where necessary to preserve competitions, results, standings, formations, and trades. This is not an immediate physical deletion of every database row."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "Subject to statutory conditions, you may request access, rectification, erasure, restriction, portability, and object to processing based on legitimate interests. You may contact the controller and complain to a data-protection supervisory authority. No consent is requested for core service processing; where consent is ever used, it can be withdrawn prospectively."
+      },
+      "decisions": {
+        "title": "Automated decisions",
+        "body": "Kaiser XI does not use automated decision-making within Article 22 GDPR or profiling. Game scores and standings are calculated from game rules and football facts, not used to evaluate users for legal or similarly significant effects."
+      },
+      "transfers": {
+        "title": "International transfers",
+        "body": "Whether processors transfer data outside the EU/EEA depends on the production providers. No transfer, location, or safeguard is claimed until providers are selected. Any transfer must be documented with an applicable GDPR mechanism before launch."
+      }
+    },
+    "imprint": {
+      "operatorTitle": "Operator information",
+      "operatorIntro": "Kaiser XI is currently a free project operated by a natural person. No company or commercial registration is claimed. Verified operator information will appear here before launch.",
+      "contactTitle": "Contact",
+      "additionalTitle": "Additional applicable information"
+    }
+  },
+  "privacyAcknowledgement": {
+    "title": "Privacy Policy acknowledgement",
+    "description": "Before continuing, please read and acknowledge the Privacy Policy. This acknowledgement is not consent to marketing, analytics, advertising, or optional processing.",
+    "checkboxPrefix": "I have read the",
+    "checkboxSuffix": ".",
+    "submit": "Continue",
+    "submitting": "Saving…",
+    "error": "Unable to save the acknowledgement."
   }
 }

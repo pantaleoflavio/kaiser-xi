@@ -32,6 +32,7 @@ export function RegisterPage() {
         email: String(form.get('email') ?? ''),
         password,
         password_confirmation: passwordConfirmation,
+        privacy_acknowledged: form.get('privacy_acknowledged') === 'on',
       });
       navigate('/dashboard', { replace: true });
     } catch (err) {
@@ -59,6 +60,16 @@ export function RegisterPage() {
           name="name"
           required
         />
+      </label>
+      <label className="flex items-start gap-3 text-sm">
+        <input className="mt-1" name="privacy_acknowledged" required type="checkbox" />
+        <span>
+          {t('auth.register.privacyPrefix')}{' '}
+          <Link className="font-medium text-theme-primary underline" to="/privacy">
+            {t('legal.privacyTitle')}
+          </Link>
+          {t('auth.register.privacySuffix')}
+        </span>
       </label>
       <label className="block text-sm font-medium">
         {t('auth.register.email')}

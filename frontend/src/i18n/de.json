@@ -49,7 +49,9 @@
       "alreadyRegistered": "Bereits registriert?",
       "loginLink": "Anmelden",
       "passwordsMustMatch": "Passwörter müssen übereinstimmen.",
-      "error": "Registrierung nicht möglich."
+      "error": "Registrierung nicht möglich.",
+      "privacyPrefix": "Ich habe die",
+      "privacySuffix": " gelesen."
     },
     "forgot": {
       "title": "Passwort vergessen",
@@ -1091,5 +1093,79 @@
       "clean_sheet_bonus": "Zu-null-Bonus",
       "captain_bonus": "Kapitänsbonus"
     }
+  },
+  "legal": {
+    "privacyTitle": "Datenschutzerklärung",
+    "imprintTitle": "Impressum",
+    "navigationLabel": "Rechtliche Informationen",
+    "updated": "Stand: 25. August 2026",
+    "pendingValue": "Diese Angabe wird vor dem Produktionsstart vervollständigt.",
+    "controllerTitle": "Verantwortlicher und Kontakt",
+    "controllerIntro": "Verantwortlicher ist die natürliche Person, die Kaiser XI betreibt. Die geprüften Identitäts- und Kontaktdaten werden vor dem Produktionsstart hier veröffentlicht.",
+    "hosting": "Anwendungshosting",
+    "database": "Datenbankhosting",
+    "email": "Transaktions-E-Mail-Dienst",
+    "authority": "Zuständige Aufsichtsbehörde",
+    "privacy": {
+      "scope": {
+        "title": "Geltungsbereich",
+        "body": "Diese Erklärung erläutert die Verarbeitung in der kostenlosen, nicht monetarisierten Fantasy-Fußball-Anwendung Kaiser XI. Es gibt keine Werbung, Analyse, Verhaltensverfolgung, Vermarktung, Newsletter, Verkauf personenbezogener Daten, Premiumdienste oder Zahlungsabwicklung."
+      },
+      "data": {
+        "title": "Verarbeitete Daten",
+        "body": "Bei der Registrierung speichern wir Anzeigenamen, E-Mail-Adresse, einen Einweg-Passwort-Hash (niemals das Klartextpasswort), Zeitpunkt der E-Mail-Bestätigung, Zeitpunkt der Kenntnisnahme der Datenschutzerklärung, gewähltes Design, Rollen und Kontozeitstempel. Sicherheitsfunktionen speichern Hashes von Zugriffstoken sowie Ablauf-/Nutzungszeiten; E-Mail und Token für Passwortzurücksetzungen werden vorübergehend gespeichert. Anfragen können abhängig von der endgültigen Hosting-Konfiguration übliche Server- und Sicherheitsprotokolle wie IP-Adresse, Zeit, Pfad und User-Agent erzeugen."
+      },
+      "purposes": {
+        "title": "Zwecke und Rechtsgrundlagen",
+        "body": "Konto-, Authentifizierungs-, Bestätigungs-, Zurücksetzungs-, Sicherheits- und angeforderte Spieldaten verarbeiten wir zur Vertragserfüllung bzw. Durchführung des Nutzungsverhältnisses (Art. 6 Abs. 1 lit. b DSGVO). Angemessene Missbrauchsprävention, Sicherheit und notwendige Betriebsprotokolle beruhen auf berechtigten Interessen am sicheren Betrieb (Art. 6 Abs. 1 lit. f DSGVO). Rechtspflichten gelten, soweit erforderlich (Art. 6 Abs. 1 lit. c DSGVO). Das Kästchen bei der Registrierung bestätigt nur die Kenntnisnahme; es ist keine Einwilligung in notwendige Verarbeitung."
+      },
+      "game": {
+        "title": "Liga- und Spieldaten",
+        "body": "Gespeichert werden Liga-Mitgliedschaften und Rollen, Einladungen, Fantasy Teams und Namen, Spielerzuordnungen, Budgets, Aufstellungen und Abgaben, Transfers und Status, Spieltagspunkte, Tabellen, Ergebnisse und Wettbewerbshistorie. Diese Daten werden berechtigten Liga-Mitgliedern angezeigt, soweit dies für das Spiel nötig ist."
+      },
+      "storage": {
+        "title": "Speicher auf dem Endgerät",
+        "body": "Der Webclient speichert Authentifizierungs-Token und Sprachwahl im localStorage. Das Token hält die Anmeldung aufrecht; die Sprache speichert die gewünschte Einstellung. Eine temporäre Liga-ID nutzt während der Erstellung sessionStorage und wird anschließend entfernt. IndexedDB, Analyse- oder Werbe-Cookies werden nicht eingesetzt. Server-/Adminoberflächen können ein technisch notwendiges Sitzungscookie verwenden. Mangels nicht notwendiger Tracking-Speicherung gibt es keinen Einwilligungsbanner."
+      },
+      "recipients": {
+        "title": "Empfänger und Auftragsverarbeiter",
+        "body": "Daten erhalten nur berechtigte Liga-Mitglieder, soweit das Spiel dies verlangt, sowie notwendige Anbieter für Hosting, Datenbank und transaktionale Bestätigungs-/Passwort-E-Mails. Endgültige Anbieter, Orte, Verträge und Unterauftragsverarbeiter müssen vor Start geprüft und konfiguriert werden."
+      },
+      "retention": {
+        "title": "Speicherdauer",
+        "body": "Konto- und Spieldaten bleiben gespeichert, solange Konto und Wettbewerbe sie erfordern. Bestätigungs- und Zurücksetzungstoken verfallen nach Sicherheitskonfiguration; Zugriffstoken verfallen oder werden widerrufen. Protokolle werden nach finaler Anbieterkonfiguration und Sicherheitsbedarf aufbewahrt. Gesetzliche Pflichten können vorgehen."
+      },
+      "deletion": {
+        "title": "Kontolöschung und Anonymisierung",
+        "body": "Bei Löschung werden direkte Kennungen unumkehrbar durch eine zufällige Löschadresse und einen allgemeinen Namen ersetzt; Bestätigung, Design, Remember-Token, Rollen, Passwortzurücksetzungsdaten und Zugriffstoken werden entfernt und der Passwort-Hash ersetzt. Historische Liga- und Spieldatensätze können zur Integrität von Wettbewerben, Ergebnissen, Tabellen, Aufstellungen und Transfers mit dem anonymisierten Datensatz verbunden bleiben. Nicht jede Datenbankzeile wird sofort physisch gelöscht."
+      },
+      "rights": {
+        "title": "Ihre Rechte",
+        "body": "Unter den gesetzlichen Voraussetzungen bestehen Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch gegen Verarbeitung aufgrund berechtigter Interessen. Sie können den Verantwortlichen kontaktieren und sich bei einer Datenschutzaufsichtsbehörde beschweren. Für den Kerndienst wird keine Einwilligung verlangt; sollte künftig Einwilligung genutzt werden, ist sie für die Zukunft widerruflich."
+      },
+      "decisions": {
+        "title": "Automatisierte Entscheidungen",
+        "body": "Es findet keine automatisierte Entscheidung nach Art. 22 DSGVO und kein Profiling statt. Spielpunkte und Tabellen folgen Spielregeln und Fußballfakten und bewerten Nutzer nicht mit rechtlicher oder ähnlich erheblicher Wirkung."
+      },
+      "transfers": {
+        "title": "Drittlandübermittlungen",
+        "body": "Ob Auftragsverarbeiter Daten außerhalb EU/EWR übermitteln, hängt von den Produktionsanbietern ab. Bis zur Auswahl werden keine Orte, Übermittlungen oder Garantien behauptet. Jede Übermittlung muss vor Start mit einem anwendbaren DSGVO-Mechanismus dokumentiert werden."
+      }
+    },
+    "imprint": {
+      "operatorTitle": "Angaben zum Betreiber",
+      "operatorIntro": "Kaiser XI ist derzeit ein kostenloses Projekt einer natürlichen Person. Eine Firma oder gewerbliche Registrierung wird nicht behauptet. Geprüfte Betreiberangaben werden vor Start hier veröffentlicht.",
+      "contactTitle": "Kontakt",
+      "additionalTitle": "Weitere anwendbare Angaben"
+    }
+  },
+  "privacyAcknowledgement": {
+    "title": "Kenntnisnahme der Datenschutzerklärung",
+    "description": "Bitte lesen und bestätigen Sie die Kenntnisnahme der Datenschutzerklärung, bevor Sie fortfahren. Dies ist keine Einwilligung in Marketing, Analyse, Werbung oder optionale Verarbeitung.",
+    "checkboxPrefix": "Ich habe die",
+    "checkboxSuffix": " gelesen.",
+    "submit": "Weiter",
+    "submitting": "Wird gespeichert…",
+    "error": "Die Kenntnisnahme konnte nicht gespeichert werden."
   }
 }

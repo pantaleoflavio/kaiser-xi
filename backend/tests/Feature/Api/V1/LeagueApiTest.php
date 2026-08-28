@@ -248,6 +248,8 @@ class LeagueApiTest extends TestCase
                 ->assertJsonMissingPath('data.0.password')
                 ->assertJsonMissingPath('data.0.email')
                 ->assertJsonMissingPath('data.0.roles')
+                ->assertJsonMissingPath('data.0.privacy_acknowledged')
+                ->assertJsonMissingPath('data.0.privacy_acknowledged_at')
                 ->assertJsonStructure(['data', 'links', 'meta']);
         }
 
