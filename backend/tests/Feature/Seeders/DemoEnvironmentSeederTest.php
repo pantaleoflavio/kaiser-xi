@@ -11,8 +11,10 @@ use Database\Seeders\DemoHeadToHeadLeagueSeeder;
 use Database\Seeders\DemoHeadToHeadResultsSeeder;
 use Database\Seeders\DemoLeagueSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
+#[Group('demo-integration')]
 class DemoEnvironmentSeederTest extends TestCase
 {
     use RefreshDatabase;

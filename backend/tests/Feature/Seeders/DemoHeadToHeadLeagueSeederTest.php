@@ -6,9 +6,11 @@ use App\Models\FantasyMatch;
 use App\Models\League;
 use Database\Seeders\DemoHeadToHeadLeagueSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\Feature\Seeders\Concerns\SeedsDemoFoundation;
 use Tests\TestCase;
 
+#[Group('demo-integration')]
 class DemoHeadToHeadLeagueSeederTest extends TestCase
 {
     use RefreshDatabase;

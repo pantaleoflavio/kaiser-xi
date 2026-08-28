@@ -11,15 +11,23 @@ use Database\Seeders\GlobalAdminSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Cache::flush();
+    }
 
     public function test_user_can_register(): void
     {
@@ -38,9 +46,20 @@ class AuthTest extends TestCase
 
     public function test_registered_user_receives_default_role(): void
     {
+        Notification::fake();
+
         $role = Role::create(['name' => 'user']);
-        $this->postJson('/api/v1/auth/register', ['name' => 'A', 'email' => 'a@example.com', 'password' => 'password123', 'password_confirmation' => 'password123', 'privacy_acknowledged' => true]);
+
+        $this->postJson('/api/v1/auth/register', [
+            'name' => 'A',
+            'email' => 'a@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+            'privacy_acknowledged' => true,
+        ])->assertCreated();
+
         $user = User::where('email', 'a@example.com')->firstOrFail();
+
         $this->assertTrue($user->roles->contains($role));
     }
 
