@@ -19,6 +19,7 @@ abstract class TestCase extends BaseTestCase
 
         parent::setUp();
     }
+
     /**
      * Seed only the immutable lookup data commonly required by feature fixtures.
      *
