@@ -55,7 +55,7 @@ class SeasonResource extends Resource
             TextInput::make('name')->label(__('admin.labels.name'))->required(),
             DatePicker::make('starts_at')->label(__('admin.labels.starts_at'))->required(),
             DatePicker::make('ends_at')->label(__('admin.labels.ends_at'))->required(),
-            Toggle::make('is_active')->label(__('admin.labels.is_active'))->default(true),
+            Toggle::make('is_active')->label(__('admin.labels.active'))->default(true),
         ]);
     }
 

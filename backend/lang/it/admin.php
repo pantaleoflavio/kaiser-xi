@@ -58,7 +58,7 @@ return [
         'real_competitions' => ['singular' => 'Competizione reale', 'plural' => 'Competizione reale'],
     ],
     'labels' => [
-        'is_active' => 'È Attivo',
+        'active' => 'È Attivo',
         'assists' => 'Assist',
         'away_club' => 'Club ospite',
         'away_score' => 'Gol ospiti',

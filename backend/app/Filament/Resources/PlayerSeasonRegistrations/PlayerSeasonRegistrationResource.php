@@ -56,7 +56,7 @@ class PlayerSeasonRegistrationResource extends Resource
             TextInput::make('external_id')->label(__('admin.labels.external_id'))->maxLength(255)->requiredWith('external_provider'),
             TextInput::make('shirt_number')->label(__('admin.labels.shirt_number'))->numeric(),
             TextInput::make('quotation')->label(__('admin.labels.quotation'))->numeric(),
-            Toggle::make('is_active')->label(__('admin.labels.is_active'))->default(true),
+            Toggle::make('is_active')->label(__('admin.labels.active'))->default(true),
             DateTimePicker::make('registered_at')->label(__('admin.labels.registered_at')),
             DateTimePicker::make('released_at')->label(__('admin.labels.released_at')),
         ]);
@@ -71,7 +71,7 @@ class PlayerSeasonRegistrationResource extends Resource
             TextColumn::make('seasonClub.realClub.name')->label(__('admin.labels.registered_club')),
             TextColumn::make('playerRole.label')->label(__('admin.labels.player_role')),
             TextColumn::make('quotation')->label(__('admin.labels.quotation'))->numeric(2),
-            IconColumn::make('is_active')->label(__('admin.labels.is_active'))->boolean(),
+            IconColumn::make('is_active')->label(__('admin.labels.active'))->boolean(),
         ])->recordActions([EditAction::make()])->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
 
