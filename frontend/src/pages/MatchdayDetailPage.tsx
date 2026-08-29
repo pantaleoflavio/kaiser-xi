@@ -31,6 +31,7 @@ export function MatchdayDetailPage() {
     queryFn: () => formationsApi.matchdays(leagueId),
     enabled: Number.isInteger(numericId),
   });
+  const selectedMatchday = matchdays.data?.data.find((item) => item.id === numericId);
   const teams = useQuery({
     queryKey: leagueKeys.fantasyTeams(leagueId),
     queryFn: () => leaguesApi.fantasyTeams(leagueId),
@@ -55,7 +56,7 @@ export function MatchdayDetailPage() {
         : teamMatchdayResultsApi.classic(leagueId, numericId),
     enabled:
       ['classic', 'formula_one'].includes(league.data?.data.type.key ?? '') &&
-      Number.isInteger(numericId),
+      selectedMatchday?.championship_state === 'past',
   });
   const calculation = useMutation({
     mutationFn: () => formationsApi.calculate(leagueId, numericId),
@@ -89,7 +90,7 @@ export function MatchdayDetailPage() {
     championshipResults.isLoading
   )
     return <LoadingState message={t('common.loading')} />;
-  const matchday = matchdays.data?.data.find((item) => item.id === numericId);
+  const matchday = selectedMatchday;
   if (!matchday || matchdays.error)
     return (
       <ContentErrorPanel message={t('common.errors.notFound')} title={t('matchdays.notFound')} />
@@ -176,7 +177,7 @@ export function MatchdayDetailPage() {
             </dd>
           </div>
         </dl>
-        {open && matchday.formation_allowed && myTeam && scheduled ? (
+        {(open || matchday.formation_allowed) && myTeam && scheduled ? (
           <Link
             className="mt-6 inline-block rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground"
             to={`/leagues/${leagueId}/matchdays/${matchday.id}/fantasy-teams/${myTeam.id}/formation`}

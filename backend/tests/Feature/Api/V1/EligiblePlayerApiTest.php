@@ -77,9 +77,13 @@ class EligiblePlayerApiTest extends TestCase
 
         Sanctum::actingAs($member);
 
-        $this->getJson($this->endpoint($league))
-            ->assertOk()
-            ->assertJsonMissing(['id' => $player->id]);
+        $response = $this->getJson($this->endpoint($league))
+            ->assertOk();
+
+        $this->assertNotContains(
+            $player->id,
+            collect($response->json('data'))->pluck('id')->all(),
+        );
     }
 
     public function test_released_players_become_eligible_again(): void

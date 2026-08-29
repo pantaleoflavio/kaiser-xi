@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Seeders;
 
+use App\Models\Formation;
 use App\Models\League;
 use App\Models\Player;
 use Database\Seeders\DemoEnvironmentSeeder;
@@ -55,6 +56,29 @@ class DemoEnvironmentSeederTest extends TestCase
             $formulaOne->season->matchdays()->count(),
         );
         $this->assertSame(6, $formulaOne->standings()->count());
+
+        $historicalFormations = Formation::query()
+            ->whereHas('matchday', fn($query) => $query->where('ends_at', '<', now()))
+            ->whereHas('league', fn($query) => $query->whereIn('slug', [
+                DemoLeagueSeeder::LEAGUE_SLUG,
+                DemoHeadToHeadResultsSeeder::LEAGUE_SLUG,
+                DemoFormulaOneChampionshipSeeder::LEAGUE_SLUG,
+            ]));
+
+        $this->assertGreaterThan(0, $historicalFormations->count());
+        $this->assertSame(0, (clone $historicalFormations)->whereDoesntHave('players')->count());
+        $this->assertSame(0, Formation::query()
+            ->whereHas('league', fn($query) => $query->whereIn('slug', [
+                DemoLeagueSeeder::LEAGUE_SLUG,
+                DemoHeadToHeadResultsSeeder::LEAGUE_SLUG,
+                DemoFormulaOneChampionshipSeeder::LEAGUE_SLUG,
+            ]))
+            ->where(function ($query): void {
+                $query->whereDoesntHave('fantasyTeam')
+                    ->orWhereDoesntHave('matchday')
+                    ->orWhereDoesntHave('formationModule');
+            })
+            ->count());
 
         $this->assertSame(
             count(DemoExtendedPlayerPoolSeeder::FREE_AGENTS),

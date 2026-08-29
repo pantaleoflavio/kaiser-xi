@@ -26,7 +26,7 @@ export function MatchdayCard({
   const formation = useQuery({
     queryKey: formationKeys.detail(leagueId, item.id, myTeam?.id ?? ''),
     queryFn: () => formationsApi.show(leagueId, item.id, String(myTeam?.id ?? '')),
-    enabled: formationAllowed && state !== 'past' && Boolean(myTeam),
+    enabled: state !== 'past' && (formationAllowed || state === 'current') && Boolean(myTeam),
     retry: false,
   });
   const action = formation.data?.data.submitted
@@ -42,7 +42,7 @@ export function MatchdayCard({
   const opponentFormation = useQuery({
     queryKey: formationKeys.detail(leagueId, item.id, String(opponentTeam?.id ?? '')),
     queryFn: () => formationsApi.show(leagueId, item.id, String(opponentTeam?.id ?? '')),
-    enabled: formationAllowed && state === 'current' && Boolean(opponentTeam),
+    enabled: state === 'current' && Boolean(opponentTeam),
     retry: false,
   });
 
@@ -96,7 +96,7 @@ export function MatchdayCard({
             {t('matchdays.open')}
           </Link>
           {state !== 'past' &&
-          formationAllowed &&
+          (formationAllowed || state === 'current') &&
           myTeam &&
           !formation.isLoading &&
           (!formation.error ||

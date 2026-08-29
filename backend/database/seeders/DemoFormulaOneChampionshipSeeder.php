@@ -22,8 +22,7 @@ use App\Models\TeamMatchdayScore;
 use App\Models\TeamMatchdayScoreDetail;
 use App\Models\User;
 use App\Services\FantasyTeam\FantasyRosterService;
-use App\Services\Formation\SaveFormationService;
-use App\Services\Formation\SubmitFormationService;
+use Database\Seeders\Support\DemoFormationWriter;
 use App\Services\League\InitializeChampionship;
 use App\Services\League\LeagueSettingsService;
 use App\Services\Matchday\FinalizeMatchday;
@@ -65,8 +64,7 @@ class DemoFormulaOneChampionshipSeeder extends Seeder
         private readonly LeagueSettingsService $settings,
         private readonly FantasyRosterService $rosters,
         private readonly InitializeChampionship $initializer,
-        private readonly SaveFormationService $formations,
-        private readonly SubmitFormationService $submissions,
+        private readonly DemoFormationWriter $formations,
         private readonly FinalizeMatchday $finalizer,
     ) {}
 
@@ -99,7 +97,7 @@ class DemoFormulaOneChampionshipSeeder extends Seeder
                         continue;
                     }
                     $formation = $this->saveFormation($league, $matchday, $team, $rosters[$team->id], $module);
-                    $this->submissions->submit($formation, $matchday);
+                    $this->formations->submit($formation, $matchday);
                     $this->scores($season, $matchday, $formation, self::SCORE_MATRIX[$matchdayIndex][$teamIndex]);
                 }
 
@@ -111,7 +109,7 @@ class DemoFormulaOneChampionshipSeeder extends Seeder
             Carbon::setTestNow($current->starts_at->copy()->subDay());
             if (! $this->submittedFormationExists($league, $current, $teams->first())) {
                 $formation = $this->saveFormation($league, $current, $teams->first(), $rosters[$teams->first()->id], $module);
-                $this->submissions->submit($formation, $current);
+                $this->formations->submit($formation, $current);
             }
             if (! Formation::query()->whereBelongsTo($league)->whereBelongsTo($current)->whereBelongsTo($teams->get(1))->exists()) {
                 $this->saveFormation($league, $current, $teams->get(1), $rosters[$teams->get(1)->id], $module);

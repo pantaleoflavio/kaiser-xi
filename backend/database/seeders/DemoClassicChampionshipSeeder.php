@@ -16,8 +16,7 @@ use App\Models\Season;
 use App\Models\TeamMatchdayScore;
 use App\Models\TeamMatchdayScoreDetail;
 use App\Services\FantasyTeam\FantasyRosterService;
-use App\Services\Formation\SaveFormationService;
-use App\Services\Formation\SubmitFormationService;
+use Database\Seeders\Support\DemoFormationWriter;
 use App\Services\League\InitializeClassicChampionship;
 use App\Services\League\LeagueSettingsService;
 use App\Services\Matchday\FinalizeMatchday;
@@ -42,8 +41,7 @@ class DemoClassicChampionshipSeeder extends Seeder
         private readonly LeagueSettingsService $settings,
         private readonly FantasyRosterService $rosters,
         private readonly InitializeClassicChampionship $initializer,
-        private readonly SaveFormationService $formations,
-        private readonly SubmitFormationService $submissions,
+        private readonly DemoFormationWriter $formations,
         private readonly FinalizeMatchday $finalizer,
     ) {}
 
@@ -81,7 +79,7 @@ class DemoClassicChampionshipSeeder extends Seeder
                     }
 
                     $formation = $this->saveFormation($league, $matchday, $team, $rosters[$team->id], $module);
-                    $this->submissions->submit($formation, $matchday);
+                    $this->formations->submit($formation, $matchday);
                     $this->scores($season, $matchday, $formation, $teamIndex, $matchdayIndex);
                 }
 
@@ -93,7 +91,7 @@ class DemoClassicChampionshipSeeder extends Seeder
             Carbon::setTestNow($current->starts_at->copy()->subDay());
             if (! $this->submittedFormationExists($league, $current, $teams->first())) {
                 $submitted = $this->saveFormation($league, $current, $teams->first(), $rosters[$teams->first()->id], $module);
-                $this->submissions->submit($submitted, $current);
+                $this->formations->submit($submitted, $current);
             }
             if (! Formation::query()->whereBelongsTo($league)->whereBelongsTo($current)->whereBelongsTo($teams->get(1))->exists()) {
                 $this->saveFormation($league, $current, $teams->get(1), $rosters[$teams->get(1)->id], $module);
