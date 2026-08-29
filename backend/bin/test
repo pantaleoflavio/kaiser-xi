@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+
+# Override Docker's development environment before PHPUnit or Laravel starts.
+export APP_ENV=testing
+export DB_CONNECTION=pgsql
+export DB_HOST=postgres
+export DB_PORT=5432
+export DB_DATABASE=fantasy_football_testing
+export DB_USERNAME=fantasy
+export DB_PASSWORD=password
+export DB_URL=
+
+exec "$(dirname "$0")/../vendor/bin/phpunit" "$@"

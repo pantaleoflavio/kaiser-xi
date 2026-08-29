@@ -268,3 +268,17 @@ The backend follows these conventions:
 * PSR-4 compliant namespaces
 
 The frontend uses typed validation, API state management and protected routing to keep presentation and backend concerns separated.
+
+# Testing
+
+Run backend tests from `/app` in the backend container with:
+
+```sh
+composer test
+```
+
+The command forces Laravel's dedicated PostgreSQL test database before PHP
+starts and forwards PHPUnit options (for example, `composer test -- --filter=AuthTest`).
+The base test case also rejects any bootstrapped application that is not in the
+`testing` environment or whose configured database does not end in `_test` or
+`_testing`, before Laravel initializes destructive database test traits.

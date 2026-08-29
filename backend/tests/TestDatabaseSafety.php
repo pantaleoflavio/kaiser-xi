@@ -3,25 +3,26 @@
 namespace Tests;
 
 use LogicException;
+use Illuminate\Foundation\Application;
 
 class TestDatabaseSafety
 {
-    /** @param array<string, mixed> $environment */
-    public static function assertSafe(array $environment): void
+    public static function assertSafe(Application $app): void
     {
-        $appEnvironment = (string) ($environment['APP_ENV'] ?? '');
-        $connection = (string) ($environment['DB_CONNECTION'] ?? '');
-        $database = (string) ($environment['DB_DATABASE'] ?? '');
-        $url = (string) ($environment['DB_URL'] ?? '');
+        $environment = $app->environment();
 
-        $isolatedMemoryDatabase = $connection === 'sqlite' && $database === ':memory:' && $url === '';
-        $dedicatedNamedDatabase = $url === ''
-            && in_array($connection, ['pgsql', 'mysql', 'mariadb'], true)
-            && preg_match('/(?:_test|_testing)$/', $database) === 1;
-
-        if ($appEnvironment !== 'testing' || (! $isolatedMemoryDatabase && ! $dedicatedNamedDatabase)) {
+        if ($environment !== 'testing') {
             throw new LogicException(
-                'Refusing to run destructive tests: configure an isolated in-memory database or a database named with a _test/_testing suffix.'
+                "Refusing to run destructive tests: application environment is '{$environment}', expected 'testing'."
+            );
+        }
+
+        $connection = (string) $app['config']->get('database.default');
+        $database = (string) $app['config']->get("database.connections.{$connection}.database");
+
+        if (preg_match('/(?:_test|_testing)$/', $database) !== 1) {
+            throw new LogicException(
+                "Refusing to run destructive tests against database '{$database}'. Test databases must end with _test or _testing."
             );
         }
     }

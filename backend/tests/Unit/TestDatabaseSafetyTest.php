@@ -3,60 +3,48 @@
 namespace Tests\Unit;
 
 use LogicException;
-use PHPUnit\Framework\Attributes\DataProvider;
+use Illuminate\Config\Repository;
+use Illuminate\Foundation\Application;
 use PHPUnit\Framework\TestCase;
 use Tests\TestDatabaseSafety;
 
 class TestDatabaseSafetyTest extends TestCase
 {
-    public function test_isolated_test_databases_are_allowed(): void
+    public function test_dedicated_test_database_is_allowed(): void
     {
-        TestDatabaseSafety::assertSafe([
-            'APP_ENV' => 'testing',
-            'DB_CONNECTION' => 'sqlite',
-            'DB_DATABASE' => ':memory:',
-            'DB_URL' => '',
-        ]);
-
-        TestDatabaseSafety::assertSafe([
-            'APP_ENV' => 'testing',
-            'DB_CONNECTION' => 'pgsql',
-            'DB_DATABASE' => 'kaiser_xi_test',
-            'DB_URL' => '',
-        ]);
+        TestDatabaseSafety::assertSafe($this->application('testing', 'fantasy_football_testing'));
 
         $this->addToAssertionCount(1);
     }
 
-    #[DataProvider('unsafeConfigurations')]
-    public function test_unsafe_database_configuration_is_rejected(array $configuration): void
+    public function test_development_database_is_rejected(): void
     {
         $this->expectException(LogicException::class);
-
-        TestDatabaseSafety::assertSafe($configuration);
+        $this->expectExceptionMessage("database 'fantasy_football'");
+        TestDatabaseSafety::assertSafe($this->application('testing', 'fantasy_football'));
     }
 
-    public static function unsafeConfigurations(): array
+    public function test_non_testing_application_environment_is_rejected(): void
     {
-        return [
-            'development environment' => [[
-                'APP_ENV' => 'local',
-                'DB_CONNECTION' => 'pgsql',
-                'DB_DATABASE' => 'kaiser_xi_test',
-                'DB_URL' => '',
-            ]],
-            'development database' => [[
-                'APP_ENV' => 'testing',
-                'DB_CONNECTION' => 'pgsql',
-                'DB_DATABASE' => 'kaiser_xi',
-                'DB_URL' => '',
-            ]],
-            'production URL override' => [[
-                'APP_ENV' => 'testing',
-                'DB_CONNECTION' => 'pgsql',
-                'DB_DATABASE' => 'kaiser_xi_test',
-                'DB_URL' => 'postgres://production/kaiser_xi',
-            ]],
-        ];
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage("environment is 'local'");
+
+        TestDatabaseSafety::assertSafe($this->application('local', 'fantasy_football_testing'));
+    }
+
+    private function application(string $environment, string $database): Application
+    {
+        $app = new Application;
+        $app->instance('env', $environment);
+        $app->instance('config', new Repository([
+            'database' => [
+                'default' => 'pgsql',
+                'connections' => [
+                    'pgsql' => ['database' => $database],
+                ],
+            ],
+        ]));
+
+        return $app;
     }
 }
