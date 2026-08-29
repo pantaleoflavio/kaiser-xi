@@ -12,6 +12,13 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
+
+    protected function setUp(): void
+    {
+        TestDatabaseSafety::assertSafe($_ENV + $_SERVER);
+
+        parent::setUp();
+    }
     /**
      * Seed only the immutable lookup data commonly required by feature fixtures.
      *

@@ -13,7 +13,10 @@ class AssertFormationEligibility
     {
         $this->assertScheduleContains($league, $matchday);
 
-        if (! $league->isCurrentFormationMatchday($matchday)) {
+        if (
+            ! $league->isCurrentFormationMatchday($matchday)
+            || ! $league->previousMatchdayIsFinished($matchday)
+        ) {
             throw new FormationMatchdayNotEligibleException;
         }
     }

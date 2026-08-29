@@ -168,6 +168,13 @@ export function MatchdayDetailPage() {
               {formatDate(matchday.deadline, t('leagueDetail.notAvailable'), language)}
             </dd>
           </div>
+          <div>
+            <dt className="text-sm text-theme-muted">{t('matchdays.timeWindow')}</dt>
+            <dd className="mt-1 text-theme-text">
+              {formatDate(matchday.starts_at, t('leagueDetail.notAvailable'), language)} –{' '}
+              {formatDate(matchday.ends_at, t('leagueDetail.notAvailable'), language)}
+            </dd>
+          </div>
         </dl>
         {open && matchday.formation_allowed && myTeam && scheduled ? (
           <Link

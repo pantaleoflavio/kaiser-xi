@@ -4,7 +4,9 @@ namespace App\Services\FantasyTeam;
 
 use App\Models\League;
 use App\Models\PlayerSeasonRegistration;
+use App\Models\SeasonClub;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class EligiblePlayerQueryService
 {
@@ -26,7 +28,7 @@ class EligiblePlayerQueryService
             ->when($filters['role'] ?? null, function (Builder $query, string $role): void {
                 $query->whereHas(
                     'playerRole',
-                    fn (Builder $query) => $query->where('player_roles.key', $role)
+                    fn(Builder $query) => $query->where('player_roles.key', $role)
                 );
             })
             ->when($filters['club_id'] ?? null, function (Builder $query, int $clubId): void {
@@ -41,5 +43,21 @@ class EligiblePlayerQueryService
             ->orderBy('players.display_name')
             ->orderBy('players.id')
             ->select('player_season_registrations.*');
+    }
+
+    /** @return Collection<int, array{id: int, name: string}> */
+    public function clubs(League $league): Collection
+    {
+        return SeasonClub::query()
+            ->with('realClub')
+            ->where('season_id', $league->season_id)
+            ->where('is_active', true)
+            ->get()
+            ->map(fn(SeasonClub $club): array => [
+                'id' => $club->id,
+                'name' => $club->display_name ?? $club->realClub?->name ?? (string) $club->id,
+            ])
+            ->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)
+            ->values();
     }
 }

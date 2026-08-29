@@ -23,16 +23,8 @@ class MatchdayController extends Controller
             default => Matchday::query()->where('season_id', $league->season_id),
         };
         $matchdays = $query->orderBy('number')->get();
-        $currentId = $matchdays->first(
-            fn(Matchday $matchday): bool => $league->isCurrentFormationMatchday($matchday)
-        )?->id;
-
-        $matchdays->each(function (Matchday $matchday) use ($league, $currentId): void {
-            $matchday->setAttribute('championship_state', match (true) {
-                $matchday->ends_at->isPast() => 'past',
-                $matchday->id === $currentId => 'current',
-                default => 'upcoming',
-            });
+        $matchdays->each(function (Matchday $matchday) use ($league): void {
+            $matchday->setAttribute('championship_state', $matchday->temporalState());
             $matchday->setAttribute('formation_allowed', $league->allowsFormationFor($matchday));
             self::addCalculationCapabilities($matchday, $league, request()->user());
         });

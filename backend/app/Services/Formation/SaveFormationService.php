@@ -99,7 +99,7 @@ class SaveFormationService
 
     public function assertBeforeDeadline(Matchday $matchday): void
     {
-        if (now()->greaterThanOrEqualTo($matchday->starts_at)) {
+        if (now()->greaterThanOrEqualTo($matchday->lineupDeadline())) {
             throw new LineupDeadlinePassedException;
         }
     }

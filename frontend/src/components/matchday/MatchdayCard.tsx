@@ -62,6 +62,11 @@ export function MatchdayCard({
             {t('formation.deadline')}:{' '}
             {formatDate(item.deadline, t('leagueDetail.notAvailable'), language)}
           </p>
+          <p className="mt-1 text-sm text-theme-muted">
+            {t('matchdays.timeWindow')}:{' '}
+            {formatDate(item.starts_at, t('leagueDetail.notAvailable'), language)} –{' '}
+            {formatDate(item.ends_at, t('leagueDetail.notAvailable'), language)}
+          </p>
           {state !== 'past' && opponentTeam ? (
             <p className="mt-2 text-sm font-semibold text-theme-accent">
               {t('h2h.opponent')}: {t('h2h.vsTeam', { team: opponentTeam.name })}

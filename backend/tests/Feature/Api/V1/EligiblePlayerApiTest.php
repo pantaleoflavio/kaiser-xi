@@ -177,6 +177,39 @@ class EligiblePlayerApiTest extends TestCase
             ->assertJsonValidationErrors('per_page');
     }
 
+    public function test_club_filter_options_are_season_scoped_and_not_limited_to_the_current_page(): void
+    {
+        [$league, $member] = $this->leagueWithMember();
+        $lastClub = null;
+
+        foreach (range(1, 12) as $number) {
+            $lastClub = SeasonClub::factory()->create([
+                'season_id' => $league->season_id,
+                'display_name' => sprintf('Club %02d', $number),
+            ]);
+            $this->eligiblePlayer($league, ['display_name' => sprintf('Player %02d', $number)], 'forward', $lastClub);
+        }
+
+        $otherSeasonClub = SeasonClub::factory()->create(['display_name' => 'Other Season Club']);
+        $inactiveClub = SeasonClub::factory()->create([
+            'season_id' => $league->season_id,
+            'display_name' => 'Inactive Club',
+            'is_active' => false,
+        ]);
+
+        Sanctum::actingAs($member);
+
+        $response = $this->getJson($this->endpoint($league, ['per_page' => 10]))
+            ->assertOk()
+            ->assertJsonCount(10, 'data')
+            ->assertJsonCount(12, 'filter_options.clubs');
+
+        $clubIds = collect($response->json('filter_options.clubs'))->pluck('id');
+        $this->assertTrue($clubIds->contains($lastClub->id));
+        $this->assertFalse($clubIds->contains($otherSeasonClub->id));
+        $this->assertFalse($clubIds->contains($inactiveClub->id));
+    }
+
     public function test_response_does_not_expose_internal_fields(): void
     {
         [$league, $member] = $this->leagueWithMember();

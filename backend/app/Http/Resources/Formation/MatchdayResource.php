@@ -15,7 +15,7 @@ class MatchdayResource extends JsonResource
             'name' => $this->name,
             'starts_at' => $this->starts_at,
             'ends_at' => $this->ends_at,
-            'deadline' => $this->starts_at,
+            'deadline' => $this->lineupDeadline(),
             'championship_state' => $this->when($this->championship_state !== null, $this->championship_state),
             'formation_allowed' => $this->when($this->formation_allowed !== null, (bool) $this->formation_allowed),
             'is_calculated' => $this->when($this->is_calculated !== null, (bool) $this->is_calculated),

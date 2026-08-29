@@ -19,6 +19,8 @@ class EligiblePlayerController extends Controller
 
         return EligiblePlayerResource::collection(
             $this->eligiblePlayers->query($league, $request->validated())->paginate($perPage)
-        );
+        )->additional([
+            'filter_options' => ['clubs' => $this->eligiblePlayers->clubs($league)],
+        ]);
     }
 }

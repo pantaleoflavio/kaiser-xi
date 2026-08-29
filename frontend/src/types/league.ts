@@ -334,7 +334,9 @@ export type EligiblePlayer = {
   availability: string;
 };
 
-export type EligiblePlayerCollectionResponse = PaginatedResponse<EligiblePlayer>;
+export type EligiblePlayerCollectionResponse = PaginatedResponse<EligiblePlayer> & {
+  filter_options: { clubs: Array<{ id: number; name: string }> };
+};
 
 export type EligiblePlayerFilters = {
   search?: string;

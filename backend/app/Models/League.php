@@ -154,7 +154,25 @@ class League extends Model
     public function allowsFormationFor(Matchday $matchday): bool
     {
         return $this->isCurrentFormationMatchday($matchday)
-            && now()->lessThan($matchday->starts_at);
+            && now()->lessThan($matchday->lineupDeadline())
+            && $this->previousMatchdayIsFinished($matchday);
+    }
+
+    public function previousMatchdayIsFinished(Matchday $matchday): bool
+    {
+        $previous = Matchday::query()
+            ->where('season_id', $matchday->season_id)
+            ->where(function ($query) use ($matchday): void {
+                $query->where('number', '<', $matchday->number)
+                    ->orWhere(function ($query) use ($matchday): void {
+                        $query->where('number', $matchday->number)->where('id', '<', $matchday->id);
+                    });
+            })
+            ->orderByDesc('number')
+            ->orderByDesc('id')
+            ->first();
+
+        return $previous === null || $previous->isFinished();
     }
 
     public function isCurrentFormationMatchday(Matchday $matchday): bool
