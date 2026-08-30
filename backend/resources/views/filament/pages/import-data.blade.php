@@ -41,8 +41,8 @@
 
         @if ($analysis)
             <x-filament::section heading="Analysis preview">
-                <div class="grid grid-cols-2 gap-3 md:grid-cols-6">
-                    @foreach (['total', 'create', 'update', 'unchanged', 'warnings', 'errors'] as $count)
+                <div class="grid grid-cols-2 gap-3 md:grid-cols-7">
+                    @foreach (['total', 'create', 'update', 'unchanged', 'unmatched', 'warnings', 'errors'] as $count)
                         <div class="rounded-lg bg-gray-100 p-3 dark:bg-gray-800">
                             <strong>{{ ucfirst($count) }}</strong><br>{{ $analysis['counts'][$count] }}
                         </div>

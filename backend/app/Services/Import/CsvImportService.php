@@ -132,11 +132,14 @@ class CsvImportService
 
             $import->update(['total_rows' => $analysis['counts']['total']]);
 
-            DB::transaction(fn() => $this->importer($type)->execute($analysis));
+            DB::transaction(function () use ($type, $analysis, $import): void {
+                $this->importer($type)->execute($analysis);
+                $this->storeUnmatchedRows($import, $analysis);
+            });
 
             $import->update([
                 'status' => ImportStatus::Completed,
-                'successful_rows' => $analysis['counts']['total'],
+                'successful_rows' => $analysis['counts']['total'] - $analysis['counts']['unmatched'],
                 'failed_rows' => 0,
                 'completed_at' => now(),
             ]);
@@ -146,6 +149,22 @@ class CsvImportService
             throw $exception;
         }
     }
+
+    public function storeUnmatchedRows(Import $import, array $analysis): void
+    {
+        $import->unmatchedRows()->delete();
+
+        foreach ($analysis['rows'] as $row) {
+            if ($row['action'] !== 'unmatched') continue;
+
+            $import->unmatchedRows()->create([
+                'row_number' => $row['row_number'],
+                'row_data' => $row['data'],
+                'message' => implode('; ', $row['warnings']),
+            ]);
+        }
+    }
+
 
     public function failQueuedExecution(int $importId, string $message): void
     {

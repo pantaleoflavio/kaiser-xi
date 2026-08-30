@@ -95,6 +95,14 @@ class PlayerScoreCsvImporter implements CsvImporter
     public function execute(array $analysis): void
     {
         foreach ($analysis['rows'] as $row) {
+            if ($row['action'] === 'unmatched') {
+                [$provider, $externalId] = explode("\0", $row['data']['player_provider'] . "\0" . $row['data']['player_external_id'], 2);
+                if (PlayerExternalIdentity::where('provider', mb_strtolower(trim($provider)))->where('external_id', $externalId)->exists()) {
+                    throw new \RuntimeException("Player score identity changed since analysis at CSV row {$row['row_number']}.");
+                }
+
+                continue;
+            }
             if (! in_array($row['action'], ['create', 'update'], true)) continue;
 
             $competition = RealCompetition::whereKey($row['competition_id'])->where('code', $row['competition_code'])->first();
@@ -119,6 +127,19 @@ class PlayerScoreCsvImporter implements CsvImporter
         $number = $row['row_number'];
         $label = $row['competition_code'] . ' / ' . $row['season_name'] . ' / ' . $row['matchday_number'] . ' / ' . ($row['registration_pair'] ?: $row['player_pair'] . ' / ' . $row['club_pair']);
         if ($error = $this->referenceError($row)) return $this->rows->error($number, $row['original'], $label, $error);
+        if ($this->hasUnmatchedPlayer($row)) {
+            if ($error = $this->performanceError($row)) return $this->rows->error($number, $row['original'], $label, $error);
+
+            return [
+                'row_number' => $number,
+                'data' => $row['original'],
+                'identifier' => $label,
+                'action' => 'unmatched',
+                'changes' => [],
+                'warnings' => ['Skipped because the Player external identity is unknown. Create the Player and its external identity, then import this row again.'],
+                'errors' => [],
+            ];
+        }
         if ($row['direct_registration'] && $row['fallback_complete'] && $row['direct_registration']->id !== $row['fallback_registration']?->id) return $this->rows->error($number, $row['original'], $label, 'Direct registration identity conflicts with the fallback player and club identity.');
         if ($row['registration']->seasonClub?->season_id !== $row['season']->id) return $this->rows->error($number, $row['original'], $label, 'The registration and Matchday belong to different Seasons.');
         if (isset($duplicates[$number])) return $this->rows->error($number, $row['original'], $label, 'Duplicate PlayerScore identity also appears on CSV row ' . implode(', ', $duplicates[$number]) . '.');
@@ -189,10 +210,38 @@ class PlayerScoreCsvImporter implements CsvImporter
         if ($anyFallback && ! $row['fallback_complete']) return 'Fallback identity requires complete player and club provider identities.';
         if (! $row['registration_pair'] && ! $row['fallback_complete']) return 'Supply either a registration provider identity or complete player and club provider identities.';
         if ($row['registration_pair'] && ! $row['direct_registration']) return 'Unknown registration external identity.';
-        if ($row['fallback_complete'] && ! $row['player_id']) return 'Unknown Player external identity.';
         if ($row['fallback_complete'] && ! $row['club_id']) return 'Unknown RealClub external identity.';
+        if ($row['fallback_complete'] && ! $row['player_id'] && $row['direct_registration']) return 'Unknown Player external identity.';
         if ($row['fallback_complete'] && ! $row['season_club']) return 'The resolved club is not registered for the target Season.';
+        if ($this->hasUnmatchedPlayer($row)) return null;
         if ($row['fallback_complete'] && ! $row['fallback_registration']) return 'No PlayerSeasonRegistration matches the fallback identity.';
+        return null;
+    }
+
+    private function hasUnmatchedPlayer(array $row): bool
+    {
+        return ! $row['direct_registration'] && $row['fallback_complete'] && ! $row['player_id'];
+    }
+
+    private function performanceError(array $row): array|string|null
+    {
+        $supplied = array_intersect_key($row, array_flip(['status', 'base_rating', ...PlayerScoreService::EVENT_FIELDS, ...self::BOOLEAN_FIELDS, 'final_score']));
+        $supplied = array_filter($supplied, fn(mixed $value, string $field): bool => $row['has_' . $field], ARRAY_FILTER_USE_BOTH);
+
+        foreach (self::BOOLEAN_FIELDS as $field) {
+            if (array_key_exists($field, $supplied) && ! in_array($supplied[$field], ['true', 'false'], true)) {
+                return "{$field} must be true or false.";
+            }
+
+            if (array_key_exists($field, $supplied)) $supplied[$field] = $supplied[$field] === 'true';
+        }
+
+        try {
+            $this->scores->preparePerformance($supplied);
+        } catch (ValidationException $exception) {
+            return $exception->validator->errors()->all();
+        }
+
         return null;
     }
 

@@ -115,6 +115,8 @@ class ImportData extends Page implements HasSchemas
             (int) Auth::id(),
         );
 
+        $service->storeUnmatchedRows($import, $this->analysis);
+
         // Do not leave FileUpload pointing at a file that has just been removed.
         $this->data['file'] = null;
         $this->data['original_name'] = null;

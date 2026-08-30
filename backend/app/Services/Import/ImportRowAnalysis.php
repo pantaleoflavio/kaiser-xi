@@ -18,6 +18,7 @@ class ImportRowAnalysis
             'create' => 0,
             'update' => 0,
             'unchanged' => 0,
+            'unmatched' => 0,
             'warnings' => 0,
             'errors' => 0,
         ];
