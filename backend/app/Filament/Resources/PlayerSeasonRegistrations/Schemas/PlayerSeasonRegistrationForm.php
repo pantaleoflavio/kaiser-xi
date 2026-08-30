@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\PlayerSeasonRegistrations\Schemas;
 
-use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -31,8 +31,8 @@ class PlayerSeasonRegistrationForm
                     ->numeric(),
                 Toggle::make('is_active')
                     ->required(),
-                DateTimePicker::make('registered_at'),
-                DateTimePicker::make('released_at'),
+                DatePicker::make('registered_on'),
+                DatePicker::make('released_on'),
             ]);
     }
 }

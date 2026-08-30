@@ -12,12 +12,16 @@ class Season extends Model
     use HasFactory;
 
     protected $fillable = [
-        'real_competition_id', 'name', 'starts_at', 'ends_at', 'is_active',
+        'real_competition_id',
+        'name',
+        'starts_at',
+        'ends_at',
+        'is_active',
     ];
 
     protected $casts = [
-        'starts_at' => 'date',
-        'ends_at' => 'date',
+        'starts_at' => 'date:Y-m-d',
+        'ends_at' => 'date:Y-m-d',
         'is_active' => 'boolean',
     ];
 

@@ -49,8 +49,8 @@ class MatchdayResource extends Resource
             Select::make('season_id')->label(__('admin.labels.season'))->relationship('season', 'name')->searchable()->preload()->required(),
             TextInput::make('number')->label(__('admin.labels.matchday_number'))->numeric()->required(),
             TextInput::make('name')->label(__('admin.labels.round_name')),
-            DateTimePicker::make('starts_at')->label(__('admin.labels.starts_at'))->required(),
-            DateTimePicker::make('ends_at')->label(__('admin.labels.ends_at'))->required(),
+            DateTimePicker::make('starts_at')->label(__('admin.labels.starts_at'))->seconds(false)->required(),
+            DateTimePicker::make('ends_at')->label(__('admin.labels.ends_at'))->seconds(false)->required(),
         ]);
     }
 

@@ -56,8 +56,8 @@ class DemoExtendedPlayerPoolSeeder extends Seeder
                         'shirt_number' => $number,
                         'quotation' => 10,
                         'is_active' => true,
-                        'registered_at' => '2025-08-01 00:00:00',
-                        'released_at' => null,
+                        'registered_on' => '2025-08-01',
+                        'released_on' => null,
                     ],
                 );
             }
@@ -75,8 +75,8 @@ class DemoExtendedPlayerPoolSeeder extends Seeder
                     'shirt_number' => $shirtNumber,
                     'quotation' => 10,
                     'is_active' => true,
-                    'registered_at' => '2025-08-01 00:00:00',
-                    'released_at' => null,
+                    'registered_on' => '2025-08-01',
+                    'released_on' => null,
                 ],
             );
         }

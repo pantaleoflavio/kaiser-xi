@@ -143,14 +143,14 @@ In every section, “duplicate” means a blocking duplicate within the file; ex
 ### PlayerSeasonRegistration
 
 - **Purpose/model/dependencies:** the season-specific combination **Player + SeasonClub + PlayerRole/context** (`PlayerSeasonRegistration`). Competition, Season, Player and club provider mappings, SeasonClub, and PlayerRole key must exist.
-- **Canonical header:** `competition_code,season_name,player_provider,player_external_id,club_provider,club_external_id,registration_provider,registration_external_id,player_role,quotation,shirt_number,registered_at,released_at,is_active`.
+- **Canonical header:** `competition_code,season_name,player_provider,player_external_id,club_provider,club_external_id,registration_provider,registration_external_id,player_role,quotation,shirt_number,registered_on,released_on,is_active`.
 - **Required header/create:** first six fields are headers; create additionally needs `player_role`. Player and club identities are always complete provider pairs.
 - **Identity:** preferred direct registration provider pair; otherwise Player + SeasonClub natural identity. When direct and natural identities are supplied, they must resolve to the same registration. Providers normalize lowercase; IDs remain exact.
-- **Fields/formats:** role is a `PlayerRole.key`; quotation is 0..999999.99 (two decimals); shirt number integer 0..65535; timestamps require ISO-8601 explicit offset and are stored in UTC; active is `true`/`false`.
-- **Updates/empty cells:** only non-empty role, quotation, number, timestamps, and active are supplied; blanks never clear or zero them. Creates use defaults, including active true. Existing released registrations remain historical and are not repurposed for another club.
-- **Active/transfer rule:** active means `is_active=true` and `released_at` null. Only one such registration per player/Season is accepted. There is no automatic transfer orchestration: first import an update that deactivates (`is_active=false`) and/or releases the old registration, confirm its completion, then import the new club registration.
-- **Duplicate/caveat:** duplicate natural/direct identity errors; unknown role/mappings, mismatched direct identity, or another active registration errors. There is no empty-cell way to clear `released_at` and reactivate a released row.
-- **Example:** `serie_a,2026/27,opta,Player-001,opta,Club-001,opta,Registration-001,forward,25.50,9,2026-08-20T12:00:00+02:00,,true`
+- **Fields/formats:** role is a `PlayerRole.key`; quotation is 0..999999.99 (two decimals); shirt number integer 0..65535; registration and release dates require `YYYY-MM-DD` and contain no time or timezone; active is `true`/`false`.
+- **Updates/empty cells:** only non-empty role, quotation, number, dates, and active are supplied; blanks never clear or zero them. Creates use defaults, including active true. Existing released registrations remain historical and are not repurposed for another club.
+- **Active/transfer rule:** active means `is_active=true` and `released_on` null. Only one such registration per player/Season is accepted. There is no automatic transfer orchestration: first import an update that deactivates (`is_active=false`) and/or releases the old registration, confirm its completion, then import the new club registration.
+- **Duplicate/caveat:** duplicate natural/direct identity errors; unknown role/mappings, mismatched direct identity, or another active registration errors. There is no empty-cell way to clear `released_on` and reactivate a released row.
+- **Example:** `serie_a,2026/27,opta,Player-001,opta,Club-001,opta,Registration-001,forward,25.50,9,2026-08-20,,true`
 
 ### PlayerScore
 

@@ -6,7 +6,7 @@ use App\Filament\Resources\Concerns\ProtectsHistoricalDeletion;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -57,8 +57,8 @@ class PlayerSeasonRegistrationResource extends Resource
             TextInput::make('shirt_number')->label(__('admin.labels.shirt_number'))->numeric(),
             TextInput::make('quotation')->label(__('admin.labels.quotation'))->numeric(),
             Toggle::make('is_active')->label(__('admin.labels.active'))->default(true),
-            DateTimePicker::make('registered_at')->label(__('admin.labels.registered_at')),
-            DateTimePicker::make('released_at')->label(__('admin.labels.released_at')),
+            DatePicker::make('registered_on')->label(__('admin.labels.registered_on')),
+            DatePicker::make('released_on')->label(__('admin.labels.released_on')),
         ]);
     }
 
@@ -71,6 +71,8 @@ class PlayerSeasonRegistrationResource extends Resource
             TextColumn::make('seasonClub.realClub.name')->label(__('admin.labels.registered_club')),
             TextColumn::make('playerRole.label')->label(__('admin.labels.player_role')),
             TextColumn::make('quotation')->label(__('admin.labels.quotation'))->numeric(2),
+            TextColumn::make('registered_on')->label(__('admin.labels.registered_on'))->date()->sortable(),
+            TextColumn::make('released_on')->label(__('admin.labels.released_on'))->date()->sortable(),
             IconColumn::make('is_active')->label(__('admin.labels.active'))->boolean(),
         ])->recordActions([EditAction::make()])->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
