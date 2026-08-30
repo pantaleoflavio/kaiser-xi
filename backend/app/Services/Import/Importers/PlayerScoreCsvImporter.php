@@ -12,6 +12,7 @@ use App\Models\RealCompetition;
 use App\Models\Season;
 use App\Models\SeasonClub;
 use App\Services\Import\ImportRowAnalysis;
+use App\Services\Import\RecoverableRowException;
 use App\Services\PlayerScore\PlayerScoreService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -98,7 +99,7 @@ class PlayerScoreCsvImporter implements CsvImporter
             if ($row['action'] === 'unmatched') {
                 [$provider, $externalId] = explode("\0", $row['data']['player_provider'] . "\0" . $row['data']['player_external_id'], 2);
                 if (PlayerExternalIdentity::where('provider', mb_strtolower(trim($provider)))->where('external_id', $externalId)->exists()) {
-                    throw new \RuntimeException("Player score identity changed since analysis at CSV row {$row['row_number']}.");
+                    throw new RecoverableRowException("Player score identity changed since analysis at CSV row {$row['row_number']}.");
                 }
 
                 continue;
@@ -114,7 +115,7 @@ class PlayerScoreCsvImporter implements CsvImporter
             $model = PlayerScore::where('player_season_registration_id', $row['registration_id'])->where('matchday_id', $row['matchday_id'])->first();
 
             if (! $competition || ! $season || ! $matchday || $registration?->id !== $row['registration_id'] || ($direct && $fallback && $direct->id !== $fallback->id) || $registration?->seasonClub?->season_id !== $row['season_id'] || $model?->id !== ($row['model_id'] ?? null)) {
-                throw new \RuntimeException("Player score identity changed since analysis at CSV row {$row['row_number']}.");
+                throw new RecoverableRowException("Player score identity changed since analysis at CSV row {$row['row_number']}.");
             }
 
             $data = $this->scores->prepare(['player_season_registration_id' => $row['registration_id'], 'matchday_id' => $row['matchday_id']] + $row['payload'], $model);

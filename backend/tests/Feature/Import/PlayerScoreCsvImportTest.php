@@ -190,8 +190,12 @@ class PlayerScoreCsvImportTest extends TestCase
         $this->assertSame(1, Player::count());
         $this->assertSame(2, $import->total_rows);
         $this->assertSame(1, $import->successful_rows);
-        $this->assertSame(0, $import->failed_rows);
-        $this->assertSame('Missing-Player', $import->unmatchedRows()->sole()->row_data['player_external_id']);
+        $this->assertSame(1, $import->failed_rows);
+        $this->assertSame('Missing-Player', $import->rowErrors()->sole()->row_data['player_external_id']);
+        $this->assertStringContainsString(
+            'Player external identity is unknown',
+            $import->rowErrors()->sole()->error_message,
+        );
     }
 
     private function combineRows(string ...$csvs): string

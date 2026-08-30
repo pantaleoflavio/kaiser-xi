@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Enums\CsvImportType;
-use App\Enums\ImportStatus;
 use App\Models\Import;
 use App\Models\User;
 use App\Services\Import\CsvImportService;
@@ -115,7 +114,7 @@ class ImportData extends Page implements HasSchemas
             (int) Auth::id(),
         );
 
-        $service->storeUnmatchedRows($import, $this->analysis);
+        $service->storeRejectedRows($import, $this->analysis);
 
         // Do not leave FileUpload pointing at a file that has just been removed.
         $this->data['file'] = null;
@@ -123,23 +122,10 @@ class ImportData extends Page implements HasSchemas
 
         Storage::disk('local')->delete($path);
 
-        if ($this->analysis['has_errors']) {
-            $import->update([
-                'status' => ImportStatus::Blocked,
-                'total_rows' => $this->analysis['counts']['total'],
-                'failed_rows' => $this->analysis['counts']['errors'],
-            ]);
-
-            foreach ($this->analysis['rows'] as $row) {
-                foreach ($row['errors'] as $error) {
-                    $import->rowErrors()->create([
-                        'row_number' => $row['row_number'],
-                        'row_data' => $row['data'],
-                        'error_message' => $error,
-                    ]);
-                }
-            }
-        }
+        $import->update([
+            'total_rows' => $this->analysis['counts']['total'],
+            'failed_rows' => $this->analysis['counts']['rejected'],
+        ]);
 
         $this->importId = $import->id;
     }
@@ -164,7 +150,12 @@ class ImportData extends Page implements HasSchemas
 
     public function confirm(): void
     {
-        abort_unless($this->analysis && ! $this->analysis['has_errors'] && $this->importId, 422);
+        abort_unless(
+            $this->analysis
+                && ! ($this->analysis['has_fatal_errors'] ?? false)
+                && $this->importId,
+            422,
+        );
         $queued = app(CsvImportService::class)->queue(Import::findOrFail($this->importId));
 
         if (! $queued) {
@@ -182,5 +173,14 @@ class ImportData extends Page implements HasSchemas
         $type = CsvImportType::from($this->data['type'] ?? CsvImportType::RealCompetitions->value);
         $csv = app(CsvImportService::class)->template($type, $example);
         return response()->streamDownload(fn() => print($csv), $type->value . ($example ? '-example' : '-template') . '.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
+    }
+
+    public function downloadRejectedRows(): StreamedResponse
+    {
+        abort_unless($this->importId, 404);
+        $import = Import::findOrFail($this->importId);
+        $csv = app(CsvImportService::class)->rejectedRowsCsv($import);
+
+        return response()->streamDownload(fn() => print($csv), 'import-' . $import->id . '-rejected.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 }

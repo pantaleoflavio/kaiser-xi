@@ -11,6 +11,7 @@ use App\Models\RealCompetition;
 use App\Models\User;
 use App\Services\Import\CsvImportService;
 use App\Services\Import\Importers\RealCompetitionCsvImporter;
+use App\Services\Import\RecoverableRowException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
@@ -91,6 +92,91 @@ class ExecuteCsvImportJobTest extends TestCase
 
         $this->assertDatabaseCount('real_competitions', 1);
         $this->assertSame(ImportStatus::Completed, $import->refresh()->status);
+    }
+
+    public function test_analysis_errors_are_skipped_while_valid_rows_complete(): void
+    {
+        $import = $this->readyImport("code,name,type\none,One,custom\nbad,Bad,not-a-type\nthree,Three,custom\n");
+        app(CsvImportService::class)->queue($import);
+
+        (new ExecuteCsvImportJob($import->id))->handle(app(CsvImportService::class));
+
+        $import->refresh();
+        $this->assertSame(ImportStatus::Completed, $import->status);
+        $this->assertSame(3, $import->total_rows);
+        $this->assertSame(2, $import->successful_rows);
+        $this->assertSame(1, $import->failed_rows);
+        $this->assertSame(['one', 'three'], RealCompetition::query()->orderBy('id')->pluck('code')->all());
+        $error = $import->rowErrors()->sole();
+        $this->assertSame(3, $error->row_number);
+        $this->assertSame('bad', $error->row_data['code']);
+        $this->assertNotEmpty($error->errors);
+    }
+
+    public function test_all_invalid_rows_complete_with_rejected_diagnostics(): void
+    {
+        $import = $this->readyImport("code,name,type\none,One,invalid\ntwo,Two,also-invalid\n");
+        app(CsvImportService::class)->queue($import);
+
+        (new ExecuteCsvImportJob($import->id))->handle(app(CsvImportService::class));
+
+        $import->refresh();
+        $this->assertSame(ImportStatus::Completed, $import->status);
+        $this->assertSame(0, $import->successful_rows);
+        $this->assertSame(2, $import->failed_rows);
+        $this->assertDatabaseCount('real_competitions', 0);
+        $this->assertCount(2, $import->rowErrors);
+    }
+
+    public function test_rejected_csv_is_generated_from_persisted_rows_and_cascades_on_delete(): void
+    {
+        $import = $this->readyImport("code,name,type\nbad,Bad,invalid\n");
+        app(CsvImportService::class)->queue($import);
+        (new ExecuteCsvImportJob($import->id))->handle(app(CsvImportService::class));
+
+        $csv = app(CsvImportService::class)->rejectedRowsCsv($import->refresh());
+        $this->assertStringContainsString('row_number,code,name,type,errors', $csv);
+        $this->assertStringContainsString('2,bad,Bad,invalid', $csv);
+        $this->assertStringContainsString('selected type is invalid', $csv);
+
+        $id = $import->id;
+        $import->delete();
+        $this->assertDatabaseMissing('import_row_errors', ['import_id' => $id]);
+    }
+
+    public function test_execution_time_row_failure_rolls_back_only_that_row(): void
+    {
+        $import = $this->readyImport("code,name,type\none,One,custom\ntwo,Two,custom\nthree,Three,custom\n");
+        app(CsvImportService::class)->queue($import);
+        $realImporter = app(RealCompetitionCsvImporter::class);
+
+        $this->app->instance(RealCompetitionCsvImporter::class, new class($realImporter) extends RealCompetitionCsvImporter
+        {
+            public function __construct(private readonly RealCompetitionCsvImporter $realImporter) {}
+            public function contract(): array
+            {
+                return $this->realImporter->contract();
+            }
+            public function analyse(array $csv): array
+            {
+                return $this->realImporter->analyse($csv);
+            }
+            public function execute(array $analysis): void
+            {
+                if ($analysis['rows'][0]['identifier'] === 'two') {
+                    RealCompetition::create(['code' => 'partial', 'name' => 'Partial', 'type' => CompetitionType::Custom, 'is_active' => true]);
+                    throw new RecoverableRowException('The row became invalid during execution.');
+                }
+                $this->realImporter->execute($analysis);
+            }
+        });
+
+        (new ExecuteCsvImportJob($import->id))->handle(app(CsvImportService::class));
+
+        $this->assertSame(['one', 'three'], RealCompetition::query()->orderBy('id')->pluck('code')->all());
+        $this->assertSame(ImportStatus::Completed, $import->refresh()->status);
+        $this->assertSame(1, $import->failed_rows);
+        $this->assertSame(3, $import->rowErrors()->sole()->row_number);
     }
 
     public function test_execution_failure_rolls_back_domain_writes_and_retains_diagnostics(): void

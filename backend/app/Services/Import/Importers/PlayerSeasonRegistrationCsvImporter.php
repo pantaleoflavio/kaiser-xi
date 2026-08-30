@@ -11,6 +11,7 @@ use App\Models\Season;
 use App\Models\SeasonClub;
 use App\Services\Import\Importers\CsvImporter;
 use App\Services\Import\ImportRowAnalysis;
+use App\Services\Import\RecoverableRowException;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -153,7 +154,7 @@ class PlayerSeasonRegistrationCsvImporter implements CsvImporter
             $season = Season::whereKey($row['season_id'])->where('real_competition_id', $row['competition_id'])->where('name', $row['season_name'])->first();
             $seasonClub = SeasonClub::find($row['season_club_id']);
             $role = $row['player_role_key'] ? PlayerRole::where('key', $row['player_role_key'])->first() : null;
-            if (! $competition || ! $season || $playerIdentity?->player_id !== $row['player_id'] || $clubIdentity?->real_club_id !== $seasonClub?->real_club_id || $seasonClub?->season_id !== $row['season_id'] || ($row['player_role_key'] && $role?->id !== $row['payload']['player_role_id'])) throw new \RuntimeException("Registration dependencies changed since analysis at CSV row {$row['row_number']}.");
+            if (! $competition || ! $season || $playerIdentity?->player_id !== $row['player_id'] || $clubIdentity?->real_club_id !== $seasonClub?->real_club_id || $seasonClub?->season_id !== $row['season_id'] || ($row['player_role_key'] && $role?->id !== $row['payload']['player_role_id'])) throw new RecoverableRowException("Registration dependencies changed since analysis at CSV row {$row['row_number']}.");
             $natural = PlayerSeasonRegistration::where('player_id', $row['player_id'])->where('season_club_id', $row['season_club_id'])->first();
             $direct = null;
             if ($row['registration_pair']) {
@@ -161,9 +162,9 @@ class PlayerSeasonRegistrationCsvImporter implements CsvImporter
                 $direct = PlayerSeasonRegistration::where('external_provider', $provider)->where('external_id', $externalId)->first();
             }
             $model = $direct ?: $natural;
-            if (($row['model_id'] ?? null) !== $model?->id || ($direct && $direct->id !== $natural?->id)) throw new \RuntimeException("Registration identity changed since analysis at CSV row {$row['row_number']}.");
+            if (($row['model_id'] ?? null) !== $model?->id || ($direct && $direct->id !== $natural?->id)) throw new RecoverableRowException("Registration identity changed since analysis at CSV row {$row['row_number']}.");
             $willBeActive = ($row['payload']['is_active'] ?? $model?->is_active ?? true) && ($row['payload']['released_at'] ?? $model?->released_at) === null;
-            if ($willBeActive && PlayerSeasonRegistration::query()->activeForSeason($row['season_id'])->where('player_id', $row['player_id'])->when($model, fn($query) => $query->where('id', '!=', $model->id))->exists()) throw new \RuntimeException("Player gained another active registration since analysis at CSV row {$row['row_number']}.");
+            if ($willBeActive && PlayerSeasonRegistration::query()->activeForSeason($row['season_id'])->where('player_id', $row['player_id'])->when($model, fn($query) => $query->where('id', '!=', $model->id))->exists()) throw new RecoverableRowException("Player gained another active registration since analysis at CSV row {$row['row_number']}.");
             $model ? $model->fill($row['payload'])->save() : PlayerSeasonRegistration::create(['player_id' => $row['player_id'], 'season_club_id' => $row['season_club_id']] + $row['payload']);
         }
     }

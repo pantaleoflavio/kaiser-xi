@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\Import\CsvImportService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -96,6 +97,32 @@ class ImportDataUploadTest extends TestCase
         $this->assertDatabaseHas('imports', ['id' => $importId, 'status' => 'queued']);
         Queue::assertPushed(ExecuteCsvImportJob::class, fn(ExecuteCsvImportJob $job): bool => $job->importId === $importId);
     }
+
+    public function test_analysis_with_rejected_rows_can_be_confirmed(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+        $this->seedReferenceData();
+        $this->actingAs($this->administrator());
+
+        $path = 'csv-import-uploads/rejected.csv';
+        Storage::disk('local')->put($path, "code,name,type\ngood,Good,custom\nbad,Bad,invalid\n");
+
+        $component = Livewire::test(ImportData::class)
+            ->set('data.type', CsvImportType::RealCompetitions->value)
+            ->set('data.file', [$path])
+            ->set('data.original_name', 'rejected.csv')
+            ->call('analyse')
+            ->assertSet('analysis.counts.rejected', 1);
+
+        $importId = $component->get('importId');
+        $component->call('confirm')->assertSet('importId', null);
+
+        $this->assertDatabaseHas('imports', ['id' => $importId, 'status' => 'queued', 'failed_rows' => 1]);
+        $this->assertDatabaseHas('import_row_errors', ['import_id' => $importId, 'row_number' => 3]);
+        Queue::assertPushed(ExecuteCsvImportJob::class);
+    }
+
 
     private function administrator(): User
     {
