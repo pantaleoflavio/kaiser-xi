@@ -31,11 +31,11 @@ class PlayerSeasonRegistrationsTable
                     ->sortable(),
                 IconColumn::make('is_active')
                     ->boolean(),
-                TextColumn::make('registered_at')
-                    ->dateTime()
+                TextColumn::make('registered_on')
+                    ->date()
                     ->sortable(),
-                TextColumn::make('released_at')
-                    ->dateTime()
+                TextColumn::make('released_on')
+                    ->date()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()

@@ -20,8 +20,8 @@ class SeasonFactory extends Factory
         return [
             'real_competition_id' => RealCompetition::factory(),
             'name' => $startYear . '/' . ($startYear + 1),
-            'starts_at' => now()->startOfYear(),
-            'ends_at' => now()->endOfYear(),
+            'starts_at' => now()->startOfYear()->toDateString(),
+            'ends_at' => now()->endOfYear()->toDateString(),
             'is_active' => true,
         ];
     }

@@ -95,7 +95,7 @@ The page does **not** display an import-history table, job progress, completed r
 - Confirmed PlayerScore edits show an explicit persistent non-recalculation warning.
 - Single and bulk PlayerScore deletion require confirmation and warn that traceability may be weakened; calculated results remain unchanged.
 - PlayerScore identity cannot be changed on edit, and registration/Matchday Season agreement is enforced.
-- Registrations retain `released_at` and `is_active`, supporting historical/released rows; CSV refuses to repurpose a direct identity or create a second active same-Season registration.
+- Registrations retain `released_on` and `is_active`, supporting historical/released rows; CSV refuses to repurpose a direct identity or create a second active same-Season registration.
 - FormationPlayer and team-score-detail records preserve relationships used by historical calculation, while trade assignment records represent League history. The generic related-resource deletes do not promise cascade-safe historical repair.
 - Neither admin edits nor CSV score imports automatically rerun `CalculateTeamMatchdayScore`; commissioner/co-commissioner recalculation is explicit through the League workflow.
 

@@ -64,7 +64,7 @@ class TradeProposalServiceTest extends TestCase
             'same_team' => fn(array $f): array => $this->payload($f, ['receiving_fantasy_team_id' => $f['from']->id, 'requested_fantasy_team_player_id' => $f['offered']->id]),
             'player_not_owned' => fn(array $f): array => $this->payload($f, ['offered_fantasy_team_player_id' => $f['requested']->id]),
             'invalid_player_registration' => function (array $f): array {
-                PlayerSeasonRegistration::where('player_id', $f['offered']->player_id)->update(['released_at' => now()]);
+                PlayerSeasonRegistration::where('player_id', $f['offered']->player_id)->update(['released_on' => now()->toDateString()]);
                 return $this->payload($f);
             },
             'invalid_cash_payer' => fn(array $f): array => $this->payload($f, ['cash_amount' => 1, 'cash_from_fantasy_team_id' => 999999]),

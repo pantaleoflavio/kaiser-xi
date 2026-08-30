@@ -65,8 +65,8 @@ class SeasonResource extends Resource
             ->columns([
                 TextColumn::make('realCompetition.name')->label(__('admin.labels.competition'))->searchable()->sortable(),
                 TextColumn::make('name')->label(__('admin.labels.name'))->searchable()->sortable(),
-                TextColumn::make('starts_at')->label(__('admin.labels.starts_at'))->dateTime()->sortable(),
-                TextColumn::make('ends_at')->label(__('admin.labels.ends_at'))->dateTime()->sortable(),
+                TextColumn::make('starts_at')->label(__('admin.labels.starts_at'))->date()->sortable(),
+                TextColumn::make('ends_at')->label(__('admin.labels.ends_at'))->date()->sortable(),
                 IconColumn::make('is_active')->boolean(),
             ])
             ->recordActions([EditAction::make()])

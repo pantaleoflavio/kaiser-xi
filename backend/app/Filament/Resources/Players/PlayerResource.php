@@ -77,7 +77,7 @@ class PlayerResource extends Resource
                 TextColumn::make('first_name')->label(__('admin.labels.first_name'))->searchable()->sortable(),
                 TextColumn::make('last_name')->label(__('admin.labels.last_name'))->searchable()->sortable(),
                 TextColumn::make('external_identities_count')->label(__('admin.labels.external_identities'))->counts('externalIdentities')->sortable(),
-                TextColumn::make('birth_date')->label(__('admin.labels.birth_date'))->dateTime()->sortable(),
+                TextColumn::make('birth_date')->label(__('admin.labels.birth_date'))->date()->sortable(),
                 IconColumn::make('is_active')->label(__('admin.labels.active'))->boolean(),
             ])
             ->recordActions([EditAction::make()])

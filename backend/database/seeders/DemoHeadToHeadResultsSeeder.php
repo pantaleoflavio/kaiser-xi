@@ -141,8 +141,8 @@ class DemoHeadToHeadResultsSeeder extends Seeder
                         'shirt_number' => $registration->shirt_number,
                         'quotation' => $registration->quotation,
                         'is_active' => true,
-                        'registered_at' => $registration->registered_at,
-                        'released_at' => null,
+                        'registered_on' => $registration->registered_on,
+                        'released_on' => null,
                     ],
                 );
             }

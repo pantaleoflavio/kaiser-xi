@@ -28,7 +28,7 @@ class PlayerSeasonRegistrationCsvImportTest extends TestCase
     public function test_it_creates_a_registration_without_writing_during_analysis(): void
     {
         $this->fixture();
-        $analysis = $this->analyse($this->csv('Serie A', 'opta,Registration-1,forward,9,2026-08-20T12:00:00+02:00,,25.50,true'));
+        $analysis = $this->analyse($this->csv('Serie A', 'opta,Registration-1,forward,9,2026-08-20,,25.50,true'));
 
         $this->assertFalse($analysis['has_errors']);
         $this->assertSame(1, $analysis['counts']['create']);
@@ -39,7 +39,8 @@ class PlayerSeasonRegistrationCsvImportTest extends TestCase
         $this->assertSame('25.50', $registration->quotation);
         $this->assertSame('opta', $registration->external_provider);
         $this->assertSame('forward', $registration->playerRole->key);
-        $this->assertSame('10:00', $registration->registered_at->format('H:i'));
+        $this->assertSame('2026-08-20', $registration->registered_on->format('Y-m-d'));
+        $this->assertSame('2026-08-20', $registration->toArray()['registered_on']);
     }
 
     public function test_it_updates_and_then_classifies_the_same_values_as_unchanged(): void
@@ -88,15 +89,15 @@ class PlayerSeasonRegistrationCsvImportTest extends TestCase
     public function test_empty_optional_cells_preserve_values(): void
     {
         $fixture = $this->fixture();
-        $registration = PlayerSeasonRegistration::factory()->create(['player_id' => $fixture['player']->id, 'season_club_id' => $fixture['seasonClub']->id, 'player_role_id' => $fixture['role']->id, 'quotation' => 42.75, 'shirt_number' => 7, 'registered_at' => '2026-07-01 10:00:00', 'released_at' => '2026-08-01 10:00:00', 'is_active' => false]);
+        $registration = PlayerSeasonRegistration::factory()->create(['player_id' => $fixture['player']->id, 'season_club_id' => $fixture['seasonClub']->id, 'player_role_id' => $fixture['role']->id, 'quotation' => 42.75, 'shirt_number' => 7, 'registered_on' => '2026-07-01', 'released_on' => '2026-08-01', 'is_active' => false]);
         $analysis = $this->analyse($this->csv('serie_a', ',,,,,,,'));
         $this->assertSame(1, $analysis['counts']['unchanged']);
         $this->service()->importer(CsvImportType::PlayerSeasonRegistrations)->execute($analysis);
         $this->assertSame('42.75', $registration->refresh()->quotation);
         $this->assertSame(7, $registration->shirt_number);
         $this->assertFalse($registration->is_active);
-        $this->assertSame('2026-07-01 10:00:00', $registration->registered_at->format('Y-m-d H:i:s'));
-        $this->assertSame('2026-08-01 10:00:00', $registration->released_at->format('Y-m-d H:i:s'));
+        $this->assertSame('2026-07-01', $registration->registered_on->format('Y-m-d'));
+        $this->assertSame('2026-08-01', $registration->released_on->format('Y-m-d'));
         $this->assertSame($fixture['role']->id, $registration->player_role_id);
     }
 
@@ -170,25 +171,25 @@ class PlayerSeasonRegistrationCsvImportTest extends TestCase
     {
         $fixture = $this->fixture();
         $oldClub = SeasonClub::factory()->create(['season_id' => $fixture['season']->id]);
-        $old = PlayerSeasonRegistration::factory()->create(['player_id' => $fixture['player']->id, 'season_club_id' => $oldClub->id, 'player_role_id' => $fixture['role']->id, 'is_active' => true, 'released_at' => null]);
+        $old = PlayerSeasonRegistration::factory()->create(['player_id' => $fixture['player']->id, 'season_club_id' => $oldClub->id, 'player_role_id' => $fixture['role']->id, 'is_active' => true, 'released_on' => null]);
         $this->assertErrorContains($this->analyse($this->csv('serie_a')), 'another active registration');
-        $old->update(['released_at' => now(), 'is_active' => false]);
+        $old->update(['released_on' => '2026-08-31', 'is_active' => false]);
 
         $analysis = $this->analyse($this->csv('serie_a'));
         $this->assertSame(1, $analysis['counts']['create']);
         $this->service()->importer(CsvImportType::PlayerSeasonRegistrations)->execute($analysis);
         $this->assertSame(2, PlayerSeasonRegistration::count());
-        $this->assertNotNull($old->refresh()->released_at);
+        $this->assertNotNull($old->refresh()->released_on);
     }
 
     public function test_released_registration_does_not_block_a_new_registration(): void
     {
-        $this->assertNonActiveRegistrationDoesNotBlock(['is_active' => true, 'released_at' => now()]);
+        $this->assertNonActiveRegistrationDoesNotBlock(['is_active' => true, 'released_on' => '2026-08-31']);
     }
 
     public function test_inactive_registration_does_not_block_a_new_registration(): void
     {
-        $this->assertNonActiveRegistrationDoesNotBlock(['is_active' => false, 'released_at' => null]);
+        $this->assertNonActiveRegistrationDoesNotBlock(['is_active' => false, 'released_on' => null]);
     }
 
     public function test_updating_the_same_active_natural_registration_is_not_blocked(): void
@@ -200,7 +201,7 @@ class PlayerSeasonRegistrationCsvImportTest extends TestCase
             'player_role_id' => $fixture['role']->id,
             'shirt_number' => 9,
             'is_active' => true,
-            'released_at' => null,
+            'released_on' => null,
         ]);
 
         $analysis = $this->analyse($this->csv('serie_a', ',,forward,12,,,,true'));
@@ -218,14 +219,24 @@ class PlayerSeasonRegistrationCsvImportTest extends TestCase
             'season_club_id' => $fixture['seasonClub']->id,
             'player_role_id' => $fixture['role']->id,
             'is_active' => true,
-            'released_at' => null,
+            'released_on' => null,
         ]);
-        $analysis = $this->analyse($this->csv('serie_a', ',,,,,2026-09-01T12:00:00+02:00,,false'));
+        $analysis = $this->analyse($this->csv('serie_a', ',,,,,2026-09-01,,false'));
 
         $this->service()->importer(CsvImportType::PlayerSeasonRegistrations)->execute($analysis);
 
         $this->assertFalse($registration->refresh()->is_active);
-        $this->assertSame('2026-09-01 10:00:00', $registration->released_at->format('Y-m-d H:i:s'));
+        $this->assertSame('2026-09-01', $registration->released_on->format('Y-m-d'));
+    }
+
+    public function test_datetime_values_are_rejected_for_registration_dates(): void
+    {
+        $this->fixture();
+
+        $analysis = $this->analyse($this->csv('serie_a', ',,forward,9,2026-08-31T10:30:00+02:00,,,true'));
+
+        $this->assertTrue($analysis['has_errors']);
+        $this->assertErrorContains($analysis, 'format Y-m-d');
     }
 
     public function test_quotation_equivalent_text_is_unchanged_and_external_ids_remain_opaque(): void
@@ -317,7 +328,7 @@ class PlayerSeasonRegistrationCsvImportTest extends TestCase
 
     private function csv(string $competition, string $tail = ',,forward,,,,,'): string
     {
-        return "competition_code,season_name,player_provider,player_external_id,club_provider,club_external_id,registration_provider,registration_external_id,player_role,shirt_number,registered_at,released_at,quotation,is_active\n{$competition},2026/27, OPTA ,Player-1, OPTA ,Club-1,{$tail}\n";
+        return "competition_code,season_name,player_provider,player_external_id,club_provider,club_external_id,registration_provider,registration_external_id,player_role,shirt_number,registered_on,released_on,quotation,is_active\n{$competition},2026/27, OPTA ,Player-1, OPTA ,Club-1,{$tail}\n";
     }
 
     private function analyse(string $csv): array

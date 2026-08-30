@@ -48,9 +48,29 @@ class RealMatchResource extends Resource
     {
         return $schema->components([
             Select::make('matchday_id')->label('Matchday')->relationship('matchday', 'name')->searchable()->preload()->required(),
-            Select::make('home_season_club_id')->label('Home club')->relationship('homeSeasonClub', 'realClub.name')->searchable()->preload()->required(),
-            Select::make('away_season_club_id')->label('Away club')->relationship('awaySeasonClub', 'realClub.name')->searchable()->preload()->required(),
-            DateTimePicker::make('kickoff_at')->label(__('admin.labels.kickoff_at'))->required(),
+            Select::make('home_season_club_id')
+                ->label('Home club')
+                ->relationship('homeSeasonClub', 'id')
+                ->getOptionLabelFromRecordUsing(
+                    fn($record): string => $record->realClub->name
+                )
+                ->searchable()
+                ->preload()
+                ->required(),
+
+            Select::make('away_season_club_id')
+                ->label('Away club')
+                ->relationship('awaySeasonClub', 'id')
+                ->getOptionLabelFromRecordUsing(
+                    fn($record): string => $record->realClub->name
+                )
+                ->searchable()
+                ->preload()
+                ->required(),
+            DateTimePicker::make('kickoff_at')
+                ->label(__('admin.labels.kickoff_at'))
+                ->seconds(false)
+                ->required(),
             TextInput::make('home_score')->label(__('admin.labels.home_score'))->numeric(),
             TextInput::make('away_score')->label(__('admin.labels.away_score'))->numeric(),
             Select::make('status')->label(__('admin.labels.status'))->options(RealMatchStatus::options())->required(),
