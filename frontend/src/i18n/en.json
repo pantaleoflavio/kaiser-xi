@@ -107,35 +107,39 @@
     "gameInstructions": "Game Instructions"
   },
   "home": {
-    "eyebrow": "Your League. Your Rules.",
-    "title": "Build private fantasy-football worlds across competitions.",
-    "description": "Create or join private leagues and manage fantasy teams with friends.",
+    "eyebrow": "Your fantasy football, your rules",
+    "title": "Create and manage private leagues across competitions.",
+    "description": "KAISER XI is the multi-competition fantasy-football platform for sharing seasons, teams, and matchdays with your group.",
     "cta": {
       "login": "Log in",
       "register": "Register",
       "dashboard": "Go to dashboard"
     },
     "panel": {
-      "label": "Everything in one place",
-      "title": "Your fantasy season starts here",
-      "description": "Manage squads, auctions, formations, and matchdays in a focused experience."
+      "label": "Your season in one place",
+      "title": "From league setup to results",
+      "description": "Configure the competition, invite participants, and manage fantasy teams, formations, matchdays, and standings."
     },
     "features": {
       "competitions": {
-        "title": "Multiple competitions",
-        "description": "Enjoy fantasy football across more than one real competition."
+        "title": "Competitions and seasons",
+        "description": "Choose the competition and season on which to build your league."
       },
       "leagues": {
         "title": "Private leagues",
-        "description": "Create or join a private league for your group."
+        "description": "Create a private space for your group and customize the competition rules."
       },
       "teams": {
-        "title": "Fantasy-team management",
-        "description": "Manage your team, squad, and matchday formation."
+        "title": "Fantasy teams",
+        "description": "Manage your fantasy team name, squad, and formation throughout the season."
       },
-      "roadmap": {
-        "title": "A complete season",
-        "description": "Follow your league from squad building through every matchday."
+      "invitations": {
+        "title": "Invitations",
+        "description": "Invite other players to the league and manage participation requests."
+      },
+      "results": {
+        "title": "Matchdays and results",
+        "description": "Follow your league scores, results, and standings matchday by matchday."
       }
     }
   },
