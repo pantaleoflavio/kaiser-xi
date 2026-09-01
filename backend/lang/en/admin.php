@@ -39,7 +39,7 @@ return [
         'lookups' => 'Lookups',
     ]],
     'resources' => [
-        'matchdays' => ['singular' => 'Matchday', 'plural' => 'Matchdays'],
+        'matchdays' => ['singular' => 'Matchday', 'plural' => 'Matchdays', 'calculation_unlock' => 'Calculation unlock', 'locked' => 'Locked', 'unlock_calculation' => 'Unlock calculation', 'unlocked' => 'Calculation unlocked', 'unlock_not_ended' => 'The Matchday has not ended yet.'],
         'league_types' => ['singular' => 'League Type', 'plural' => 'League Types'],
         'real_matches' => ['singular' => 'Real Match', 'plural' => 'Real Matches'],
         'seasons' => ['singular' => 'Season', 'plural' => 'Seasons'],

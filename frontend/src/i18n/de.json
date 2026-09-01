@@ -798,7 +798,12 @@
     "calculationSuccess": "Der Spieltag wurde erfolgreich berechnet.",
     "recalculationSuccess": "Der Spieltag wurde erfolgreich neu berechnet.",
     "calculationError": "Der Spieltag konnte nicht berechnet werden. Prüfe, ob er beendet ist, und versuche es erneut.",
-    "recalculationWarning": "Bei einer Neuberechnung werden die berechneten Punkte und Ergebnisse dieses Spieltags durch Werte nach den aktuellen Ligaregeln ersetzt und die Tabelle wird neu berechnet."
+    "recalculationWarning": "Bei einer Neuberechnung werden die berechneten Punkte und Ergebnisse dieses Spieltags durch Werte nach den aktuellen Ligaregeln ersetzt und die Tabelle wird neu berechnet.",
+    "calculationQueued": "Berechnung eingereiht.",
+    "recalculationQueued": "Neuberechnung eingereiht.",
+    "calculationInProgress": "Berechnung läuft…",
+    "calculationFailed": "Berechnung fehlgeschlagen. Du kannst es erneut versuchen.",
+    "calculationCompleted": "Spieltagberechnung abgeschlossen."
   },
   "h2h": {
     "title": "Head-to-Head-Meisterschaft",

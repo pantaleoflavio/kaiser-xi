@@ -13,6 +13,7 @@ export type Matchday = {
   is_calculated?: boolean;
   can_calculate?: boolean;
   can_recalculate?: boolean;
+  calculation_status?: 'queued' | 'calculating' | 'completed' | 'failed' | null;
 };
 
 export type FormationPlayer = {

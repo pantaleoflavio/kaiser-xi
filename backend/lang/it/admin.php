@@ -39,7 +39,7 @@ return [
         'lookups' => 'Valori di riferimento',
     ]],
     'resources' => [
-        'matchdays' => ['singular' => 'Giornata', 'plural' => 'Giornata'],
+        'matchdays' => ['singular' => 'Giornata', 'plural' => 'Giornata', 'calculation_unlock' => 'Sblocco calcolo', 'locked' => 'Bloccato', 'unlock_calculation' => 'Sblocca calcolo', 'unlocked' => 'Calcolo sbloccato', 'unlock_not_ended' => 'La giornata non è ancora terminata.'],
         'league_types' => ['singular' => 'Tipo di lega', 'plural' => 'Tipo di lega'],
         'real_matches' => ['singular' => 'Partita reale', 'plural' => 'Partita reale'],
         'seasons' => ['singular' => 'Stagione', 'plural' => 'Stagione'],

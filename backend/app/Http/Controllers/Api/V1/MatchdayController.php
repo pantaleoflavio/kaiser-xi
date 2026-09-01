@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Formation\MatchdayResource;
-use App\Models\FantasyMatchResult;
 use App\Models\League;
-use App\Models\LeagueMatchdayCalculation;
 use App\Models\Matchday;
-use App\Models\TeamMatchdayScore;
+use App\Services\Matchday\LeagueMatchdayCalculationService;
 use App\Models\User;
 use App\Services\League\ChampionshipMatchdays;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -34,17 +32,9 @@ class MatchdayController extends Controller
 
     public static function addCalculationCapabilities(Matchday $matchday, League $league, ?User $user): void
     {
-        $calculated = LeagueMatchdayCalculation::query()
-            ->where('league_id', $league->id)->where('matchday_id', $matchday->id)->exists()
-            || TeamMatchdayScore::query()
-            ->where('league_id', $league->id)->where('matchday_id', $matchday->id)->exists()
-            || FantasyMatchResult::query()->whereHas('fantasyMatch', fn($query) => $query
-                ->where('league_id', $league->id)->where('matchday_id', $matchday->id))->exists();
         $authorized = $user !== null && $user->can('calculateMatchday', $league);
-        $ended = now()->gte($matchday->ends_at);
-
-        $matchday->setAttribute('is_calculated', $calculated);
-        $matchday->setAttribute('can_calculate', $authorized && $ended && ! $calculated);
-        $matchday->setAttribute('can_recalculate', $authorized && $ended && $calculated);
+        foreach (app(LeagueMatchdayCalculationService::class)->capabilities($league, $matchday, $authorized) as $key => $value) {
+            $matchday->setAttribute($key, $value);
+        }
     }
 }

@@ -798,7 +798,12 @@
     "calculationSuccess": "Matchday calculated successfully.",
     "recalculationSuccess": "Matchday recalculated successfully.",
     "calculationError": "The Matchday could not be calculated. Check that it has ended and try again.",
-    "recalculationWarning": "Recalculating this Matchday will replace its calculated scores and results using the current League rules and will recalculate the standings."
+    "recalculationWarning": "Recalculating this Matchday will replace its calculated scores and results using the current League rules and will recalculate the standings.",
+    "calculationQueued": "Calculation queued.",
+    "recalculationQueued": "Recalculation queued.",
+    "calculationInProgress": "Calculation in progress…",
+    "calculationFailed": "Calculation failed. You can retry.",
+    "calculationCompleted": "Matchday calculation completed."
   },
   "h2h": {
     "title": "Head-to-head championship",

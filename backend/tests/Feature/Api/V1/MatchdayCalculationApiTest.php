@@ -8,8 +8,11 @@ use App\Models\Matchday;
 use App\Models\User;
 use Carbon\CarbonInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+use App\Enums\CalculationStatus;
+use App\Jobs\CalculateLeagueMatchdayJob;
 
 class MatchdayCalculationApiTest extends TestCase
 {
@@ -23,6 +26,7 @@ class MatchdayCalculationApiTest extends TestCase
 
     public function test_only_commissioners_can_calculate_an_ended_initialized_matchday(): void
     {
+        Queue::fake();
         [$league, $matchday] = $this->initializedClassicLeague(now()->subHour());
         $url = "/api/v1/leagues/{$league->id}/matchdays/{$matchday->id}/calculate";
         $participant = $this->member($league, 'participant');
@@ -32,15 +36,18 @@ class MatchdayCalculationApiTest extends TestCase
         $this->postJson($url)->assertForbidden();
 
         Sanctum::actingAs($coCommissioner);
-        $this->postJson($url)->assertOk()
-            ->assertJsonPath('data.is_calculated', true)
-            ->assertJsonPath('data.can_recalculate', true);
+        $this->postJson($url)->assertAccepted()
+            ->assertJsonPath('data.is_calculated', false)
+            ->assertJsonPath('data.calculation_status', 'queued');
+        Queue::assertPushed(CalculateLeagueMatchdayJob::class, 1);
 
         $this->assertDatabaseCount('league_matchday_calculations', 1);
 
         Sanctum::actingAs($league->commissioner);
-        $this->postJson($url)->assertOk();
+        $this->postJson($url)->assertAccepted();
+        Queue::assertPushed(CalculateLeagueMatchdayJob::class, 1);
         $this->assertDatabaseCount('league_matchday_calculations', 1);
+        $this->assertDatabaseHas('league_matchday_calculations', ['status' => CalculationStatus::Queued->value, 'calculated_at' => null]);
     }
 
     public function test_calculation_before_the_matchday_end_is_rejected(): void
@@ -73,6 +80,7 @@ class MatchdayCalculationApiTest extends TestCase
             'season_id' => $league->season_id,
             'starts_at' => now()->subDay(),
             'ends_at' => $endsAt,
+            'calculation_unlocked_at' => now(),
         ]);
         $league->update([
             'championship_start_matchday_id' => $matchday->id,

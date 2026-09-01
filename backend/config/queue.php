@@ -22,6 +22,13 @@ return [
         'stale_after' => (int) env('IMPORT_STALE_AFTER', 1200),
     ],
 
+    'calculations' => [
+        'tries' => (int) env('CALCULATION_QUEUE_TRIES', 2),
+        'timeout' => (int) env('CALCULATION_QUEUE_TIMEOUT', 60),
+        'backoff' => (int) env('CALCULATION_QUEUE_BACKOFF', 30),
+        'stale_after' => (int) env('CALCULATION_STALE_AFTER', 120),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Queue Connections

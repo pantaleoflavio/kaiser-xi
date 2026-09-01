@@ -17,11 +17,14 @@ class Matchday extends Model
         'name',
         'starts_at',
         'ends_at',
+        'calculation_unlocked_at',
+        'calculation_unlocked_by_user_id',
     ];
 
     protected $casts = [
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
+        'calculation_unlocked_at' => 'datetime',
     ];
 
     public function displayLabel(): string
@@ -53,6 +56,11 @@ class Matchday extends Model
     public function season(): BelongsTo
     {
         return $this->belongsTo(Season::class);
+    }
+
+    public function calculationUnlockedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'calculation_unlocked_by_user_id');
     }
 
     public function realMatches(): HasMany

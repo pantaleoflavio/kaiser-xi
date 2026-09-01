@@ -39,7 +39,7 @@ return [
         'lookups' => 'Nachschlagewerte',
     ]],
     'resources' => [
-        'matchdays' => ['singular' => 'Spieltag', 'plural' => 'Spieltage'],
+        'matchdays' => ['singular' => 'Spieltag', 'plural' => 'Spieltage', 'calculation_unlock' => 'Berechnungsfreigabe', 'locked' => 'Gesperrt', 'unlock_calculation' => 'Berechnung freigeben', 'unlocked' => 'Berechnung freigegeben', 'unlock_not_ended' => 'Der Spieltag ist noch nicht beendet.'],
         'league_types' => ['singular' => 'Ligatyp', 'plural' => 'Ligatype'],
         'real_matches' => ['singular' => 'Reales Spiel', 'plural' => 'Reales Spiele'],
         'seasons' => ['singular' => 'Saison', 'plural' => 'Saisone'],
