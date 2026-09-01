@@ -14,6 +14,7 @@ export type Matchday = {
   can_calculate?: boolean;
   can_recalculate?: boolean;
   calculation_status?: 'queued' | 'calculating' | 'completed' | 'failed' | null;
+  is_waiting_for_calculation_unlock?: boolean;
 };
 
 export type FormationPlayer = {

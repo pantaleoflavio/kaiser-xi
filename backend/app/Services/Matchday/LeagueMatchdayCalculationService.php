@@ -101,13 +101,19 @@ class LeagueMatchdayCalculationService
         $row = LeagueMatchdayCalculation::query()->where('league_id', $league->id)->where('matchday_id', $matchday->id)->first();
         $successful = $this->wasSuccessfullyCalculated($league, $matchday, $row);
         $active = $row && $this->isActive($row) && ! $this->isStale($row);
-        $eligible = (int) $league->season_id === (int) $matchday->season_id && $this->isInitialized($league, $matchday);
+        $eligible = $this->isEligible($league, $matchday);
         return [
             'is_calculated' => $successful,
             'calculation_status' => $row?->status?->value ?? ($successful ? CalculationStatus::Completed->value : null),
             'can_calculate' => $authorized && $eligible && now()->gte($matchday->ends_at) && $matchday->calculation_unlocked_at !== null && ! $successful && ! $active,
             'can_recalculate' => $authorized && $eligible && $successful && ! $active,
         ];
+    }
+
+    public function isEligible(League $league, Matchday $matchday): bool
+    {
+        return (int) $league->season_id === (int) $matchday->season_id
+            && $this->isInitialized($league, $matchday);
     }
 
     private function assertSameSeasonAndEligible(League $league, Matchday $matchday): void

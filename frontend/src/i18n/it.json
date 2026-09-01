@@ -755,6 +755,7 @@
     "recalculationQueued": "Ricalcolo in coda.",
     "calculationInProgress": "Calcolo in corso…",
     "calculationFailed": "Calcolo non riuscito. Puoi riprovare.",
+    "waitingForCalculationUnlock": "Il calcolo della giornata sarà disponibile a breve.",
     "calculationCompleted": "Calcolo della giornata completato."
   },
   "h2h": {
@@ -1053,7 +1054,7 @@
     }
   },
   "legal": {
-    "privacyTitle": "l’Informativa sulla privacy",
+    "privacyTitle": "Informativa sulla privacy",
     "imprintTitle": "Impressum",
     "navigationLabel": "Informazioni legali",
     "updated": "Versione: 25 agosto 2026",

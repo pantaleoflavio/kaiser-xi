@@ -803,6 +803,7 @@
     "recalculationQueued": "Neuberechnung eingereiht.",
     "calculationInProgress": "Berechnung läuft…",
     "calculationFailed": "Berechnung fehlgeschlagen. Du kannst es erneut versuchen.",
+    "waitingForCalculationUnlock": "Die Berechnung des Spieltags ist in Kürze verfügbar.",
     "calculationCompleted": "Spieltagberechnung abgeschlossen."
   },
   "h2h": {

@@ -803,6 +803,7 @@
     "recalculationQueued": "Recalculation queued.",
     "calculationInProgress": "Calculation in progress…",
     "calculationFailed": "Calculation failed. You can retry.",
+    "waitingForCalculationUnlock": "Matchday calculation will be available shortly.",
     "calculationCompleted": "Matchday calculation completed."
   },
   "h2h": {

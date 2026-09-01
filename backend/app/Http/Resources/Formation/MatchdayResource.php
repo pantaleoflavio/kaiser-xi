@@ -22,6 +22,10 @@ class MatchdayResource extends JsonResource
             'can_calculate' => $this->when($this->can_calculate !== null, (bool) $this->can_calculate),
             'can_recalculate' => $this->when($this->can_recalculate !== null, (bool) $this->can_recalculate),
             'calculation_status' => $this->when($this->calculation_status !== null, $this->calculation_status),
+            'is_waiting_for_calculation_unlock' => $this->when(
+                $this->is_waiting_for_calculation_unlock !== null,
+                (bool) $this->is_waiting_for_calculation_unlock,
+            ),
         ];
     }
 }

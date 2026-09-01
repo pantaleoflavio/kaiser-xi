@@ -2,7 +2,10 @@
 
 namespace Tests\Feature\Api\V1;
 
+use App\Enums\CalculationStatus;
+use App\Jobs\CalculateLeagueMatchdayJob;
 use App\Models\League;
+use App\Models\LeagueMatchdayCalculation;
 use App\Models\LeagueRole;
 use App\Models\Matchday;
 use App\Models\User;
@@ -11,8 +14,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
-use App\Enums\CalculationStatus;
-use App\Jobs\CalculateLeagueMatchdayJob;
 
 class MatchdayCalculationApiTest extends TestCase
 {
@@ -70,6 +71,64 @@ class MatchdayCalculationApiTest extends TestCase
 
         $this->postJson("/api/v1/leagues/{$league->id}/matchdays/{$otherMatchday->id}/calculate")
             ->assertNotFound();
+    }
+
+    public function test_only_the_first_ended_locked_uncalculated_matchday_waits_for_unlock(): void
+    {
+        [$league, $calculated] = $this->initializedClassicLeague(now()->subHours(20));
+        LeagueMatchdayCalculation::create([
+            'league_id' => $league->id,
+            'matchday_id' => $calculated->id,
+            'status' => CalculationStatus::Completed,
+            'calculated_at' => now()->subHours(19),
+        ]);
+        $firstPending = Matchday::factory()->create([
+            'season_id' => $league->season_id,
+            'number' => 2,
+            'starts_at' => now()->subHours(18),
+            'ends_at' => now()->subHours(16),
+            'calculation_unlocked_at' => null,
+        ]);
+        $laterPending = Matchday::factory()->create([
+            'season_id' => $league->season_id,
+            'number' => 3,
+            'starts_at' => now()->subHours(15),
+            'ends_at' => now()->subHours(13),
+            'calculation_unlocked_at' => null,
+        ]);
+        $future = Matchday::factory()->create([
+            'season_id' => $league->season_id,
+            'number' => 4,
+            'starts_at' => now()->addDay(),
+            'ends_at' => now()->addDays(2),
+            'calculation_unlocked_at' => null,
+        ]);
+        Sanctum::actingAs($league->commissioner);
+
+        $data = $this->getJson("/api/v1/leagues/{$league->id}/matchdays")
+            ->assertOk()
+            ->json('data');
+        $byId = collect($data)->keyBy('id');
+
+        $this->assertFalse($byId[$calculated->id]['is_waiting_for_calculation_unlock']);
+        $this->assertFalse($byId[$firstPending->id]['is_calculated']);
+        $this->assertNull($byId[$firstPending->id]['calculation_status']);
+        $this->assertTrue($byId[$firstPending->id]['is_waiting_for_calculation_unlock']);
+        $this->assertFalse($byId[$laterPending->id]['is_calculated']);
+        $this->assertNull($byId[$laterPending->id]['calculation_status']);
+        $this->assertFalse($byId[$laterPending->id]['is_waiting_for_calculation_unlock']);
+        $this->assertFalse($byId[$future->id]['is_waiting_for_calculation_unlock']);
+    }
+
+    public function test_unlocked_first_pending_matchday_has_normal_calculate_capability_without_waiting_signal(): void
+    {
+        [$league, $matchday] = $this->initializedClassicLeague(now()->subHour());
+        Sanctum::actingAs($league->commissioner);
+
+        $this->getJson("/api/v1/leagues/{$league->id}/matchdays")
+            ->assertOk()
+            ->assertJsonPath('data.0.can_calculate', true)
+            ->assertJsonPath('data.0.is_waiting_for_calculation_unlock', false);
     }
 
     /** @return array{League, Matchday} */

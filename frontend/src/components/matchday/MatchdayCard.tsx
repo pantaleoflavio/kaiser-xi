@@ -87,6 +87,11 @@ export function MatchdayCard({
               </p>
             )
           ) : null}
+          {item.is_waiting_for_calculation_unlock ? (
+            <p className="mt-3 inline-flex rounded-full border border-sky-400/30 bg-sky-950/30 px-3 py-1 text-sm font-medium text-sky-200">
+              {t('matchdays.waitingForCalculationUnlock')}
+            </p>
+          ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
           <Link

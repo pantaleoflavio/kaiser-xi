@@ -21,12 +21,23 @@ class MatchdayController extends Controller
             default => Matchday::query()->where('season_id', $league->season_id),
         };
         $matchdays = $query->orderBy('number')->get();
+        $calculations = app(LeagueMatchdayCalculationService::class);
         $matchdays->each(function (Matchday $matchday) use ($league): void {
             $matchday->setAttribute('championship_state', $matchday->temporalState());
             $matchday->setAttribute('formation_allowed', $league->allowsFormationFor($matchday));
+            $matchday->setAttribute('is_waiting_for_calculation_unlock', false);
             self::addCalculationCapabilities($matchday, $league, request()->user());
         });
 
+        $nextWaitingForUnlock = $matchdays->first(
+            fn(Matchday $matchday): bool => ! $matchday->is_calculated
+                && $calculations->isEligible($league, $matchday)
+                && now()->gte($matchday->ends_at)
+                && $matchday->calculation_unlocked_at === null,
+        );
+        if ($nextWaitingForUnlock !== null) {
+            $nextWaitingForUnlock->setAttribute('is_waiting_for_calculation_unlock', true);
+        }
         return MatchdayResource::collection($matchdays);
     }
 

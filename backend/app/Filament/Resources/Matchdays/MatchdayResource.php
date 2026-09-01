@@ -53,8 +53,8 @@ class MatchdayResource extends Resource
             Select::make('season_id')->label(__('admin.labels.season'))->relationship('season', 'name')->searchable()->preload()->required(),
             TextInput::make('number')->label(__('admin.labels.matchday_number'))->numeric()->required(),
             TextInput::make('name')->label(__('admin.labels.round_name')),
-            DateTimePicker::make('starts_at')->label(__('admin.labels.starts_at'))->seconds(false)->required(),
-            DateTimePicker::make('ends_at')->label(__('admin.labels.ends_at'))->seconds(false)->required(),
+            DateTimePicker::make('starts_at')->label(__('admin.labels.starts_at'))->seconds(false)->timezone(config('app.display_timezone'))->required(),
+            DateTimePicker::make('ends_at')->label(__('admin.labels.ends_at'))->seconds(false)->timezone(config('app.display_timezone'))->required(),
         ]);
     }
 
@@ -66,9 +66,9 @@ class MatchdayResource extends Resource
                 TextColumn::make('season.name')->label(__('admin.labels.season'))->searchable()->sortable(),
                 TextColumn::make('number')->label(__('admin.labels.matchday_number'))->searchable()->sortable(),
                 TextColumn::make('name')->label(__('admin.labels.round_name'))->searchable()->sortable(),
-                TextColumn::make('starts_at')->label(__('admin.labels.starts_at'))->dateTime()->sortable(),
-                TextColumn::make('ends_at')->label(__('admin.labels.ends_at'))->dateTime()->sortable(),
-                TextColumn::make('calculation_unlocked_at')->label(__('admin.resources.matchdays.calculation_unlock'))->dateTime()->placeholder(__('admin.resources.matchdays.locked')),
+                TextColumn::make('starts_at')->label(__('admin.labels.starts_at'))->dateTime()->timezone(config('app.display_timezone'))->sortable(),
+                TextColumn::make('ends_at')->label(__('admin.labels.ends_at'))->dateTime()->timezone(config('app.display_timezone'))->sortable(),
+                TextColumn::make('calculation_unlocked_at')->label(__('admin.resources.matchdays.calculation_unlock'))->dateTime()->timezone(config('app.display_timezone'))->placeholder(__('admin.resources.matchdays.locked')),
             ])
             ->recordActions([
                 Action::make('unlockCalculation')
