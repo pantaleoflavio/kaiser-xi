@@ -107,35 +107,39 @@
     "gameInstructions": "Istruzioni di gioco"
   },
   "home": {
-    "eyebrow": "Fantasy football a modo tuo",
-    "title": "Crea mondi di fantasy football privati su più competizioni.",
-    "description": " Kaiser XI è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
+    "eyebrow": "Il tuo fantasy football, le tue regole",
+    "title": "Crea e gestisci leghe private su più competizioni.",
+    "description": "KAISER XI è la piattaforma di fantasy football multi-competizione per vivere stagioni, squadre e giornate insieme al tuo gruppo.",
     "cta": {
       "login": "Accedi",
       "register": "Registrati",
       "dashboard": "Vai alla dashboard"
     },
     "panel": {
-      "label": "Base per il futuro",
-      "title": "Pronta per stagioni fantasy più profonde",
-      "description": "L’app viene preparata per rose, aste, formazioni e giornate, mantenendo l’esperienza attuale semplice e focalizzata."
+      "label": "La tua stagione in un unico posto",
+      "title": "Dalla creazione della lega ai risultati",
+      "description": "Configura la competizione, invita i partecipanti e gestisci fantasy team, formazioni, giornate e classifiche."
     },
     "features": {
       "competitions": {
-        "title": "Piattaforma multi-competizione",
-        "description": "Organizza esperienze di fantasy football che possono crescere oltre una sola competizione reale."
+        "title": "Competizioni e stagioni",
+        "description": "Scegli la competizione e la stagione su cui costruire la tua lega."
       },
       "leagues": {
         "title": "Leghe private",
-        "description": "Crea o unisciti a leghe private per il tuo gruppo e tieni ogni stagione in un unico spazio  Kaiser XI."
+        "description": "Crea uno spazio riservato al tuo gruppo e personalizza le regole della competizione."
       },
       "teams": {
-        "title": "Gestione fantasy team",
-        "description": "Gestisci le basi del tuo fantasy team prima dell’arrivo di strumenti avanzati per leghe e rose."
+        "title": "Fantasy team",
+        "description": "Gestisci nome, rosa e formazione del tuo fantasy team durante la stagione."
       },
-      "roadmap": {
-        "title": "Costruita per i prossimi passi",
-        "description": "È previsto il supporto futuro per rose, aste, formazioni tattiche e flussi delle giornate."
+      "invitations": {
+        "title": "Inviti",
+        "description": "Invita altri giocatori nella lega e gestisci le richieste di partecipazione."
+      },
+      "results": {
+        "title": "Giornate e risultati",
+        "description": "Segui punteggi, risultati e classifiche della tua lega giornata dopo giornata."
       }
     }
   },
@@ -750,7 +754,13 @@
     "calculationSuccess": "Giornata calcolata correttamente.",
     "recalculationSuccess": "Giornata ricalcolata correttamente.",
     "calculationError": "Non è stato possibile calcolare la giornata. Verifica che sia terminata e riprova.",
-    "recalculationWarning": "Il ricalcolo sostituirà i punteggi e i risultati calcolati di questa giornata usando le regole attuali della lega e ricalcolerà la classifica."
+    "recalculationWarning": "Il ricalcolo sostituirà i punteggi e i risultati calcolati di questa giornata usando le regole attuali della lega e ricalcolerà la classifica.",
+    "calculationQueued": "Calcolo in coda.",
+    "recalculationQueued": "Ricalcolo in coda.",
+    "calculationInProgress": "Calcolo in corso…",
+    "calculationFailed": "Calcolo non riuscito. Puoi riprovare.",
+    "waitingForCalculationUnlock": "Il calcolo della giornata sarà disponibile a breve.",
+    "calculationCompleted": "Calcolo della giornata completato."
   },
   "h2h": {
     "title": "Campionato testa a testa",
@@ -1048,7 +1058,7 @@
     }
   },
   "legal": {
-    "privacyTitle": "l’Informativa sulla privacy",
+    "privacyTitle": "Informativa sulla privacy",
     "imprintTitle": "Impressum",
     "navigationLabel": "Informazioni legali",
     "updated": "Versione: 25 agosto 2026",

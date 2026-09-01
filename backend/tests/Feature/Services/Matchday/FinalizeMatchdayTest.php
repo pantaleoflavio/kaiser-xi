@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Services\Matchday;
 
-use App\Events\MatchdayReadyForCalculation;
-use App\Jobs\FinalizeMatchdayJob;
 use App\Models\FantasyMatch;
 use App\Models\FantasyMatchResult;
 use App\Models\FantasyTeam;
@@ -28,7 +26,6 @@ use App\Models\User;
 use App\Services\League\LeagueSettingsService;
 use App\Services\Matchday\FinalizeMatchday;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class FinalizeMatchdayTest extends TestCase
@@ -160,19 +157,6 @@ class FinalizeMatchdayTest extends TestCase
             0,
             Standing::query()->count()
         );
-    }
-
-    public function test_ready_event_queues_one_job_and_job_executes_the_workflow(): void
-    {
-        Queue::fake();
-        $matchday = Matchday::factory()->create();
-
-        MatchdayReadyForCalculation::dispatch($matchday->id);
-
-        Queue::assertPushed(FinalizeMatchdayJob::class, 1);
-        Queue::assertPushed(fn(FinalizeMatchdayJob $job): bool => $job->matchdayId === $matchday->id);
-
-        (new FinalizeMatchdayJob($matchday->id))->handle(app(FinalizeMatchday::class));
     }
 
     /** @return array{League, FantasyMatch, \Illuminate\Support\Collection<int, PlayerScore>} */

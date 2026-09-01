@@ -6,12 +6,19 @@ use App\Enums\CsvImportType;
 use App\Filament\Pages\ImportData;
 use App\Jobs\ExecuteCsvImportJob;
 use App\Models\Import;
+use App\Models\Player;
+use App\Models\PlayerExternalIdentity;
+use App\Models\PlayerRole;
+use App\Models\RealClub;
+use App\Models\RealClubExternalIdentity;
+use App\Models\RealCompetition;
 use App\Models\Role;
+use App\Models\Season;
+use App\Models\SeasonClub;
 use App\Models\User;
 use App\Services\Import\CsvImportService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -123,6 +130,35 @@ class ImportDataUploadTest extends TestCase
         Queue::assertPushed(ExecuteCsvImportJob::class);
     }
 
+    public function test_player_registration_upload_with_pre_rename_date_headers_reaches_ready_analysis(): void
+    {
+        Storage::fake('local');
+        $this->seedReferenceData();
+        $this->actingAs($this->administrator());
+        $competition = RealCompetition::factory()->create(['code' => 'serie_a']);
+        $season = Season::factory()->create(['real_competition_id' => $competition->id, 'name' => '2026/27']);
+        $player = Player::factory()->create();
+        PlayerExternalIdentity::factory()->create(['player_id' => $player->id, 'provider' => 'opta', 'external_id' => 'Player-1']);
+        $club = RealClub::factory()->create();
+        RealClubExternalIdentity::factory()->create(['real_club_id' => $club->id, 'provider' => 'opta', 'external_id' => 'Club-1']);
+        SeasonClub::factory()->create(['season_id' => $season->id, 'real_club_id' => $club->id]);
+        PlayerRole::query()->firstOrCreate(['key' => 'forward'], ['label' => 'Forward', 'sort_order' => 1]);
+        $contents = "competition_code,season_name,player_provider,player_external_id,club_provider,club_external_id,player_role,registered_at,released_at\nserie_a,2026/27,opta,Player-1,opta,Club-1,forward,2026-08-20,\n";
+
+        $component = Livewire::test(ImportData::class)
+            ->set('data.type', CsvImportType::PlayerSeasonRegistrations->value)
+            ->set('data.file', UploadedFile::fake()->createWithContent('registrations.csv', $contents))
+            ->call('analyse')
+            ->assertSet('analysis.has_errors', false)
+            ->assertSet('analysis.counts.create', 1)
+            ->assertSet('importId', fn(?int $id): bool => $id !== null);
+
+        $this->assertDatabaseHas('imports', [
+            'id' => $component->get('importId'),
+            'type' => CsvImportType::PlayerSeasonRegistrations->value,
+            'status' => 'ready',
+        ]);
+    }
 
     private function administrator(): User
     {

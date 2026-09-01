@@ -107,35 +107,39 @@
     "gameInstructions": "Spielanleitung"
   },
   "home": {
-    "eyebrow": "Deine Liga. Deine Regeln.",
-    "title": "Erstelle private Fantasy-Football-Welten über mehrere Wettbewerbe hinweg.",
-    "description": "Kaiser XI ist eine Multi-Wettbewerbs-Plattform für Fantasy Football, auf der du private Ligen erstellen oder ihnen beitreten und Fantasy-Teams mit Freunden verwalten kannst.",
+    "eyebrow": "Dein Fantasy Football, deine Regeln",
+    "title": "Erstelle und verwalte private Ligen über mehrere Wettbewerbe hinweg.",
+    "description": "KAISER XI ist die Multi-Wettbewerbs-Plattform für Fantasy Football, auf der du Saisons, Teams und Spieltage mit deiner Gruppe erlebst.",
     "cta": {
       "login": "Anmelden",
       "register": "Registrieren",
       "dashboard": "Zum Dashboard"
     },
     "panel": {
-      "label": "Grundlage für kommende Funktionen",
-      "title": "Bereit für tiefere Fantasy-Saisons",
-      "description": "Die App wird für Kader, Auktionen, Formationen und Spieltage vorbereitet, während die aktuelle Nutzung einfach und fokussiert bleibt."
+      "label": "Deine Saison an einem Ort",
+      "title": "Von der Ligaerstellung bis zu den Ergebnissen",
+      "description": "Konfiguriere den Wettbewerb, lade Teilnehmer ein und verwalte Fantasy-Teams, Aufstellungen, Spieltage und Tabellen."
     },
     "features": {
       "competitions": {
-        "title": "Multi-Wettbewerbs-Plattform",
-        "description": "Organisiere Fantasy-Football-Erlebnisse, die über einen einzelnen realen Wettbewerb hinauswachsen können."
+        "title": "Wettbewerbe und Saisons",
+        "description": "Wähle den Wettbewerb und die Saison, auf denen deine Liga aufbaut."
       },
       "leagues": {
         "title": "Private Ligen",
-        "description": "Erstelle private Ligen für deine Gruppe oder tritt ihnen bei und halte jede Saison in einem Kaiser XI-Arbeitsbereich zusammen."
+        "description": "Erstelle einen privaten Bereich für deine Gruppe und passe die Wettbewerbsregeln an."
       },
       "teams": {
-        "title": "Fantasy-Teams verwalten",
-        "description": "Verwalte die Grundlage deines Fantasy-Teams, bevor erweiterte Liga- und Kaderwerkzeuge dazukommen."
+        "title": "Fantasy-Teams",
+        "description": "Verwalte Name, Kader und Aufstellung deines Fantasy-Teams während der Saison."
       },
-      "roadmap": {
-        "title": "Gebaut für die nächsten Schritte",
-        "description": "Künftige Unterstützung für Kader, Auktionen, taktische Formationen und Spieltagsabläufe ist geplant."
+      "invitations": {
+        "title": "Einladungen",
+        "description": "Lade weitere Spieler in die Liga ein und verwalte Teilnahmeanfragen."
+      },
+      "results": {
+        "title": "Spieltage und Ergebnisse",
+        "description": "Verfolge Punkte, Ergebnisse und Tabellen deiner Liga von Spieltag zu Spieltag."
       }
     }
   },
@@ -798,7 +802,13 @@
     "calculationSuccess": "Der Spieltag wurde erfolgreich berechnet.",
     "recalculationSuccess": "Der Spieltag wurde erfolgreich neu berechnet.",
     "calculationError": "Der Spieltag konnte nicht berechnet werden. Prüfe, ob er beendet ist, und versuche es erneut.",
-    "recalculationWarning": "Bei einer Neuberechnung werden die berechneten Punkte und Ergebnisse dieses Spieltags durch Werte nach den aktuellen Ligaregeln ersetzt und die Tabelle wird neu berechnet."
+    "recalculationWarning": "Bei einer Neuberechnung werden die berechneten Punkte und Ergebnisse dieses Spieltags durch Werte nach den aktuellen Ligaregeln ersetzt und die Tabelle wird neu berechnet.",
+    "calculationQueued": "Berechnung eingereiht.",
+    "recalculationQueued": "Neuberechnung eingereiht.",
+    "calculationInProgress": "Berechnung läuft…",
+    "calculationFailed": "Berechnung fehlgeschlagen. Du kannst es erneut versuchen.",
+    "waitingForCalculationUnlock": "Die Berechnung des Spieltags ist in Kürze verfügbar.",
+    "calculationCompleted": "Spieltagberechnung abgeschlossen."
   },
   "h2h": {
     "title": "Head-to-Head-Meisterschaft",
