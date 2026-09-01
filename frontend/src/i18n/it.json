@@ -69,19 +69,6 @@
       "submit": "Reimposta password",
       "submitting": "Reimpostazione...",
       "login": "Vai al login"
-    },
-    "verify": {
-      "title": "Verifica la tua email",
-      "description": "Abbiamo inviato un link di verifica a",
-      "sent": "Email di verifica inviata.",
-      "error": "Impossibile reinviare l’email.",
-      "resend": "Reinvia email di verifica",
-      "sending": "Invio..."
-    },
-    "verified": {
-      "title": "Email verificata",
-      "description": "Il tuo indirizzo email è stato verificato.",
-      "continue": "Continua su Kaiser XI"
     }
   },
   "dashboard": {
@@ -622,14 +609,9 @@
     "fields": {
       "name": "Nome",
       "email": "Email",
-      "emailVerification": "Verifica email",
       "currentPassword": "Password attuale",
       "newPassword": "Nuova password",
       "confirmNewPassword": "Conferma nuova password"
-    },
-    "email": {
-      "verified": "Verificata",
-      "unverified": "Non verificata"
     },
     "profile": {
       "title": "Profilo",
@@ -1076,11 +1058,11 @@
       },
       "data": {
         "title": "Dati trattati",
-        "body": "La registrazione conserva nome visualizzato, email, hash unidirezionale della password (mai in chiaro), data di verifica email, data di presa visione dell’informativa, tema, ruoli e date account. La sicurezza conserva hash dei token di accesso e date di scadenza/uso; email e token di reset sono temporanei. In base alla configurazione finale, le richieste possono generare normali log server e sicurezza: IP, orario, percorso e user agent."
+        "body": "La registrazione conserva nome visualizzato, email, hash unidirezionale della password (mai in chiaro), data di presa visione dell’informativa, tema, ruoli e date account. La sicurezza conserva hash dei token di accesso e date di scadenza/uso; email e token di reset sono temporanei. In base alla configurazione finale, le richieste possono generare normali log server e sicurezza: IP, orario, percorso e user agent."
       },
       "purposes": {
         "title": "Finalità e basi giuridiche",
-        "body": "Account, autenticazione, verifica, reset, sicurezza e dati di gioco richiesti sono trattati per fornire il servizio ed eseguire il rapporto con l’utente (art. 6(1)(b) GDPR). Prevenzione abusi, sicurezza e log necessari si basano sul legittimo interesse alla gestione sicura (art. 6(1)(f)); obblighi legali, se presenti, sull’art. 6(1)(c). La casella di registrazione attesta solo la lettura e non è consenso al trattamento essenziale."
+        "body": "Account, autenticazione, reset, sicurezza e dati di gioco richiesti sono trattati per fornire il servizio ed eseguire il rapporto con l’utente (art. 6(1)(b) GDPR). Prevenzione abusi, sicurezza e log necessari si basano sul legittimo interesse alla gestione sicura (art. 6(1)(f)); obblighi legali, se presenti, sull’art. 6(1)(c). La casella di registrazione attesta solo la lettura e non è consenso al trattamento essenziale."
       },
       "game": {
         "title": "Dati di Leghe e gioco",
@@ -1092,15 +1074,15 @@
       },
       "recipients": {
         "title": "Destinatari e responsabili",
-        "body": "I dati sono comunicati solo ai partecipanti autorizzati quando richiesto dal gioco e ai fornitori necessari per hosting, database ed email transazionali di verifica/reset. Fornitori, luoghi, contratti e sub-responsabili finali devono essere verificati e configurati prima del lancio."
+        "body": "I dati sono comunicati solo ai partecipanti autorizzati quando richiesto dal gioco e ai fornitori necessari per hosting, database ed email transazionali di reset password. Fornitori, luoghi, contratti e sub-responsabili finali devono essere verificati e configurati prima del lancio."
       },
       "retention": {
         "title": "Conservazione",
-        "body": "Account e gioco restano finché account e competizioni lo richiedono. Token di verifica/reset scadono secondo la sicurezza; quelli di accesso scadono o sono revocati. I log seguiranno necessità di sicurezza e configurazione finale. Obblighi legali possono prevalere."
+        "body": "Account e gioco restano finché account e competizioni lo richiedono. Token di reset scadono secondo la sicurezza; quelli di accesso scadono o sono revocati. I log seguiranno necessità di sicurezza e configurazione finale. Obblighi legali possono prevalere."
       },
       "deletion": {
         "title": "Cancellazione e anonimizzazione",
-        "body": "La cancellazione sostituisce irreversibilmente gli identificativi con email casuale non valida e nome generico; elimina verifica, tema, remember token, ruoli, reset e token di accesso e sostituisce l’hash password. Lo storico può restare collegato all’utente anonimizzato per integrità di competizioni, risultati, classifiche, formazioni e scambi. Non elimina subito ogni riga fisica."
+        "body": "La cancellazione sostituisce irreversibilmente gli identificativi con email casuale non valida e nome generico; elimina tema, remember token, ruoli, reset e token di accesso e sostituisce l’hash password. Lo storico può restare collegato all’utente anonimizzato per integrità di competizioni, risultati, classifiche, formazioni e scambi. Non elimina subito ogni riga fisica."
       },
       "rights": {
         "title": "Diritti",

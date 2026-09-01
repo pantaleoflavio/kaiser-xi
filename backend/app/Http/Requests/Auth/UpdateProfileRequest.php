@@ -28,7 +28,6 @@ class UpdateProfileRequest extends FormRequest
             'roles' => ['prohibited'],
             'role' => ['prohibited'],
             'league_roles' => ['prohibited'],
-            'email_verified_at' => ['prohibited'],
             'created_at' => ['prohibited'],
             'updated_at' => ['prohibited'],
         ];

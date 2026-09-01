@@ -69,19 +69,6 @@
       "submit": "Reset password",
       "submitting": "Resetting...",
       "login": "Continue to login"
-    },
-    "verify": {
-      "title": "Verify your email",
-      "description": "We sent a verification link to",
-      "sent": "Verification email sent.",
-      "error": "Unable to resend verification email.",
-      "resend": "Resend verification email",
-      "sending": "Sending..."
-    },
-    "verified": {
-      "title": "Email verified",
-      "description": "Your email address has been verified successfully.",
-      "continue": "Continue to Kaiser XI"
     }
   },
   "dashboard": {
@@ -670,14 +657,9 @@
     "fields": {
       "name": "Name",
       "email": "Email",
-      "emailVerification": "Email verification",
       "currentPassword": "Current password",
       "newPassword": "New password",
       "confirmNewPassword": "Confirm new password"
-    },
-    "email": {
-      "verified": "Verified",
-      "unverified": "Not verified"
     },
     "profile": {
       "title": "Profile",
@@ -1124,11 +1106,11 @@
       },
       "data": {
         "title": "Data we process",
-        "body": "Registration stores your display name, email address, a one-way password hash (never the plaintext password), email-verification time, Privacy Policy acknowledgement time, selected theme, roles, and account timestamps. Security functions store access-token hashes and expiry/use timestamps; password-reset email and token data are stored temporarily. Requests may also produce ordinary server and security logs such as IP address, time, requested path, and user agent, according to the final hosting configuration."
+        "body": "Registration stores your display name, email address, a one-way password hash (never the plaintext password), Privacy Policy acknowledgement time, selected theme, roles, and account timestamps. Security functions store access-token hashes and expiry/use timestamps; password-reset email and token data are stored temporarily. Requests may also produce ordinary server and security logs such as IP address, time, requested path, and user agent, according to the final hosting configuration."
       },
       "purposes": {
         "title": "Purposes and legal bases",
-        "body": "We process account, authentication, verification, reset, security, and requested game data to provide the service and perform the user relationship (Article 6(1)(b) GDPR). Proportionate abuse prevention, service security, and necessary operational logs rely on legitimate interests in secure operation (Article 6(1)(f) GDPR). Legal obligations apply where required (Article 6(1)(c) GDPR). The registration checkbox only acknowledges reading this policy; it is not consent to essential processing."
+        "body": "We process account, authentication, reset, security, and requested game data to provide the service and perform the user relationship (Article 6(1)(b) GDPR). Proportionate abuse prevention, service security, and necessary operational logs rely on legitimate interests in secure operation (Article 6(1)(f) GDPR). Legal obligations apply where required (Article 6(1)(c) GDPR). The registration checkbox only acknowledges reading this policy; it is not consent to essential processing."
       },
       "game": {
         "title": "League and game data",
@@ -1140,15 +1122,15 @@
       },
       "recipients": {
         "title": "Recipients and processors",
-        "body": "Data are disclosed only to authorized League participants where the game requires it and to infrastructure processors needed for hosting, database operation, and transactional verification/password-reset email. Final providers, locations, contracts, and subprocessors must be verified and configured before launch."
+        "body": "Data are disclosed only to authorized League participants where the game requires it and to infrastructure processors needed for hosting, database operation, and transactional password-reset email. Final providers, locations, contracts, and subprocessors must be verified and configured before launch."
       },
       "retention": {
         "title": "Retention",
-        "body": "Account and game data are retained while the account and competitions require them. Verification and reset tokens expire under the configured security periods; access tokens expire or are revoked. Operational log retention will follow the final provider configuration and security need. Legal retention duties may override these criteria where applicable."
+        "body": "Account and game data are retained while the account and competitions require them. Password reset tokens expire under the configured security periods; access tokens expire or are revoked. Operational log retention will follow the final provider configuration and security need. Legal retention duties may override these criteria where applicable."
       },
       "deletion": {
         "title": "Account deletion and anonymization",
-        "body": "Deletion irreversibly replaces direct account identifiers with a random deleted-account address and generic name, clears verification, theme, remember token, roles, password-reset data, and access tokens, and replaces the password hash so credentials stop working. Historical League and game records may remain linked to the anonymized user record where necessary to preserve competitions, results, standings, formations, and trades. This is not an immediate physical deletion of every database row."
+        "body": "Deletion irreversibly replaces direct account identifiers with a random deleted-account address and generic name, clears theme, remember token, roles, password-reset data, and access tokens, and replaces the password hash so credentials stop working. Historical League and game records may remain linked to the anonymized user record where necessary to preserve competitions, results, standings, formations, and trades. This is not an immediate physical deletion of every database row."
       },
       "rights": {
         "title": "Your rights",

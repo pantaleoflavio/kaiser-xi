@@ -19,9 +19,6 @@ const CreateLeaguePage = lazy(() =>
 const DashboardPage = lazy(() =>
   import('../pages/DashboardPage').then((module) => ({ default: module.DashboardPage })),
 );
-const EmailVerifiedPage = lazy(() =>
-  import('../pages/EmailVerifiedPage').then((module) => ({ default: module.EmailVerifiedPage })),
-);
 const FantasyTeamDetailPage = lazy(() =>
   import('../pages/FantasyTeamDetailPage').then((module) => ({
     default: module.FantasyTeamDetailPage,
@@ -86,9 +83,6 @@ const RegisterPage = lazy(() =>
 const ResetPasswordPage = lazy(() =>
   import('../pages/ResetPasswordPage').then((module) => ({ default: module.ResetPasswordPage })),
 );
-const VerifyEmailPage = lazy(() =>
-  import('../pages/VerifyEmailPage').then((module) => ({ default: module.VerifyEmailPage })),
-);
 const PrivacyPage = lazy(() =>
   import('../pages/PrivacyPage').then((module) => ({ default: module.PrivacyPage })),
 );
@@ -108,8 +102,6 @@ export function AppRoutes() {
         <Route index element={<HomePage />} />
         <Route path="game-instructions" element={<GameInstructionsPage />} />
         <Route path="rules" element={<Navigate to="/game-instructions" replace />} />
-        <Route path="verify-email" element={<VerifyEmailPage />} />
-        <Route path="email-verified" element={<EmailVerifiedPage />} />
         <Route path="privacy" element={<PrivacyPage />} />
         <Route path="impressum" element={<ImprintPage />} />
         <Route path="privacy-acknowledgement" element={<PrivacyAcknowledgementPage />} />

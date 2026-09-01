@@ -23,7 +23,6 @@ class DemoUsersSeeder extends Seeder
                 ['email' => $email],
                 [
                     'name' => $name,
-                    'email_verified_at' => now(),
                     'password' => Hash::make('password'),
                 ],
             );

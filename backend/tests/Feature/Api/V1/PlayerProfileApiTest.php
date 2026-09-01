@@ -92,13 +92,11 @@ class PlayerProfileApiTest extends TestCase
             ->assertJsonPath('data.matchdays.0.opponent', null);
     }
 
-    public function test_profile_requires_verified_auth_valid_player_and_valid_season(): void
+    public function test_profile_requires_auth_valid_player_and_valid_season(): void
     {
         $player = Player::factory()->create();
         $season = Season::factory()->create();
         $this->getJson("/api/v1/players/{$player->id}?season_id={$season->id}")->assertUnauthorized();
-        Sanctum::actingAs(User::factory()->unverified()->create());
-        $this->getJson("/api/v1/players/{$player->id}?season_id={$season->id}")->assertForbidden();
         Sanctum::actingAs(User::factory()->create());
         $this->getJson("/api/v1/players/999999?season_id={$season->id}")->assertNotFound();
         $this->getJson("/api/v1/players/{$player->id}?season_id=999999")->assertUnprocessable();
