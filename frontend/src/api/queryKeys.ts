@@ -7,6 +7,8 @@ export const leagueKeys = {
   all: ['leagues'] as const,
   lists: () => [...leagueKeys.all, 'list'] as const,
   detail: (leagueId: string | number) => [...leagueKeys.all, 'detail', String(leagueId)] as const,
+  players: (leagueId: string | number, filters: object) =>
+    [...leagueKeys.detail(leagueId), 'players', filters] as const,
   settings: (leagueId: string | number) =>
     [...leagueKeys.all, 'settings', String(leagueId)] as const,
   market: (leagueId: string | number) => [...leagueKeys.detail(leagueId), 'market'] as const,

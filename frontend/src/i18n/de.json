@@ -1160,5 +1160,22 @@
     "submit": "Weiter",
     "submitting": "Wird gespeichert…",
     "error": "Die Kenntnisnahme konnte nicht gespeichert werden."
+  },
+  "leaguePlayers": {
+    "title": "Spieler",
+    "count": "{{count}} Spieler",
+    "search": "Nach Name suchen",
+    "club": "Realer Verein",
+    "allClubs": "Alle Vereine",
+    "position": "Position",
+    "allPositions": "Alle Positionen",
+    "status": "Fantasy-Status",
+    "allStatuses": "Alle Status",
+    "freeAgent": "Vereinslos",
+    "assigned": "Zugewiesen",
+    "fantasyTeam": "Fantasy-Team",
+    "allFantasyTeams": "Alle Fantasy-Teams",
+    "emptyTitle": "Keine Spieler gefunden",
+    "empty": "Keine Spieler entsprechen den ausgewählten Filtern."
   }
 }

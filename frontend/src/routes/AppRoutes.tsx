@@ -54,6 +54,9 @@ const LeagueFantasyTeamsPage = lazy(() =>
 const LeagueMarketPage = lazy(() =>
   import('../pages/LeagueMarketPage').then((module) => ({ default: module.LeagueMarketPage })),
 );
+const LeaguePlayersPage = lazy(() =>
+  import('../pages/LeaguePlayersPage').then((module) => ({ default: module.LeaguePlayersPage })),
+);
 const LeagueRulesPage = lazy(() =>
   import('../pages/LeagueRulesPage').then((module) => ({ default: module.LeagueRulesPage })),
 );
@@ -115,6 +118,7 @@ export function AppRoutes() {
           <Route path="leagues/:leagueId" element={<LeagueDetailPage />} />
           <Route path="leagues/:leagueId/rules" element={<LeagueRulesPage />} />
           <Route path="leagues/:leagueId/market" element={<LeagueMarketPage />} />
+          <Route path="leagues/:leagueId/players" element={<LeaguePlayersPage />} />
           <Route path="leagues/:leagueId/fantasy-teams" element={<LeagueFantasyTeamsPage />} />
           <Route path="leagues/:leagueId/matchdays" element={<MatchdayListPage />} />
           <Route path="leagues/:leagueId/standings" element={<LeagueStandingsPage />} />

@@ -1112,5 +1112,22 @@
     "submit": "Continua",
     "submitting": "Salvataggio…",
     "error": "Impossibile salvare la presa visione."
+  },
+  "leaguePlayers": {
+    "title": "Giocatori",
+    "count": "{{count}} giocatori",
+    "search": "Cerca per nome",
+    "club": "Club reale",
+    "allClubs": "Tutti i club",
+    "position": "Ruolo",
+    "allPositions": "Tutti i ruoli",
+    "status": "Stato fantasy",
+    "allStatuses": "Tutti gli stati",
+    "freeAgent": "Svincolato",
+    "assigned": "Assegnato",
+    "fantasyTeam": "Fantasquadra",
+    "allFantasyTeams": "Tutte le fantasquadre",
+    "emptyTitle": "Nessun giocatore trovato",
+    "empty": "Nessun giocatore corrisponde ai filtri selezionati."
   }
 }
