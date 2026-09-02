@@ -69,19 +69,6 @@
       "submit": "Passwort zurücksetzen",
       "submitting": "Wird zurückgesetzt...",
       "login": "Zur Anmeldung"
-    },
-    "verify": {
-      "title": "E-Mail bestätigen",
-      "description": "Wir haben einen Bestätigungslink gesendet an",
-      "sent": "Bestätigungs-E-Mail wurde gesendet.",
-      "error": "Die E-Mail konnte nicht erneut gesendet werden.",
-      "resend": "Bestätigungs-E-Mail erneut senden",
-      "sending": "Wird gesendet..."
-    },
-    "verified": {
-      "title": "E-Mail bestätigt",
-      "description": "Deine E-Mail-Adresse wurde erfolgreich bestätigt.",
-      "continue": "Weiter zu Kaiser XI"
     }
   },
   "dashboard": {
@@ -670,14 +657,9 @@
     "fields": {
       "name": "Name",
       "email": "E-Mail",
-      "emailVerification": "E-Mail-Verifizierung",
       "currentPassword": "Aktuelles Passwort",
       "newPassword": "Neues Passwort",
       "confirmNewPassword": "Neues Passwort bestätigen"
-    },
-    "email": {
-      "verified": "Verifiziert",
-      "unverified": "Nicht verifiziert"
     },
     "profile": {
       "title": "Profil",
@@ -1124,11 +1106,11 @@
       },
       "data": {
         "title": "Verarbeitete Daten",
-        "body": "Bei der Registrierung speichern wir Anzeigenamen, E-Mail-Adresse, einen Einweg-Passwort-Hash (niemals das Klartextpasswort), Zeitpunkt der E-Mail-Bestätigung, Zeitpunkt der Kenntnisnahme der Datenschutzerklärung, gewähltes Design, Rollen und Kontozeitstempel. Sicherheitsfunktionen speichern Hashes von Zugriffstoken sowie Ablauf-/Nutzungszeiten; E-Mail und Token für Passwortzurücksetzungen werden vorübergehend gespeichert. Anfragen können abhängig von der endgültigen Hosting-Konfiguration übliche Server- und Sicherheitsprotokolle wie IP-Adresse, Zeit, Pfad und User-Agent erzeugen."
+        "body": "Bei der Registrierung speichern wir Anzeigenamen, E-Mail-Adresse, einen Einweg-Passwort-Hash (niemals das Klartextpasswort), Zeitpunkt der Kenntnisnahme der Datenschutzerklärung, gewähltes Design, Rollen und Kontozeitstempel. Sicherheitsfunktionen speichern Hashes von Zugriffstoken sowie Ablauf-/Nutzungszeiten; E-Mail und Token für Passwortzurücksetzungen werden vorübergehend gespeichert. Anfragen können abhängig von der endgültigen Hosting-Konfiguration übliche Server- und Sicherheitsprotokolle wie IP-Adresse, Zeit, Pfad und User-Agent erzeugen."
       },
       "purposes": {
         "title": "Zwecke und Rechtsgrundlagen",
-        "body": "Konto-, Authentifizierungs-, Bestätigungs-, Zurücksetzungs-, Sicherheits- und angeforderte Spieldaten verarbeiten wir zur Vertragserfüllung bzw. Durchführung des Nutzungsverhältnisses (Art. 6 Abs. 1 lit. b DSGVO). Angemessene Missbrauchsprävention, Sicherheit und notwendige Betriebsprotokolle beruhen auf berechtigten Interessen am sicheren Betrieb (Art. 6 Abs. 1 lit. f DSGVO). Rechtspflichten gelten, soweit erforderlich (Art. 6 Abs. 1 lit. c DSGVO). Das Kästchen bei der Registrierung bestätigt nur die Kenntnisnahme; es ist keine Einwilligung in notwendige Verarbeitung."
+        "body": "Konto-, Authentifizierungs-, Bestätigungs-, Sicherheits- und angeforderte Spieldaten verarbeiten wir zur Vertragserfüllung bzw. Durchführung des Nutzungsverhältnisses (Art. 6 Abs. 1 lit. b DSGVO). Angemessene Missbrauchsprävention, Sicherheit und notwendige Betriebsprotokolle beruhen auf berechtigten Interessen am sicheren Betrieb (Art. 6 Abs. 1 lit. f DSGVO). Rechtspflichten gelten, soweit erforderlich (Art. 6 Abs. 1 lit. c DSGVO). Das Kästchen bei der Registrierung bestätigt nur die Kenntnisnahme; es ist keine Einwilligung in notwendige Verarbeitung."
       },
       "game": {
         "title": "Liga- und Spieldaten",
@@ -1140,15 +1122,15 @@
       },
       "recipients": {
         "title": "Empfänger und Auftragsverarbeiter",
-        "body": "Daten erhalten nur berechtigte Liga-Mitglieder, soweit das Spiel dies verlangt, sowie notwendige Anbieter für Hosting, Datenbank und transaktionale Bestätigungs-/Passwort-E-Mails. Endgültige Anbieter, Orte, Verträge und Unterauftragsverarbeiter müssen vor Start geprüft und konfiguriert werden."
+        "body": "Daten erhalten nur berechtigte Liga-Mitglieder, soweit das Spiel dies verlangt, sowie notwendige Anbieter für Hosting, Datenbank und transaktionale E-Mails zur Passwortzurücksetzung. Endgültige Anbieter, Orte, Verträge und Unterauftragsverarbeiter müssen vor Start geprüft und konfiguriert werden."
       },
       "retention": {
         "title": "Speicherdauer",
-        "body": "Konto- und Spieldaten bleiben gespeichert, solange Konto und Wettbewerbe sie erfordern. Bestätigungs- und Zurücksetzungstoken verfallen nach Sicherheitskonfiguration; Zugriffstoken verfallen oder werden widerrufen. Protokolle werden nach finaler Anbieterkonfiguration und Sicherheitsbedarf aufbewahrt. Gesetzliche Pflichten können vorgehen."
+        "body": "Konto- und Spieldaten bleiben gespeichert, solange Konto und Wettbewerbe sie erfordern. Passwortzurücksetzungstoken verfallen nach Sicherheitskonfiguration; Zugriffstoken verfallen oder werden widerrufen. Protokolle werden nach finaler Anbieterkonfiguration und Sicherheitsbedarf aufbewahrt. Gesetzliche Pflichten können vorgehen."
       },
       "deletion": {
         "title": "Kontolöschung und Anonymisierung",
-        "body": "Bei Löschung werden direkte Kennungen unumkehrbar durch eine zufällige Löschadresse und einen allgemeinen Namen ersetzt; Bestätigung, Design, Remember-Token, Rollen, Passwortzurücksetzungsdaten und Zugriffstoken werden entfernt und der Passwort-Hash ersetzt. Historische Liga- und Spieldatensätze können zur Integrität von Wettbewerben, Ergebnissen, Tabellen, Aufstellungen und Transfers mit dem anonymisierten Datensatz verbunden bleiben. Nicht jede Datenbankzeile wird sofort physisch gelöscht."
+        "body": "Bei Löschung werden direkte Kennungen unumkehrbar durch eine zufällige Löschadresse und einen allgemeinen Namen ersetzt; Design, Remember-Token, Rollen, Passwortzurücksetzungsdaten und Zugriffstoken werden entfernt und der Passwort-Hash ersetzt. Historische Liga- und Spieldatensätze können zur Integrität von Wettbewerben, Ergebnissen, Tabellen, Aufstellungen und Transfers mit dem anonymisierten Datensatz verbunden bleiben. Nicht jede Datenbankzeile wird sofort physisch gelöscht."
       },
       "rights": {
         "title": "Ihre Rechte",
@@ -1178,5 +1160,22 @@
     "submit": "Weiter",
     "submitting": "Wird gespeichert…",
     "error": "Die Kenntnisnahme konnte nicht gespeichert werden."
+  },
+  "leaguePlayers": {
+    "title": "Spieler",
+    "count": "{{count}} Spieler",
+    "search": "Nach Name suchen",
+    "club": "Realer Verein",
+    "allClubs": "Alle Vereine",
+    "position": "Position",
+    "allPositions": "Alle Positionen",
+    "status": "Fantasy-Status",
+    "allStatuses": "Alle Status",
+    "freeAgent": "Vereinslos",
+    "assigned": "Zugewiesen",
+    "fantasyTeam": "Fantasy-Team",
+    "allFantasyTeams": "Alle Fantasy-Teams",
+    "emptyTitle": "Keine Spieler gefunden",
+    "empty": "Keine Spieler entsprechen den ausgewählten Filtern."
   }
 }

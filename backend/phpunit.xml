@@ -30,7 +30,7 @@
         <env name="DB_USERNAME" value="fantasy" force="true"/>
         <env name="DB_PASSWORD" value="password" force="true"/>
         <env name="DB_URL" value="" force="true"/>
-        <env name="MAIL_MAILER" value="array"/>
+        <env name="MAIL_MAILER" value="array" force="true"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>

@@ -1,32 +1,32 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AcceptLeagueInvitationController;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CalculateMatchdayController;
+use App\Http\Controllers\Api\V1\ClassicChampionshipController;
+use App\Http\Controllers\Api\V1\ClassicMatchdayController;
+use App\Http\Controllers\Api\V1\EligiblePlayerController;
+use App\Http\Controllers\Api\V1\FantasyTeamController;
+use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
+use App\Http\Controllers\Api\V1\FormationController;
+use App\Http\Controllers\Api\V1\HeadToHeadScheduleController;
+use App\Http\Controllers\Api\V1\LeagueController;
+use App\Http\Controllers\Api\V1\LeagueInvitationController;
+use App\Http\Controllers\Api\V1\LeagueMemberController;
+use App\Http\Controllers\Api\V1\LeaguePlayerController;
+use App\Http\Controllers\Api\V1\LeagueSettingController;
+use App\Http\Controllers\Api\V1\LeagueTypeController;
+use App\Http\Controllers\Api\V1\MarketController;
+use App\Http\Controllers\Api\V1\MarketPlayerController;
+use App\Http\Controllers\Api\V1\MarketTradeController;
+use App\Http\Controllers\Api\V1\MatchdayController;
+use App\Http\Controllers\Api\V1\PlayerMatchdayDetailsController;
+use App\Http\Controllers\Api\V1\PlayerProfileController;
+use App\Http\Controllers\Api\V1\SeasonController;
+use App\Http\Controllers\Api\V1\StandingController;
+use App\Http\Controllers\Api\V1\TeamMatchdayScoreController;
 use App\Models\FantasyTeam;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\LeagueController;
-use App\Http\Controllers\Api\V1\MarketController;
-use App\Http\Controllers\Api\V1\SeasonController;
-use App\Http\Controllers\Api\V1\MatchdayController;
-use App\Http\Controllers\Api\V1\StandingController;
-use App\Http\Controllers\Api\V1\FormationController;
-use App\Http\Controllers\Api\V1\LeagueTypeController;
-use App\Http\Controllers\Api\V1\FantasyTeamController;
-use App\Http\Controllers\Api\V1\MarketTradeController;
-use App\Http\Controllers\Api\V1\LeagueMemberController;
-use App\Http\Controllers\Api\V1\MarketPlayerController;
-use App\Http\Controllers\Api\V1\LeagueSettingController;
-use App\Http\Controllers\Api\V1\PlayerProfileController;
-use App\Http\Controllers\Api\V1\EligiblePlayerController;
-use App\Http\Controllers\Api\V1\ClassicMatchdayController;
-use App\Http\Controllers\Api\V1\LeagueInvitationController;
-use App\Http\Controllers\Api\V1\CalculateMatchdayController;
-use App\Http\Controllers\Api\V1\EmailVerificationController;
-use App\Http\Controllers\Api\V1\FantasyTeamPlayerController;
-use App\Http\Controllers\Api\V1\TeamMatchdayScoreController;
-use App\Http\Controllers\Api\V1\HeadToHeadScheduleController;
-use App\Http\Controllers\Api\V1\ClassicChampionshipController;
-use App\Http\Controllers\Api\V1\PlayerMatchdayDetailsController;
-use App\Http\Controllers\Api\V1\AcceptLeagueInvitationController;
 
 Route::prefix('v1')->group(function (): void {
     Route::get('/health', static fn() => response()->json([
@@ -40,7 +40,6 @@ Route::prefix('v1')->group(function (): void {
         Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
         Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,1');
         Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1');
-        Route::get('/verify-email/{user}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
 
         Route::middleware('auth:sanctum')->group(function (): void {
             Route::post('/logout', [AuthController::class, 'logout']);
@@ -49,11 +48,10 @@ Route::prefix('v1')->group(function (): void {
             Route::patch('/me', [AuthController::class, 'updateProfile']);
             Route::put('/me/password', [AuthController::class, 'updatePassword']);
             Route::delete('/me', [AuthController::class, 'deleteAccount']);
-            Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
         });
     });
 
-    Route::middleware(['auth:sanctum', 'privacy.acknowledged', 'verified'])->group(function (): void {
+    Route::middleware(['auth:sanctum', 'privacy.acknowledged'])->group(function (): void {
         Route::get('/players/{player}', PlayerProfileController::class)->name('api.v1.players.show');
         Route::get('/invitations', [AcceptLeagueInvitationController::class, 'index'])->name('api.v1.invitations.index');
         Route::post('/invitations/{invitation}/accept', [AcceptLeagueInvitationController::class, 'accept'])->name('api.v1.invitations.accept');
@@ -64,11 +62,13 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/league-types', [LeagueTypeController::class, 'index'])->name('api.v1.league-types.index');
     });
 
-    Route::prefix('leagues')->middleware(['auth:sanctum', 'privacy.acknowledged', 'verified'])->scopeBindings()->group(function (): void {
+    Route::prefix('leagues')->middleware(['auth:sanctum', 'privacy.acknowledged'])->scopeBindings()->group(function (): void {
         // League routes
         Route::get('/', [LeagueController::class, 'index']);
         Route::post('/', [LeagueController::class, 'store']);
         Route::get('/{league}', [LeagueController::class, 'show'])->middleware('can:view,league');
+        Route::get('/{league}/players', LeaguePlayerController::class)
+            ->name('api.v1.leagues.players.index')->middleware('can:view,league');
         Route::patch('/{league}', [LeagueController::class, 'update'])->middleware('can:update,league');
         Route::delete('/{league}', [LeagueController::class, 'destroy'])->middleware('can:delete,league');
         Route::get('/{league}/members', [LeagueMemberController::class, 'index'])->middleware('can:view,league');

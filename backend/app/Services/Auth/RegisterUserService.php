@@ -21,8 +21,6 @@ class RegisterUserService
             'privacy_acknowledged_at' => now(),
         ]);
 
-        $user->sendEmailVerificationNotification();
-
         $userRole = Role::query()->where('name', 'user')->firstOrFail();
         $user->roles()->syncWithoutDetaching([$userRole->id]);
 

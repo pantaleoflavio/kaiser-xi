@@ -36,9 +36,6 @@ export const authApi = {
       skipAuth: true,
     }),
 
-  resendVerification: () =>
-    apiClient<{ message: string }>('/auth/email/verification-notification', { method: 'POST' }),
-
   acknowledgePrivacy: async (): Promise<User> => {
     const response = await apiClient<ResourceResponse<User>>('/auth/privacy-acknowledgement', {
       method: 'POST',

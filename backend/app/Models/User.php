@@ -8,8 +8,6 @@ use App\Models\League;
 use App\Models\LeagueMembership;
 use App\Models\Role;
 use Filament\Models\Contracts\FilamentUser;
-use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -22,14 +20,13 @@ use Laravel\Sanctum\HasApiTokens;
 
 #[Fillable(['name', 'email', 'password', 'theme', 'privacy_acknowledged_at'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser, MustVerifyEmailContract
+class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, MustVerifyEmail, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'privacy_acknowledged_at' => 'datetime',
             'password' => 'hashed',
             'theme' => UserTheme::class,

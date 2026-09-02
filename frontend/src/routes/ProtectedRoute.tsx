@@ -11,6 +11,5 @@ export function ProtectedRoute() {
   if (isLoading) return <LoadingState message={t('common.checkingSession')} />;
   if (!isAuthenticated) return <Navigate to="/login" replace state={{ from: location }} />;
   if (!user?.privacy_acknowledged) return <Navigate to="/privacy-acknowledgement" replace />;
-  if (!user?.email_verified_at) return <Navigate to="/verify-email" replace />;
   return <Outlet />;
 }

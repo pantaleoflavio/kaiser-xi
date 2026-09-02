@@ -32,6 +32,9 @@ export function LeagueNavigation({
       <NavLink className={linkClass} to={`${base}/matchdays`}>
         {t('leagueNavigation.matchdays')}
       </NavLink>
+      <NavLink className={linkClass} to={`${base}/players`}>
+        {t('leaguePlayers.title')}
+      </NavLink>
       {showSchedule ? (
         <NavLink className={linkClass} to={`${base}/head-to-head-schedule`}>
           {t('h2h.schedule')}

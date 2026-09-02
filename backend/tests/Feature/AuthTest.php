@@ -10,12 +10,10 @@ use App\Models\User;
 use Database\Seeders\GlobalAdminSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -140,62 +138,23 @@ class AuthTest extends TestCase
         $this->withToken($token)->getJson('/api/v1/seasons')->assertOk();
     }
 
-    public function test_unverified_unacknowledged_user_can_resolve_privacy_and_logout_without_loop(): void
-    {
-        $user = User::factory()->unverified()->withoutPrivacyAcknowledgement()->create();
-        $token = $user->createToken('legacy')->plainTextToken;
-
-        $this->withToken($token)->getJson('/api/v1/seasons')
-            ->assertForbidden()
-            ->assertJsonPath('code', 'privacy_acknowledgement_required');
-        $this->withToken($token)->postJson('/api/v1/auth/privacy-acknowledgement', [
-            'privacy_acknowledged' => true,
-        ])->assertOk();
-        $this->withToken($token)->getJson('/api/v1/seasons')->assertForbidden();
-        $this->withToken($token)->postJson('/api/v1/auth/logout')->assertOk();
-    }
-
-    public function test_registration_creates_unverified_user_and_sends_verification(): void
+    public function test_registration_sends_no_notification_and_allows_application_access(): void
     {
         Notification::fake();
         Role::create(['name' => 'user']);
-        $this->postJson('/api/v1/auth/register', ['name' => 'New User', 'email' => 'new@example.com', 'password' => 'password123', 'password_confirmation' => 'password123', 'privacy_acknowledged' => true])->assertCreated()->assertJsonPath('user.email_verified_at', null);
-        $user = User::firstWhere('email', 'new@example.com');
-        $this->assertNull($user->email_verified_at);
-        Notification::assertSentTo($user, VerifyEmail::class);
-    }
-
-    public function test_signed_email_verification_succeeds(): void
-    {
-        $user = User::factory()->unverified()->create();
-        $url = URL::temporarySignedRoute('verification.verify', now()->addMinute(), ['user' => $user->id, 'hash' => sha1($user->email)]);
-        $this->get($url)->assertRedirect();
-        $this->assertNotNull($user->refresh()->email_verified_at);
-    }
-
-    public function test_unverified_user_cannot_access_application_endpoints(): void
-    {
-        $user = User::factory()->unverified()->create();
-        $this->actingAs($user, 'sanctum')->getJson('/api/v1/seasons')->assertForbidden();
-        $this->actingAs($user, 'sanctum')->getJson('/api/v1/auth/me')->assertOk();
+        $response = $this->postJson('/api/v1/auth/register', ['name' => 'New User', 'email' => 'new@example.com', 'password' => 'password123', 'password_confirmation' => 'password123', 'privacy_acknowledged' => true])->assertCreated();
+        $this->withToken($response->json('token'))->getJson('/api/v1/seasons')->assertOk();
+        Notification::assertNothingSent();
     }
 
     public function test_sensitive_auth_routes_are_rate_limited(): void
     {
-        $user = User::factory()->unverified()->create(['password' => Hash::make('password123')]);
+        $user = User::factory()->create(['password' => Hash::make('password123')]);
         foreach (range(1, 5) as $_) $this->postJson('/api/v1/auth/login', ['email' => $user->email, 'password' => 'wrong']);
         $this->postJson('/api/v1/auth/login', ['email' => $user->email, 'password' => 'wrong'])->assertTooManyRequests();
 
         foreach (range(1, 3) as $_) $this->postJson('/api/v1/auth/forgot-password', ['email' => 'absent@example.com']);
         $this->postJson('/api/v1/auth/forgot-password', ['email' => 'absent@example.com'])->assertTooManyRequests();
-    }
-
-    public function test_verification_resend_is_rate_limited(): void
-    {
-        Notification::fake();
-        $user = User::factory()->unverified()->create();
-        foreach (range(1, 3) as $_) $this->actingAs($user, 'sanctum')->postJson('/api/v1/auth/email/verification-notification')->assertOk();
-        $this->actingAs($user, 'sanctum')->postJson('/api/v1/auth/email/verification-notification')->assertTooManyRequests();
     }
 
     public function test_password_reset_and_change_revoke_all_tokens(): void
@@ -321,7 +280,8 @@ class AuthTest extends TestCase
         $this->actingAs($user, 'sanctum')->getJson('/api/v1/auth/me')->assertOk()
             ->assertJsonPath('data.id', $user->id)->assertJsonPath('data.email', $user->email)
             ->assertJsonMissingPath('data.password')->assertJsonMissingPath('data.remember_token')
-            ->assertJsonStructure(['data' => ['id', 'name', 'email', 'email_verified_at', 'created_at']]);
+            ->assertJsonMissingPath('data.email_verified_at')
+            ->assertJsonStructure(['data' => ['id', 'name', 'email', 'created_at']]);
     }
 
     public function test_guest_cannot_view_or_update_account(): void
@@ -339,12 +299,14 @@ class AuthTest extends TestCase
         $this->assertDatabaseHas('users', ['id' => $user->id, 'name' => 'New Name']);
     }
 
-    public function test_user_can_update_email_with_current_password_and_verification_is_reset(): void
+    public function test_user_can_update_email_with_current_password_without_notification(): void
     {
+        Notification::fake();
         /** @var User $user */
-        $user = User::factory()->create(['email' => 'old@example.com', 'email_verified_at' => now(), 'password' => Hash::make('password123')]);
-        $this->actingAs($user, 'sanctum')->patchJson('/api/v1/auth/me', ['email' => 'new@example.com', 'current_password' => 'password123'])->assertOk()->assertJsonPath('data.email', 'new@example.com')->assertJsonPath('data.email_verified_at', null);
-        $this->assertDatabaseHas('users', ['id' => $user->id, 'email' => 'new@example.com', 'email_verified_at' => null]);
+        $user = User::factory()->create(['email' => 'old@example.com', 'password' => Hash::make('password123')]);
+        $this->actingAs($user, 'sanctum')->patchJson('/api/v1/auth/me', ['email' => 'new@example.com', 'current_password' => 'password123'])->assertOk()->assertJsonPath('data.email', 'new@example.com')->assertJsonMissingPath('data.email_verified_at');
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'email' => 'new@example.com']);
+        Notification::assertNothingSent();
     }
 
     public function test_same_current_email_is_accepted(): void

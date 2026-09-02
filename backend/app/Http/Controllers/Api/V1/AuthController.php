@@ -86,14 +86,7 @@ class AuthController extends Controller
         $user = $request->user();
         $validated = $request->safe()->only(['name', 'email', 'theme']);
 
-        if (array_key_exists('email', $validated) && $validated['email'] !== $user->email) {
-            $validated['email_verified_at'] = null;
-        }
-
         $user->forceFill($validated)->save();
-        if (array_key_exists('email_verified_at', $validated)) {
-            $user->sendEmailVerificationNotification();
-        }
 
         return new UserResource($user->refresh()->load('roles'));
     }

@@ -22,7 +22,7 @@ export function PrivacyAcknowledgementPage() {
     try {
       const updatedUser = await authApi.acknowledgePrivacy();
       setAuthenticatedUser(updatedUser);
-      navigate(updatedUser.email_verified_at ? '/dashboard' : '/verify-email', { replace: true });
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : t('privacyAcknowledgement.error'));
     } finally {

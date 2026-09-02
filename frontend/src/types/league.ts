@@ -309,6 +309,22 @@ export type MarketPlayerFilters = {
   per_page?: number;
 };
 
+export type LeaguePlayer = {
+  id: number;
+  name: string;
+  club: { id: number; name: string };
+  position: LeagueReference;
+  is_free_agent: boolean;
+  fantasy_team: Pick<FantasyTeam, 'id' | 'name'> | null;
+};
+export type LeaguePlayerFilters = MarketPlayerFilters;
+export type LeaguePlayerResponse = PaginatedResponse<LeaguePlayer> & {
+  filter_options: {
+    clubs: Array<{ id: number; name: string }>;
+    positions: LeagueReference[];
+  };
+};
+
 export type RosterPlayerResponse = ResourceResponse<RosterPlayer>;
 
 export type RosterPlayerCollectionResponse = CollectionResponse<RosterPlayer>;

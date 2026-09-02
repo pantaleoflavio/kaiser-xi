@@ -23,6 +23,8 @@ import type {
   FormulaOneStandingsResponse,
   MarketPlayerFilters,
   MarketPlayerResponse,
+  LeaguePlayerFilters,
+  LeaguePlayerResponse,
   MarketResponse,
   TradeProposalCollectionResponse,
   TradeProposalResponse,
@@ -44,6 +46,15 @@ function eligiblePlayerQuery(filters: EligiblePlayerFilters) {
 }
 
 export const leaguesApi = {
+  players: (leagueId: string | number, filters: LeaguePlayerFilters = {}) => {
+    const query = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== '') query.set(key, String(value));
+    });
+    return apiClient<LeaguePlayerResponse>(
+      `/leagues/${leagueId}/players${query.size ? `?${query}` : ''}`,
+    );
+  },
   marketTrades: (leagueId: string | number) =>
     apiClient<TradeProposalCollectionResponse>(`/leagues/${leagueId}/market/trades`),
   createTrade: (leagueId: string | number, payload: CreateTradePayload) =>

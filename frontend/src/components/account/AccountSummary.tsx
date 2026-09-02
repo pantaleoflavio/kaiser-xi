@@ -26,16 +26,6 @@ export function AccountSummary({ user }: AccountSummaryProps) {
           <dt className="text-sm font-medium text-theme-muted">{t('account.fields.email')}</dt>
           <dd className="mt-1 text-theme-primary-foreground">{user.email}</dd>
         </div>
-        {user.email_verified_at !== undefined && (
-          <div>
-            <dt className="text-sm font-medium text-theme-muted">
-              {t('account.fields.emailVerification')}
-            </dt>
-            <dd className="mt-1 text-theme-primary-foreground">
-              {user.email_verified_at ? t('account.email.verified') : t('account.email.unverified')}
-            </dd>
-          </div>
-        )}
       </dl>
     </section>
   );
