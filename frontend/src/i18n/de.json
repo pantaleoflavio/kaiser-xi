@@ -1177,5 +1177,8 @@
     "allFantasyTeams": "Alle Fantasy-Teams",
     "emptyTitle": "Keine Spieler gefunden",
     "empty": "Keine Spieler entsprechen den ausgewählten Filtern."
+  },
+  "donations": {
+    "cta": "KAISER XI auf Ko-fi unterstützen"
   }
 }
