@@ -18,7 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password', 'theme'])]
+#[Fillable(['name', 'email', 'password', 'theme', 'privacy_acknowledged_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
@@ -27,10 +27,15 @@ class User extends Authenticatable implements FilamentUser
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'privacy_acknowledged_at' => 'datetime',
             'password' => 'hashed',
             'theme' => UserTheme::class,
         ];
+    }
+
+    public function commissionedLeagues(): HasMany
+    {
+        return $this->hasMany(League::class, 'commissioner_user_id');
     }
 
     public function leagues(): BelongsToMany

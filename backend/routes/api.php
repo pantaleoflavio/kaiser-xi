@@ -13,12 +13,15 @@ use App\Http\Controllers\Api\V1\HeadToHeadScheduleController;
 use App\Http\Controllers\Api\V1\LeagueController;
 use App\Http\Controllers\Api\V1\LeagueInvitationController;
 use App\Http\Controllers\Api\V1\LeagueMemberController;
+use App\Http\Controllers\Api\V1\LeaguePlayerController;
 use App\Http\Controllers\Api\V1\LeagueSettingController;
 use App\Http\Controllers\Api\V1\LeagueTypeController;
 use App\Http\Controllers\Api\V1\MarketController;
 use App\Http\Controllers\Api\V1\MarketPlayerController;
 use App\Http\Controllers\Api\V1\MarketTradeController;
 use App\Http\Controllers\Api\V1\MatchdayController;
+use App\Http\Controllers\Api\V1\PlayerMatchdayDetailsController;
+use App\Http\Controllers\Api\V1\PlayerProfileController;
 use App\Http\Controllers\Api\V1\SeasonController;
 use App\Http\Controllers\Api\V1\StandingController;
 use App\Http\Controllers\Api\V1\TeamMatchdayScoreController;
@@ -33,20 +36,23 @@ Route::prefix('v1')->group(function (): void {
 
     // Authentication routes
     Route::prefix('auth')->group(function (): void {
-        Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/login', [AuthController::class, 'login']);
-        Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+        Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:3,1');
+        Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+        Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,1');
+        Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1');
 
         Route::middleware('auth:sanctum')->group(function (): void {
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::get('/me', [AuthController::class, 'me']);
+            Route::post('/privacy-acknowledgement', [AuthController::class, 'acknowledgePrivacy']);
             Route::patch('/me', [AuthController::class, 'updateProfile']);
             Route::put('/me/password', [AuthController::class, 'updatePassword']);
+            Route::delete('/me', [AuthController::class, 'deleteAccount']);
         });
     });
 
-    Route::middleware('auth:sanctum')->group(function (): void {
+    Route::middleware(['auth:sanctum', 'privacy.acknowledged'])->group(function (): void {
+        Route::get('/players/{player}', PlayerProfileController::class)->name('api.v1.players.show');
         Route::get('/invitations', [AcceptLeagueInvitationController::class, 'index'])->name('api.v1.invitations.index');
         Route::post('/invitations/{invitation}/accept', [AcceptLeagueInvitationController::class, 'accept'])->name('api.v1.invitations.accept');
         Route::post('/invitations/{invitation}/reject', [AcceptLeagueInvitationController::class, 'reject'])->name('api.v1.invitations.reject');
@@ -56,11 +62,13 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/league-types', [LeagueTypeController::class, 'index'])->name('api.v1.league-types.index');
     });
 
-    Route::prefix('leagues')->middleware('auth:sanctum')->scopeBindings()->group(function (): void {
+    Route::prefix('leagues')->middleware(['auth:sanctum', 'privacy.acknowledged'])->scopeBindings()->group(function (): void {
         // League routes
         Route::get('/', [LeagueController::class, 'index']);
         Route::post('/', [LeagueController::class, 'store']);
         Route::get('/{league}', [LeagueController::class, 'show'])->middleware('can:view,league');
+        Route::get('/{league}/players', LeaguePlayerController::class)
+            ->name('api.v1.leagues.players.index')->middleware('can:view,league');
         Route::patch('/{league}', [LeagueController::class, 'update'])->middleware('can:update,league');
         Route::delete('/{league}', [LeagueController::class, 'destroy'])->middleware('can:delete,league');
         Route::get('/{league}/members', [LeagueMemberController::class, 'index'])->middleware('can:view,league');
@@ -83,6 +91,8 @@ Route::prefix('v1')->group(function (): void {
 
         Route::get('/{league}/matchdays', [MatchdayController::class, 'index'])
             ->name('api.v1.leagues.matchdays.index')->middleware('can:view,league');
+        Route::get('/{league}/players/{player}/matchdays/{matchday}', PlayerMatchdayDetailsController::class)
+            ->name('api.v1.leagues.players.matchdays.show')->withoutScopedBindings()->middleware('can:view,league');
         Route::post('/{league}/matchdays/{matchday}/calculate', CalculateMatchdayController::class)
             ->name('api.v1.leagues.matchdays.calculate')->withoutScopedBindings()
             ->middleware('can:calculateMatchday,league');

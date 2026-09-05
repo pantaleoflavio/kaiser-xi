@@ -2,14 +2,17 @@ import { useTranslation } from '../../i18n';
 import type { RosterPlayer } from '../../types/league';
 import { formatDate, formatMoney } from '../../utils/formatters';
 import { ReleasePlayerButton } from './ReleasePlayerButton';
+import { Link } from 'react-router-dom';
 
 export function FantasyRosterList({
   players,
+  seasonId,
   canManage,
   releasingPlayerId,
   onRelease,
 }: {
   players: RosterPlayer[];
+  seasonId: number;
   canManage: boolean;
   releasingPlayerId: number | null;
   onRelease: (player: RosterPlayer) => void;
@@ -33,7 +36,12 @@ export function FantasyRosterList({
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <h3 className="font-semibold text-theme-text">
-                {rosterPlayer.player.name || t('roster.unknownPlayer')}
+                <Link
+                  className="hover:text-theme-accent"
+                  to={`/players/${rosterPlayer.player.id}?season=${seasonId}`}
+                >
+                  {rosterPlayer.player.name || t('roster.unknownPlayer')}
+                </Link>
               </h3>
               <p className="mt-1 text-sm text-theme-muted">
                 {rosterPlayer.player.role

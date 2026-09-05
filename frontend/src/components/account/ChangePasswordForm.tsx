@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { SubmitEvent, useState } from 'react';
 import { accountApi } from '../../api/account';
+import { useAuth } from '../../auth/useAuth';
 import { useTranslation } from '../../i18n';
 import { accountError, fieldErrors, type FieldErrors } from './accountFormErrors';
 
@@ -15,6 +16,7 @@ const initialPasswordValues = {
 
 export function ChangePasswordForm() {
   const { t } = useTranslation();
+  const { logout } = useAuth();
   const [values, setValues] = useState(initialPasswordValues);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<string | null>(null);
@@ -23,6 +25,7 @@ export function ChangePasswordForm() {
     onSuccess: () => {
       setValues(initialPasswordValues);
       setStatus(t('account.password.success'));
+      void logout();
     },
     onError: (error) => {
       setErrors(fieldErrors(error));

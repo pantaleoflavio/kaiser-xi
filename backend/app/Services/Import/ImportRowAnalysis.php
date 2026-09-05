@@ -18,16 +18,27 @@ class ImportRowAnalysis
             'create' => 0,
             'update' => 0,
             'unchanged' => 0,
+            'unmatched' => 0,
+            'rejected' => 0,
             'warnings' => 0,
             'errors' => 0,
         ];
 
         foreach ($rows as $row) {
             $counts[$row['action'] === 'error' ? 'errors' : $row['action']]++;
+            if (in_array($row['action'], ['error', 'unmatched'], true)) {
+                $counts['rejected']++;
+            }
             $counts['warnings'] += count($row['warnings'] ?? []);
         }
 
-        return ['rows' => $rows, 'counts' => $counts, 'has_errors' => $counts['errors'] > 0];
+        return [
+            'rows' => $rows,
+            'counts' => $counts,
+            'has_errors' => $counts['errors'] > 0,
+            'has_rejected_rows' => $counts['rejected'] > 0,
+            'has_fatal_errors' => false,
+        ];
     }
 
     public function error(int $number, array $data, string $identifier, array|string $messages): array

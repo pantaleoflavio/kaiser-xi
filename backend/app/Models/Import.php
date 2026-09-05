@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\CsvImportType;
 use App\Enums\ImportStatus;
+use App\Models\ImportUnmatchedRow;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,5 +44,11 @@ class Import extends Model
     public function rowErrors(): HasMany
     {
         return $this->hasMany(ImportRowError::class);
+    }
+
+
+    public function unmatchedRows(): HasMany
+    {
+        return $this->hasMany(ImportUnmatchedRow::class);
     }
 }

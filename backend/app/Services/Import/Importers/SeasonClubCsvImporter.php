@@ -2,6 +2,7 @@
 
 namespace App\Services\Import\Importers;
 
+use App\Services\Import\RecoverableRowException;
 use App\Models\RealClub;
 use App\Models\RealClubExternalIdentity;
 use App\Models\RealCompetition;
@@ -151,7 +152,7 @@ class SeasonClubCsvImporter implements CsvImporter
         foreach ($analysis['rows'] as $row) {
             if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $model = SeasonClub::where('season_id', $row['season_id'])->where('real_club_id', $row['real_club_id'])->first();
-            if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("SeasonClub identity changed since analysis at CSV row {$row['row_number']}.");
+            if (($row['model_id'] ?? null) !== $model?->id) throw new RecoverableRowException("SeasonClub identity changed since analysis at CSV row {$row['row_number']}.");
             $model ? $model->fill($row['payload'])->save() : SeasonClub::create(['season_id' => $row['season_id'], 'real_club_id' => $row['real_club_id']] + $row['payload']);
         }
     }

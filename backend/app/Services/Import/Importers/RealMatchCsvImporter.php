@@ -13,6 +13,7 @@ use App\Services\Import\ImportRowAnalysis;
 use Carbon\CarbonImmutable;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use App\Services\Import\RecoverableRowException;
 
 class RealMatchCsvImporter implements CsvImporter
 {
@@ -145,9 +146,9 @@ class RealMatchCsvImporter implements CsvImporter
             if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $matchday = Matchday::find($row['matchday_id']);
             $clubs = SeasonClub::whereKey([$row['home_season_club_id'], $row['away_season_club_id']])->get()->keyBy('id');
-            if (! $matchday || $matchday->season_id !== $row['season_id'] || $clubs->count() !== 2 || $clubs->contains(fn($club) => $club->season_id !== $row['season_id'])) throw new \RuntimeException("RealMatch dependency identity changed since analysis at CSV row {$row['row_number']}.");
+            if (! $matchday || $matchday->season_id !== $row['season_id'] || $clubs->count() !== 2 || $clubs->contains(fn($club) => $club->season_id !== $row['season_id'])) throw new RecoverableRowException("RealMatch dependency identity changed since analysis at CSV row {$row['row_number']}.");
             $model = RealMatch::where('matchday_id', $row['matchday_id'])->where('home_season_club_id', $row['home_season_club_id'])->where('away_season_club_id', $row['away_season_club_id'])->first();
-            if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("RealMatch identity changed since analysis at CSV row {$row['row_number']}.");
+            if (($row['model_id'] ?? null) !== $model?->id) throw new RecoverableRowException("RealMatch identity changed since analysis at CSV row {$row['row_number']}.");
             $identity = ['matchday_id' => $row['matchday_id'], 'home_season_club_id' => $row['home_season_club_id'], 'away_season_club_id' => $row['away_season_club_id']];
             $model ? $model->fill($row['payload'])->save() : RealMatch::create($identity + $row['payload']);
         }

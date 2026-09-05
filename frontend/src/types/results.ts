@@ -11,7 +11,6 @@ export type HistoricalPlayerResult = {
   effective_contribution: string | null;
   player_score: null | {
     status: 'pending' | 'confirmed' | 'did_not_play';
-    final_score: string | null;
     base_rating: string | null;
     goals: number;
     assists: number;
@@ -24,6 +23,23 @@ export type HistoricalPlayerResult = {
     goals_conceded: number;
     clean_sheet: boolean;
     is_real_captain: boolean;
+  };
+};
+
+export type PlayerMatchdayDetails = {
+  player: { id: number; name: string; club: string; role: PlayerRoleKey };
+  matchday: { id: number; number: number; name: string | null };
+  status: 'confirmed' | 'pending' | 'did_not_play' | 'no_data';
+  performance: { base_rating: string | null } | null;
+  breakdown: null | {
+    base_rating: string;
+    components: { type: string; count: number; coefficient: string; total: string }[];
+    fantasy_score: string;
+  };
+  formation_context: null | {
+    source: 'persisted_result';
+    bonuses: { type: 'captain_bonus' | 'clean_sheet_bonus'; total: string }[];
+    effective_contribution: string;
   };
 };
 

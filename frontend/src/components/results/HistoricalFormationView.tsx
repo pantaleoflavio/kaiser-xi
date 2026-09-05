@@ -3,7 +3,13 @@ import { useTranslation } from '../../i18n';
 import { PlayerScoreBreakdownRow } from './PlayerScoreBreakdownRow';
 import { FormationPitch, type PitchPlayer } from '../formation/FormationPitch';
 
-export function HistoricalFormationView({ data }: { data: TeamMatchdayResult }) {
+export function HistoricalFormationView({
+  data,
+  leagueId,
+}: {
+  data: TeamMatchdayResult;
+  leagueId: string;
+}) {
   const { t } = useTranslation();
   const starters = data.formation.players.filter((player) => player.submitted_slot === 'starter');
   const bench = data.formation.players.filter((player) => player.submitted_slot === 'bench');
@@ -12,7 +18,7 @@ export function HistoricalFormationView({ data }: { data: TeamMatchdayResult }) 
     name: player.player.name,
     role: player.player.role,
     order: player.submitted_order,
-    detail: player.player_score?.final_score ?? undefined,
+    detail: player.effective_contribution ?? player.player_score?.base_rating ?? undefined,
     status: player.used_as_substitute
       ? t('results.enteredFromBench')
       : player.replaced_by_player
@@ -63,7 +69,12 @@ export function HistoricalFormationView({ data }: { data: TeamMatchdayResult }) 
         <h4 className="mb-3 text-lg font-semibold text-theme-text">{t('results.starter')}</h4>
         <ul className="grid gap-3 lg:grid-cols-2">
           {starters.map((player) => (
-            <PlayerScoreBreakdownRow item={player} key={player.player.id} />
+            <PlayerScoreBreakdownRow
+              data={data}
+              item={player}
+              key={player.player.id}
+              leagueId={leagueId}
+            />
           ))}
         </ul>
       </section>
@@ -71,7 +82,12 @@ export function HistoricalFormationView({ data }: { data: TeamMatchdayResult }) 
         <h3 className="mb-3 text-lg font-semibold text-theme-text">{t('results.bench')}</h3>
         <ul className="grid gap-3 lg:grid-cols-2">
           {bench.map((player) => (
-            <PlayerScoreBreakdownRow item={player} key={player.player.id} />
+            <PlayerScoreBreakdownRow
+              data={data}
+              item={player}
+              key={player.player.id}
+              leagueId={leagueId}
+            />
           ))}
         </ul>
       </section>

@@ -12,6 +12,20 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
+
+    protected function setUp(): void
+    {
+        // Laravel initializes database traits inside parent::setUp(). Bootstrap and
+        // inspect the real application first, before RefreshDatabase can migrate it.
+        if (! $this->app) {
+            $this->refreshApplication();
+        }
+
+        TestDatabaseSafety::assertSafe($this->app);
+
+        parent::setUp();
+    }
+
     /**
      * Seed only the immutable lookup data commonly required by feature fixtures.
      *

@@ -70,6 +70,9 @@ export function LoginPage() {
       >
         {isSubmitting ? t('auth.login.submitting') : t('auth.login.submit')}
       </button>
+      <Link className="block text-sm font-medium text-theme-primary" to="/forgot-password">
+        {t('auth.login.forgotPassword')}
+      </Link>
       <p className="text-sm text-slate-600">
         {t('auth.login.noAccount')}{' '}
         <Link className="font-medium text-theme-primary" to="/register">

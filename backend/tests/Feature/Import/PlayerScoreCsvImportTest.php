@@ -4,6 +4,8 @@ namespace Tests\Feature\Import;
 
 use App\Enums\CsvImportType;
 use App\Enums\PlayerScoreStatus;
+use App\Jobs\ExecuteCsvImportJob;
+use App\Models\User;
 use App\Models\Matchday;
 use App\Models\Player;
 use App\Models\PlayerExternalIdentity;
@@ -129,6 +131,79 @@ class PlayerScoreCsvImportTest extends TestCase
         } finally {
             $this->assertSame(0, PlayerScore::count());
         }
+    }
+
+    public function test_unknown_player_between_valid_players_is_skipped_and_reported(): void
+    {
+        $fixture = $this->fixture();
+        $second = Player::factory()->create();
+        PlayerExternalIdentity::factory()->create(['player_id' => $second->id, 'provider' => 'opta', 'external_id' => 'Player-2']);
+        PlayerSeasonRegistration::factory()->create(['player_id' => $second->id, 'season_club_id' => $fixture['seasonClub']->id]);
+        $csv = $this->combineRows($this->row(direct: false), str_replace('Player-1', 'Missing-Player', $this->row(direct: false)), str_replace('Player-1', 'Player-2', $this->row(direct: false)));
+
+        $analysis = $this->analyse($csv);
+
+        $this->assertFalse($analysis['has_errors']);
+        $this->assertSame(['create', 'unmatched', 'create'], array_column($analysis['rows'], 'action'));
+        $this->assertSame(1, $analysis['counts']['unmatched']);
+        $this->assertSame('Missing-Player', $analysis['rows'][1]['data']['player_external_id']);
+        $this->execute($analysis);
+        $this->assertSame(2, PlayerScore::count());
+        $this->assertSame(2, Player::count());
+    }
+
+    public function test_repeated_unknown_player_rows_remain_separate_diagnostics(): void
+    {
+        $this->fixture();
+        $unknown = str_replace('Player-1', 'Missing-Player', $this->row(direct: false));
+        $analysis = $this->analyse($this->combineRows($unknown, $unknown));
+
+        $this->assertFalse($analysis['has_errors']);
+        $this->assertSame(2, $analysis['counts']['unmatched']);
+        $this->assertSame([2, 3], array_column($analysis['rows'], 'row_number'));
+        $this->execute($analysis);
+        $this->assertSame(0, PlayerScore::count());
+        $this->assertSame(1, Player::count());
+    }
+
+    public function test_unknown_player_does_not_hide_invalid_score_or_unrelated_reference(): void
+    {
+        $this->fixture();
+        $unknown = str_replace('Player-1', 'Missing-Player', $this->row(direct: false, status: 'invalid'));
+        $this->assertError($unknown, 'status');
+        $unknownClub = str_replace(['Player-1', 'Club-1'], ['Missing-Player', 'Missing-Club'], $this->row(direct: false));
+        $this->assertError($unknownClub, 'Unknown RealClub external identity');
+    }
+
+    public function test_queued_execution_persists_unmatched_rows_and_excludes_them_from_successes(): void
+    {
+        $this->fixture();
+        $csv = $this->combineRows($this->row(direct: false), str_replace('Player-1', 'Missing-Player', $this->row(direct: false)));
+        $service = app(CsvImportService::class);
+        $import = $service->createHistory(CsvImportType::PlayerScores, 'scores.csv', $csv, User::factory()->create()->id);
+        $service->queue($import);
+
+        (new ExecuteCsvImportJob($import->id))->handle($service);
+
+        $import->refresh();
+        $this->assertSame(1, PlayerScore::count());
+        $this->assertSame(1, Player::count());
+        $this->assertSame(2, $import->total_rows);
+        $this->assertSame(1, $import->successful_rows);
+        $this->assertSame(1, $import->failed_rows);
+        $this->assertSame('Missing-Player', $import->rowErrors()->sole()->row_data['player_external_id']);
+        $this->assertStringContainsString(
+            'Player external identity is unknown',
+            $import->rowErrors()->sole()->error_message,
+        );
+    }
+
+    private function combineRows(string ...$csvs): string
+    {
+        $header = strtok($csvs[0], "\n");
+        $rows = array_map(fn(string $csv): string => substr($csv, strpos($csv, "\n") + 1), $csvs);
+
+        return $header . "\n" . implode('', $rows);
     }
 
     private function fixture(): array

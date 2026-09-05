@@ -17,7 +17,9 @@ use Database\Seeders\DemoLeagueSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Seeders\Concerns\SeedsDemoFoundation;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Group;
 
+#[Group('demo-integration')]
 class DemoClassicChampionshipSeederTest extends TestCase
 {
     use RefreshDatabase;

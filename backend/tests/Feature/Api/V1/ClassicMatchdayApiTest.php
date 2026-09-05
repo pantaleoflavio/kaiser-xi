@@ -300,7 +300,7 @@ class ClassicMatchdayApiTest extends TestCase
      * 204-207 => upcoming
      */
         Carbon::setTestNow(
-            $current->starts_at->copy()->subHour()
+            $current->starts_at->copy()->addHour()
         );
 
         return [

@@ -221,7 +221,7 @@ class LeagueSettingsLifecycleTest extends TestCase
                 'season_club_id' => $seasonClub->id,
                 'player_role_id' => $defenderRoleId,
                 'is_active' => true,
-                'released_at' => null,
+                'released_on' => null,
             ]);
 
             FantasyTeamPlayer::factory()->create([

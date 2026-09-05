@@ -31,7 +31,7 @@ class PlayerSeasonRegistrationActiveInvariantTest extends TestCase
 
     public function test_released_or_inactive_history_does_not_block_a_new_active_registration(): void
     {
-        foreach ([['released_at' => now()], ['is_active' => false]] as $historicalState) {
+        foreach ([['released_on' => now()->toDateString()], ['is_active' => false]] as $historicalState) {
             $player = Player::factory()->create();
             $season = Season::factory()->create();
             PlayerSeasonRegistration::factory()->create($historicalState + ['player_id' => $player->id, 'season_club_id' => SeasonClub::factory()->create(['season_id' => $season->id])->id]);

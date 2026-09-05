@@ -34,7 +34,8 @@
       "submitting": "Logging in...",
       "noAccount": "No account?",
       "registerLink": "Register",
-      "error": "Unable to login."
+      "error": "Unable to login.",
+      "forgotPassword": "Forgot password?"
     },
     "register": {
       "title": "Create account",
@@ -48,7 +49,26 @@
       "alreadyRegistered": "Already registered?",
       "loginLink": "Login",
       "passwordsMustMatch": "Passwords must match.",
-      "error": "Unable to register."
+      "error": "Unable to register.",
+      "privacyPrefix": "I have read the",
+      "privacySuffix": "."
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "description": "Enter your email address to receive a password-reset link.",
+      "success": "If the account exists, a reset link has been sent.",
+      "error": "Unable to request a reset link.",
+      "submit": "Send reset link",
+      "submitting": "Sending...",
+      "back": "Back to login"
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "success": "Your password has been reset. You can now log in.",
+      "error": "Unable to reset the password.",
+      "submit": "Reset password",
+      "submitting": "Resetting...",
+      "login": "Continue to login"
     }
   },
   "dashboard": {
@@ -74,35 +94,39 @@
     "gameInstructions": "Game Instructions"
   },
   "home": {
-    "eyebrow": "Your League. Your Rules.",
-    "title": "Build private fantasy-football worlds across competitions.",
-    "description": "Create or join private leagues and manage fantasy teams with friends.",
+    "eyebrow": "Your fantasy football, your rules",
+    "title": "Create and manage private leagues across competitions.",
+    "description": "KAISER XI is the multi-competition fantasy-football platform for sharing seasons, teams, and matchdays with your group.",
     "cta": {
       "login": "Log in",
       "register": "Register",
       "dashboard": "Go to dashboard"
     },
     "panel": {
-      "label": "Everything in one place",
-      "title": "Your fantasy season starts here",
-      "description": "Manage squads, auctions, formations, and matchdays in a focused experience."
+      "label": "Your season in one place",
+      "title": "From league setup to results",
+      "description": "Configure the competition, invite participants, and manage fantasy teams, formations, matchdays, and standings."
     },
     "features": {
       "competitions": {
-        "title": "Multiple competitions",
-        "description": "Enjoy fantasy football across more than one real competition."
+        "title": "Competitions and seasons",
+        "description": "Choose the competition and season on which to build your league."
       },
       "leagues": {
         "title": "Private leagues",
-        "description": "Create or join a private league for your group."
+        "description": "Create a private space for your group and customize the competition rules."
       },
       "teams": {
-        "title": "Fantasy-team management",
-        "description": "Manage your team, squad, and matchday formation."
+        "title": "Fantasy teams",
+        "description": "Manage your fantasy team name, squad, and formation throughout the season."
       },
-      "roadmap": {
-        "title": "A complete season",
-        "description": "Follow your league from squad building through every matchday."
+      "invitations": {
+        "title": "Invitations",
+        "description": "Invite other players to the league and manage participation requests."
+      },
+      "results": {
+        "title": "Matchdays and results",
+        "description": "Follow your league scores, results, and standings matchday by matchday."
       }
     }
   },
@@ -633,14 +657,9 @@
     "fields": {
       "name": "Name",
       "email": "Email",
-      "emailVerification": "Email verification",
       "currentPassword": "Current password",
       "newPassword": "New password",
       "confirmNewPassword": "Confirm new password"
-    },
-    "email": {
-      "verified": "Verified",
-      "unverified": "Not verified"
     },
     "profile": {
       "title": "Profile",
@@ -667,6 +686,14 @@
       "description": "Choose the Kaiser XI palette used across your account.",
       "selected": "Selected",
       "error": "The theme could not be saved. Your previous theme was restored."
+    },
+    "delete": {
+      "title": "Danger zone",
+      "description": "Deleting your account permanently anonymizes your identity. Historical league results remain. Enter your password to continue.",
+      "confirm": "Permanently anonymize your account? This cannot be undone.",
+      "submit": "Delete account",
+      "deleting": "Deleting...",
+      "error": "Unable to delete account."
     }
   },
   "formation": {
@@ -681,7 +708,7 @@
     "bench": "Bench",
     "matchday": "Matchday",
     "matchdayNumber": "Matchday {{number}}",
-    "deadline": "Deadline",
+    "deadline": "Lineup submission deadline",
     "locked": "Formation locked — the deadline has passed.",
     "editable": "Editing is allowed before the deadline.",
     "submitted": "Submitted",
@@ -736,9 +763,10 @@
   "matchdays": {
     "title": "Matchdays",
     "description": "Past, current, and upcoming matchdays for this league.",
-    "past": "Past",
-    "current": "Current matchday",
+    "past": "Finished",
+    "current": "In progress",
     "upcoming": "Upcoming",
+    "timeWindow": "Matchday time window",
     "open": "Open matchday",
     "openFormation": "Open formation",
     "createFormation": "Create formation",
@@ -756,7 +784,13 @@
     "calculationSuccess": "Matchday calculated successfully.",
     "recalculationSuccess": "Matchday recalculated successfully.",
     "calculationError": "The Matchday could not be calculated. Check that it has ended and try again.",
-    "recalculationWarning": "Recalculating this Matchday will replace its calculated scores and results using the current League rules and will recalculate the standings."
+    "recalculationWarning": "Recalculating this Matchday will replace its calculated scores and results using the current League rules and will recalculate the standings.",
+    "calculationQueued": "Calculation queued.",
+    "recalculationQueued": "Recalculation queued.",
+    "calculationInProgress": "Calculation in progress…",
+    "calculationFailed": "Calculation failed. You can retry.",
+    "waitingForCalculationUnlock": "Matchday calculation will be available shortly.",
+    "calculationCompleted": "Matchday calculation completed."
   },
   "h2h": {
     "title": "Head-to-head championship",
@@ -979,5 +1013,172 @@
       "noCash": "No cash adjustment",
       "acceptConfirmation": "Accepting this trade will immediately exchange the players between the two fantasy teams and apply the configured cash adjustment."
     }
+  },
+  "playerProfile": {
+    "title": "Player profile",
+    "loading": "Loading player profile...",
+    "errorTitle": "Unable to load player profile",
+    "error": "The player profile could not be loaded.",
+    "seasonRequired": "A Season must be selected.",
+    "back": "Back to dashboard",
+    "club": "Real club",
+    "role": "Role",
+    "shirtNumber": "Shirt number",
+    "season": "Season",
+    "statistics": "Season statistics",
+    "history": "Matchday history",
+    "emptyTitle": "No appearances",
+    "empty": "There are no confirmed performances with a rating in this Season.",
+    "notAvailable": "—",
+    "matchday": "Matchday {{number}}",
+    "opponent": "Opponent",
+    "opponentUnknown": "Opponent not available",
+    "rating": "Rating",
+    "fields": {
+      "appearances": "Appearances",
+      "average_rating": "Average rating",
+      "goals": "Goals",
+      "assists": "Assists",
+      "yellow_cards": "Yellow cards",
+      "red_cards": "Red cards",
+      "own_goals": "Own goals",
+      "penalties_scored": "Penalties scored",
+      "penalties_missed": "Penalties missed",
+      "penalties_saved": "Penalties saved",
+      "goals_conceded": "Goals conceded",
+      "clean_sheets": "Clean sheets",
+      "captain_appearances": "Captain appearances"
+    },
+    "status": {
+      "played": "Played",
+      "did_not_play": "Did not play",
+      "pending": "Pending",
+      "no_data": "No data"
+    },
+    "venue": {
+      "home": "Home",
+      "away": "Away"
+    }
+  },
+  "playerMatchday": {
+    "details": "Player details",
+    "matchday": "Matchday {{number}}",
+    "rating": "Rating",
+    "fantasyScore": "Fantasy score",
+    "contribution": "Contribution",
+    "close": "Close",
+    "error": "Unable to load player details.",
+    "status": {
+      "pending": "Pending",
+      "did_not_play": "Did not play",
+      "no_data": "No data"
+    },
+    "components": {
+      "goal": "Goal",
+      "assist": "Assist",
+      "yellow_card": "Yellow card",
+      "red_card": "Red card",
+      "own_goal": "Own goal",
+      "penalty_scored": "Penalty scored",
+      "penalty_missed": "Penalty missed",
+      "penalty_saved": "Penalty saved",
+      "goal_conceded": "Goal conceded",
+      "clean_sheet_bonus": "Clean sheet bonus",
+      "captain_bonus": "Captain bonus"
+    }
+  },
+  "legal": {
+    "privacyTitle": "Privacy Policy",
+    "imprintTitle": "Impressum",
+    "navigationLabel": "Legal information",
+    "updated": "Version: 25 August 2026",
+    "pendingValue": "This information is being finalized before launch.",
+    "controllerTitle": "Controller and contact",
+    "controllerIntro": "The natural person operating Kaiser XI is the controller. The verified identity and contact details will be published here before production launch.",
+    "hosting": "Application hosting",
+    "database": "Database hosting",
+    "email": "Transactional email service",
+    "authority": "Competent supervisory authority",
+    "privacy": {
+      "scope": {
+        "title": "Scope",
+        "body": "This policy explains the processing in the free, non-monetized Kaiser XI fantasy-football application. There is no advertising, analytics, behavioral tracking, marketing, newsletter, sale of personal data, premium service, or payment processing."
+      },
+      "data": {
+        "title": "Data we process",
+        "body": "Registration stores your display name, email address, a one-way password hash (never the plaintext password), Privacy Policy acknowledgement time, selected theme, roles, and account timestamps. Security functions store access-token hashes and expiry/use timestamps; password-reset email and token data are stored temporarily. Requests may also produce ordinary server and security logs such as IP address, time, requested path, and user agent, according to the final hosting configuration."
+      },
+      "purposes": {
+        "title": "Purposes and legal bases",
+        "body": "We process account, authentication, reset, security, and requested game data to provide the service and perform the user relationship (Article 6(1)(b) GDPR). Proportionate abuse prevention, service security, and necessary operational logs rely on legitimate interests in secure operation (Article 6(1)(f) GDPR). Legal obligations apply where required (Article 6(1)(c) GDPR). The registration checkbox only acknowledges reading this policy; it is not consent to essential processing."
+      },
+      "game": {
+        "title": "League and game data",
+        "body": "We store League memberships and roles, invitations, Fantasy Teams and names, player assignments, budgets, formations and submissions, trades and their status, matchday scores, standings, results, and competition history. These data are shown to authorized League participants as needed to run the game."
+      },
+      "storage": {
+        "title": "Device storage",
+        "body": "The web client stores the authentication bearer token and language choice in localStorage. The token is necessary to keep you signed in; language storage remembers your requested setting. A temporary League-creation identifier uses sessionStorage and is removed after the flow. The application does not use IndexedDB and does not set analytics or advertising cookies. Server/admin sessions may use a strictly necessary session cookie where that interface is used. No consent banner is used because no non-essential tracking storage is present."
+      },
+      "recipients": {
+        "title": "Recipients and processors",
+        "body": "Data are disclosed only to authorized League participants where the game requires it and to infrastructure processors needed for hosting, database operation, and transactional password-reset email. Final providers, locations, contracts, and subprocessors must be verified and configured before launch."
+      },
+      "retention": {
+        "title": "Retention",
+        "body": "Account and game data are retained while the account and competitions require them. Password reset tokens expire under the configured security periods; access tokens expire or are revoked. Operational log retention will follow the final provider configuration and security need. Legal retention duties may override these criteria where applicable."
+      },
+      "deletion": {
+        "title": "Account deletion and anonymization",
+        "body": "Deletion irreversibly replaces direct account identifiers with a random deleted-account address and generic name, clears theme, remember token, roles, password-reset data, and access tokens, and replaces the password hash so credentials stop working. Historical League and game records may remain linked to the anonymized user record where necessary to preserve competitions, results, standings, formations, and trades. This is not an immediate physical deletion of every database row."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "Subject to statutory conditions, you may request access, rectification, erasure, restriction, portability, and object to processing based on legitimate interests. You may contact the controller and complain to a data-protection supervisory authority. No consent is requested for core service processing; where consent is ever used, it can be withdrawn prospectively."
+      },
+      "decisions": {
+        "title": "Automated decisions",
+        "body": "Kaiser XI does not use automated decision-making within Article 22 GDPR or profiling. Game scores and standings are calculated from game rules and football facts, not used to evaluate users for legal or similarly significant effects."
+      },
+      "transfers": {
+        "title": "International transfers",
+        "body": "Whether processors transfer data outside the EU/EEA depends on the production providers. No transfer, location, or safeguard is claimed until providers are selected. Any transfer must be documented with an applicable GDPR mechanism before launch."
+      }
+    },
+    "imprint": {
+      "operatorTitle": "Operator information",
+      "operatorIntro": "Kaiser XI is currently a free project operated by a natural person. No company or commercial registration is claimed. Verified operator information will appear here before launch.",
+      "contactTitle": "Contact",
+      "additionalTitle": "Additional applicable information"
+    }
+  },
+  "privacyAcknowledgement": {
+    "title": "Privacy Policy acknowledgement",
+    "description": "Before continuing, please read and acknowledge the Privacy Policy. This acknowledgement is not consent to marketing, analytics, advertising, or optional processing.",
+    "checkboxPrefix": "I have read the",
+    "checkboxSuffix": ".",
+    "submit": "Continue",
+    "submitting": "Saving…",
+    "error": "Unable to save the acknowledgement."
+  },
+  "leaguePlayers": {
+    "title": "Players",
+    "count": "{{count}} players",
+    "search": "Search by name",
+    "club": "Real club",
+    "allClubs": "All clubs",
+    "position": "Position",
+    "allPositions": "All positions",
+    "status": "Fantasy status",
+    "allStatuses": "All statuses",
+    "freeAgent": "Free agent",
+    "assigned": "Assigned",
+    "fantasyTeam": "Fantasy team",
+    "allFantasyTeams": "All fantasy teams",
+    "emptyTitle": "No players found",
+    "empty": "No players match the selected filters."
+  },
+  "donations": {
+    "cta": "Support KAISER XI on Ko-fi"
   }
 }

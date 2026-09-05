@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\FantasyTeam;
+use App\Models\League;
+use App\Models\LeagueStatus;
 use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\GlobalAdminSeeder;
@@ -10,11 +13,19 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Cache::flush();
+    }
 
     public function test_user_can_register(): void
     {
@@ -24,16 +35,46 @@ class AuthTest extends TestCase
             'email' => 'mario@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
+            'privacy_acknowledged' => true,
         ]);
         $response->assertCreated()->assertJsonPath('user.email', 'mario@example.com');
+        $response->assertJsonPath('user.privacy_acknowledged', true);
+        $this->assertNotNull(User::firstWhere('email', 'mario@example.com')->privacy_acknowledged_at);
     }
 
     public function test_registered_user_receives_default_role(): void
     {
+        Notification::fake();
+
         $role = Role::create(['name' => 'user']);
-        $this->postJson('/api/v1/auth/register', ['name' => 'A', 'email' => 'a@example.com', 'password' => 'password123', 'password_confirmation' => 'password123']);
+
+        $this->postJson('/api/v1/auth/register', [
+            'name' => 'A',
+            'email' => 'a@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+            'privacy_acknowledged' => true,
+        ])->assertCreated();
+
         $user = User::where('email', 'a@example.com')->firstOrFail();
+
         $this->assertTrue($user->roles->contains($role));
+    }
+
+    public function test_registration_requires_privacy_acknowledgement_without_persisting_consent(): void
+    {
+        Role::create(['name' => 'user']);
+
+        $this->postJson('/api/v1/auth/register', [
+            'name' => 'No Acknowledgement',
+            'email' => 'missing@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ])->assertUnprocessable()->assertJsonValidationErrors('privacy_acknowledged');
+
+        $this->assertDatabaseMissing('users', ['email' => 'missing@example.com']);
+        $this->assertTrue(\Illuminate\Support\Facades\Schema::hasColumn('users', 'privacy_acknowledged_at'));
+        $this->assertFalse(\Illuminate\Support\Facades\Schema::hasColumn('users', 'marketing_consent'));
     }
 
     public function test_user_can_login_and_logout_and_me(): void
@@ -74,6 +115,115 @@ class AuthTest extends TestCase
             'Authorization' => "Bearer {$token}",
         ])->assertUnauthorized();
     }
+
+    public function test_legacy_user_must_acknowledge_privacy_before_gameplay(): void
+    {
+        $user = User::factory()->withoutPrivacyAcknowledgement()->create();
+        $token = $user->createToken('legacy')->plainTextToken;
+
+        $this->withToken($token)->getJson('/api/v1/seasons')
+            ->assertForbidden()
+            ->assertJsonPath('code', 'privacy_acknowledgement_required');
+
+        // Account/auth infrastructure remains usable, so the state cannot deadlock.
+        $this->withToken($token)->getJson('/api/v1/auth/me')
+            ->assertOk()
+            ->assertJsonPath('data.privacy_acknowledged', false);
+
+        $this->withToken($token)->postJson('/api/v1/auth/privacy-acknowledgement', [
+            'privacy_acknowledged' => true,
+        ])->assertOk()->assertJsonPath('data.privacy_acknowledged', true);
+
+        $this->assertNotNull($user->refresh()->privacy_acknowledged_at);
+        $this->withToken($token)->getJson('/api/v1/seasons')->assertOk();
+    }
+
+    public function test_registration_sends_no_notification_and_allows_application_access(): void
+    {
+        Notification::fake();
+        Role::create(['name' => 'user']);
+        $response = $this->postJson('/api/v1/auth/register', ['name' => 'New User', 'email' => 'new@example.com', 'password' => 'password123', 'password_confirmation' => 'password123', 'privacy_acknowledged' => true])->assertCreated();
+        $this->withToken($response->json('token'))->getJson('/api/v1/seasons')->assertOk();
+        Notification::assertNothingSent();
+    }
+
+    public function test_sensitive_auth_routes_are_rate_limited(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('password123')]);
+        foreach (range(1, 5) as $_) $this->postJson('/api/v1/auth/login', ['email' => $user->email, 'password' => 'wrong']);
+        $this->postJson('/api/v1/auth/login', ['email' => $user->email, 'password' => 'wrong'])->assertTooManyRequests();
+
+        foreach (range(1, 3) as $_) $this->postJson('/api/v1/auth/forgot-password', ['email' => 'absent@example.com']);
+        $this->postJson('/api/v1/auth/forgot-password', ['email' => 'absent@example.com'])->assertTooManyRequests();
+    }
+
+    public function test_password_reset_and_change_revoke_all_tokens(): void
+    {
+        Notification::fake();
+        $user = User::factory()->create(['email' => 'revoke@example.com', 'password' => Hash::make('password123')]);
+        $user->createToken('one');
+        $user->createToken('two');
+        $this->postJson('/api/v1/auth/forgot-password', ['email' => $user->email]);
+        $token = null;
+        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use (&$token) {
+            $token = $notification->token;
+            return true;
+        });
+        $this->postJson('/api/v1/auth/reset-password', ['token' => $token, 'email' => $user->email, 'password' => 'newpassword123', 'password_confirmation' => 'newpassword123'])->assertOk();
+        $this->assertCount(0, $user->tokens()->get());
+
+        $token = $user->createToken('current')->plainTextToken;
+        $this->withToken($token)->putJson('/api/v1/auth/me/password', ['current_password' => 'newpassword123', 'password' => 'thirdpassword123', 'password_confirmation' => 'thirdpassword123'])->assertNoContent();
+        $this->assertCount(0, $user->tokens()->get());
+    }
+
+    public function test_normal_account_is_anonymized_and_tokens_revoked(): void
+    {
+        $user = User::factory()->create(['email' => 'personal@example.com', 'name' => 'Personal Name', 'password' => Hash::make('password123')]);
+        $token = $user->createToken('current')->plainTextToken;
+        $this->withToken($token)->deleteJson('/api/v1/auth/me', ['current_password' => 'password123', 'confirmation' => true])->assertOk();
+        $user->refresh();
+        $this->assertSame('Deleted user', $user->name);
+        $this->assertStringEndsWith('@deleted.invalid', $user->email);
+        $this->assertNull($user->privacy_acknowledged_at);
+        $this->assertCount(0, $user->tokens()->get());
+        $this->postJson('/api/v1/auth/login', ['email' => 'personal@example.com', 'password' => 'password123'])->assertUnprocessable();
+    }
+
+    public function test_active_league_commissioner_must_resolve_ownership_before_deletion(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('password123')]);
+        League::factory()->for($user, 'commissioner')->create();
+        $token = $user->createToken('current')->plainTextToken;
+
+        $this->withToken($token)->deleteJson('/api/v1/auth/me', ['current_password' => 'password123', 'confirmation' => true])
+            ->assertUnprocessable()->assertJsonValidationErrors('account');
+        $this->assertSame($user->email, $user->refresh()->email);
+    }
+
+    public function test_completed_league_history_remains_after_commissioner_anonymization(): void
+    {
+        $user = User::factory()->create(['password' => Hash::make('password123')]);
+        $status = LeagueStatus::query()->create(['key' => LeagueStatus::COMPLETED, 'label' => 'Completed']);
+        $league = League::factory()->for($user, 'commissioner')->create(['league_status_id' => $status->id]);
+        $team = FantasyTeam::factory()->for($league)->for($user)->create();
+        $token = $user->createToken('current')->plainTextToken;
+
+        $this->withToken($token)->deleteJson('/api/v1/auth/me', ['current_password' => 'password123', 'confirmation' => true])->assertOk();
+        $this->assertDatabaseHas('leagues', ['id' => $league->id, 'commissioner_user_id' => $user->id]);
+        $this->assertDatabaseHas('fantasy_teams', ['id' => $team->id, 'user_id' => $user->id]);
+    }
+
+    public function test_expired_sanctum_token_is_rejected(): void
+    {
+        config(['sanctum.expiration' => 1]);
+        $user = User::factory()->create();
+        $token = $user->createToken('expired')->plainTextToken;
+        $user->tokens()->update(['created_at' => now()->subMinutes(2)]);
+        $this->app['auth']->forgetGuards();
+        $this->withToken($token)->getJson('/api/v1/auth/me')->assertUnauthorized();
+    }
+
 
     public function test_global_admin_seed_exists(): void
     {
@@ -130,7 +280,8 @@ class AuthTest extends TestCase
         $this->actingAs($user, 'sanctum')->getJson('/api/v1/auth/me')->assertOk()
             ->assertJsonPath('data.id', $user->id)->assertJsonPath('data.email', $user->email)
             ->assertJsonMissingPath('data.password')->assertJsonMissingPath('data.remember_token')
-            ->assertJsonStructure(['data' => ['id', 'name', 'email', 'email_verified_at', 'created_at']]);
+            ->assertJsonMissingPath('data.email_verified_at')
+            ->assertJsonStructure(['data' => ['id', 'name', 'email', 'created_at']]);
     }
 
     public function test_guest_cannot_view_or_update_account(): void
@@ -148,12 +299,14 @@ class AuthTest extends TestCase
         $this->assertDatabaseHas('users', ['id' => $user->id, 'name' => 'New Name']);
     }
 
-    public function test_user_can_update_email_with_current_password_and_verification_is_reset(): void
+    public function test_user_can_update_email_with_current_password_without_notification(): void
     {
+        Notification::fake();
         /** @var User $user */
-        $user = User::factory()->create(['email' => 'old@example.com', 'email_verified_at' => now(), 'password' => Hash::make('password123')]);
-        $this->actingAs($user, 'sanctum')->patchJson('/api/v1/auth/me', ['email' => 'new@example.com', 'current_password' => 'password123'])->assertOk()->assertJsonPath('data.email', 'new@example.com')->assertJsonPath('data.email_verified_at', null);
-        $this->assertDatabaseHas('users', ['id' => $user->id, 'email' => 'new@example.com', 'email_verified_at' => null]);
+        $user = User::factory()->create(['email' => 'old@example.com', 'password' => Hash::make('password123')]);
+        $this->actingAs($user, 'sanctum')->patchJson('/api/v1/auth/me', ['email' => 'new@example.com', 'current_password' => 'password123'])->assertOk()->assertJsonPath('data.email', 'new@example.com')->assertJsonMissingPath('data.email_verified_at');
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'email' => 'new@example.com']);
+        Notification::assertNothingSent();
     }
 
     public function test_same_current_email_is_accepted(): void

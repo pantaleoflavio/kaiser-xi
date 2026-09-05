@@ -6,6 +6,7 @@ use App\Models\Matchday;
 use App\Models\RealCompetition;
 use App\Models\Season;
 use App\Services\Import\ImportRowAnalysis;
+use App\Services\Import\RecoverableRowException;
 use Carbon\CarbonImmutable;
 use Illuminate\Validation\ValidationException;
 
@@ -96,7 +97,7 @@ class MatchdayCsvImporter implements CsvImporter
         foreach ($analysis['rows'] as $row) {
             if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $model = Matchday::where('season_id', $row['season_id'])->where('number', $row['number'])->first();
-            if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("Matchday identity changed since analysis at CSV row {$row['row_number']}.");
+            if (($row['model_id'] ?? null) !== $model?->id) throw new RecoverableRowException("Matchday identity changed since analysis at CSV row {$row['row_number']}.");
             $model ? $model->fill($row['payload'])->save() : Matchday::create(['season_id' => $row['season_id'], 'number' => $row['number']] + $row['payload']);
         }
     }

@@ -7,6 +7,9 @@ use App\Models\Matchday;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
+use App\Services\Matchday\UnlockMatchdayCalculation;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -14,6 +17,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class MatchdayResource extends Resource
 {
@@ -49,8 +53,8 @@ class MatchdayResource extends Resource
             Select::make('season_id')->label(__('admin.labels.season'))->relationship('season', 'name')->searchable()->preload()->required(),
             TextInput::make('number')->label(__('admin.labels.matchday_number'))->numeric()->required(),
             TextInput::make('name')->label(__('admin.labels.round_name')),
-            DateTimePicker::make('starts_at')->label(__('admin.labels.starts_at'))->required(),
-            DateTimePicker::make('ends_at')->label(__('admin.labels.ends_at'))->required(),
+            DateTimePicker::make('starts_at')->label(__('admin.labels.starts_at'))->seconds(false)->timezone(config('app.display_timezone'))->required(),
+            DateTimePicker::make('ends_at')->label(__('admin.labels.ends_at'))->seconds(false)->timezone(config('app.display_timezone'))->required(),
         ]);
     }
 
@@ -62,10 +66,23 @@ class MatchdayResource extends Resource
                 TextColumn::make('season.name')->label(__('admin.labels.season'))->searchable()->sortable(),
                 TextColumn::make('number')->label(__('admin.labels.matchday_number'))->searchable()->sortable(),
                 TextColumn::make('name')->label(__('admin.labels.round_name'))->searchable()->sortable(),
-                TextColumn::make('starts_at')->label(__('admin.labels.starts_at'))->dateTime()->sortable(),
-                TextColumn::make('ends_at')->label(__('admin.labels.ends_at'))->dateTime()->sortable(),
+                TextColumn::make('starts_at')->label(__('admin.labels.starts_at'))->dateTime()->timezone(config('app.display_timezone'))->sortable(),
+                TextColumn::make('ends_at')->label(__('admin.labels.ends_at'))->dateTime()->timezone(config('app.display_timezone'))->sortable(),
+                TextColumn::make('calculation_unlocked_at')->label(__('admin.resources.matchdays.calculation_unlock'))->dateTime()->timezone(config('app.display_timezone'))->placeholder(__('admin.resources.matchdays.locked')),
             ])
-            ->recordActions([EditAction::make()])
+            ->recordActions([
+                Action::make('unlockCalculation')
+                    ->label(__('admin.resources.matchdays.unlock_calculation'))
+                    ->icon('heroicon-o-lock-open')
+                    ->requiresConfirmation()
+                    ->visible(fn(Matchday $record): bool => auth()->user()?->canAccessAdminPanel() === true && $record->calculation_unlocked_at === null && now()->gte($record->ends_at))
+                    ->authorize(fn(): bool => auth()->user()?->canAccessAdminPanel() === true)
+                    ->action(function (Matchday $record): void {
+                        app(UnlockMatchdayCalculation::class)->unlock($record, auth()->user());
+                        Notification::make()->success()->title(__('admin.resources.matchdays.unlocked'))->send();
+                    }),
+                EditAction::make(),
+            ])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
 

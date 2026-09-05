@@ -41,8 +41,8 @@
 
         @if ($analysis)
             <x-filament::section heading="Analysis preview">
-                <div class="grid grid-cols-2 gap-3 md:grid-cols-6">
-                    @foreach (['total', 'create', 'update', 'unchanged', 'warnings', 'errors'] as $count)
+                <div class="grid grid-cols-2 gap-3 md:grid-cols-8">
+                    @foreach (['total', 'create', 'update', 'unchanged', 'unmatched', 'rejected', 'warnings', 'errors'] as $count)
                         <div class="rounded-lg bg-gray-100 p-3 dark:bg-gray-800">
                             <strong>{{ ucfirst($count) }}</strong><br>{{ $analysis['counts'][$count] }}
                         </div>
@@ -64,7 +64,8 @@
                                 <tr class="border-t">
                                     <td>{{ $row['row_number'] }}</td>
                                     <td>{{ $row['identifier'] }}</td>
-                                    <td>{{ $row['action'] }}</td>
+                                    <td>{{ in_array($row['action'], ['error', 'unmatched'], true) ? 'rejected (' . $row['action'] . ')' : $row['action'] }}
+                                    </td>
                                     <td>{{ implode(', ', $row['changes']) }}</td>
                                     <td>{{ implode('; ', array_merge($row['warnings'], $row['errors'])) }}</td>
                                 </tr>
@@ -72,8 +73,13 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4"><x-filament::button wire:click="confirm" :disabled="$analysis['has_errors'] || $importId === null">Confirm
-                        Import</x-filament::button></div>
+                <div class="mt-4 flex gap-2"><x-filament::button wire:click="confirm" :disabled="$importId === null">Confirm
+                        Import</x-filament::button>
+                    @if ($analysis['counts']['rejected'] > 0)
+                        <x-filament::button color="gray" wire:click="downloadRejectedRows">Download rejected
+                            rows</x-filament::button>
+                    @endif
+                </div>
             </x-filament::section>
         @endif
     </div>

@@ -28,15 +28,15 @@ class PlayerSeasonRegistration extends Model
         'shirt_number',
         'quotation',
         'is_active',
-        'registered_at',
-        'released_at',
+        'registered_on',
+        'released_on',
     ];
 
     protected $casts = [
         'quotation' => 'decimal:2',
         'is_active' => 'boolean',
-        'registered_at' => 'datetime',
-        'released_at' => 'datetime',
+        'registered_on' => 'date:Y-m-d',
+        'released_on' => 'date:Y-m-d',
     ];
 
     protected static function booted(): void
@@ -63,12 +63,12 @@ class PlayerSeasonRegistration extends Model
                 'external_id.unique' => __('admin.validation.external_identity_unique'),
             ])->validate();
 
-            if ($registration->is_active && $registration->released_at === null) {
+            if ($registration->is_active && $registration->released_on === null) {
                 $seasonId = SeasonClub::query()->whereKey($registration->season_club_id)->value('season_id');
                 $query = self::query()
                     ->where('player_id', $registration->player_id)
                     ->where('is_active', true)
-                    ->whereNull('released_at')
+                    ->whereNull('released_on')
                     ->whereHas('seasonClub', fn(Builder $query) => $query->where('season_id', $seasonId));
                 if ($registration->exists) $query->whereKeyNot($registration->getKey());
                 $duplicate = $query->exists();
@@ -107,7 +107,7 @@ class PlayerSeasonRegistration extends Model
     {
         return $query
             ->where('player_season_registrations.is_active', true)
-            ->whereNull('player_season_registrations.released_at')
+            ->whereNull('player_season_registrations.released_on')
             ->whereHas('seasonClub', fn(Builder $query) => $query->whereIn('season_clubs.season_id', $seasonIds));
     }
 }

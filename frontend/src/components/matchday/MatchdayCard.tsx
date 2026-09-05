@@ -26,7 +26,7 @@ export function MatchdayCard({
   const formation = useQuery({
     queryKey: formationKeys.detail(leagueId, item.id, myTeam?.id ?? ''),
     queryFn: () => formationsApi.show(leagueId, item.id, String(myTeam?.id ?? '')),
-    enabled: formationAllowed && state !== 'past' && Boolean(myTeam),
+    enabled: state !== 'past' && (formationAllowed || state === 'current') && Boolean(myTeam),
     retry: false,
   });
   const action = formation.data?.data.submitted
@@ -42,7 +42,7 @@ export function MatchdayCard({
   const opponentFormation = useQuery({
     queryKey: formationKeys.detail(leagueId, item.id, String(opponentTeam?.id ?? '')),
     queryFn: () => formationsApi.show(leagueId, item.id, String(opponentTeam?.id ?? '')),
-    enabled: formationAllowed && state === 'current' && Boolean(opponentTeam),
+    enabled: state === 'current' && Boolean(opponentTeam),
     retry: false,
   });
 
@@ -61,6 +61,11 @@ export function MatchdayCard({
           <p className="mt-2 text-sm text-theme-muted">
             {t('formation.deadline')}:{' '}
             {formatDate(item.deadline, t('leagueDetail.notAvailable'), language)}
+          </p>
+          <p className="mt-1 text-sm text-theme-muted">
+            {t('matchdays.timeWindow')}:{' '}
+            {formatDate(item.starts_at, t('leagueDetail.notAvailable'), language)} –{' '}
+            {formatDate(item.ends_at, t('leagueDetail.notAvailable'), language)}
           </p>
           {state !== 'past' && opponentTeam ? (
             <p className="mt-2 text-sm font-semibold text-theme-accent">
@@ -82,6 +87,11 @@ export function MatchdayCard({
               </p>
             )
           ) : null}
+          {item.is_waiting_for_calculation_unlock ? (
+            <p className="mt-3 inline-flex rounded-full border border-sky-400/30 bg-sky-950/30 px-3 py-1 text-sm font-medium text-sky-200">
+              {t('matchdays.waitingForCalculationUnlock')}
+            </p>
+          ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
           <Link
@@ -91,7 +101,7 @@ export function MatchdayCard({
             {t('matchdays.open')}
           </Link>
           {state !== 'past' &&
-          formationAllowed &&
+          (formationAllowed || state === 'current') &&
           myTeam &&
           !formation.isLoading &&
           (!formation.error ||

@@ -19,6 +19,7 @@ Only columns present in the uploaded header are supplied. Unless an importer say
 | `create` | A new domain record will be written. |
 | `update` | The resolved record has supplied semantic changes (including a new external mapping). |
 | `unchanged` | The record already matches; execution performs no write. |
+| `unmatched` | A PlayerScore row whose complete fallback player identity does not resolve; the row is skipped and retained in the unmatched-player report. |
 | `error` | A blocking row. Confirmation is disabled and no domain rows execute. |
 
 Warnings are non-blocking. Currently, changed/new confirmed PlayerScores warn that fantasy results are not recalculated. Errors block the whole import.
@@ -43,7 +44,7 @@ asynchronous:                          v
 
 `pending`, `ready`, `blocked`, `queued`, `importing`, `completed`, and `failed` are the defined statuses. In the UI, analysis immediately creates history as `ready`; validation errors change it to `blocked`. (`pending` exists but this workflow does not assign it.) Confirm locks the row and changes only `ready` to `queued`, preventing duplicate dispatch. The one-attempt queued job changes only `queued` to `importing`, so redelivery is a no-op. It reloads the saved source, verifies its SHA-256 checksum, and performs a fresh analysis. Errors discovered then fail execution. All importer writes share one database transaction: there is no chunking or partial success.
 
-On success, all analysed rows count as successful (including unchanged rows). On failure, domain writes roll back, status becomes `failed`, and row errors retain row number/data and validation or execution text. A pre-analysis/source error is stored at row 1. The Import data screen shows the current preview but has no history browser or retry control; correct the source and analyse it as a new import. Do not edit stored source files: checksum mismatch fails them.
+On success, matched analysed rows count as successful (including unchanged rows). Unmatched PlayerScore rows do not count as successful and are persisted per CSV row in `import_unmatched_players`, with their row number, complete original parsed row data, and reason. On failure, domain writes and unmatched reports roll back, status becomes `failed`, and row errors retain row number/data and validation or execution text. A pre-analysis/source error is stored at row 1. The Import data screen shows the current preview but has no history browser or retry control; correct the source and analyse it as a new import. Do not edit stored source files: checksum mismatch fails them.
 
 All importers re-resolve key records during execution and reject identities that changed since analysis. This protects against stale previews. CSV duplicates of a natural/provider identity are errors.
 
@@ -142,14 +143,14 @@ In every section, “duplicate” means a blocking duplicate within the file; ex
 ### PlayerSeasonRegistration
 
 - **Purpose/model/dependencies:** the season-specific combination **Player + SeasonClub + PlayerRole/context** (`PlayerSeasonRegistration`). Competition, Season, Player and club provider mappings, SeasonClub, and PlayerRole key must exist.
-- **Canonical header:** `competition_code,season_name,player_provider,player_external_id,club_provider,club_external_id,registration_provider,registration_external_id,player_role,quotation,shirt_number,registered_at,released_at,is_active`.
+- **Canonical header:** `competition_code,season_name,player_provider,player_external_id,club_provider,club_external_id,registration_provider,registration_external_id,player_role,quotation,shirt_number,registered_on,released_on,is_active`.
 - **Required header/create:** first six fields are headers; create additionally needs `player_role`. Player and club identities are always complete provider pairs.
 - **Identity:** preferred direct registration provider pair; otherwise Player + SeasonClub natural identity. When direct and natural identities are supplied, they must resolve to the same registration. Providers normalize lowercase; IDs remain exact.
-- **Fields/formats:** role is a `PlayerRole.key`; quotation is 0..999999.99 (two decimals); shirt number integer 0..65535; timestamps require ISO-8601 explicit offset and are stored in UTC; active is `true`/`false`.
-- **Updates/empty cells:** only non-empty role, quotation, number, timestamps, and active are supplied; blanks never clear or zero them. Creates use defaults, including active true. Existing released registrations remain historical and are not repurposed for another club.
-- **Active/transfer rule:** active means `is_active=true` and `released_at` null. Only one such registration per player/Season is accepted. There is no automatic transfer orchestration: first import an update that deactivates (`is_active=false`) and/or releases the old registration, confirm its completion, then import the new club registration.
-- **Duplicate/caveat:** duplicate natural/direct identity errors; unknown role/mappings, mismatched direct identity, or another active registration errors. There is no empty-cell way to clear `released_at` and reactivate a released row.
-- **Example:** `serie_a,2026/27,opta,Player-001,opta,Club-001,opta,Registration-001,forward,25.50,9,2026-08-20T12:00:00+02:00,,true`
+- **Fields/formats:** role is a `PlayerRole.key`; quotation is 0..999999.99 (two decimals); shirt number integer 0..65535; registration and release dates require `YYYY-MM-DD` and contain no time or timezone; active is `true`/`false`.
+- **Updates/empty cells:** only non-empty role, quotation, number, dates, and active are supplied; blanks never clear or zero them. Creates use defaults, including active true. Existing released registrations remain historical and are not repurposed for another club.
+- **Active/transfer rule:** active means `is_active=true` and `released_on` null. Only one such registration per player/Season is accepted. There is no automatic transfer orchestration: first import an update that deactivates (`is_active=false`) and/or releases the old registration, confirm its completion, then import the new club registration.
+- **Duplicate/caveat:** duplicate natural/direct identity errors; unknown role/mappings, mismatched direct identity, or another active registration errors. There is no empty-cell way to clear `released_on` and reactivate a released row.
+- **Example:** `serie_a,2026/27,opta,Player-001,opta,Club-001,opta,Registration-001,forward,25.50,9,2026-08-20,,true`
 
 ### PlayerScore
 
@@ -161,6 +162,7 @@ In every section, “duplicate” means a blocking duplicate within the file; ex
 - **Updates/empty cells:** optional blanks preserve on update; creates use model/database defaults. `final_score` is optional external/provider data—this import never derives it.
 - **Status:** `pending` may omit a base rating; `confirmed` requires a base rating and is playable only with it; `did_not_play` forcibly clears `base_rating` and `final_score`, sets every event to zero, and sets `clean_sheet`/`is_captain` false, irrespective of omitted cells.
 - **Duplicate/warning/caveat:** duplicate registration+matchday errors. Changing/new confirmed scores warns about explicit recalculation. Import never deletes a score.
+- **Unknown fallback Player:** when no direct registration resolves and the complete fallback Player provider/external ID is unknown, the otherwise valid row is classified `unmatched`, retained row-by-row with its original parsed CSV data, and skipped. Other reference and score validation remains blocking.
 - **Example:** `serie_a,2026/27,1,opta,Registration-001,,,,,confirmed,7.50,1,0,0,0,0,0,0,0,0,true,false,10.00`
 
 ## PlayerScore versus fantasy scoring

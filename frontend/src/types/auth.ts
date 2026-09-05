@@ -4,7 +4,7 @@ export type User = {
   id: number;
   name: string;
   email: string;
-  email_verified_at?: string | null;
+  privacy_acknowledged: boolean;
   created_at?: string | null;
   roles?: string[];
   theme?: ThemeId | null;
@@ -25,6 +25,7 @@ export type RegisterPayload = {
   email: string;
   password: string;
   password_confirmation: string;
+  privacy_acknowledged: boolean;
 };
 
 export type ApiErrorResponse = {

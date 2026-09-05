@@ -3,6 +3,7 @@
 namespace App\Services\Import\Importers;
 
 use App\Services\Import\ImportRowAnalysis;
+use App\Services\Import\RecoverableRowException;
 use Illuminate\Validation\ValidationException;
 
 abstract class ExternalIdentityCsvImporter implements CsvImporter
@@ -105,7 +106,7 @@ abstract class ExternalIdentityCsvImporter implements CsvImporter
             $identity = $row['provider'] !== '' ? $identityClass::where('provider', $row['provider'])->where('external_id', $row['external_id'])->first() : null;
             $bySlug = isset($row['payload']['slug']) ? $modelClass::where('slug', $row['payload']['slug'])->first() : null;
             $model = $identity?->{$c['identity_relation']} ?: $bySlug;
-            if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("Identity changed since analysis at CSV row {$row['row_number']}.");
+            if (($row['model_id'] ?? null) !== $model?->id) throw new RecoverableRowException("Identity changed since analysis at CSV row {$row['row_number']}.");
             if ($model) {
                 $model->fill($row['payload'])->save();
             } else {

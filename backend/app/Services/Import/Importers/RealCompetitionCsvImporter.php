@@ -5,6 +5,7 @@ namespace App\Services\Import\Importers;
 use App\Enums\CompetitionType;
 use App\Models\RealCompetition;
 use App\Services\Import\ImportRowAnalysis;
+use App\Services\Import\RecoverableRowException;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -77,7 +78,7 @@ class RealCompetitionCsvImporter implements CsvImporter
         foreach ($analysis['rows'] as $row) {
             if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $model = RealCompetition::where('code', $row['identity'])->first();
-            if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("Competition identity changed since analysis at CSV row {$row['row_number']}.");
+            if (($row['model_id'] ?? null) !== $model?->id) throw new RecoverableRowException("Competition identity changed since analysis at CSV row {$row['row_number']}.");
             if ($model) $model->fill($row['payload'])->save();
             else RealCompetition::create(['code' => $row['identity']] + $row['payload']);
         }

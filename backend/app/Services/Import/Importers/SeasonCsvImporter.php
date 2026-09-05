@@ -2,6 +2,7 @@
 
 namespace App\Services\Import\Importers;
 
+use App\Services\Import\RecoverableRowException;
 use App\Models\RealCompetition;
 use App\Models\Season;
 use App\Services\Import\ImportRowAnalysis;
@@ -111,7 +112,7 @@ class SeasonCsvImporter implements CsvImporter
         foreach ($analysis['rows'] as $row) {
             if (! in_array($row['action'], ['create', 'update'], true)) continue;
             $model = Season::where('real_competition_id', $row['competition_id'])->where('name', $row['name'])->first();
-            if (($row['model_id'] ?? null) !== $model?->id) throw new \RuntimeException("Season identity changed since analysis at CSV row {$row['row_number']}.");
+            if (($row['model_id'] ?? null) !== $model?->id) throw new RecoverableRowException("Season identity changed since analysis at CSV row {$row['row_number']}.");
             $model ? $model->fill($row['payload'])->save() : Season::create(['real_competition_id' => $row['competition_id'], 'name' => $row['name']] + $row['payload']);
         }
     }

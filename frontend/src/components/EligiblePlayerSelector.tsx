@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { EligiblePlayerFilters } from './fantasy-team/EligiblePlayerFilters';
 import { EligiblePlayerList } from './fantasy-team/EligiblePlayerList';
 import { useEligiblePlayerFilters } from '../hooks/useEligiblePlayerFilters';
@@ -16,21 +15,8 @@ type Props = {
 
 export function EligiblePlayerSelector({ leagueId, selected, onSelect, disabled, error }: Props) {
   const { t } = useTranslation();
-  const [clubs, setClubs] = useState<Array<{ id: number; name: string }>>([]);
   const filters = useEligiblePlayerFilters();
   const query = useEligiblePlayers(leagueId, filters.filters, !disabled);
-
-  useEffect(() => {
-    if (!query.data) return;
-    setClubs((current) => {
-      const values = new Map(current.map((club) => [club.id, club]));
-      query.data.data.forEach((player) => {
-        if (player.club?.id && player.club.name)
-          values.set(player.club.id, { id: player.club.id, name: player.club.name });
-      });
-      return [...values.values()].sort((a, b) => a.name.localeCompare(b.name));
-    });
-  }, [query.data]);
 
   return (
     <fieldset
@@ -45,7 +31,7 @@ export function EligiblePlayerSelector({ leagueId, selected, onSelect, disabled,
         search={filters.searchInput}
         role={filters.role}
         clubId={filters.clubId}
-        clubs={clubs}
+        clubs={query.data?.filter_options.clubs ?? []}
         onSearch={filters.setSearchInput}
         onRole={filters.setRole}
         onClub={filters.setClubId}

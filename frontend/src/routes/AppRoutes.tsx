@@ -1,44 +1,126 @@
+import { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppLayout } from '../layouts/AppLayout';
-import { DashboardPage } from '../pages/DashboardPage';
-import { LoginPage } from '../pages/LoginPage';
-import { RegisterPage } from '../pages/RegisterPage';
 import { GuestRoute } from './GuestRoute';
 import { ProtectedRoute } from './ProtectedRoute';
 import { HomePage } from '../pages/HomePage';
-import { LeagueDetailPage } from '../pages/LeagueDetailPage';
-import { LeaguesPage } from '../pages/LeaguesPage';
-import { GameInstructionsPage } from '../pages/game-instructions/GameInstructionsPage';
-import { FantasyTeamDetailPage } from '../pages/FantasyTeamDetailPage';
-import { CreateLeaguePage } from '../pages/CreateLeaguePage';
-import { InvitationsPage } from '../pages/InvitationsPage';
-import { AccountPage } from '../pages/AccountPage';
-import { LeagueRulesPage } from '../pages/LeagueRulesPage';
-import { LeagueFantasyTeamsPage } from '../pages/LeagueFantasyTeamsPage';
-import { MatchdayListPage } from '../pages/MatchdayListPage';
-import { MatchdayDetailPage } from '../pages/MatchdayDetailPage';
-import { FormationPage } from '../pages/FormationPage';
-import { HeadToHeadSchedulePage } from '../pages/HeadToHeadSchedulePage';
-import { LeagueStandingsPage } from '../pages/LeagueStandingsPage';
-import { ClassicChampionshipPage } from '../pages/ClassicChampionshipPage';
-import { LeagueMarketPage } from '../pages/LeagueMarketPage';
+import type { FrontendConfig } from '../config/frontend';
+import { frontendConfig } from '../config/frontend';
 
-export function AppRoutes() {
+const AccountPage = lazy(() =>
+  import('../pages/AccountPage').then((module) => ({ default: module.AccountPage })),
+);
+const ClassicChampionshipPage = lazy(() =>
+  import('../pages/ClassicChampionshipPage').then((module) => ({
+    default: module.ClassicChampionshipPage,
+  })),
+);
+const CreateLeaguePage = lazy(() =>
+  import('../pages/CreateLeaguePage').then((module) => ({ default: module.CreateLeaguePage })),
+);
+const DashboardPage = lazy(() =>
+  import('../pages/DashboardPage').then((module) => ({ default: module.DashboardPage })),
+);
+const FantasyTeamDetailPage = lazy(() =>
+  import('../pages/FantasyTeamDetailPage').then((module) => ({
+    default: module.FantasyTeamDetailPage,
+  })),
+);
+const ForgotPasswordPage = lazy(() =>
+  import('../pages/ForgotPasswordPage').then((module) => ({ default: module.ForgotPasswordPage })),
+);
+const FormationPage = lazy(() =>
+  import('../pages/FormationPage').then((module) => ({ default: module.FormationPage })),
+);
+const GameInstructionsPage = lazy(() =>
+  import('../pages/game-instructions/GameInstructionsPage').then((module) => ({
+    default: module.GameInstructionsPage,
+  })),
+);
+const HeadToHeadSchedulePage = lazy(() =>
+  import('../pages/HeadToHeadSchedulePage').then((module) => ({
+    default: module.HeadToHeadSchedulePage,
+  })),
+);
+const InvitationsPage = lazy(() =>
+  import('../pages/InvitationsPage').then((module) => ({ default: module.InvitationsPage })),
+);
+const LeagueDetailPage = lazy(() =>
+  import('../pages/LeagueDetailPage').then((module) => ({ default: module.LeagueDetailPage })),
+);
+const LeagueFantasyTeamsPage = lazy(() =>
+  import('../pages/LeagueFantasyTeamsPage').then((module) => ({
+    default: module.LeagueFantasyTeamsPage,
+  })),
+);
+const LeagueMarketPage = lazy(() =>
+  import('../pages/LeagueMarketPage').then((module) => ({ default: module.LeagueMarketPage })),
+);
+const LeaguePlayersPage = lazy(() =>
+  import('../pages/LeaguePlayersPage').then((module) => ({ default: module.LeaguePlayersPage })),
+);
+const LeagueRulesPage = lazy(() =>
+  import('../pages/LeagueRulesPage').then((module) => ({ default: module.LeagueRulesPage })),
+);
+const LeagueStandingsPage = lazy(() =>
+  import('../pages/LeagueStandingsPage').then((module) => ({
+    default: module.LeagueStandingsPage,
+  })),
+);
+const LeaguesPage = lazy(() =>
+  import('../pages/LeaguesPage').then((module) => ({ default: module.LeaguesPage })),
+);
+const LoginPage = lazy(() =>
+  import('../pages/LoginPage').then((module) => ({ default: module.LoginPage })),
+);
+const MatchdayDetailPage = lazy(() =>
+  import('../pages/MatchdayDetailPage').then((module) => ({ default: module.MatchdayDetailPage })),
+);
+const MatchdayListPage = lazy(() =>
+  import('../pages/MatchdayListPage').then((module) => ({ default: module.MatchdayListPage })),
+);
+const PlayerProfilePage = lazy(() =>
+  import('../pages/PlayerProfilePage').then((module) => ({ default: module.PlayerProfilePage })),
+);
+const RegisterPage = lazy(() =>
+  import('../pages/RegisterPage').then((module) => ({ default: module.RegisterPage })),
+);
+const ResetPasswordPage = lazy(() =>
+  import('../pages/ResetPasswordPage').then((module) => ({ default: module.ResetPasswordPage })),
+);
+const PrivacyPage = lazy(() =>
+  import('../pages/PrivacyPage').then((module) => ({ default: module.PrivacyPage })),
+);
+const ImprintPage = lazy(() =>
+  import('../pages/ImprintPage').then((module) => ({ default: module.ImprintPage })),
+);
+const PrivacyAcknowledgementPage = lazy(() =>
+  import('../pages/PrivacyAcknowledgementPage').then((module) => ({
+    default: module.PrivacyAcknowledgementPage,
+  })),
+);
+
+export function AppRoutes({ config = frontendConfig }: { config?: FrontendConfig }) {
   return (
     <Routes>
-      <Route element={<AppLayout />}>
+      <Route element={<AppLayout config={config} />}>
         <Route index element={<HomePage />} />
         <Route path="game-instructions" element={<GameInstructionsPage />} />
         <Route path="rules" element={<Navigate to="/game-instructions" replace />} />
+        <Route path="privacy" element={<PrivacyPage />} />
+        {config.impressumEnabled && <Route path="impressum" element={<ImprintPage />} />}
+        <Route path="privacy-acknowledgement" element={<PrivacyAcknowledgementPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="account" element={<AccountPage />} />
           <Route path="leagues" element={<LeaguesPage />} />
           <Route path="invitations" element={<InvitationsPage />} />
+          <Route path="players/:playerId" element={<PlayerProfilePage />} />
           <Route path="leagues/create" element={<CreateLeaguePage />} />
           <Route path="leagues/:leagueId" element={<LeagueDetailPage />} />
           <Route path="leagues/:leagueId/rules" element={<LeagueRulesPage />} />
           <Route path="leagues/:leagueId/market" element={<LeagueMarketPage />} />
+          <Route path="leagues/:leagueId/players" element={<LeaguePlayersPage />} />
           <Route path="leagues/:leagueId/fantasy-teams" element={<LeagueFantasyTeamsPage />} />
           <Route path="leagues/:leagueId/matchdays" element={<MatchdayListPage />} />
           <Route path="leagues/:leagueId/standings" element={<LeagueStandingsPage />} />
@@ -67,6 +149,8 @@ export function AppRoutes() {
         <Route element={<GuestRoute />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

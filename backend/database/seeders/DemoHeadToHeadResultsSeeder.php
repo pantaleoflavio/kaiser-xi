@@ -22,8 +22,7 @@ use App\Models\TeamMatchdayScore;
 use App\Models\TeamMatchdayScoreDetail;
 use App\Models\User;
 use App\Services\FantasyTeam\FantasyRosterService;
-use App\Services\Formation\SaveFormationService;
-use App\Services\Formation\SubmitFormationService;
+use Database\Seeders\Support\DemoFormationWriter;
 use App\Services\League\GenerateHeadToHeadSchedule;
 use App\Services\League\LeagueSettingsService;
 use App\Services\Matchday\FinalizeMatchday;
@@ -60,8 +59,7 @@ class DemoHeadToHeadResultsSeeder extends Seeder
         private readonly LeagueSettingsService $settings,
         private readonly FantasyRosterService $rosters,
         private readonly GenerateHeadToHeadSchedule $schedule,
-        private readonly SaveFormationService $formations,
-        private readonly SubmitFormationService $submissions,
+        private readonly DemoFormationWriter $formations,
         private readonly FinalizeMatchday $finalizer,
     ) {}
 
@@ -90,7 +88,7 @@ class DemoHeadToHeadResultsSeeder extends Seeder
                 Carbon::setTestNow($matchday->starts_at->copy()->subDay());
                 foreach ($teams as $teamIndex => $team) {
                     $formation = $this->saveFormation($league, $matchday, $team, $rosters[$team->id], $module);
-                    $this->submissions->submit($formation, $matchday);
+                    $this->formations->submit($formation, $matchday);
                     $this->scores($season, $matchday, $formation, $teamIndex, $matchdayIndex);
                 }
 
@@ -107,7 +105,7 @@ class DemoHeadToHeadResultsSeeder extends Seeder
                 }
                 $formation = $this->saveFormation($league, $current, $team, $rosters[$team->id], $module);
                 if ($teamIndex < 3) {
-                    $this->submissions->submit($formation, $current);
+                    $this->formations->submit($formation, $current);
                 }
             }
         } finally {
@@ -143,8 +141,8 @@ class DemoHeadToHeadResultsSeeder extends Seeder
                         'shirt_number' => $registration->shirt_number,
                         'quotation' => $registration->quotation,
                         'is_active' => true,
-                        'registered_at' => $registration->registered_at,
-                        'released_at' => null,
+                        'registered_on' => $registration->registered_on,
+                        'released_on' => null,
                     ],
                 );
             }

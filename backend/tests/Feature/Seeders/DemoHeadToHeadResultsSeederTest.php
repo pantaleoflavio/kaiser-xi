@@ -14,9 +14,11 @@ use App\Models\TeamMatchdayScore;
 use App\Models\TeamMatchdayScoreDetail;
 use Database\Seeders\DemoHeadToHeadResultsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\Feature\Seeders\Concerns\SeedsDemoFoundation;
 use Tests\TestCase;
 
+#[Group('demo-integration')]
 class DemoHeadToHeadResultsSeederTest extends TestCase
 {
     use RefreshDatabase;

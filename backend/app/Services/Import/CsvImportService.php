@@ -17,6 +17,7 @@ use App\Services\Import\Importers\RealCompetitionCsvImporter;
 use App\Services\Import\Importers\RealMatchCsvImporter;
 use App\Services\Import\Importers\SeasonClubCsvImporter;
 use App\Services\Import\Importers\SeasonCsvImporter;
+use App\Services\Import\RecoverableRowException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -78,7 +79,9 @@ class CsvImportService
             }
 
             $locked->update(['status' => ImportStatus::Queued]);
-            ExecuteCsvImportJob::dispatch($locked->getKey())->afterCommit();
+            DB::afterCommit(function () use ($locked): void {
+                ExecuteCsvImportJob::dispatch($locked->getKey());
+            });
 
             return true;
         });
@@ -124,18 +127,32 @@ class CsvImportService
                 : CsvImportType::from($import->type);
             $analysis = $this->analyse($type, $contents);
 
-            if ($analysis['has_errors']) {
-                throw new \RuntimeException('Import is blocked by validation errors.');
-            }
-
             $import->update(['total_rows' => $analysis['counts']['total']]);
 
-            DB::transaction(fn() => $this->importer($type)->execute($analysis));
+            DB::transaction(function () use ($type, &$analysis): void {
+                foreach ($analysis['rows'] as $index => $row) {
+                    if (in_array($row['action'], ['error', 'unmatched', 'unchanged'], true)) {
+                        continue;
+                    }
+
+                    try {
+                        DB::transaction(fn() => $this->importer($type)->execute([
+                            'rows' => [$row],
+                            'counts' => $analysis['counts'],
+                        ]));
+                    } catch (RecoverableRowException $exception) {
+                        $analysis['rows'][$index] = $this->executionError($row, $exception->getMessage());
+                    }
+                }
+            });
+
+            $this->storeRejectedRows($import, $analysis);
+            $rejected = collect($analysis['rows'])->whereIn('action', ['error', 'unmatched'])->count();
 
             $import->update([
                 'status' => ImportStatus::Completed,
-                'successful_rows' => $analysis['counts']['total'],
-                'failed_rows' => 0,
+                'successful_rows' => $analysis['counts']['total'] - $rejected,
+                'failed_rows' => $rejected,
                 'completed_at' => now(),
             ]);
         } catch (\Throwable $exception) {
@@ -143,6 +160,71 @@ class CsvImportService
 
             throw $exception;
         }
+    }
+
+    public function storeUnmatchedRows(Import $import, array $analysis): void
+    {
+        $import->unmatchedRows()->delete();
+
+        foreach ($analysis['rows'] as $row) {
+            if ($row['action'] !== 'unmatched') continue;
+
+            $import->unmatchedRows()->create([
+                'row_number' => $row['row_number'],
+                'row_data' => $row['data'],
+                'message' => implode('; ', $row['warnings']),
+            ]);
+        }
+    }
+
+    public function storeRejectedRows(Import $import, array $analysis): void
+    {
+        $import->rowErrors()->delete();
+
+        foreach ($analysis['rows'] as $row) {
+            if (! in_array($row['action'], ['error', 'unmatched'], true)) {
+                continue;
+            }
+
+            $errors = array_values(array_filter(array_merge($row['errors'] ?? [], $row['warnings'] ?? [])));
+            $import->rowErrors()->create([
+                'row_number' => $row['row_number'],
+                'row_data' => $row['data'],
+                'error_message' => implode('; ', $errors),
+                'errors' => $errors,
+            ]);
+        }
+    }
+
+    public function rejectedRowsCsv(Import $import): string
+    {
+        $rows = $import->rowErrors()->orderBy('row_number')->get();
+        $columns = $rows->flatMap(fn($error) => array_keys($error->row_data ?? []))->unique()->values()->all();
+        $stream = fopen('php://temp', 'r+');
+        fputcsv($stream, array_merge(['row_number'], $columns, ['errors']), escape: '');
+
+        foreach ($rows as $error) {
+            $data = $error->row_data ?? [];
+            fputcsv($stream, array_merge(
+                [$error->row_number],
+                array_map(fn(string $column): mixed => $data[$column] ?? '', $columns),
+                [implode('; ', $error->errors ?: [$error->error_message])],
+            ), escape: '');
+        }
+
+        rewind($stream);
+
+        return stream_get_contents($stream);
+    }
+
+    private function executionError(array $row, string $message): array
+    {
+        return array_merge($row, [
+            'action' => 'error',
+            'changes' => [],
+            'warnings' => [],
+            'errors' => [$message],
+        ]);
     }
 
     public function failQueuedExecution(int $importId, string $message): void
@@ -159,19 +241,12 @@ class CsvImportService
     {
         $total = $analysis['counts']['total'] ?? 0;
         $import->update(['status' => ImportStatus::Failed, 'total_rows' => $total, 'successful_rows' => 0, 'failed_rows' => $total, 'completed_at' => now()]);
-
-        if (($analysis['rows'] ?? []) === []) {
-            $import->rowErrors()->create(['row_number' => 1, 'row_data' => null, 'error_message' => $message]);
-
-            return;
-        }
-
-        $hasRowErrors = collect($analysis['rows'])->contains(fn(array $row): bool => $row['errors'] !== []);
-        if (! $hasRowErrors) {
-            $import->rowErrors()->create(['row_number' => 1, 'row_data' => null, 'error_message' => $message]);
-            return;
-        }
-
-        foreach ($analysis['rows'] as $row) if ($row['errors']) $import->rowErrors()->create(['row_number' => $row['row_number'], 'row_data' => $row['data'], 'error_message' => implode('; ', $row['errors'])]);
+        $import->rowErrors()->delete();
+        $import->rowErrors()->create([
+            'row_number' => 1,
+            'row_data' => null,
+            'error_message' => $message,
+            'errors' => [$message],
+        ]);
     }
 }

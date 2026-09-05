@@ -151,6 +151,63 @@ class FormationApiTest extends TestCase
         }
     }
 
+    public function test_upcoming_matchday_requires_the_previous_matchday_to_be_finished(): void
+    {
+        [$league, $team, $matchday, $payload] = $this->context();
+        $matchday->update(['number' => 2]);
+        $previous = Matchday::factory()->create([
+            'season_id' => $league->season_id,
+            'number' => 1,
+            'starts_at' => now()->subHour(),
+            'ends_at' => now()->addHour(),
+        ]);
+        $league->update(['championship_start_matchday_id' => $previous->id]);
+        $submitted = Formation::factory()->create([
+            'league_id' => $league->id,
+            'fantasy_team_id' => $team->id,
+            'matchday_id' => $previous->id,
+            'is_confirmed' => true,
+            'submitted_at' => $previous->starts_at->copy()->subMinute(),
+        ]);
+        Sanctum::actingAs($team->user);
+
+        $inProgressResponse = $this->getJson("/api/v1/leagues/{$league->id}/matchdays")
+            ->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonPath('data.0.id', $previous->id)
+            ->assertJsonPath('data.0.championship_state', 'current')
+            ->assertJsonPath('data.0.formation_allowed', false)
+            ->assertJsonPath('data.1.id', $matchday->id)
+            ->assertJsonPath('data.1.championship_state', 'upcoming')
+            ->assertJsonPath('data.1.formation_allowed', false);
+        $this->assertSame([$previous->id, $matchday->id], $inProgressResponse->json('data.*.id'));
+        $this->getJson($this->url($league, $previous, $team))
+            ->assertOk()
+            ->assertJsonPath('data.id', $submitted->id)
+            ->assertJsonPath('data.submitted', true);
+
+        $this->putJson($this->url($league, $matchday, $team), $payload)
+            ->assertConflict()
+            ->assertJsonPath('code', 'formation_matchday_not_eligible');
+
+        $previous->update(['ends_at' => now()->subSecond()]);
+
+        $finishedResponse = $this->getJson("/api/v1/leagues/{$league->id}/matchdays")
+            ->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonPath('data.0.id', $previous->id)
+            ->assertJsonPath('data.0.championship_state', 'past')
+            ->assertJsonPath('data.0.formation_allowed', false)
+            ->assertJsonPath('data.1.id', $matchday->id)
+            ->assertJsonPath('data.1.formation_allowed', true);
+        $this->assertSame([$previous->id, $matchday->id], $finishedResponse->json('data.*.id'));
+        $this->getJson($this->url($league, $previous, $team))
+            ->assertOk()
+            ->assertJsonPath('data.id', $submitted->id)
+            ->assertJsonPath('data.submitted', true);
+        $this->putJson($this->url($league, $matchday, $team), $payload)->assertCreated();
+    }
+
     public function test_formation_visibility_depends_on_membership_and_submission_not_matchday_clock(): void
     {
         [$league, $team, $matchday, $payload] = $this->context();

@@ -71,27 +71,28 @@ export function FormationPage() {
   });
   const matchday = matchdays.data?.data.find((item) => item.id === numericId);
   const team = teams.data?.data.find((item) => String(item.id) === fantasyTeamId);
-  const historical = Boolean(matchday && Date.now() >= new Date(matchday.deadline).getTime());
+  const started = Boolean(matchday && Date.now() >= new Date(matchday.starts_at).getTime());
+  const finished = Boolean(matchday && Date.now() > new Date(matchday.ends_at).getTime());
   const owned = Boolean(team?.is_owned_by_current_user);
   const formationAllowed = matchday?.formation_allowed === true;
   const visibleFormation = useQuery({
     queryKey: formationKeys.detail(leagueId, numericId, fantasyTeamId),
     queryFn: () => formationsApi.show(leagueId, numericId, fantasyTeamId),
-    enabled: formationAllowed && Boolean(team && !owned),
+    enabled: !finished && Boolean(team) && (started || (formationAllowed && !owned)),
     retry: false,
   });
   const submittedFormation = visibleFormation.data?.data;
   const result = useQuery({
     queryKey: teamMatchdayResultKeys.detail(leagueId, numericId, fantasyTeamId),
     queryFn: () => teamMatchdayResultsApi.show(leagueId, numericId, fantasyTeamId),
-    enabled: historical && Boolean(team),
+    enabled: finished && Boolean(team),
   });
   if (
     matchdays.isLoading ||
     teams.isLoading ||
     league.isLoading ||
     schedule.isLoading ||
-    (historical && result.isLoading) ||
+    (finished && result.isLoading) ||
     visibleFormation.isLoading
   )
     return <LoadingState message={t('common.loading')} />;
@@ -99,18 +100,18 @@ export function FormationPage() {
     return (
       <ContentErrorPanel message={t('common.errors.notFound')} title={t('formation.errors.load')} />
     );
-  const showHistorical = historical;
-  const showOwnerEditor = !historical && owned && formationAllowed;
-  const showSubmittedFormation = !historical && !owned && Boolean(submittedFormation);
+  const showHistorical = finished;
+  const showOwnerEditor = !started && owned && formationAllowed;
+  const showSubmittedFormation = !finished && Boolean(submittedFormation?.submitted);
 
-  if (!historical && !formationAllowed && !submittedFormation)
+  if (!started && !formationAllowed && !submittedFormation)
     return (
       <ContentErrorPanel
         message={t('formation.errors.scheduleNotInitialized')}
         title={t('formation.errors.load')}
       />
     );
-  if (!historical && !owned && !submittedFormation)
+  if (!finished && !owned && !submittedFormation)
     return (
       <ContentErrorPanel
         message={t('common.errors.forbidden')}
@@ -137,7 +138,9 @@ export function FormationPage() {
           {formatDate(matchday.deadline, t('leagueDetail.notAvailable'), language)}
         </p>
       </header>
-      {showHistorical && result.data ? <HistoricalFormationView data={result.data.data} /> : null}
+      {showHistorical && result.data ? (
+        <HistoricalFormationView data={result.data.data} leagueId={leagueId} />
+      ) : null}
       {showSubmittedFormation && submittedFormation ? (
         <SubmittedFormationView formation={submittedFormation} />
       ) : null}

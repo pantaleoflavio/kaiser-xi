@@ -3,7 +3,7 @@ import { useAuth } from '../auth/useAuth';
 import { KaiserXiLogo } from '../components/branding/KaiserXiLogo';
 import { useTranslation } from '../i18n';
 
-const featureKeys = ['competitions', 'leagues', 'teams', 'roadmap'] as const;
+const featureKeys = ['competitions', 'leagues', 'teams', 'invitations', 'results'] as const;
 
 export function HomePage() {
   const { user } = useAuth();
@@ -18,7 +18,10 @@ export function HomePage() {
               className="h-auto max-h-28 w-full max-w-lg object-contain object-left"
               variant="full"
             />
-            <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-theme-text sm:text-5xl">
+            <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-theme-accent">
+              {t('home.eyebrow')}
+            </p>
+            <h1 className="mt-2 max-w-3xl text-4xl font-bold tracking-tight text-theme-text sm:text-5xl">
               {t('home.title')}
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-theme-muted">

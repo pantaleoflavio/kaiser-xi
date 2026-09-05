@@ -34,7 +34,8 @@
       "submitting": "Accesso in corso...",
       "noAccount": "Non hai un account?",
       "registerLink": "Registrati",
-      "error": "Impossibile accedere."
+      "error": "Impossibile accedere.",
+      "forgotPassword": "Password dimenticata?"
     },
     "register": {
       "title": "Crea account",
@@ -48,7 +49,26 @@
       "alreadyRegistered": "Già registrato?",
       "loginLink": "Accedi",
       "passwordsMustMatch": "Le password devono coincidere.",
-      "error": "Impossibile registrarsi."
+      "error": "Impossibile registrarsi.",
+      "privacyPrefix": "Ho letto",
+      "privacySuffix": "."
+    },
+    "forgot": {
+      "title": "Password dimenticata",
+      "description": "Inserisci il tuo indirizzo email per ricevere il link di reimpostazione.",
+      "success": "Se l’account esiste, è stato inviato un link.",
+      "error": "Impossibile richiedere il link.",
+      "submit": "Invia link",
+      "submitting": "Invio...",
+      "back": "Torna al login"
+    },
+    "reset": {
+      "title": "Scegli una nuova password",
+      "success": "La password è stata reimpostata. Ora puoi accedere.",
+      "error": "Impossibile reimpostare la password.",
+      "submit": "Reimposta password",
+      "submitting": "Reimpostazione...",
+      "login": "Vai al login"
     }
   },
   "dashboard": {
@@ -74,35 +94,39 @@
     "gameInstructions": "Istruzioni di gioco"
   },
   "home": {
-    "eyebrow": "Fantasy football a modo tuo",
-    "title": "Crea mondi di fantasy football privati su più competizioni.",
-    "description": " Kaiser XI è una piattaforma di fantasy football multi-competizione per creare o unirsi a leghe private e gestire fantasy team con gli amici.",
+    "eyebrow": "Il tuo fantasy football, le tue regole",
+    "title": "Crea e gestisci leghe private su più competizioni.",
+    "description": "KAISER XI è la piattaforma di fantasy football multi-competizione per vivere stagioni, squadre e giornate insieme al tuo gruppo.",
     "cta": {
       "login": "Accedi",
       "register": "Registrati",
       "dashboard": "Vai alla dashboard"
     },
     "panel": {
-      "label": "Base per il futuro",
-      "title": "Pronta per stagioni fantasy più profonde",
-      "description": "L’app viene preparata per rose, aste, formazioni e giornate, mantenendo l’esperienza attuale semplice e focalizzata."
+      "label": "La tua stagione in un unico posto",
+      "title": "Dalla creazione della lega ai risultati",
+      "description": "Configura la competizione, invita i partecipanti e gestisci fantasy team, formazioni, giornate e classifiche."
     },
     "features": {
       "competitions": {
-        "title": "Piattaforma multi-competizione",
-        "description": "Organizza esperienze di fantasy football che possono crescere oltre una sola competizione reale."
+        "title": "Competizioni e stagioni",
+        "description": "Scegli la competizione e la stagione su cui costruire la tua lega."
       },
       "leagues": {
         "title": "Leghe private",
-        "description": "Crea o unisciti a leghe private per il tuo gruppo e tieni ogni stagione in un unico spazio  Kaiser XI."
+        "description": "Crea uno spazio riservato al tuo gruppo e personalizza le regole della competizione."
       },
       "teams": {
-        "title": "Gestione fantasy team",
-        "description": "Gestisci le basi del tuo fantasy team prima dell’arrivo di strumenti avanzati per leghe e rose."
+        "title": "Fantasy team",
+        "description": "Gestisci nome, rosa e formazione del tuo fantasy team durante la stagione."
       },
-      "roadmap": {
-        "title": "Costruita per i prossimi passi",
-        "description": "È previsto il supporto futuro per rose, aste, formazioni tattiche e flussi delle giornate."
+      "invitations": {
+        "title": "Inviti",
+        "description": "Invita altri giocatori nella lega e gestisci le richieste di partecipazione."
+      },
+      "results": {
+        "title": "Giornate e risultati",
+        "description": "Segui punteggi, risultati e classifiche della tua lega giornata dopo giornata."
       }
     }
   },
@@ -585,14 +609,9 @@
     "fields": {
       "name": "Nome",
       "email": "Email",
-      "emailVerification": "Verifica email",
       "currentPassword": "Password attuale",
       "newPassword": "Nuova password",
       "confirmNewPassword": "Conferma nuova password"
-    },
-    "email": {
-      "verified": "Verificata",
-      "unverified": "Non verificata"
     },
     "profile": {
       "title": "Profilo",
@@ -619,6 +638,14 @@
       "description": "Scegli la palette Kaiser XI per il tuo account.",
       "selected": "Selezionato",
       "error": "Impossibile salvare il tema."
+    },
+    "delete": {
+      "title": "Zona pericolosa",
+      "description": "L’eliminazione anonimizza permanentemente la tua identità. I risultati storici restano. Inserisci la password.",
+      "confirm": "Anonimizzare permanentemente l’account? L’azione è irreversibile.",
+      "submit": "Elimina account",
+      "deleting": "Eliminazione...",
+      "error": "Impossibile eliminare l’account."
     }
   },
   "formation": {
@@ -633,7 +660,7 @@
     "bench": "Panchina",
     "matchday": "Giornata",
     "matchdayNumber": "Giornata {{number}}",
-    "deadline": "Scadenza",
+    "deadline": "Scadenza formazione",
     "locked": "Formazione bloccata — la scadenza è passata.",
     "editable": "La formazione è modificabile fino alla scadenza.",
     "submitted": "Inviata",
@@ -688,9 +715,10 @@
   "matchdays": {
     "title": "Giornate",
     "description": "Giornate passate, attuale e future di questa lega.",
-    "past": "Passate",
-    "current": "Giornata attuale",
+    "past": "Terminata",
+    "current": "In corso",
     "upcoming": "In arrivo",
+    "timeWindow": "Periodo della giornata",
     "open": "Apri giornata",
     "openFormation": "Apri formazione",
     "createFormation": "Crea formazione",
@@ -708,7 +736,13 @@
     "calculationSuccess": "Giornata calcolata correttamente.",
     "recalculationSuccess": "Giornata ricalcolata correttamente.",
     "calculationError": "Non è stato possibile calcolare la giornata. Verifica che sia terminata e riprova.",
-    "recalculationWarning": "Il ricalcolo sostituirà i punteggi e i risultati calcolati di questa giornata usando le regole attuali della lega e ricalcolerà la classifica."
+    "recalculationWarning": "Il ricalcolo sostituirà i punteggi e i risultati calcolati di questa giornata usando le regole attuali della lega e ricalcolerà la classifica.",
+    "calculationQueued": "Calcolo in coda.",
+    "recalculationQueued": "Ricalcolo in coda.",
+    "calculationInProgress": "Calcolo in corso…",
+    "calculationFailed": "Calcolo non riuscito. Puoi riprovare.",
+    "waitingForCalculationUnlock": "Il calcolo della giornata sarà disponibile a breve.",
+    "calculationCompleted": "Calcolo della giornata completato."
   },
   "h2h": {
     "title": "Campionato testa a testa",
@@ -931,5 +965,172 @@
       "noCash": "Nessun conguaglio",
       "acceptConfirmation": "Accettando, i giocatori verranno scambiati immediatamente tra le due fantasquadre e verrà applicato il conguaglio configurato."
     }
+  },
+  "playerProfile": {
+    "title": "Profilo giocatore",
+    "loading": "Caricamento del profilo giocatore...",
+    "errorTitle": "Impossibile caricare il profilo",
+    "error": "Non è stato possibile caricare il profilo del giocatore.",
+    "seasonRequired": "È necessario selezionare una stagione.",
+    "back": "Torna alla dashboard",
+    "club": "Club",
+    "role": "Ruolo",
+    "shirtNumber": "Numero di maglia",
+    "season": "Stagione",
+    "statistics": "Statistiche stagionali",
+    "history": "Storico giornate",
+    "emptyTitle": "Nessuna presenza",
+    "empty": "Non ci sono prestazioni confermate con voto in questa stagione.",
+    "notAvailable": "—",
+    "matchday": "Giornata {{number}}",
+    "opponent": "Avversario",
+    "opponentUnknown": "Avversario non disponibile",
+    "rating": "Voto",
+    "fields": {
+      "appearances": "Presenze",
+      "average_rating": "Voto medio",
+      "goals": "Gol",
+      "assists": "Assist",
+      "yellow_cards": "Cartellini gialli",
+      "red_cards": "Cartellini rossi",
+      "own_goals": "Autogol",
+      "penalties_scored": "Rigori segnati",
+      "penalties_missed": "Rigori sbagliati",
+      "penalties_saved": "Rigori parati",
+      "goals_conceded": "Gol subiti",
+      "clean_sheets": "Porte inviolate",
+      "captain_appearances": "Presenze da capitano"
+    },
+    "status": {
+      "played": "Ha giocato",
+      "did_not_play": "Non ha giocato",
+      "pending": "In attesa",
+      "no_data": "Nessun dato"
+    },
+    "venue": {
+      "home": "Casa",
+      "away": "Trasferta"
+    }
+  },
+  "playerMatchday": {
+    "details": "Dettagli giocatore",
+    "matchday": "Giornata {{number}}",
+    "rating": "Voto",
+    "fantasyScore": "Punteggio fantasy",
+    "contribution": "Contributo",
+    "close": "Chiudi",
+    "error": "Impossibile caricare i dettagli del giocatore.",
+    "status": {
+      "pending": "In attesa",
+      "did_not_play": "Non ha giocato",
+      "no_data": "Nessun dato"
+    },
+    "components": {
+      "goal": "Gol",
+      "assist": "Assist",
+      "yellow_card": "Cartellino giallo",
+      "red_card": "Cartellino rosso",
+      "own_goal": "Autogol",
+      "penalty_scored": "Rigore segnato",
+      "penalty_missed": "Rigore sbagliato",
+      "penalty_saved": "Rigore parato",
+      "goal_conceded": "Gol subito",
+      "clean_sheet_bonus": "Bonus porta inviolata",
+      "captain_bonus": "Bonus capitano"
+    }
+  },
+  "legal": {
+    "privacyTitle": "Informativa sulla privacy",
+    "imprintTitle": "Impressum",
+    "navigationLabel": "Informazioni legali",
+    "updated": "Versione: 25 agosto 2026",
+    "pendingValue": "Questa informazione sarà completata prima del lancio in produzione.",
+    "controllerTitle": "Titolare e contatti",
+    "controllerIntro": "Il titolare è la persona fisica che gestisce Kaiser XI. Identità e contatti verificati saranno pubblicati qui prima del lancio.",
+    "hosting": "Hosting applicazione",
+    "database": "Hosting database",
+    "email": "Servizio email transazionali",
+    "authority": "Autorità di controllo competente",
+    "privacy": {
+      "scope": {
+        "title": "Ambito",
+        "body": "Questa informativa descrive il trattamento nell’app gratuita e non monetizzata Kaiser XI. Non vi sono pubblicità, analisi, tracciamento comportamentale, marketing, newsletter, vendita di dati, servizi premium o pagamenti."
+      },
+      "data": {
+        "title": "Dati trattati",
+        "body": "La registrazione conserva nome visualizzato, email, hash unidirezionale della password (mai in chiaro), data di presa visione dell’informativa, tema, ruoli e date account. La sicurezza conserva hash dei token di accesso e date di scadenza/uso; email e token di reset sono temporanei. In base alla configurazione finale, le richieste possono generare normali log server e sicurezza: IP, orario, percorso e user agent."
+      },
+      "purposes": {
+        "title": "Finalità e basi giuridiche",
+        "body": "Account, autenticazione, reset, sicurezza e dati di gioco richiesti sono trattati per fornire il servizio ed eseguire il rapporto con l’utente (art. 6(1)(b) GDPR). Prevenzione abusi, sicurezza e log necessari si basano sul legittimo interesse alla gestione sicura (art. 6(1)(f)); obblighi legali, se presenti, sull’art. 6(1)(c). La casella di registrazione attesta solo la lettura e non è consenso al trattamento essenziale."
+      },
+      "game": {
+        "title": "Dati di Leghe e gioco",
+        "body": "Conserviamo iscrizioni e ruoli nelle Leghe, inviti, Fantasy Team e nomi, assegnazioni, budget, formazioni e invii, scambi e stato, punteggi, classifiche, risultati e storico. Sono visibili ai partecipanti autorizzati quando necessario al gioco."
+      },
+      "storage": {
+        "title": "Memoria del dispositivo",
+        "body": "Il client conserva token bearer e lingua in localStorage: il token mantiene l’accesso, la lingua ricorda la scelta. Un ID temporaneo della creazione Lega usa sessionStorage e viene rimosso al termine. Non usa IndexedDB né cookie analitici/pubblicitari. Le interfacce server/admin possono usare un cookie di sessione strettamente necessario. Non compare un banner perché non esiste memoria di tracciamento non essenziale."
+      },
+      "recipients": {
+        "title": "Destinatari e responsabili",
+        "body": "I dati sono comunicati solo ai partecipanti autorizzati quando richiesto dal gioco e ai fornitori necessari per hosting, database ed email transazionali di reset password. Fornitori, luoghi, contratti e sub-responsabili finali devono essere verificati e configurati prima del lancio."
+      },
+      "retention": {
+        "title": "Conservazione",
+        "body": "Account e gioco restano finché account e competizioni lo richiedono. Token di reset scadono secondo la sicurezza; quelli di accesso scadono o sono revocati. I log seguiranno necessità di sicurezza e configurazione finale. Obblighi legali possono prevalere."
+      },
+      "deletion": {
+        "title": "Cancellazione e anonimizzazione",
+        "body": "La cancellazione sostituisce irreversibilmente gli identificativi con email casuale non valida e nome generico; elimina tema, remember token, ruoli, reset e token di accesso e sostituisce l’hash password. Lo storico può restare collegato all’utente anonimizzato per integrità di competizioni, risultati, classifiche, formazioni e scambi. Non elimina subito ogni riga fisica."
+      },
+      "rights": {
+        "title": "Diritti",
+        "body": "Alle condizioni di legge puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilità e opporti al legittimo interesse. Puoi contattare il titolare e reclamare all’autorità di controllo. Il servizio essenziale non si basa sul consenso; un eventuale consenso futuro sarebbe revocabile."
+      },
+      "decisions": {
+        "title": "Decisioni automatizzate",
+        "body": "Non esistono decisioni automatizzate ai sensi dell’art. 22 GDPR né profilazione. Punteggi e classifiche derivano dalle regole e da fatti calcistici, senza effetti giuridici o analogamente significativi sugli utenti."
+      },
+      "transfers": {
+        "title": "Trasferimenti extra SEE",
+        "body": "Eventuali trasferimenti fuori UE/SEE dipendono dai fornitori finali. Non si dichiarano luoghi, trasferimenti o garanzie prima della selezione. Ogni trasferimento dovrà avere un meccanismo GDPR documentato prima del lancio."
+      }
+    },
+    "imprint": {
+      "operatorTitle": "Dati del gestore",
+      "operatorIntro": "Kaiser XI è un progetto gratuito gestito da una persona fisica. Non si dichiara alcuna società o registrazione commerciale. I dati verificati saranno pubblicati prima del lancio.",
+      "contactTitle": "Contatto",
+      "additionalTitle": "Ulteriori dati applicabili"
+    }
+  },
+  "privacyAcknowledgement": {
+    "title": "Presa visione dell’Informativa sulla privacy",
+    "description": "Prima di continuare, leggi e conferma di aver preso visione dell’Informativa sulla privacy. Non si tratta di consenso a marketing, analisi, pubblicità o trattamenti facoltativi.",
+    "checkboxPrefix": "Ho letto",
+    "checkboxSuffix": ".",
+    "submit": "Continua",
+    "submitting": "Salvataggio…",
+    "error": "Impossibile salvare la presa visione."
+  },
+  "leaguePlayers": {
+    "title": "Giocatori",
+    "count": "{{count}} giocatori",
+    "search": "Cerca per nome",
+    "club": "Club reale",
+    "allClubs": "Tutti i club",
+    "position": "Ruolo",
+    "allPositions": "Tutti i ruoli",
+    "status": "Stato fantasy",
+    "allStatuses": "Tutti gli stati",
+    "freeAgent": "Svincolato",
+    "assigned": "Assegnato",
+    "fantasyTeam": "Fantasquadra",
+    "allFantasyTeams": "Tutte le fantasquadre",
+    "emptyTitle": "Nessun giocatore trovato",
+    "empty": "Nessun giocatore corrisponde ai filtri selezionati."
+  },
+  "donations": {
+    "cta": "Sostieni KAISER XI su Ko-fi"
   }
 }

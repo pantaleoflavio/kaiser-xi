@@ -3,10 +3,11 @@
 namespace App\Http\Resources\Scoring;
 
 use App\Models\Formation;
+use Illuminate\Http\Request;
 use App\Models\FormationPlayer;
 use App\Models\TeamMatchdayScore;
+use Illuminate\Support\Collection;
 use App\Models\TeamMatchdayScoreDetail;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TeamMatchdayResultResource extends JsonResource
@@ -55,7 +56,7 @@ class TeamMatchdayResultResource extends JsonResource
         ];
     }
 
-    private function player(FormationPlayer $formationPlayer, ?TeamMatchdayScoreDetail $detail, $details): array
+    private function player(FormationPlayer $formationPlayer, ?TeamMatchdayScoreDetail $detail, ?Collection $details): array
     {
         $score = $detail?->playerScore;
         $incoming = $details?->first(fn(TeamMatchdayScoreDetail $candidate): bool => $candidate->replaced_player_id === $formationPlayer->player_id);
@@ -80,7 +81,6 @@ class TeamMatchdayResultResource extends JsonResource
             'effective_contribution' => $detail?->points,
             'player_score' => $score === null ? null : [
                 'status' => $score->status->value,
-                'final_score' => $score->final_score,
                 'base_rating' => $score->base_rating,
                 'goals' => $score->goals,
                 'assists' => $score->assists,

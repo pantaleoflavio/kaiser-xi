@@ -53,9 +53,17 @@ class PlayerResource extends Resource
             TextInput::make('display_name')->label(__('admin.labels.display_name'))->required(),
             TextInput::make('slug')->label(__('admin.labels.slug'))->required()->unique(ignoreRecord: true),
             DatePicker::make('birth_date')->label(__('admin.labels.birth_date')),
-            Toggle::make('is_active')->label(__('admin.labels.is_active'))->default(true),
+            Toggle::make('is_active')->label(__('admin.labels.active'))->default(true),
             Repeater::make('externalIdentities')->label(__('admin.labels.external_identities'))->relationship()->schema([
-                TextInput::make('provider')->label(__('admin.labels.external_provider'))->required()->maxLength(255)->dehydrateStateUsing(fn(string $state): string => mb_strtolower(trim($state))),
+                TextInput::make('provider')
+                    ->label(__('admin.labels.external_provider'))
+                    ->required()
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(
+                        fn(?string $state): ?string => $state !== null
+                            ? mb_strtolower(trim($state))
+                            : null
+                    ),
                 TextInput::make('external_id')->label(__('admin.labels.external_id'))->required()->maxLength(255),
             ])->columns(2)->defaultItems(0),
         ]);
@@ -69,8 +77,8 @@ class PlayerResource extends Resource
                 TextColumn::make('first_name')->label(__('admin.labels.first_name'))->searchable()->sortable(),
                 TextColumn::make('last_name')->label(__('admin.labels.last_name'))->searchable()->sortable(),
                 TextColumn::make('external_identities_count')->label(__('admin.labels.external_identities'))->counts('externalIdentities')->sortable(),
-                TextColumn::make('birth_date')->label(__('admin.labels.birth_date'))->dateTime()->sortable(),
-                IconColumn::make('is_active')->label(__('admin.labels.is_active'))->boolean(),
+                TextColumn::make('birth_date')->label(__('admin.labels.birth_date'))->date()->sortable(),
+                IconColumn::make('is_active')->label(__('admin.labels.active'))->boolean(),
             ])
             ->recordActions([EditAction::make()])
             ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { formationsApi } from '../api/formations';
 import { leaguesApi } from '../api/leagues';
@@ -26,11 +26,19 @@ export function MatchdayDetailPage() {
     message: string;
   } | null>(null);
   const numericId = Number(matchdayId);
+  const previousStatus = useRef<string | null>(null);
   const matchdays = useQuery({
     queryKey: formationKeys.matchdays(leagueId),
     queryFn: () => formationsApi.matchdays(leagueId),
     enabled: Number.isInteger(numericId),
+    refetchInterval: (query) => {
+      const item = query.state.data?.data.find((candidate) => candidate.id === numericId);
+      return item?.calculation_status === 'queued' || item?.calculation_status === 'calculating'
+        ? 3000
+        : false;
+    },
   });
+  const selectedMatchday = matchdays.data?.data.find((item) => item.id === numericId);
   const teams = useQuery({
     queryKey: leagueKeys.fantasyTeams(leagueId),
     queryFn: () => leaguesApi.fantasyTeams(leagueId),
@@ -55,7 +63,7 @@ export function MatchdayDetailPage() {
         : teamMatchdayResultsApi.classic(leagueId, numericId),
     enabled:
       ['classic', 'formula_one'].includes(league.data?.data.type.key ?? '') &&
-      Number.isInteger(numericId),
+      selectedMatchday?.championship_state === 'past',
   });
   const calculation = useMutation({
     mutationFn: () => formationsApi.calculate(leagueId, numericId),
@@ -63,11 +71,21 @@ export function MatchdayDetailPage() {
       setCalculationFeedback({
         type: 'success',
         message: t(
-          wasRecalculation ? 'matchdays.recalculationSuccess' : 'matchdays.calculationSuccess',
+          wasRecalculation ? 'matchdays.recalculationQueued' : 'matchdays.calculationQueued',
         ),
       });
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: formationKeys.matchdays(leagueId) }),
+      await queryClient.invalidateQueries({ queryKey: formationKeys.matchdays(leagueId) });
+    },
+    onError: () =>
+      setCalculationFeedback({ type: 'error', message: t('matchdays.calculationError') }),
+  });
+  useEffect(() => {
+    const status = selectedMatchday?.calculation_status ?? null;
+    const wasActive =
+      previousStatus.current === 'queued' || previousStatus.current === 'calculating';
+    if (wasActive && status === 'completed') {
+      setCalculationFeedback({ type: 'success', message: t('matchdays.calculationCompleted') });
+      void Promise.all([
         queryClient.invalidateQueries({ queryKey: leagueKeys.standings(leagueId) }),
         queryClient.invalidateQueries({ queryKey: leagueKeys.headToHeadSchedule(leagueId) }),
         queryClient.invalidateQueries({ queryKey: ['classic-matchday-results', String(leagueId)] }),
@@ -77,10 +95,11 @@ export function MatchdayDetailPage() {
         queryClient.invalidateQueries({ queryKey: ['team-matchday-result', String(leagueId)] }),
         queryClient.invalidateQueries({ queryKey: ['formation', String(leagueId)] }),
       ]);
-    },
-    onError: () =>
-      setCalculationFeedback({ type: 'error', message: t('matchdays.calculationError') }),
-  });
+    } else if (wasActive && status === 'failed') {
+      setCalculationFeedback({ type: 'error', message: t('matchdays.calculationFailed') });
+    }
+    previousStatus.current = status;
+  }, [selectedMatchday?.calculation_status, leagueId, queryClient, t]);
   if (
     matchdays.isLoading ||
     teams.isLoading ||
@@ -89,7 +108,7 @@ export function MatchdayDetailPage() {
     championshipResults.isLoading
   )
     return <LoadingState message={t('common.loading')} />;
-  const matchday = matchdays.data?.data.find((item) => item.id === numericId);
+  const matchday = selectedMatchday;
   if (!matchday || matchdays.error)
     return (
       <ContentErrorPanel message={t('common.errors.notFound')} title={t('matchdays.notFound')} />
@@ -168,8 +187,15 @@ export function MatchdayDetailPage() {
               {formatDate(matchday.deadline, t('leagueDetail.notAvailable'), language)}
             </dd>
           </div>
+          <div>
+            <dt className="text-sm text-theme-muted">{t('matchdays.timeWindow')}</dt>
+            <dd className="mt-1 text-theme-text">
+              {formatDate(matchday.starts_at, t('leagueDetail.notAvailable'), language)} –{' '}
+              {formatDate(matchday.ends_at, t('leagueDetail.notAvailable'), language)}
+            </dd>
+          </div>
         </dl>
-        {open && matchday.formation_allowed && myTeam && scheduled ? (
+        {(open || matchday.formation_allowed) && myTeam && scheduled ? (
           <Link
             className="mt-6 inline-block rounded-lg bg-theme-primary px-4 py-2 font-semibold text-theme-primary-foreground"
             to={`/leagues/${leagueId}/matchdays/${matchday.id}/fantasy-teams/${myTeam.id}/formation`}
@@ -183,6 +209,12 @@ export function MatchdayDetailPage() {
             role={calculationFeedback.type === 'success' ? 'status' : 'alert'}
           >
             {calculationFeedback.message}
+          </p>
+        ) : null}
+        {matchday.calculation_status === 'queued' ||
+        matchday.calculation_status === 'calculating' ? (
+          <p className="mt-6 text-sm font-semibold text-amber-300" role="status">
+            {t('matchdays.calculationInProgress')}
           </p>
         ) : null}
         {matchday.can_calculate || matchday.can_recalculate ? (

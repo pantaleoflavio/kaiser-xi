@@ -3,9 +3,14 @@ import type {
   ClassicMatchdayResultsResponse,
   FormulaOneMatchdayResultsResponse,
   TeamMatchdayResultResponse,
+  PlayerMatchdayDetails,
 } from '../types/results';
 
 export const teamMatchdayResultsApi = {
+  playerDetails: (leagueId: string, playerId: number, matchdayId: number, formationId: number) =>
+    apiClient<{ data: PlayerMatchdayDetails }>(
+      `/leagues/${leagueId}/players/${playerId}/matchdays/${matchdayId}?formation_id=${formationId}`,
+    ),
   classic: (leagueId: string, matchdayId: number) =>
     apiClient<FormulaOneMatchdayResultsResponse>(
       `/leagues/${leagueId}/matchdays/${matchdayId}/classic-results`,

@@ -22,7 +22,7 @@ class Player extends Model
     ];
 
     protected $casts = [
-        'birth_date' => 'date',
+        'birth_date' => 'date:Y-m-d',
         'is_active' => 'boolean',
     ];
 

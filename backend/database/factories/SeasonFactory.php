@@ -15,11 +15,13 @@ class SeasonFactory extends Factory
 
     public function definition(): array
     {
+        $startYear = $this->faker->numberBetween(2000, 2035);
+
         return [
             'real_competition_id' => RealCompetition::factory(),
-            'name' => $this->faker->unique()->year().'/'.$this->faker->year(),
-            'starts_at' => now()->startOfYear(),
-            'ends_at' => now()->endOfYear(),
+            'name' => $startYear . '/' . ($startYear + 1),
+            'starts_at' => now()->startOfYear()->toDateString(),
+            'ends_at' => now()->endOfYear()->toDateString(),
             'is_active' => true,
         ];
     }

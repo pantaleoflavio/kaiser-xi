@@ -33,16 +33,15 @@ export function buildMatchdayListPresentation(
   schedule: HeadToHeadSchedule | undefined,
   now: number,
 ): MatchdayListItemPresentation[] {
-  const current = matchdays.find((item) => new Date(item.ends_at).getTime() > now);
   const scheduledMatchdayIds = new Set(schedule?.matchdays.map((group) => group.matchday.id) ?? []);
 
   return matchdays.map((item) => ({
     item,
     state:
       item.championship_state ??
-      (new Date(item.ends_at).getTime() <= now
+      (new Date(item.ends_at).getTime() < now
         ? 'past'
-        : item.id === current?.id
+        : new Date(item.starts_at).getTime() <= now
           ? 'current'
           : 'upcoming'),
     fixture: findTeamFixture(schedule, item.id, myTeam?.id),

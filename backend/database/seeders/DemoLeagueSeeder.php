@@ -61,7 +61,7 @@ class DemoLeagueSeeder extends Seeder
         foreach (self::USER_NAMES as $email => $name) {
             $user = User::query()->firstOrCreate(
                 ['email' => $email],
-                ['name' => $name, 'email_verified_at' => now(), 'password' => Hash::make('password')],
+                ['name' => $name, 'password' => Hash::make('password')],
             );
             $user->update(['name' => $name]);
         }

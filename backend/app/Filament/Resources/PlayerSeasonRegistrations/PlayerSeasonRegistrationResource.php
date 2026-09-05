@@ -6,7 +6,7 @@ use App\Filament\Resources\Concerns\ProtectsHistoricalDeletion;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -15,6 +15,13 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use App\Models\Player;
+use App\Models\RealClub;
+use App\Models\RealCompetition;
+use App\Models\Season;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class PlayerSeasonRegistrationResource extends Resource
 {
@@ -56,9 +63,9 @@ class PlayerSeasonRegistrationResource extends Resource
             TextInput::make('external_id')->label(__('admin.labels.external_id'))->maxLength(255)->requiredWith('external_provider'),
             TextInput::make('shirt_number')->label(__('admin.labels.shirt_number'))->numeric(),
             TextInput::make('quotation')->label(__('admin.labels.quotation'))->numeric(),
-            Toggle::make('is_active')->label(__('admin.labels.is_active'))->default(true),
-            DateTimePicker::make('registered_at')->label(__('admin.labels.registered_at')),
-            DateTimePicker::make('released_at')->label(__('admin.labels.released_at')),
+            Toggle::make('is_active')->label(__('admin.labels.active'))->default(true),
+            DatePicker::make('registered_on')->label(__('admin.labels.registered_on')),
+            DatePicker::make('released_on')->label(__('admin.labels.released_on')),
         ]);
     }
 
@@ -71,7 +78,50 @@ class PlayerSeasonRegistrationResource extends Resource
             TextColumn::make('seasonClub.realClub.name')->label(__('admin.labels.registered_club')),
             TextColumn::make('playerRole.label')->label(__('admin.labels.player_role')),
             TextColumn::make('quotation')->label(__('admin.labels.quotation'))->numeric(2),
-            IconColumn::make('is_active')->label(__('admin.labels.is_active'))->boolean(),
+            TextColumn::make('registered_on')->label(__('admin.labels.registered_on'))->date()->sortable(),
+            TextColumn::make('released_on')->label(__('admin.labels.released_on'))->date()->sortable(),
+            IconColumn::make('is_active')->label(__('admin.labels.active'))->boolean(),
+        ])->filters([
+            SelectFilter::make('season')
+                ->label(__('admin.labels.season'))
+                ->options(fn(): array => Season::query()->orderByDesc('starts_at')->orderBy('name')->pluck('name', 'id')->all())
+                ->query(fn(Builder $query, array $data): Builder => $query->when(
+                    $data['value'] ?? null,
+                    fn(Builder $query, int|string $seasonId): Builder => $query->whereHas(
+                        'seasonClub',
+                        fn(Builder $query): Builder => $query->where('season_id', $seasonId),
+                    ),
+                )),
+            SelectFilter::make('competition')
+                ->label(__('admin.labels.competition'))
+                ->options(fn(): array => RealCompetition::query()->orderBy('name')->pluck('name', 'id')->all())
+                ->query(fn(Builder $query, array $data): Builder => $query->when(
+                    $data['value'] ?? null,
+                    fn(Builder $query, int|string $competitionId): Builder => $query->whereHas(
+                        'seasonClub.season',
+                        fn(Builder $query): Builder => $query->where('real_competition_id', $competitionId),
+                    ),
+                )),
+            SelectFilter::make('registered_club')
+                ->label(__('admin.labels.registered_club'))
+                ->options(fn(): array => RealClub::query()->orderBy('name')->pluck('name', 'id')->all())
+                ->searchable()
+                ->query(fn(Builder $query, array $data): Builder => $query->when(
+                    $data['value'] ?? null,
+                    fn(Builder $query, int|string $clubId): Builder => $query->whereHas(
+                        'seasonClub',
+                        fn(Builder $query): Builder => $query->where('real_club_id', $clubId),
+                    ),
+                )),
+            SelectFilter::make('player')
+                ->label(__('admin.labels.player'))
+                ->options(fn(): array => Player::query()->orderBy('display_name')->pluck('display_name', 'id')->all())
+                ->searchable()
+                ->query(fn(Builder $query, array $data): Builder => $query->when(
+                    $data['value'] ?? null,
+                    fn(Builder $query, int|string $playerId): Builder => $query->where('player_id', $playerId),
+                )),
+            TernaryFilter::make('is_active')->label(__('admin.labels.active')),
         ])->recordActions([EditAction::make()])->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
 

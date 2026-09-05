@@ -68,6 +68,7 @@ export function FantasyTeamDetailPage() {
           <FantasyTeamBudgetSummary team={team} />
           <FantasyRosterSection
             leagueId={leagueId}
+            seasonId={league!.season.id}
             players={roster.data}
             canManage={canManageRoster}
             success={rosterManagement.success}
