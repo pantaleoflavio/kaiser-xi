@@ -1129,5 +1129,8 @@
     "allFantasyTeams": "Tutte le fantasquadre",
     "emptyTitle": "Nessun giocatore trovato",
     "empty": "Nessun giocatore corrisponde ai filtri selezionati."
+  },
+  "donations": {
+    "cta": "Sostieni KAISER XI su Ko-fi"
   }
 }

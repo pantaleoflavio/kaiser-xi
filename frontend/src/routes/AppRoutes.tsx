@@ -4,6 +4,8 @@ import { AppLayout } from '../layouts/AppLayout';
 import { GuestRoute } from './GuestRoute';
 import { ProtectedRoute } from './ProtectedRoute';
 import { HomePage } from '../pages/HomePage';
+import type { FrontendConfig } from '../config/frontend';
+import { frontendConfig } from '../config/frontend';
 
 const AccountPage = lazy(() =>
   import('../pages/AccountPage').then((module) => ({ default: module.AccountPage })),
@@ -98,15 +100,15 @@ const PrivacyAcknowledgementPage = lazy(() =>
   })),
 );
 
-export function AppRoutes() {
+export function AppRoutes({ config = frontendConfig }: { config?: FrontendConfig }) {
   return (
     <Routes>
-      <Route element={<AppLayout />}>
+      <Route element={<AppLayout config={config} />}>
         <Route index element={<HomePage />} />
         <Route path="game-instructions" element={<GameInstructionsPage />} />
         <Route path="rules" element={<Navigate to="/game-instructions" replace />} />
         <Route path="privacy" element={<PrivacyPage />} />
-        <Route path="impressum" element={<ImprintPage />} />
+        {config.impressumEnabled && <Route path="impressum" element={<ImprintPage />} />}
         <Route path="privacy-acknowledgement" element={<PrivacyAcknowledgementPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<DashboardPage />} />

@@ -1177,5 +1177,25 @@
     "allFantasyTeams": "All fantasy teams",
     "emptyTitle": "No players found",
     "empty": "No players match the selected filters."
+  },
+  "donations": {
+    "cta": "Support KAISER XI on Ko-fi"
+  },
+  "leaguePlayers": {
+    "title": "Players",
+    "count": "{{count}} players",
+    "search": "Search by name",
+    "club": "Real club",
+    "allClubs": "All clubs",
+    "position": "Position",
+    "allPositions": "All positions",
+    "status": "Fantasy status",
+    "allStatuses": "All statuses",
+    "freeAgent": "Free agent",
+    "assigned": "Assigned",
+    "fantasyTeam": "Fantasy team",
+    "allFantasyTeams": "All fantasy teams",
+    "emptyTitle": "No players found",
+    "empty": "No players match the selected filters."
   }
 }
